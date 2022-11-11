@@ -6,6 +6,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    transpilePackages: ['ui'],
+  },
 };
 
 module.exports = nextConfig;

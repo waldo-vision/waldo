@@ -19,7 +19,8 @@
     "next": "13.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.8.4"
+    "typescript": "4.8.4",
+    "ui": "workspace:*"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.2.0",

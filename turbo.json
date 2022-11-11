@@ -2,12 +2,16 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^^build"],
       "env": ["PORT", "HOST", "DB_URL"],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },
     "lint": {
+      "dependsOn": ["^build"],
       "outputs": []
+    },
+    "clean": {
+      "cache": false
     }
   }
 }
