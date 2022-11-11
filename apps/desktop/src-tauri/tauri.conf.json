@@ -1,18 +1,18 @@
 {
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeDevCommand": "pnpm dev",
-    "beforeBuildCommand": "pnpm build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist",
-    "withGlobalTauri": false
+    "beforeBuildCommand": "pnpm next build && pnpm next export",
+    "beforeDevCommand": "pnpm next dev",
+    "devPath": "http://localhost:3000",
+    "distDir": "../out"
   },
   "package": {
-    "productName": "desktop",
-    "version": "0.0.0"
+    "productName": "Waldo",
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "all": false
     },
     "bundle": {
       "active": true,
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.waldo.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -58,7 +58,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "desktop",
+        "title": "Waldo",
         "width": 800
       }
     ]

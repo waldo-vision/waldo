@@ -2,7 +2,6 @@
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](./)
 
-
 When contributing to this repository, please first discuss the change you wish to make via issue,
 email, or any other method with the owners of this repository before making a change.
 
@@ -17,14 +16,14 @@ Please note we have a code of conduct, please follow it in all your interactions
 3. Double check that IDE specific settings don't make it into the Git
 
 ### Picking work
+
 > Please follow the GitHub Projects, Milestones, and Issues
 
 - The Projects detail current side projects or larger systems
 - The Milestones detail current priority goals
 - The Issues detail individual features, bugs, tweaks to work on
 - Please assign yourself to work you plan to do, or leave a comment
-  *Please keep in touch with everyone, so we know who’s working on what*
-
+  _Please keep in touch with everyone, so we know who’s working on what_
 
 ## Code of Conduct
 
@@ -43,18 +42,17 @@ Examples of behavior that contributes to creating a positive environment
 include:
 
 - Do not degrade other people’s work
-    - Example:
-        - Good: Being critical and making suggestions
-        - Bad: Being criticizing and demanding
-    - In short, to not demean other people
-    - Absolutely zero sharing of binary files, however please check with the maintainer if
-      you **have** to share them.
-    - Keep it semi-professional
-    - Do not use the project to promote or gain an unfair advantage
+  - Example:
+    - Good: Being critical and making suggestions
+    - Bad: Being criticizing and demanding
+  - In short, to not demean other people
+  - Absolutely zero sharing of binary files, however please check with the maintainer if
+    you **have** to share them.
+  - Keep it semi-professional
+  - Do not use the project to promote or gain an unfair advantage
 
 (Remember, optimization after working code. If it works in time, it works in time)
 We want to encourage transparency, please avoid under-the-table discussions
-
 
 ### Our Responsibilities
 

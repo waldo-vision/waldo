@@ -1,23 +1,29 @@
 {
   "name": "desktop",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
   "scripts": {
-    "dev": "next dev -p 1420",
-    "build": "next build && next export -o dist",
-    "tauri": "tauri"
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "tauri": "tauri",
+    "next": "next",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.1.0",
-    "next": "^12.2.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@tauri-apps/api": "^1.2.0",
+    "@types/node": "18.11.9",
+    "@types/react": "^18.0.22",
+    "@types/react-dom": "^18.0.7",
+    "eslint": "8.27.0",
+    "eslint-config-next": "13.0.0",
+    "next": "13.0.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "4.8.4"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.1.0",
-    "@types/node": "^18.7.11",
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
-    "typescript": "^4.7.4"
+    "@tauri-apps/cli": "^1.2.0",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*"
   }
 }
