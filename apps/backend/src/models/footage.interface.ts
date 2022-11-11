@@ -68,4 +68,5 @@ const Footage: Model<FootageDocument> = mongoose.model<FootageDocument>(
   footageSchema,
 );
 
-export { Footage, FootageInput, FootageDocument, FootageUpdateInput };
+export { Footage };
+export type { FootageInput, FootageDocument, FootageUpdateInput };

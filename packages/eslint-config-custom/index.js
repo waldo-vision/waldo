@@ -1,10 +1,10 @@
 module.exports = {
   extends: [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-    "next",
-    "turbo",
-    "prettier"
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+    'next',
+    'turbo',
+    'prettier',
   ],
   env: {
     es2021: true,
@@ -16,9 +16,8 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    "@next/next/no-html-link-for-pages": "off",
-    "react/jsx-key": "off",
-    '@typescript-eslint/explicit-module-boundary-types': ['error'],
+    '@next/next/no-html-link-for-pages': 'off',
+    'react/jsx-key': 'off',
     'arrow-parens': ['error', 'as-needed'],
     'no-trailing-spaces': 'error',
     'import/extensions': 'off',
@@ -31,6 +30,5 @@ module.exports = {
         ignoreStrings: true,
       },
     ],
-    '@typescript-eslint/no-explicit-any': 'off',
   },
 };

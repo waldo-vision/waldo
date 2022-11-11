@@ -43,4 +43,5 @@ const Clip: Model<ClipDocument> = mongoose.model<ClipDocument>(
   clipSchema,
 );
 
-export { Clip, ClipInput, ClipDocument };
+export { Clip };
+export type { ClipInput, ClipDocument };
