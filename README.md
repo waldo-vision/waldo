@@ -6,6 +6,6 @@ To help contribute to WALDO, please visit the [WALDO Documentation page.](https:
 
 ## Contributor list
 
-<a href="https://github.com/waldo-vision/waldo.footage.collection/graphs/contributors">
+<a href="https://github.com/waldo-vision/waldo/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=waldo-vision/waldo" />
 </a>
