@@ -1,3 +1,4 @@
+import { z } from 'express-zod-api';
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
 type FootageDocument = Document & {
@@ -9,20 +10,28 @@ type FootageDocument = Document & {
   isAnalyzed: boolean;
 };
 
-type FootageInput = {
-  uuid: FootageDocument['uuid'];
-  username: FootageDocument['username'];
-  discordId: FootageDocument['discordId'];
-  youtubeUrl: FootageDocument['youtubeUrl'];
-  isCsgoFootage: FootageDocument['isCsgoFootage'];
-  isAnalyzed: FootageDocument['isAnalyzed'];
-};
+const FootageZodSchema = z.object({
+  uuid: z.string().uuid(),
+  discordId: z.number(),
+  username: z.string(),
+  youtubeUrl: z.string().url(),
+  isCsgoFootage: z.boolean(),
+  isAnalyzed: z.boolean(),
+});
 
-type FootageUpdateInput = {
-  isCsgoFootage: FootageDocument['isCsgoFootage'];
-  isAnalyzed: FootageDocument['isAnalyzed'];
-};
+const FootageRetrieveSchema = z.object({
+  footage: z.array(FootageZodSchema),
+});
 
+type FootageZod = z.infer<typeof FootageZodSchema>;
+type FootageRetrieveZod = z.infer<typeof FootageRetrieveSchema>;
+const FootageUpdateInputSchema = z.object({
+  uuid: z.string().uuid(),
+  isCsgoFootage: z.boolean(),
+  isAnalyzed: z.boolean(),
+});
+
+type FootageUpdateInput = z.infer<typeof FootageUpdateInputSchema>;
 const footageSchema = new Schema(
   {
     uuid: {
@@ -68,5 +77,15 @@ const Footage: Model<FootageDocument> = mongoose.model<FootageDocument>(
   footageSchema,
 );
 
-export { Footage };
-export type { FootageInput, FootageDocument, FootageUpdateInput };
+export {
+  Footage,
+  FootageZodSchema,
+  FootageUpdateInputSchema,
+  FootageRetrieveSchema,
+};
+export type {
+  FootageZod,
+  FootageDocument,
+  FootageUpdateInput,
+  FootageRetrieveZod,
+};

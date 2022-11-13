@@ -1,30 +1,28 @@
-import express from 'express';
 import dotenv from 'dotenv';
-
-import { clipRoute } from './routes/clip.route';
-import { footageRoute } from './routes/footage.route';
+import { createConfig, Routing, createServer } from 'express-zod-api';
+import { clipRouter } from './routes/clip.route';
+import { footageRouter } from './routes/footage.route';
 import { connect } from './services/database';
-
 dotenv.config();
 
-const HOST = `http://${process.env.HOST}` || 'http://localhost';
+// const HOST = `http://${process.env.HOST}` || 'http://localhost';
 const PORT = parseInt(process.env.PORT || '4500');
 
-const app = express();
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-app.use('/footage', footageRoute());
-app.use('/clip', clipRoute());
-// setup rate limits
-
-app.get('/', (req, res) => {
-  return res.json({ message: 'Hello World!' });
+export const zodConfig = createConfig({
+  server: {
+    listen: PORT, // port or socket
+  },
+  cors: true,
+  logger: {
+    level: 'debug',
+    color: true,
+  },
 });
+connect();
 
-app.listen(PORT, async () => {
-  await connect();
+const APIRouter: Routing = {
+  footage: footageRouter.footage,
+  clip: clipRouter.clip,
+};
 
-  console.log(`Application started on URL ${HOST}:${PORT} 🎉`);
-});
+createServer(zodConfig, APIRouter);

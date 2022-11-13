@@ -1,3 +1,4 @@
+import { z } from 'express-zod-api';
 import mongoose, { Schema, Model, Document } from 'mongoose';
 
 /**
@@ -10,6 +11,18 @@ type ClipDocument = Document & {
   uuid: string;
   footage: string;
 };
+
+const ClipZodSchema = z.object({
+  uuid: z.string().uuid(),
+  footage: z.string().uuid(),
+});
+
+const ClipRetrieveSchema = z.object({
+  clips: z.array(ClipZodSchema),
+});
+
+type ClipZod = z.infer<typeof ClipZodSchema>;
+type ClipRetrieveZod = z.infer<typeof ClipRetrieveSchema>;
 
 type ClipInput = {
   uuid: ClipDocument['uuid'];
@@ -43,5 +56,5 @@ const Clip: Model<ClipDocument> = mongoose.model<ClipDocument>(
   clipSchema,
 );
 
-export { Clip };
-export type { ClipInput, ClipDocument };
+export { Clip, ClipRetrieveSchema, ClipZodSchema };
+export type { ClipInput, ClipDocument, ClipZod, ClipRetrieveZod };
