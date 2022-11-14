@@ -5,6 +5,17 @@ const nextConfig = {
   experimental: {
     transpilePackages: ['ui'],
   },
+  images: {
+    unoptimized: true,
+  },
+  exportPathMap: async function (
+    defaultPathMap,
+    { dev, dir, outDir, distDir, buildId }
+  ) {
+    return {
+      '/': { page: '/' },
+    }
+  },
 };
 
 module.exports = nextConfig;

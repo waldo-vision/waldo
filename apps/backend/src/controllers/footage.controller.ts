@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import { spawn } from 'child_process'
+import bodyParser from "body-parser";
 import ytdl from 'ytdl-core';
 import * as fs from 'fs';
 import {
@@ -6,6 +8,7 @@ import {
   FootageZod,
   FootageZodSchema,
   FootageUpdateInputSchema,
+  FootageCreateInputSchema,
   FootageRetrieveSchema,
   FootageRetrieveZod,
 } from '../models/footage.interface';
@@ -27,13 +30,12 @@ import { any } from 'express-zod-api/dist/extend-zod';
  */
 export const createFootage = defaultEndpointsFactory.build({
   method: 'post',
-  input: z.object({
-    id: z.number(),
-    username: z.string(),
-    url: z.string().url(),
-  }),
+  input: FootageCreateInputSchema,
   output: FootageZodSchema,
   handler: async ({ input: { id, username, url }, options, logger }) => {
+    console.log('???');
+    logger.info(`handler init ${url}`);
+
     const existingFootage = await Footage.findOne({ youtubeUrl: url });
 
     if (existingFootage) {
@@ -48,18 +50,15 @@ export const createFootage = defaultEndpointsFactory.build({
       // Download video and save as a local MP4 to be used for processing.
       await ytdl(url).pipe(fs.createWriteStream(`${footageId}.mp4`));
 
-      // TODO: Implement functionality to trigger python kill shot parsing script.
-      // https://www.tutorialspoint.com/run-python-script-from-node-js-using-child-process-spawn-method
-      // https://github.com/waldo-vision/aimbot-detection-prototype/blob/main/auto_clip.py
-      // If we get resulting clips, then isCsgoFootage should be true.
+      const python = spawn('python', ['../services/autoClip.py']);
 
-      // TODO: Implement functionality to trigger logic to shrink video capture width & height.
-      // It would be best to do this logic directly within Python script when saving the clip files.
-      // Otherwise cropping could be achieved by using FFMPEG or something along those lines.
-
-      // TODO: Submit clips with unique IDs and association to footage ID (API to set DB & FS to create clip file).
-      // Each clip should be submitted to the database as a ClipInput.
-      // Each clip should be stored to a location on the local server where it can be obtained by the Analysis team.
+      python.stdout.on('data', function (data) {
+        console.log('Pipe data from python script ...', data);
+      });
+      // in close event we are sure that stream from child process is closed
+      python.on('close', async (code) => {
+        console.log(`child process close all stdio with code ${code}`);
+      });
 
       const footageInput: FootageZod = {
         uuid: footageId,

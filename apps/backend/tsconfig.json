@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["ES2015"],
-    "module": "CommonJS",
+    "lib": ["ES2021"],
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
   },
   "exclude": ["node_modules"],
-  "extends": "tsconfig/base.json",
+  "extends": "tsconfig/expressjs.json",
   "include": ["src"]
 }

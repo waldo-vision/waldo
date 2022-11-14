@@ -1,4 +1,3 @@
-import { Router } from 'express';
 import {
   createFootage,
   deleteFootage,
@@ -14,12 +13,15 @@ const footageRouter: Routing = {
     '': new DependsOnMethod({
       post: createFootage,
       get: getFootage,
-      patch: updateFootage,
-      delete: deleteFootage,
     }),
-    user: getUserFootage,
-    clips: getFootageClips,
+    ":uuid": new DependsOnMethod({
+      delete: deleteFootage,
+      patch: updateFootage,
+      get: getFootage,
+    }),
   },
+  user: getUserFootage,
+  clips: getFootageClips,
 };
 
 export { footageRouter };

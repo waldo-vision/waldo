@@ -32,6 +32,15 @@ const FootageUpdateInputSchema = z.object({
 });
 
 type FootageUpdateInput = z.infer<typeof FootageUpdateInputSchema>;
+
+const FootageCreateInputSchema = z.object({
+  id: z.number(),
+  username: z.string(),
+  url: z.string().url(),
+});
+
+type FootageCreateInput = z.infer<typeof FootageCreateInputSchema>;
+
 const footageSchema = new Schema(
   {
     uuid: {
@@ -81,11 +90,13 @@ export {
   Footage,
   FootageZodSchema,
   FootageUpdateInputSchema,
+  FootageCreateInputSchema,
   FootageRetrieveSchema,
 };
 export type {
   FootageZod,
   FootageDocument,
   FootageUpdateInput,
+  FootageCreateInput,
   FootageRetrieveZod,
 };
