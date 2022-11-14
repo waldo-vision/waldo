@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { spawn } from 'child_process'
-import bodyParser from "body-parser";
 import ytdl from 'ytdl-core';
 import * as fs from 'fs';
 import {
@@ -14,7 +13,6 @@ import {
 } from '../models/footage.interface';
 import { Clip, ClipZodSchema } from '../models/clip.interface';
 import { createHttpError, defaultEndpointsFactory, z } from 'express-zod-api';
-import { any } from 'express-zod-api/dist/extend-zod';
 
 /**
  * POST /footage
@@ -46,32 +44,49 @@ export const createFootage = defaultEndpointsFactory.build({
       const footageId = uuidv4();
 
       // Validate that the URL contains a video that can be downloaded.
-      await ytdl.getInfo(url);
-      // Download video and save as a local MP4 to be used for processing.
-      await ytdl(url).pipe(fs.createWriteStream(`${footageId}.mp4`));
+      const details = await ytdl.getInfo(url);
 
-      const python = spawn('python', ['../services/autoClip.py']);
+      await new Promise(async (resolve, reject) => {
+        const fileWriter = fs
+          .createWriteStream(`${footageId}.mp4`)
+          .on('finish', () => {
+            resolve({})
+          })
 
-      python.stdout.on('data', function (data) {
-        console.log('Pipe data from python script ...', data);
-      });
-      // in close event we are sure that stream from child process is closed
-      python.on('close', async (code) => {
-        console.log(`child process close all stdio with code ${code}`);
-      });
+        // Download video and save as a local MP4 to be used for processing.
+        await ytdl(url).pipe(fileWriter);
+      }).then(() => {
+        const python = spawn(
+          'python3',
+          ['autoClip.py', `${footageId}.mp4`, 'clips'],
+          { shell: true, stdio: 'inherit' },
+        );
 
-      const footageInput: FootageZod = {
-        uuid: footageId,
-        discordId: id,
-        username,
-        youtubeUrl: url,
-        isCsgoFootage: false,
-        isAnalyzed: false,
-      };
+        python.stdout.on('error', function (data) {
+          console.log('Pipe data from python script ...', data);
+        });
 
-      await Footage.create(footageInput);
+        python.stdout.on('data', function (data) {
+          console.log('Pipe data from python script ...', data);
+        });
 
-      return footageInput;
+        python.on('close', async (code) => {
+          console.log(`child process close all stdio with code ${code}`);
+
+          const footageInput: FootageZod = {
+            uuid: footageId,
+            discordId: id,
+            username,
+            youtubeUrl: url,
+            isCsgoFootage: false,
+            isAnalyzed: false,
+          };
+
+          await Footage.create(footageInput);
+
+          return footageInput;
+        });
+      })
     } catch (error) {
       if (error instanceof Error) {
         // probably don't want to do this in prod

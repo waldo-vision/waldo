@@ -48,9 +48,10 @@ cap = cv2.VideoCapture(inFile)
 
 # make sure video is the correct frame rate
 framRate = cap.get(cv2.CAP_PROP_FPS)
-assert int(framRate) == 60, "Video must be 60FPS"
 
 print(framRate)
+
+assert int(framRate) == 60, "Video must be 60FPS"
 
 showParse = False
 
