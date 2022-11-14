@@ -6,6 +6,13 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths" :{
+      "@components/*": ["components/*"],
+      "@utils/*": ["utils/*"],
+    },
+  },
   "exclude": [
     "node_modules"
   ]
