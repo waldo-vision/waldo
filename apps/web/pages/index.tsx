@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import Layout from '@components/Layout';
+import {ArrowUpTrayIcon, ArrowRightIcon} from '@heroicons/react/24/outline'
 import {
   Button,
   ButtonGroup,
@@ -7,8 +8,10 @@ import {
   Heading,
   Text,
   Flex,
+  Link,
+  Image,
+  Box
 } from '@chakra-ui/react';
-
 export default function Home() {
   return (
     <div>
@@ -34,8 +37,14 @@ export default function Home() {
             Currently in construction
           </Text>
           <ButtonGroup gap="4" m={3}>
-            <Button variant={'solid'}>Clip Submission</Button>
-            <Button variant={'outline'}>Learn more</Button>
+            <Button variant={'solid'} colorScheme='purple'>            
+            <ArrowUpTrayIcon height={16} width={16}/>
+            <Text marginLeft={2}>Clip Submission</Text>
+            </Button>
+            <Button variant={'outline'} colorScheme='purple'>
+            <Text marginRight={2}>Learn More</Text>
+            <ArrowRightIcon height={16} width={16}/>
+            </Button>
           </ButtonGroup>
         </Flex>
       </Center>
