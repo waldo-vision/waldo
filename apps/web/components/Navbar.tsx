@@ -161,10 +161,6 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: 'Upload',
-    href: '/upload',
-  },
-  {
     label: 'Docs',
     href: 'https://docs.waldo.vision',
   },

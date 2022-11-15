@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState, useContext } from 'react';
 import Image from 'next/image';
 import Layout from '@components/Layout';
 import { ArrowUpTrayIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
@@ -11,24 +11,38 @@ import {
   Flex,
   Container,
   Stack,
+  FormControl,
+  FormLabel,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  FormHelperText,
 } from '@chakra-ui/react';
 import Link from 'next/link';
+import { GlobalContext } from '@context/GlobalContext';
 
 export default function Home() {
-  // const [y, setY] = useState(0);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const gc = useContext(GlobalContext);
+  const [y, setY] = useState(0);
 
-  // const changeBackground = () => {
-  //   setY(window.scrollY);
-  // };
+  const changeBackground = () => {
+    setY(window.scrollY);
+  };
 
-  // useEffect(() => {
-  //   changeBackground();
-  //   // adding the event when scroll change background
-  //   window.addEventListener('scroll', changeBackground);
-  // });
+  useEffect(() => {
+    changeBackground();
+    // adding the event when scroll change background
+    window.addEventListener('scroll', changeBackground);
+  });
   return (
     <div>
-      {/* <Container display={{ base: 'none', lg: 'fixed' }}>
+      <Container display={{ base: 'none', lg: 'fixed' }}>
         <Image
           style={{
             position: 'fixed',
@@ -59,7 +73,7 @@ export default function Home() {
           width={720}
           height={450}
         />
-      </Container> */}
+      </Container>
       <Center h={'100vh'}>
         <Flex
           direction={'column'}
@@ -81,12 +95,14 @@ export default function Home() {
             Currently in construction
           </Text>
           <ButtonGroup gap={'4'} m={3}>
-            <Link href={'/upload'}>
-              <Button variant={'solid'} colorScheme={'purple'}>
-                <ArrowUpTrayIcon height={16} width={16} />
-                <Text marginLeft={2}>Clip Submission</Text>
-              </Button>
-            </Link>
+            <Button
+              variant={'solid'}
+              colorScheme={'purple'}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <ArrowUpTrayIcon height={16} width={16} />
+              <Text marginLeft={2}>Clip Submission</Text>
+            </Button>
             <Link href={'#About'}>
               <Button variant={'outline'} colorScheme={'purple'}>
                 <Text marginRight={2}>Learn More</Text>
@@ -140,12 +156,14 @@ export default function Home() {
               spacing={{ base: 4, sm: 6 }}
               direction={{ base: 'column', sm: 'row' }}
             >
-              <Link href={'/upload'}>
-                <Button variant={'solid'} colorScheme={'purple'}>
-                  <ArrowUpTrayIcon height={16} width={16} />
-                  <Text marginLeft={2}>Clip Submission</Text>
-                </Button>
-              </Link>
+              <Button
+                variant={'solid'}
+                colorScheme={'purple'}
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <ArrowUpTrayIcon height={16} width={16} />
+                <Text marginLeft={2}>Clip Submission</Text>
+              </Button>
             </Stack>
           </Stack>
           <Flex
@@ -167,6 +185,50 @@ export default function Home() {
           </Flex>
         </Stack>
       </Container>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        isCentered
+        size={'xl'}
+      >
+        <ModalOverlay backdropFilter="blur(10px)" />
+        <ModalContent>
+          <ModalHeader>Clip Submission</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Youtube URL</FormLabel>
+              <Input placeholder="https://youtube.com/watch?v=..." />
+              <FormHelperText>
+                You must be connected to a discord account to submit a clip.
+              </FormHelperText>
+            </FormControl>
+          </ModalBody>
+          <ModalFooter gap={5}>
+            <Text>
+              By submitting you agree to the{' '}
+              <Text
+                as={'span'}
+                fontWeight={'bold'}
+                textDecorationLine={'underline'}
+              >
+                Terms of Service.
+              </Text>
+            </Text>
+            <Button
+              colorScheme={gc.user.auth.discord.connected ? 'green' : 'purple'}
+            >
+              Discord
+            </Button>
+            <Button
+              colorScheme={gc.user.auth.discord.connected ? 'purple' : 'red'}
+              disabled={!gc.user.auth.discord.connected ? true : false}
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
