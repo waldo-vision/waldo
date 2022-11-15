@@ -4,6 +4,7 @@ import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import { GlobalContext, globalContextInt } from '@context/GlobalContext';
 import theme from '@utils/theme';
+import { SessionProvider } from 'next-auth/react';
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
@@ -31,17 +32,22 @@ function getSession(): globalContextInt {
   };
 }
 
-export default function App({ Component, pageProps }: AppPropsWithLayout) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) {
   // eslint-disable-next-line arrow-parens
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <>
-      <GlobalContext.Provider value={getSession()}>
-        <ChakraProvider theme={theme}>
-          {getLayout(<Component {...pageProps} />)}
-        </ChakraProvider>
-      </GlobalContext.Provider>
+      <SessionProvider session={session}>
+        <GlobalContext.Provider value={getSession()}>
+          <ChakraProvider theme={theme}>
+            {getLayout(<Component {...pageProps} />)}
+          </ChakraProvider>
+        </GlobalContext.Provider>
+      </SessionProvider>
     </>
   );
 }
