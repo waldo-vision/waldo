@@ -29,6 +29,7 @@
   },
   "packageManager": "pnpm@7.15.0",
   "dependencies": {
-    "@heroicons/react": "^2.0.13"
+    "@heroicons/react": "^2.0.13",
+    "node-fetch": "^3.3.0"
   }
 }
