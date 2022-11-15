@@ -58,7 +58,12 @@ const openapi = new OpenAPI({
   config: zodConfig,
   version: '0.0.1',
   title: 'Waldo Backend API Documentation',
-  serverUrl: 'http://localhost',
+  serverUrl: process.env.NODE_ENV === 'production' ? 'https://waldo.vision' : 'http://localhost',
+});
+
+openapi.addLicense({
+  name: 'Mozilla Public License 2.0',
+  url: 'https://www.mozilla.org/en-US/MPL/2.0/',
 });
 
 const { notFoundHandler } = attachRouting(zodConfig, APIRouter);

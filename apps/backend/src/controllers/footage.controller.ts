@@ -50,8 +50,10 @@ export const createFootage = defaultEndpointsFactory.build({
         youtubeUrl: url,
       };
 
-      Footage.create(footageInput);
+      // Create a Footage document in the mongoDB collection
+      await Footage.create(footageInput);
 
+      // Execute the parseClips method to gather killshot frames from footage video
       parseClips(footageId, `${footageId}.mp4`);
 
       return footageInput;

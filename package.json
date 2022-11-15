@@ -30,12 +30,5 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "packageManager": "pnpm@7.15.0",
-  "dependencies": {
-    "@heroicons/react": "^2.0.13",
-    "install": "^0.13.0",
-    "next-auth": "^4.16.4",
-    "node-fetch": "^3.3.0",
-    "npm": "^9.1.1"
-  }
+  "packageManager": "pnpm@7.15.0"
 }

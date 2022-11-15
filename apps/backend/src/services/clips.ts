@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as fse from 'fs-extra';
 import { v4 as uuidv4 } from 'uuid';
 import { spawn } from 'child_process';
-
 import { Footage } from '../models/footage.interface';
 
 const newClipIds: Array<string> = [];
@@ -42,7 +41,7 @@ export function parseClips(uuid: string, video: string): void {
     fs.mkdirSync('clips');
   }
 
-  const pyPro = spawn('python3', ['autoClip.py', 'test-new.mp4', 'clips', '1']);
+  const pyPro = spawn('python3', ['autoClip.py', video, 'clips', '1']);
 
   pyPro.on('exit', async () => {
     const clipDirs = await getDirectories('clips');
