@@ -2,22 +2,13 @@ import Layout from '@components/Layout';
 import React, { ReactElement } from 'react';
 import {
   Box,
-  Button,
   ButtonGroup,
   Flex,
-  Heading,
-  Spacer,
   Image,
-  Link,
   Text,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
   Center,
   chakra,
 } from '@chakra-ui/react';
-import { FolderOpenIcon } from '@heroicons/react/24/outline';
 export default function Upload() {
   return (
     <Box w="100%">
