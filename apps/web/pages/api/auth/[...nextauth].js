@@ -12,14 +12,9 @@ export const authOptions = {
   callbacks: {
     // custom callback
     async session({ session, token }) {
-<<<<<<< HEAD
-      // add user id to session object,
-      session.user.id = token.sub;
-=======
       // add user id & profile to session object,
       session.user.id = token.sub;
       session.user.avatarUrl = token.picture;
->>>>>>> edad9c5e3e342737ee3b0bcb0d18dbf323729f7b
       return session;
     },
   },
