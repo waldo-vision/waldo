@@ -10,9 +10,9 @@ import {
   Text,
   Flex,
   Container,
-  Box,
   Stack,
 } from '@chakra-ui/react';
+import Link from 'next/link';
 
 export default function Home() {
   // const [y, setY] = useState(0);
@@ -81,14 +81,18 @@ export default function Home() {
             Currently in construction
           </Text>
           <ButtonGroup gap={'4'} m={3}>
-            <Button variant={'solid'} colorScheme={'purple'}>
-              <ArrowUpTrayIcon height={16} width={16} />
-              <Text marginLeft={2}>Clip Submission</Text>
-            </Button>
-            <Button variant={'outline'} colorScheme={'purple'}>
-              <Text marginRight={2}>Learn More</Text>
-              <ArrowRightIcon height={16} width={16} />
-            </Button>
+            <Link href={'/upload'}>
+              <Button variant={'solid'} colorScheme={'purple'}>
+                <ArrowUpTrayIcon height={16} width={16} />
+                <Text marginLeft={2}>Clip Submission</Text>
+              </Button>
+            </Link>
+            <Link href={'#About'}>
+              <Button variant={'outline'} colorScheme={'purple'}>
+                <Text marginRight={2}>Learn More</Text>
+                <ArrowRightIcon height={16} width={16} />
+              </Button>
+            </Link>
           </ButtonGroup>
         </Flex>
       </Center>
@@ -104,6 +108,7 @@ export default function Home() {
               lineHeight={1.1}
               fontWeight={600}
               fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
+              id={'About'}
             >
               <Text
                 as={'span'}
@@ -135,10 +140,12 @@ export default function Home() {
               spacing={{ base: 4, sm: 6 }}
               direction={{ base: 'column', sm: 'row' }}
             >
-              <Button variant={'solid'} colorScheme={'purple'}>
-                <ArrowUpTrayIcon height={16} width={16} />
-                <Text marginLeft={2}>Clip Submission</Text>
-              </Button>
+              <Link href={'/upload'}>
+                <Button variant={'solid'} colorScheme={'purple'}>
+                  <ArrowUpTrayIcon height={16} width={16} />
+                  <Text marginLeft={2}>Clip Submission</Text>
+                </Button>
+              </Link>
             </Stack>
           </Stack>
           <Flex

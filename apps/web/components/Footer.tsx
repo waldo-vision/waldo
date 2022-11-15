@@ -7,7 +7,6 @@ import {
   Text,
   Flex,
   Tag,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import Image from 'next/image';
@@ -41,12 +40,7 @@ export default function Footer() {
             <Link href={'/'}>Waldo</Link>
             <Stack direction={'row'} align={'center'} spacing={2}>
               <Link href={'https://docs.waldo.vision'}>Docs</Link>
-              <Tag
-                size={'sm'}
-                bg={useColorModeValue('green.300', 'green.800')}
-                ml={2}
-                color={'white'}
-              >
+              <Tag size={'sm'} bg={'purple.300'} ml={2} color={'white'}>
                 New
               </Tag>
             </Stack>
@@ -81,7 +75,7 @@ export default function Footer() {
           _after={{
             content: '""',
             borderBottom: '1px solid',
-            borderColor: useColorModeValue('gray.200', 'gray.700'),
+            borderColor: 'gray.200',
             flexGrow: 1,
             ml: 8,
           }}
