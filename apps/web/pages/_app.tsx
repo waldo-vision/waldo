@@ -19,11 +19,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   // eslint-disable-next-line arrow-parens
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return ( 
+  return (
     <>
-  <ChakraProvider theme={theme}>
-      {getLayout(<Component {...pageProps} />)}
-    </ChakraProvider>,
+      <ChakraProvider theme={theme}>
+        {getLayout(<Component {...pageProps} />)}
+      </ChakraProvider>
     </>
   );
 }
