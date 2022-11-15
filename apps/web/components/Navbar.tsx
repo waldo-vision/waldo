@@ -7,7 +7,7 @@ export default function Navbar() {
   const githubIconHref = "https://github.com/waldo-vision"
   const discordRedirect = "https://discord.gg/MPAV4qP8Hx"
   const buttonMenu = [
-    { buttonTitle: "Upload", redirect: "", external: false},
+    { buttonTitle: "Upload", redirect: "/upload", external: false},
     { buttonTitle: "Docs", redirect: "", external: true},
     { buttonTitle: "Community", redirect: discordRedirect, external: true}
     ]
