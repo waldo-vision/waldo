@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "./index.tsx",
   "types": "./index.tsx",
-  "license": "MDL",
+  "license": "MPL-2.0",
   "scripts": {
     "lint": "eslint **/*.tsx*"
   },
