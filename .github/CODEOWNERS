@@ -12,7 +12,7 @@
 # This should make it easy to add new rules without breaking existing ones.
 
 # Global rule:
-*           @waldo/team-leads
+*  @waldo-vision/team-leads
 
 # Backend project:
 /apps/backend/**  @b3kN
@@ -22,6 +22,3 @@
 
 # Desktop project:
 /apps/desktop/**  @tsundDEV
-
-# Windows forms areas:
-/windowsforms/** @adegeo @dotnet/dotnet-winforms

@@ -1,7 +1,5 @@
-import fetch from "node-fetch"
+import fetch from 'node-fetch';
 // just creating helper functions... no logic or type etc rn.
-const handleUploadFileLogic = () => {
+const handleUploadFileLogic = () => {};
 
-}
-
-export { handleUploadFileLogic }
+export { handleUploadFileLogic };
