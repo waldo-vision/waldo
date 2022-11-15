@@ -24,7 +24,7 @@ connect();
 const APIRouter: Routing = {
   footage: footageRouter.footage,
   clip: clipRouter.clip,
-  discord: discordRouter.discord;
+  discord: discordRouter.discord,
 };
 
 createServer(zodConfig, APIRouter);
