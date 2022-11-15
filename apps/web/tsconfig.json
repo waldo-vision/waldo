@@ -5,7 +5,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "pages/api/auth/[...nextauth].js"  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths" :{
