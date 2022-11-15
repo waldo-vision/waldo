@@ -4,17 +4,16 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "pages/api/auth/[...nextauth].js"  ],
+    ".next/types/**/*.ts",
+    "pages/api/auth/[...nextauth].js"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
-    "paths" :{
+    "paths": {
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
       "@context/*": ["context/*"]
-    },
+    }
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
