@@ -4,19 +4,21 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 type FootageDocument = Document & {
   uuid: string;
   discordId: number;
-  username: string;
   youtubeUrl: string;
-  isCsgoFootage: boolean;
-  isAnalyzed: boolean;
+  parsed?: boolean;
+  csgoFootage?: boolean;
+  analyzed?: boolean;
+  clips?: Array<string>;
 };
 
 const FootageZodSchema = z.object({
   uuid: z.string().uuid(),
   discordId: z.number(),
-  username: z.string(),
   youtubeUrl: z.string().url(),
-  isCsgoFootage: z.boolean(),
-  isAnalyzed: z.boolean(),
+  parsed: z.boolean().optional(),
+  csgoFootage: z.boolean().optional(),
+  analyzed: z.boolean().optional(),
+  clips: z.string().array().optional(),
 });
 
 const FootageRetrieveSchema = z.object({
@@ -27,15 +29,16 @@ type FootageZod = z.infer<typeof FootageZodSchema>;
 type FootageRetrieveZod = z.infer<typeof FootageRetrieveSchema>;
 const FootageUpdateInputSchema = z.object({
   uuid: z.string().uuid(),
-  isCsgoFootage: z.boolean(),
-  isAnalyzed: z.boolean(),
+  parsed: z.boolean(),
+  csgoFootage: z.boolean(),
+  analyzed: z.boolean(),
+  clips: z.string().array().optional(),
 });
 
 type FootageUpdateInput = z.infer<typeof FootageUpdateInputSchema>;
 
 const FootageCreateInputSchema = z.object({
   id: z.number(),
-  username: z.string(),
   url: z.string().url(),
 });
 
@@ -48,10 +51,6 @@ const footageSchema = new Schema(
       required: true,
       unique: true,
     },
-    username: {
-      type: Schema.Types.String,
-      required: true,
-    },
     discordId: {
       type: Schema.Types.Number,
       required: true,
@@ -60,15 +59,25 @@ const footageSchema = new Schema(
       type: Schema.Types.String,
       required: true,
     },
-    isCsgoFootage: {
+    parsed: {
       type: Schema.Types.Boolean,
-      required: true,
-      default: false,
+      required: false,
+      default: undefined,
     },
-    isAnalyzed: {
+    csgoFootage: {
       type: Schema.Types.Boolean,
-      required: true,
-      default: false,
+      required: false,
+      default: undefined,
+    },
+    analyzed: {
+      type: Schema.Types.Boolean,
+      required: false,
+      default: undefined,
+    },
+    clips: {
+      type: Array<string>(),
+      required: false,
+      default: undefined,
     },
   },
   {

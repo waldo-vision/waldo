@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { spawn } from 'child_process'
 import ytdl from 'ytdl-core';
 import * as fs from 'fs';
+
 import {
   Footage,
   FootageZod,
@@ -9,19 +9,18 @@ import {
   FootageUpdateInputSchema,
   FootageCreateInputSchema,
   FootageRetrieveSchema,
-  FootageRetrieveZod,
 } from '../models/footage.interface';
 import { Clip, ClipZodSchema } from '../models/clip.interface';
 import { createHttpError, defaultEndpointsFactory, z } from 'express-zod-api';
+import { parseClips } from '../services/clips';
 
 /**
  * POST /footage
  * @summary Endpoint to create new Footage document based on submission from web form.
  * @param {string} id.form.required - The User's Discord ID - application/x-www-form-urlencoded
- * @param {string} username.form.required - The User's Discord name - application/x-www-form-urlencoded
  * @param {string} url.form.required - The YouTube URL with capture footage - application/x-www-form-urlencoded
  * @return {FootageDocument} 200 - Success response returns created Footage document.
- * @return 422 - A required form item is missing (i.e.: id, username, url).
+ * @return 422 - A required form item is missing (i.e.: id, url).
  * @return 406 - The YouTube URL is not to an acceptable.
  * @return 400 - The YouTube URL has already been submitted.
  * @return 500 - Some internal error
@@ -30,69 +29,33 @@ export const createFootage = defaultEndpointsFactory.build({
   method: 'post',
   input: FootageCreateInputSchema,
   output: FootageZodSchema,
-  handler: async ({ input: { id, username, url }, options, logger }) => {
-    console.log('???');
-    logger.info(`handler init ${url}`);
-
+  handler: async ({ input: { id, url } }) => {
     const existingFootage = await Footage.findOne({ youtubeUrl: url });
+    const footageId = uuidv4();
 
     if (existingFootage) {
       throw createHttpError(400, `URL ${url} has already been submitted.`);
     }
 
     try {
-      const footageId = uuidv4();
-
       // Validate that the URL contains a video that can be downloaded.
-      const details = await ytdl.getInfo(url);
+      await ytdl.getInfo(url);
 
-      await new Promise(async (resolve, reject) => {
-        const fileWriter = fs
-          .createWriteStream(`${footageId}.mp4`)
-          .on('finish', () => {
-            resolve({})
-          })
+      // TODO: Get formats from getInfo and download acceptable format from yt.
+      await ytdl(url).pipe(fs.createWriteStream(`${footageId}.mp4`));
 
-        // Download video and save as a local MP4 to be used for processing.
-        await ytdl(url).pipe(fileWriter);
-      }).then(() => {
-        const python = spawn(
-          'python3',
-          ['autoClip.py', `${footageId}.mp4`, 'clips'],
-          { shell: true, stdio: 'inherit' },
-        );
+      const footageInput: FootageZod = {
+        uuid: footageId,
+        discordId: id,
+        youtubeUrl: url,
+      };
 
-        python.stdout.on('error', function (data) {
-          console.log('Pipe data from python script ...', data);
-        });
+      Footage.create(footageInput);
 
-        python.stdout.on('data', function (data) {
-          console.log('Pipe data from python script ...', data);
-        });
+      parseClips(footageId, `${footageId}.mp4`);
 
-        python.on('close', async (code) => {
-          console.log(`child process close all stdio with code ${code}`);
-
-          const footageInput: FootageZod = {
-            uuid: footageId,
-            discordId: id,
-            username,
-            youtubeUrl: url,
-            isCsgoFootage: false,
-            isAnalyzed: false,
-          };
-
-          await Footage.create(footageInput);
-
-          return footageInput;
-        });
-      })
+      return footageInput;
     } catch (error) {
-      if (error instanceof Error) {
-        // probably don't want to do this in prod
-        throw createHttpError(406, error.message);
-      }
-
       throw createHttpError(500, 'Something went wrong processing the video.');
     }
   },
@@ -112,25 +75,28 @@ export const getFootage = defaultEndpointsFactory.build({
   // ignores the output error below uncomment if you want to try and fix it
   // the error doesn't cause any problems with operations.
   output: FootageRetrieveSchema,
-  handler: async ({ input: { uuid }, options, logger }) => {
+  handler: async ({ input: { uuid } }) => {
     // all footage returns
-    const footageResult: any[] = [];
+    const footageResult = [];
     if (uuid) {
       const footage = await Footage.findOne({ uuid });
+
       if (footage === null) {
-        console.log('error');
         throw createHttpError(
           404,
           'No footage document with the UUID provided could be found.',
         );
       }
+
       footageResult.push(footage);
     } else {
       const allFootage = await Footage.find().sort('-createdAt').exec();
+
       if (allFootage == null) {
         throw createHttpError(404, 'No footage documents could be found.');
       }
-      allFootage.forEach((doc, index) => {
+
+      allFootage.forEach(doc => {
         footageResult.push(doc);
       });
     }
@@ -148,12 +114,12 @@ export const getUserFootage = defaultEndpointsFactory.build({
   method: 'get',
   input: z.object({
     // had to change to string because the param is sent as a string not as a number for some reason.
-    discordId: z.string(),
+    discordId: z.number(),
   }),
   output: z.object({
     footage: z.array(FootageZodSchema),
   }),
-  handler: async ({ input: { discordId }, options, logger }) => {
+  handler: async ({ input: { discordId } }) => {
     const footage = await Footage.find({ discordId });
 
     if (footage.length === 0)
@@ -177,7 +143,7 @@ export const getFootageClips = defaultEndpointsFactory.build({
   output: z.object({
     clips: z.array(ClipZodSchema),
   }),
-  handler: async ({ input: { uuid }, options, logger }) => {
+  handler: async ({ input: { uuid } }) => {
     const clips = await Clip.find({ footage: uuid });
 
     if (clips.length === 0)
@@ -205,14 +171,11 @@ export const updateFootage = defaultEndpointsFactory.build({
   method: 'patch',
   input: FootageUpdateInputSchema,
   output: FootageZodSchema,
-  handler: async ({
-    input: { uuid, isAnalyzed, isCsgoFootage },
-    options,
-    logger,
-  }) => {
+  handler: async ({ input: { uuid, analyzed, csgoFootage, parsed } }) => {
     const updatedFootage = {
-      isAnalyzed,
-      isCsgoFootage,
+      analyzed,
+      csgoFootage,
+      parsed,
     };
 
     const filter = { uuid: uuid };
@@ -242,12 +205,12 @@ export const updateFootage = defaultEndpointsFactory.build({
 export const deleteFootage = defaultEndpointsFactory.build({
   method: 'delete',
   input: z.object({
-    uuid: z.string().uuid(),
+    uuid: z.string(),
   }),
   output: z.object({
     message: z.string(),
   }),
-  handler: async ({ input: { uuid }, options, logger }) => {
+  handler: async ({ input: { uuid } }) => {
     const deleteResult = await Footage.deleteOne({ uuid: uuid });
 
     if (deleteResult.deletedCount === 0)

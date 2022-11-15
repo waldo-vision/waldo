@@ -14,7 +14,7 @@ const footageRouter: Routing = {
       post: createFootage,
       get: getFootage,
     }),
-    ":uuid": new DependsOnMethod({
+    ':uuid': new DependsOnMethod({
       delete: deleteFootage,
       patch: updateFootage,
       get: getFootage,

@@ -1,12 +1,7 @@
-import { Request, Response } from 'express';
-import { v4 as uuidv4, validate } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import {
   Clip,
-  ClipInput,
-  ClipDocument,
-  ClipZod,
   ClipZodSchema,
-  ClipRetrieveZod,
   ClipRetrieveSchema,
 } from '../models/clip.interface';
 import { defaultEndpointsFactory, z, createHttpError } from 'express-zod-api';
@@ -23,7 +18,7 @@ export const createClip = defaultEndpointsFactory.build({
     uuid: z.string().uuid(),
   }),
   output: ClipZodSchema,
-  handler: async ({ input: { uuid }, options, logger }) => {
+  handler: async ({ input: { uuid } }) => {
     const uniqueId = uuidv4();
 
     // TODO: Implement logic to store clips to storage directory named after the Footage ID.
@@ -58,7 +53,7 @@ export const downloadClipById = fileStreamingEndpointsFactory.build({
   output: z.object({
     uuid: z.string(),
   }),
-  handler: async ({ input: { uuid }, options, logger }) => ({
+  handler: async ({ input: { uuid } }) => ({
     // most functionality is in the streamingEndPointFactory file.. see ../factories/fileStreamingEndpointsFactory.
     uuid: uuid,
   }),
@@ -78,12 +73,11 @@ export const getClip = defaultEndpointsFactory.build({
     // the error doesn't cause any problems with operations.
   }),
   output: ClipRetrieveSchema,
-  handler: async ({ input: { uuid }, options, logger }) => {
-    const clipResult: any[] = [];
+  handler: async ({ input: { uuid } }) => {
+    const clipResult = [];
     if (uuid) {
       const clip = await Clip.findOne({ uuid });
       if (clip === null) {
-        console.log('error');
         throw createHttpError(
           404,
           'No clip document with the UUID provided could be found.',
@@ -95,7 +89,7 @@ export const getClip = defaultEndpointsFactory.build({
       if (allClips == null) {
         throw createHttpError(404, 'No clip documents could be found.');
       }
-      allClips.forEach((doc, index) => {
+      allClips.forEach(doc => {
         clipResult.push(doc);
       });
     }
@@ -115,7 +109,7 @@ export const deleteClip = defaultEndpointsFactory.build({
     uuid: z.string().uuid().optional(),
   }),
   output: z.object({ message: z.string() }),
-  handler: async ({ input: { uuid }, options, logger }) => {
+  handler: async ({ input: { uuid } }) => {
     const deleteResult = await Clip.deleteOne({ uuid });
 
     if (deleteResult.deletedCount === 0) {

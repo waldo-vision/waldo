@@ -2,8 +2,11 @@ import dotenv from 'dotenv';
 import express, { json } from 'express';
 import path from 'path';
 import {
-  createConfig, Routing, ServeStatic,
-  createServer, attachRouting, OpenAPI
+  createConfig,
+  Routing,
+  ServeStatic,
+  attachRouting,
+  OpenAPI,
 } from 'express-zod-api';
 
 import swaggerUi from 'swagger-ui-express';
@@ -31,7 +34,8 @@ export const zodConfig = createConfig({
     color: true,
   },
   inputSources: {
-    post: ["body"],
+    post: ['body'],
+    patch: ['body'],
   },
 });
 
@@ -40,21 +44,24 @@ const APIRouter: Routing = {
     footage: footageRouter.footage,
     clip: clipRouter.clip,
   },
-  '': new ServeStatic(path.join(__dirname, '/../../web/out'), {
-    dotfiles: "allow",
-    redirect: true,
-  }),
 };
+
+if (process.env.NODE_ENV === 'production') {
+  APIRouter[''] = new ServeStatic(path.join(__dirname, '/../../web/out'), {
+    dotfiles: 'allow',
+    redirect: true,
+  });
+}
 
 const openapi = new OpenAPI({
   routing: APIRouter,
   config: zodConfig,
-  version: "0.0.1",
-  title: "Waldo Backend API Documentation",
+  version: '0.0.1',
+  title: 'Waldo Backend API Documentation',
   serverUrl: 'http://localhost',
 });
 
-const { notFoundHandler, logger } = attachRouting(zodConfig, APIRouter);
+const { notFoundHandler } = attachRouting(zodConfig, APIRouter);
 app.use('/v1', express.json(), notFoundHandler);
 
 app.use(express.urlencoded({ extended: true }));

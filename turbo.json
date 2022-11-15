@@ -3,7 +3,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["PORT", "HOST", "DB_URL"],
+      "env": ["PORT", "HOST", "DB_URL", "FS_LOCATION", "NODE_ENV"],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },
     "lint": {
@@ -17,9 +17,9 @@
       "cache": false
     },
     "start": {
-      "cache": false,
       "dependsOn": ["^build"],
-      "env": ["PORT", "HOST", "DB_URL"]
+      "cache": false,
+      "env": ["PORT", "HOST", "DB_URL", "FS_LOCATION", "NODE_ENV"]
     }
   }
 }
