@@ -12,20 +12,26 @@ import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-
+import { getSession } from 'next-auth/react';
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
+  const [userSession, setUserSession] = useState<any>()
   const [y, setY] = useState(0);
 
   const changeBackground = () => {
     setY(window.scrollY);
   };
-
+  const getCurrentSession = async () => {
+    const session = await getSession();
+    setUserSession(session)
+    console.log(session)
+  }
   useEffect(() => {
     changeBackground();
     // adding the event when scroll change background
     window.addEventListener('scroll', changeBackground);
-  });
+    getCurrentSession()
+  }, []);
 
   return (
     <Box
@@ -94,6 +100,9 @@ export default function Navigation() {
         <Link href={githubIconHref}>
           <Image alt="Github" src="/navbar_github.png" width={35} height={35} />
         </Link>
+        <Box>
+            {userSession && <Image src={userSession.user.avatarUrl} alt="Avatar" width={22} height={22} />}
+        </Box>
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
@@ -160,6 +169,10 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
+  {
+    label: 'Upload',
+    href: '/upload',
+  },
   {
     label: 'Docs',
     href: 'https://docs.waldo.vision',
