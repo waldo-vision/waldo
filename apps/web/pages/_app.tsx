@@ -22,9 +22,11 @@ export default function App({ Component, pageProps: { session, ...pageProps} }: 
 
   return (
     <>
+    <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
         {getLayout(<Component {...pageProps} />)}
       </ChakraProvider>
+      </SessionProvider>
     </>
   );
 }
