@@ -4,7 +4,6 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 type FootageDocument = Document & {
   uuid: string;
   discordId: number;
-  username: string;
   youtubeUrl: string;
   isCsgoFootage: boolean;
   isAnalyzed: boolean;
@@ -13,7 +12,6 @@ type FootageDocument = Document & {
 const FootageZodSchema = z.object({
   uuid: z.string().uuid(),
   discordId: z.number(),
-  username: z.string(),
   youtubeUrl: z.string().url(),
   isCsgoFootage: z.boolean(),
   isAnalyzed: z.boolean(),
@@ -38,10 +36,6 @@ const footageSchema = new Schema(
       type: Schema.Types.String,
       required: true,
       unique: true,
-    },
-    username: {
-      type: Schema.Types.String,
-      required: true,
     },
     discordId: {
       type: Schema.Types.Number,

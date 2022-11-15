@@ -29,11 +29,10 @@ export const createFootage = defaultEndpointsFactory.build({
   method: 'post',
   input: z.object({
     id: z.number(),
-    username: z.string(),
     url: z.string().url(),
   }),
   output: FootageZodSchema,
-  handler: async ({ input: { id, username, url }, options, logger }) => {
+  handler: async ({ input: { id, url }, options, logger }) => {
     const existingFootage = await Footage.findOne({ youtubeUrl: url });
 
     if (existingFootage) {
@@ -64,7 +63,6 @@ export const createFootage = defaultEndpointsFactory.build({
       const footageInput: FootageZod = {
         uuid: footageId,
         discordId: id,
-        username,
         youtubeUrl: url,
         isCsgoFootage: false,
         isAnalyzed: false,
