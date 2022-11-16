@@ -1,13 +1,12 @@
 /* eslint-disable turbo/no-undeclared-env-vars */
 import NextAuth from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
-import { signOut } from 'next-auth/react';
 export const authOptions = {
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
-      authorization: { params: { scope: "identify email guilds"} }
+      authorization: { params: { scope: 'identify email guilds' } },
     }),
   ],
   callbacks: {
@@ -15,10 +14,10 @@ export const authOptions = {
     async session({ session, token }) {
       // add user id & profile to session object
       if (session) {
-      session.user.id = token.sub;
-      session.user.access_token = token.token
-      session.user.avatarUrl = token.picture;
-    }
+        session.user.id = token.sub;
+        session.user.access_token = token.token;
+        session.user.avatarUrl = token.picture;
+      }
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
@@ -26,7 +25,7 @@ export const authOptions = {
         token.token = account.access_token;
       }
       return token;
-    }
+    },
   },
 };
 
