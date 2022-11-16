@@ -1,7 +1,8 @@
 import { ReactElement, useEffect, useState, useContext } from 'react';
 import Image from 'next/image';
 import Layout from '@components/Layout';
-import { ArrowUpTrayIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import {handleUploadFileLogic} from "../utils/helpers/apiHelper"
+import { ArrowUpTrayIcon, ArrowRightIcon, ShieldCheckIcon, CheckCircleIcon, UserCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import {
   Button,
   ButtonGroup,
@@ -22,24 +23,106 @@ import {
   ModalHeader,
   ModalOverlay,
   FormHelperText,
+  useToast,
+  Box,
+  SlideFade,
+  MenuButton,
+  Menu,
+  MenuItem,
+  MenuList,
+  Image as CImg,
 } from '@chakra-ui/react';
-import Link from 'next/link';
-import { GlobalContext } from '@context/GlobalContext';
 
+import Link from 'next/link';
+import { signIn, getSession, signOut } from "next-auth/react"
+import { GlobalContext } from '@context/GlobalContext';
+import { useRouter } from "next/router"
 export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const gc = useContext(GlobalContext);
+  const gc = useContext(GlobalContext)
+  const [sessionExists, setSessionExists] = useState<boolean>(false);
+  const [waitingForResponse, setWaitingForResponse] = useState<boolean>()
+  const [requestDone, setRequestDone] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+
+  const [userSession, setUserSession] = useState<any>();
+  const [currentUrl, setCurrentUrl] = useState<String>();
   const [y, setY] = useState(0);
+  const router = useRouter()
+  const toast = useToast()
 
   const changeBackground = () => {
     setY(window.scrollY);
   };
+  const getCurrentSession = async () => {
+    const session = await getSession();
+    if (session == null) {
+      setSessionExists(false)
+    } else {
+      setSessionExists(true)
+      setUserSession(session)
+    }
+  }
+
+  const handleSignout = () => {
+    signOut(userSession);
+    router.push('/')
+  }
+
+  const createToast = (msg: string, type: any, title: string) => {
+    toast({
+      position: "bottom-right",
+      title: title,
+      description: msg,
+      status: type,
+      duration: 9000,
+      isClosable: true,
+    })
+  }
+  const delay = () => {
+    return new Promise(resolve => setTimeout(resolve, 2000));
+  }
+  const handleClipUpload = async () => {
+    if (requestDone) {
+      setIsOpen(false)
+      setCurrentUrl("")
+      setRequestDone(false)
+      setError(false)
+      return;
+    }
+    setWaitingForResponse(true)
+    console.log(userSession)
+    await handleUploadFileLogic(currentUrl, userSession.user.id.toString(), userSession.user.access_token).then(async res => {
+      if (res.error || !res.isInGuild) {
+        setWaitingForResponse(false)
+        
+        createToast(res.message, "error", "Error")
+        setRequestDone(true)
+        setError(true);
+        await delay()
+        setError(false)
+        setRequestDone(false)
+      } else {
+        setWaitingForResponse(false)
+        const msg = "Successfully uploaded your footage to waldo's server!"
+        setRequestDone(true)
+        setError(false)
+        await delay()
+        setIsOpen(false)
+        setCurrentUrl("")
+        setRequestDone(false)
+        createToast(msg, "success", "Sucess!")
+
+      }
+    })
+  }
 
   useEffect(() => {
     changeBackground();
     // adding the event when scroll change background
     window.addEventListener('scroll', changeBackground);
-  });
+    getCurrentSession()
+  }, []);
   return (
     <div>
       <Container display={{ base: 'none', lg: 'fixed' }}>
@@ -69,6 +152,7 @@ export default function Home() {
             transform: 'rotate(25deg)',
           }}
           src={'/InScans.png'}
+          priority={true}
           alt={'Dashboard'}
           width={720}
           height={450}
@@ -187,20 +271,67 @@ export default function Home() {
       </Container>
       <Modal
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => {
+          setIsOpen(false);
+          setRequestDone(false);
+          setCurrentUrl("");
+          setError(false)
+        }}
         isCentered
         size={'xl'}
       >
         <ModalOverlay backdropFilter="blur(10px)" />
-        <ModalContent>
-          <ModalHeader>Clip Submission</ModalHeader>
+        <ModalContent >
+          <ModalHeader>
+          <Flex alignItems={'center'}>
+          <Menu>
+            <Box as={MenuButton} backgroundColor={'gray.300'} padding={1} borderRadius={8} >
+
+            { userSession ?
+            <CImg
+              src={userSession.user.avatarUrl}
+              alt="Avatar"
+              width={30}
+              height={30}
+              borderRadius={12}
+            />
+            :
+            <UserCircleIcon
+              width={35} 
+              height={35} 
+              color="black" 
+            />
+            }
+            </Box>
+
+            <MenuList>
+              { userSession ? 
+              <MenuItem onClick={() => signOut(userSession)}>Log out</MenuItem>
+              :
+              <MenuItem onClick={() => signIn("discord")}>Log In</MenuItem>
+              }
+            </MenuList>
+          </Menu>
+         <Text marginLeft={3}> Clip Submission </Text>
+         </Flex>
+
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
               <FormLabel>Youtube URL</FormLabel>
-              <Input placeholder="https://youtube.com/watch?v=..." />
+              <Input placeholder="https://youtube.com/watch?v=..." onChange={event => setCurrentUrl(event.target.value)}/>
               <FormHelperText>
-                You must be connected to a discord account to submit a clip.
+                {sessionExists ? 
+                <Flex direction={'row'} alignItems={'center'}>
+                  <Text>
+                Hi, {userSession.user.name}! You are securely connected to a discord account!
+                </Text>
+                <Box paddingLeft={1}>
+                <ShieldCheckIcon width={14} height={14} color={'black'}/>
+                </Box>
+                </Flex>
+                : "You must be connected to a discord account to submit a clip."}
               </FormHelperText>
             </FormControl>
           </ModalBody>
@@ -217,14 +348,33 @@ export default function Home() {
             </Text>
             <Button
               colorScheme={gc.user.auth.discord.connected ? 'green' : 'purple'}
+              onClick={() => {
+                sessionExists ?
+                handleSignout()
+                :
+                signIn("discord")
+
+              }}
             >
-              Discord
+              {sessionExists ?  "Log out" : "Log in" }
             </Button>
             <Button
-              colorScheme={gc.user.auth.discord.connected ? 'purple' : 'red'}
-              disabled={!gc.user.auth.discord.connected ? true : false}
+              colorScheme={sessionExists ? 'purple' : 'red'}
+              disabled={!sessionExists ? true : false}
+              onClick={() => handleClipUpload()}
+              isLoading={waitingForResponse}
             >
-              Submit
+              {!requestDone ? "Submit" : 
+                <Flex direction={'row'} alignItems={'center'}>
+              <SlideFade in={requestDone} offsetY='35px' delay={0.3}>
+                { error ? 
+                <XCircleIcon color="white" width={26} height={26} />
+                :
+              <CheckCircleIcon color='white' width={26} height={26} />
+                }
+              </SlideFade>
+              </Flex> 
+              }
             </Button>
           </ModalFooter>
         </ModalContent>
