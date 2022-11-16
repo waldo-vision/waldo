@@ -8,7 +8,7 @@ const IsInGuildReturn = z.object({
 type IsInGuild = z.infer<typeof IsInGuildReturn>;
 
 const DiscordApi = "https://discord.com/api/v10/users/@me/guilds";
-const WaldoGuildId = '1037778735283327027';
+const WaldoGuildId = process.env.WALDO_DISCORD_ID;
 
 /**
  * GET /discord/isInGuild/:id
