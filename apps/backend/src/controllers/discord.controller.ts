@@ -1,6 +1,9 @@
 import { APIPartialGuild, Routes } from 'discord-api-types/v10';
 import axios from 'axios';
+import dotenv from 'dotenv';
+
 import { defaultEndpointsFactory, z } from 'express-zod-api';
+dotenv.config()
 const IsInGuildReturn = z.object({
   message: z.string(),
   isInGuild: z.boolean(),
