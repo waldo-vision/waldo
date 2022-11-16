@@ -3,7 +3,7 @@ import { isInGuild } from '../controllers/discord.controller';
 
 const discordRouter: Routing = {
   discord: {
-    isInGuild,
+    ':token': isInGuild
   },
 };
 

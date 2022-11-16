@@ -1,15 +1,14 @@
 import { APIPartialGuild, Routes } from 'discord-api-types/v10';
 import axios from 'axios';
 import { defaultEndpointsFactory, z } from 'express-zod-api';
-
 const IsInGuildReturn = z.object({
   message: z.string(),
   isInGuild: z.boolean(),
 });
 type IsInGuild = z.infer<typeof IsInGuildReturn>;
 
-const DiscordApi = 'https://discord.com/api/v10';
-const WaldoGuildId = '903349717323382814';
+const DiscordApi = "https://discord.com/api/v10/users/@me/guilds";
+const WaldoGuildId = '1037778735283327027';
 
 /**
  * GET /discord/isInGuild/:id
@@ -19,30 +18,29 @@ const WaldoGuildId = '903349717323382814';
 export const isInGuild = defaultEndpointsFactory.build({
   method: 'get',
   input: z.object({
-    discordId: z.string(),
+    discordId: z.string().optional(),
+    token: z.string()
   }),
   output: IsInGuildReturn,
-  handler: async ({ input: { discordId }, options, logger }) => {
-    const accessToken = '';
-
+  handler: async ({ input: { discordId, token }, options, logger }) => {
+    const accessToken = token;
     try {
       const response = await axios.get<APIPartialGuild[]>(
-        DiscordApi + Routes.userGuilds(),
+        DiscordApi,
         {
           headers: {
-            authorization: `Bearer ${accessToken}`,
+            "Authorization": `Bearer ${accessToken}`,
           },
         },
       );
-
       for (let i = 0; i < response.data.length; i++) {
         if (response.data[i].id === WaldoGuildId)
           return { message: 'Is in Waldo Discord', isInGuild: true };
       }
-    } catch (error) {
-      logger.error(error);
+    } catch (error: any) {
+      console.log(error.response.data)
     }
 
-    return { message: 'Not in Waldo Discord', isInGuild: false };
+    return { message: 'Please join the Waldo Discord', isInGuild: false};
   },
 });
