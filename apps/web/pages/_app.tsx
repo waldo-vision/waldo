@@ -1,6 +1,53 @@
-import '../styles/globals.css';
 import type { AppProps } from 'next/app';
+import { ChakraProvider } from '@chakra-ui/react';
+import type { ReactElement, ReactNode } from 'react';
+import type { NextPage } from 'next';
+import { GlobalContext, globalContextInt } from '@context/GlobalContext';
+import theme from '@utils/theme';
+import { SessionProvider } from 'next-auth/react';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
+  P,
+  IP
+> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function getSession(): globalContextInt {
+  // Get Next-auth
+  return {
+    user: {
+      auth: {
+        discord: {
+          id: undefined,
+          connected: false,
+          iconURL: '',
+        },
+      },
+    },
+  };
+}
+
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) {
+  // eslint-disable-next-line arrow-parens
+  const getLayout = Component.getLayout ?? (page => page);
+
+  return (
+    <>
+      <SessionProvider session={session}>
+        <GlobalContext.Provider value={getSession()}>
+          <ChakraProvider theme={theme}>
+            {getLayout(<Component {...pageProps} />)}
+          </ChakraProvider>
+        </GlobalContext.Provider>
+      </SessionProvider>
+    </>
+  );
 }
