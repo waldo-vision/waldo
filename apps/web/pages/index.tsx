@@ -55,17 +55,17 @@ import Head from 'next/head';
 import DashboardImage from '../public/Dashboard.png';
 import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
+import { Session } from 'next-auth';
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [sessionExists, setSessionExists] = useState<boolean>(false);
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const ref = useRef<null | HTMLDivElement>(null);
 
   const [currentUrl, setCurrentUrl] = useState<string>('');
-  const [userSession, setUserSession] = useState<any>();
+  const [userSession, setUserSession] = useState<Session | undefined>();
   const [y, setY] = useState(0);
   const router = useRouter();
   const toast = useToast();
@@ -76,16 +76,15 @@ export default function Home() {
 
   const getCurrentSession = async () => {
     const session = await getSession();
-    if (session == null) {
-      setSessionExists(false);
+    if (session === null) {
+      setUserSession(undefined);
     } else {
-      setSessionExists(true);
       setUserSession(session);
     }
   };
 
   const handleSignout = () => {
-    signOut(userSession);
+    signOut();
     router.push('/');
   };
 
@@ -154,17 +153,23 @@ export default function Home() {
       return;
     }
 
-    await handleUploadFileLogic(
-      currentUrl,
-      userSession.user.id.toString(),
-      userSession.user.access_token,
-    ).then(async res => {
-      if (res.error || !res.isInGuild) {
-        handleRequestError(res.message);
-      } else {
-        handleRequestSuccess();
-      }
-    });
+    if (userSession !== undefined) {
+      await handleUploadFileLogic(
+        currentUrl,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        userSession.user.id.toString(),
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        userSession.user.access_token,
+      ).then(async res => {
+        if (res.error || !res.isInGuild) {
+          handleRequestError(res.message);
+        } else {
+          handleRequestSuccess();
+        }
+      });
+    }
   };
 
   useEffect(() => {
@@ -365,7 +370,7 @@ export default function Home() {
                 />
                 <FormHelperText>
                   <Flex direction={'column'} gap={1}>
-                    {sessionExists ? (
+                    {userSession !== undefined ? (
                       <Flex alignItems={'center'}>
                         <Text>You are securely connected to a&nbsp;</Text>
                         <Popover>
@@ -389,6 +394,8 @@ export default function Home() {
                                 p={2}
                               >
                                 <Image
+                                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                  // @ts-ignore
                                   src={userSession.user.avatarUrl}
                                   alt="Avatar"
                                   width={85}
@@ -401,6 +408,8 @@ export default function Home() {
                                   <Text fontSize={15}>
                                     Thank you for joining us,{' '}
                                     <Text as={'span'} fontWeight={'bold'}>
+                                      {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                      // @ts-ignore */}
                                       {userSession.user.name}
                                     </Text>
                                     !
@@ -458,17 +467,19 @@ export default function Home() {
                 </Link>
               </Text>
               <Button
-                colorScheme={sessionExists ? 'red' : 'purple'}
+                colorScheme={userSession !== undefined ? 'red' : 'purple'}
                 onClick={() => {
-                  sessionExists ? handleSignout() : signIn('discord');
+                  userSession !== undefined
+                    ? handleSignout()
+                    : signIn('discord');
                 }}
                 width={'81px'}
               >
-                {sessionExists ? 'Log out' : 'Log in'}
+                {userSession !== undefined ? 'Log out' : 'Log in'}
               </Button>
               <Button
-                colorScheme={sessionExists ? 'purple' : 'gray'}
-                disabled={!sessionExists ? true : false}
+                colorScheme={userSession !== undefined ? 'purple' : 'gray'}
+                disabled={!(userSession !== undefined) ? true : false}
                 onClick={() => handleClipUpload()}
                 isLoading={waitingForResponse}
                 width={'81px'}
