@@ -21,7 +21,7 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) {
   // eslint-disable-next-line arrow-parens
-  const getLayout = Component.getLayout ?? ((page) => page);
+  const getLayout = Component.getLayout ?? (page => page);
 
   return (
     <>

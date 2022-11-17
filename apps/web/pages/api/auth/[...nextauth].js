@@ -27,6 +27,20 @@ export const authOptions = {
       return token;
     },
   },
+  logger: {
+    error(code, meta) {
+      if (
+        !code === 'OAUTH_CALLBACK_ERROR' ||
+        !code === 'OAUTH_CALLBACK_HANDLER_ERROR'
+      ) {
+        console.log('Error Type:', code, 'Error Details: ', meta);
+      }
+      return;
+    },
+  },
+  pages: {
+    signIn: '/',
+  },
 };
 
 export default NextAuth(authOptions);
