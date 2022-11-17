@@ -47,11 +47,14 @@ import {
   XCircleIcon,
   ChevronDownIcon,
 } from '@heroicons/react/24/outline';
-
 import Image from 'next/image';
 import Layout from '@components/Layout';
 import Link from 'next/link';
 import Head from 'next/head';
+
+import DashboardImage from '../public/Dashboard.png';
+import InScansImage from '../public/InScans.png';
+import ScansImage from '../public/Scans.png';
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -193,10 +196,13 @@ export default function Home() {
               boxShadow: '0px 0px 32px 5px rgba(0, 0, 0, 0.25)',
               transform: 'rotate(25deg)',
             }}
-            src={'/Dashboard.png'}
-            alt={'Dashboard'}
+            src={DashboardImage}
+            alt={'Dashboard homepage'}
             width={720}
             height={450}
+            priority
+            // quality={1}
+            placeholder={'blur'}
           />
           <Image
             style={{
@@ -208,11 +214,13 @@ export default function Home() {
               boxShadow: '0px 0px 32px 5px rgba(0, 0, 0, 0.25)',
               transform: 'rotate(25deg)',
             }}
-            src={'/InScans.png'}
-            priority={true}
-            alt={'Dashboard'}
+            src={InScansImage}
+            alt={'Dashboard in scans page'}
             width={720}
             height={450}
+            priority
+            // quality={1}
+            placeholder={'blur'}
           />
         </Container>
         <Center h={'100vh'}>
@@ -318,14 +326,15 @@ export default function Home() {
               position={'relative'}
             >
               <Image
-                alt={'Hero Image'}
+                alt={'Dashboard scans page'}
                 width={1000}
                 height={600}
                 style={{
                   borderRadius: '16px',
                   boxShadow: '0px 0px 32px 5px rgba(0, 0, 0, 0.25)',
                 }}
-                src={'/Scans.png'}
+                src={ScansImage}
+                placeholder={'blur'}
               />
             </Flex>
           </Stack>
