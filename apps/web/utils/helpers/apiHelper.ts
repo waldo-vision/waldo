@@ -43,11 +43,12 @@ const handleUploadFileLogic = async (
 };
 
 const checkURL = (url: string): boolean => {
-  var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-    if(url.match(p)){
-        return true
-    }
-    return false;
-
-}
+  const p =
+    // eslint-disable-next-line max-len
+    /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+  if (url.match(p)) {
+    return true;
+  }
+  return false;
+};
 export { handleUploadFileLogic, checkURL };
