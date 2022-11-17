@@ -1,14 +1,8 @@
-import { ReactElement, useEffect, useState } from 'react';
-import Image from 'next/image';
-import Layout from '@components/Layout';
-import { handleUploadFileLogic } from '../utils/helpers/apiHelper';
-import {
-  ArrowUpTrayIcon,
-  ArrowRightIcon,
-  ShieldCheckIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-} from '@heroicons/react/24/outline';
+/* eslint-disable arrow-parens */
+import { ReactElement, useEffect, useState, useRef } from 'react';
+import { handleUploadFileLogic, checkURL } from '@utils/helpers/apiHelper';
+import { signIn, getSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import {
   Button,
   ButtonGroup,
@@ -32,35 +26,50 @@ import {
   useToast,
   Box,
   SlideFade,
-  Image as CImg,
   PopoverTrigger,
   Popover,
   PopoverArrow,
-  PopoverBody,
   PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
+  PopoverFooter,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItemOption,
+  MenuOptionGroup,
 } from '@chakra-ui/react';
+import {
+  ArrowUpTrayIcon,
+  ArrowRightIcon,
+  ShieldCheckIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  ChevronDownIcon,
+} from '@heroicons/react/24/outline';
 
+import Image from 'next/image';
+import Layout from '@components/Layout';
 import Link from 'next/link';
-import { signIn, getSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
+
 export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [sessionExists, setSessionExists] = useState<boolean>(false);
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+  const ref = useRef<null | HTMLDivElement>(null);
 
+  const [currentUrl, setCurrentUrl] = useState<string>('');
   const [userSession, setUserSession] = useState<any>();
-  const [currentUrl, setCurrentUrl] = useState<string>();
   const [y, setY] = useState(0);
   const router = useRouter();
   const toast = useToast();
 
-  const changeBackground = () => {
+  const updateScrollPosition = () => {
     setY(window.scrollY);
   };
+
   const getCurrentSession = async () => {
     const session = await getSession();
     if (session == null) {
@@ -86,9 +95,45 @@ export default function Home() {
       isClosable: true,
     });
   };
+
   const delay = () => {
-    return new Promise((resolve) => setTimeout(resolve, 2000));
+    return new Promise((resolve) => setTimeout(resolve, 4000));
   };
+
+  const handleRequestError = async (msg: string) => {
+    setWaitingForResponse(false);
+    setRequestDone(true);
+
+    // Enable Error
+    setError(true);
+    await delay();
+
+    // End handle
+    setError(false);
+    setRequestDone(false);
+
+    // Create toasts
+    createToast(msg, 'error', 'Error');
+  };
+
+  const handleRequestSuccess = async () => {
+    setWaitingForResponse(false);
+    setRequestDone(true);
+    setError(false);
+
+    await delay();
+
+    setIsOpen(false);
+
+    setCurrentUrl('');
+    setRequestDone(false);
+    createToast(
+      "Successfully uploaded your footage to waldo's server!",
+      'success',
+      'Sucess!',
+    );
+  };
+
   const handleClipUpload = async () => {
     if (requestDone) {
       setIsOpen(false);
@@ -97,40 +142,31 @@ export default function Home() {
       setError(false);
       return;
     }
+
     setWaitingForResponse(true);
-    console.log(userSession);
+
+    if (!checkURL(currentUrl)) {
+      handleRequestError('Please enter a valid youtube link');
+      return;
+    }
+
     await handleUploadFileLogic(
       currentUrl,
       userSession.user.id.toString(),
       userSession.user.access_token,
     ).then(async (res) => {
       if (res.error || !res.isInGuild) {
-        setWaitingForResponse(false);
-
-        createToast(res.message, 'error', 'Error');
-        setRequestDone(true);
-        setError(true);
-        await delay();
-        setError(false);
-        setRequestDone(false);
+        handleRequestError(res.message);
       } else {
-        setWaitingForResponse(false);
-        const msg = "Successfully uploaded your footage to waldo's server!";
-        setRequestDone(true);
-        setError(false);
-        await delay();
-        setIsOpen(false);
-        setCurrentUrl('');
-        setRequestDone(false);
-        createToast(msg, 'success', 'Sucess!');
+        handleRequestSuccess();
       }
     });
   };
 
   useEffect(() => {
-    changeBackground();
+    updateScrollPosition();
     // adding the event when scroll change background
-    window.addEventListener('scroll', changeBackground);
+    window.addEventListener('scroll', updateScrollPosition);
     getCurrentSession();
   }, []);
   return (
@@ -197,17 +233,22 @@ export default function Home() {
               <ArrowUpTrayIcon height={16} width={16} />
               <Text marginLeft={2}>Clip Submission</Text>
             </Button>
-            <Link href={'#About'}>
-              <Button variant={'outline'} colorScheme={'purple'}>
-                <Text marginRight={2}>Learn More</Text>
-                <ArrowRightIcon height={16} width={16} />
-              </Button>
-            </Link>
+            <Button
+              variant={'outline'}
+              colorScheme={'purple'}
+              onClick={() =>
+                ref.current?.scrollIntoView({ behavior: 'smooth' })
+              }
+            >
+              <Text marginRight={2}>Learn More</Text>
+              <ArrowRightIcon height={16} width={16} />
+            </Button>
           </ButtonGroup>
         </Flex>
       </Center>
       <Container maxW={'7xl'}>
         <Stack
+          ref={ref}
           align={'center'}
           spacing={{ base: 8, md: 10 }}
           py={{ base: 20, md: 28 }}
@@ -218,7 +259,6 @@ export default function Home() {
               lineHeight={1.1}
               fontWeight={600}
               fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
-              id={'About'}
             >
               <Text
                 as={'span'}
@@ -297,7 +337,6 @@ export default function Home() {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-
             <FormControl>
               <FormLabel>Youtube URL</FormLabel>
               <Input
@@ -305,18 +344,17 @@ export default function Home() {
                 onChange={(event) => setCurrentUrl(event.target.value)}
               />
               <FormHelperText>
-                <Flex
-                  direction={'column'}
-                  gap={1}
-                >
+                <Flex direction={'column'} gap={1}>
                   {sessionExists ? (
                     <Flex alignItems={'center'}>
-                      <Text>
-                        You are securely connected to a&nbsp;
-                      </Text>
+                      <Text>You are securely connected to a&nbsp;</Text>
                       <Popover>
                         <PopoverTrigger>
-                          <Text as={'span'} fontWeight={'bold'}>
+                          <Text
+                            as={'span'}
+                            fontWeight={'bold'}
+                            cursor={'pointer'}
+                          >
                             discord account!
                           </Text>
                         </PopoverTrigger>
@@ -324,27 +362,64 @@ export default function Home() {
                           <PopoverArrow />
                           <PopoverCloseButton />
                           <PopoverHeader>
-                            <Flex direction={'row'} align={'center'} gap={1}>
-                              <CImg
+                            <Flex
+                              justify={'center'}
+                              align={'center'}
+                              gap={2}
+                              p={2}
+                            >
+                              <Image
                                 src={userSession.user.avatarUrl}
                                 alt="Avatar"
-                                width={8}
-                                height={8}
-                                rounded='md'
+                                width={85}
+                                height={85}
+                                style={{ borderRadius: 5 }}
                               />
-                              <Text fontSize={15} fontWeight={'bold'}>{userSession.user.name}</Text>
                             </Flex>
+                            <PopoverFooter gap={2}>
+                              <Flex align={'center'} justify={'center'}>
+                                <Text fontSize={15}>
+                                  Thank you for joining us,{' '}
+                                  <Text as={'span'} fontWeight={'bold'}>
+                                    {userSession.user.name}
+                                  </Text>
+                                  !
+                                </Text>
+                              </Flex>
+                            </PopoverFooter>
                           </PopoverHeader>
                         </PopoverContent>
                       </Popover>
 
                       <Box paddingLeft={1}>
-                        <ShieldCheckIcon width={14} height={14} color={'black'} />
+                        <ShieldCheckIcon
+                          width={14}
+                          height={14}
+                          color={'black'}
+                        />
                       </Box>
                     </Flex>
                   ) : (
                     'You must be connected to a discord account to submit a clip.'
                   )}
+                </Flex>
+                <Flex mt={5}>
+                  <Menu>
+                    <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                      Choose a game:
+                    </MenuButton>
+                    <MenuList>
+                      <MenuOptionGroup
+                        defaultValue="csgo"
+                        title="Games"
+                        type="radio"
+                      >
+                        <MenuItemOption value="csgo">
+                          Counter Strike: Global Offensive
+                        </MenuItemOption>
+                      </MenuOptionGroup>
+                    </MenuList>
+                  </Menu>
                 </Flex>
               </FormHelperText>
             </FormControl>
@@ -352,33 +427,39 @@ export default function Home() {
           <ModalFooter gap={5}>
             <Text>
               By submitting you agree to the{' '}
-              <Text
-                as={'span'}
-                fontWeight={'bold'}
-                textDecorationLine={'underline'}
-              >
-                Terms of Service.
-              </Text>
+              <Link href={'/tos'} passHref target={'_blank'}>
+                <Text
+                  as={'span'}
+                  fontWeight={'bold'}
+                  textDecorationLine={'underline'}
+                >
+                  Terms of Service.
+                </Text>
+              </Link>
             </Text>
             <Button
               colorScheme={sessionExists ? 'red' : 'purple'}
               onClick={() => {
                 sessionExists ? handleSignout() : signIn('discord');
               }}
+              width={'81px'}
             >
               {sessionExists ? 'Log out' : 'Log in'}
             </Button>
             <Button
-              colorScheme={sessionExists ? 'purple' : 'red'}
+              colorScheme={sessionExists ? 'purple' : 'gray'}
               disabled={!sessionExists ? true : false}
               onClick={() => handleClipUpload()}
               isLoading={waitingForResponse}
+              width={'81px'}
             >
               {!requestDone ? (
-                'Submit'
+                <SlideFade in={!requestDone} offsetY="5px">
+                  <Text>Submit</Text>
+                </SlideFade>
               ) : (
                 <Flex direction={'row'} alignItems={'center'}>
-                  <SlideFade in={requestDone} offsetY="35px" delay={0.3}>
+                  <SlideFade in={requestDone} offsetY="5px" delay={0.3}>
                     {error ? (
                       <XCircleIcon color="white" width={26} height={26} />
                     ) : (
@@ -391,7 +472,7 @@ export default function Home() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </div >
+    </div>
   );
 }
 
