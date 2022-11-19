@@ -93,15 +93,28 @@ export const getFootage = defaultEndpointsFactory.build({
   method: 'get',
   input: z.object({
     uuid: z.string().uuid().optional(),
+    type: z.string().optional(),
   }),
   // ignores the output error below uncomment if you want to try and fix it
   // the error doesn't cause any problems with operations.
   output: FootageRetrieveSchema,
-  handler: async ({ input: { uuid }, options, logger }) => {
+  handler: async ({ input: { uuid, type }, options, logger }) => {
     // all footage returns
     const footageResult: any[] = [];
     if (uuid) {
-      const footage = await Footage.findOne({ uuid });
+      if (type) {
+      const footage = await Footage.findOne({ uuid, footageType: type });
+      if (footage === null) {
+        console.log('error');
+        throw createHttpError(
+          404,
+          'No footage document with the UUID or type provided could be found.',
+        );
+      }
+      footageResult.push(footage);
+      } else {
+        const footage = await Footage.findOne({ uuid });
+
       if (footage === null) {
         console.log('error');
         throw createHttpError(
@@ -110,14 +123,25 @@ export const getFootage = defaultEndpointsFactory.build({
         );
       }
       footageResult.push(footage);
+      }
+    
+    } else {
+      if (type) {
+      const allFootage = await Footage.find({ footageType:type  }).sort('-createdAt').exec();
+      
+      allFootage.forEach((doc, index) => {
+        footageResult.push(doc);
+      });
     } else {
       const allFootage = await Footage.find().sort('-createdAt').exec();
-      if (allFootage == null) {
+
+      if (allFootage.length === 0) {
         throw createHttpError(404, 'No footage documents could be found.');
       }
       allFootage.forEach((doc, index) => {
         footageResult.push(doc);
       });
+    }
     }
     return { footage: footageResult };
   },

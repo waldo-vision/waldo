@@ -6,6 +6,8 @@ type FootageDocument = Document & {
   discordId: number;
   youtubeUrl: string;
   footageType: string;
+  upVotes: number;
+  downVotes: number;
   isAnalyzed: boolean;
 };
 
@@ -14,6 +16,8 @@ const FootageZodSchema = z.object({
   discordId: z.number(),
   youtubeUrl: z.string().url(),
   footageType: z.string(),
+  upVotes: z.number().optional(),
+  downVotes: z.number().optional(),
   isAnalyzed: z.boolean(),
 });
 
@@ -55,6 +59,16 @@ const footageSchema = new Schema(
       required: true,
       default: false,
     },
+    upVotes: {
+      type: Schema.Types.Number,
+      required: false,
+      default: 0
+    },
+    downVotes: {
+      type: Schema.Types.Number,
+      required: false,
+      default: 0
+    }
   },
   {
     collection: 'footage',
