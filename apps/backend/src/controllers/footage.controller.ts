@@ -30,9 +30,10 @@ export const createFootage = defaultEndpointsFactory.build({
   input: z.object({
     id: z.number(),
     url: z.string().url(),
+    type: z.string(),
   }),
   output: FootageZodSchema,
-  handler: async ({ input: { id, url }, options, logger }) => {
+  handler: async ({ input: { id, url, type }, options, logger }) => {
     const existingFootage = await Footage.findOne({ youtubeUrl: url });
 
     if (existingFootage) {
@@ -64,7 +65,7 @@ export const createFootage = defaultEndpointsFactory.build({
         uuid: footageId,
         discordId: id,
         youtubeUrl: url,
-        isCsgoFootage: false,
+        footageType: type,
         isAnalyzed: false,
       };
 
@@ -179,8 +180,8 @@ export const getFootageClips = defaultEndpointsFactory.build({
  * @summary Endpoint to update a specific Footage document.
  * @return {FootageDocument} 200 - Success response returns the Footage document updated and a message.
  * @return {string} 200 - Success response returns the Footage document updated and a message.
- * @return 400 - Fields isCsgoFootage & isAnalyzed were not provided.
- * @return 406 - One of the params (UUID, isCsgoFootage or isAnalyzed) was not provided.
+ * @return 400 - Fields footageType & isAnalyzed were not provided.
+ * @return 406 - One of the params (UUID, footageType or isAnalyzed) was not provided.
  * @return 412 - No document with the provided UUID was found.
  * @return 418 - An error occured while attempting to update the FootageDocument.
  * @return 500 - Some internal error
@@ -190,13 +191,13 @@ export const updateFootage = defaultEndpointsFactory.build({
   input: FootageUpdateInputSchema,
   output: FootageZodSchema,
   handler: async ({
-    input: { uuid, isAnalyzed, isCsgoFootage },
+    input: { uuid, isAnalyzed, footageType },
     options,
     logger,
   }) => {
     const updatedFootage = {
       isAnalyzed,
-      isCsgoFootage,
+      footageType,
     };
 
     const filter = { uuid: uuid };

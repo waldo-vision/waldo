@@ -5,7 +5,7 @@ type FootageDocument = Document & {
   uuid: string;
   discordId: number;
   youtubeUrl: string;
-  isCsgoFootage: boolean;
+  footageType: string;
   isAnalyzed: boolean;
 };
 
@@ -13,7 +13,7 @@ const FootageZodSchema = z.object({
   uuid: z.string().uuid(),
   discordId: z.number(),
   youtubeUrl: z.string().url(),
-  isCsgoFootage: z.boolean(),
+  footageType: z.string(),
   isAnalyzed: z.boolean(),
 });
 
@@ -25,7 +25,7 @@ type FootageZod = z.infer<typeof FootageZodSchema>;
 type FootageRetrieveZod = z.infer<typeof FootageRetrieveSchema>;
 const FootageUpdateInputSchema = z.object({
   uuid: z.string().uuid(),
-  isCsgoFootage: z.boolean(),
+  footageType: z.string(),
   isAnalyzed: z.boolean(),
 });
 
@@ -45,10 +45,10 @@ const footageSchema = new Schema(
       type: Schema.Types.String,
       required: true,
     },
-    isCsgoFootage: {
-      type: Schema.Types.Boolean,
+    footageType: {
+      type: Schema.Types.String,
       required: true,
-      default: false,
+      default: 'csgo',
     },
     isAnalyzed: {
       type: Schema.Types.Boolean,
