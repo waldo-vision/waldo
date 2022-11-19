@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "0.0.1",
   "description": "Back end application to process videos based on YouTube URL for AI/ML model usage.",
+  "private": true,
   "scripts": {
-    "db": "docker compose up",
     "dev": "cross-env NODE_ENV=dev ts-node-dev --respawn --pretty --transpile-only src/index.ts",
-    "start": "cross-env NODE_ENV=production ts-node dist/index.js",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
     "build": "tsc",
     "lint": "eslint src/**/*.{ts,tsx}",
     "lint:fix": "eslint src/**/*.{ts,tsx} --fix"
