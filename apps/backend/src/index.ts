@@ -23,7 +23,7 @@ const app = express();
 const jsonParser = json();
 app.use(jsonParser);
 
-export const zodConfig = createConfig({
+const zodConfig = createConfig({
   app,
   server: {
     listen: PORT, // port or socket
