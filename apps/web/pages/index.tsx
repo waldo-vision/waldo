@@ -62,6 +62,7 @@ export default function Home() {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+  const [selectedGame, setSelectedGame] = useState<string>('csg');
   const ref = useRef<null | HTMLDivElement>(null);
 
   const [currentUrl, setCurrentUrl] = useState<string>('');
@@ -69,7 +70,12 @@ export default function Home() {
   const [y, setY] = useState(0);
   const router = useRouter();
   const toast = useToast();
-
+  let games = [
+    { name: "Counter Strike: Global Offensive", shortName: "csg"},
+    { name: "VALORANT", shortName: "val"},
+    { name: "Team Fortress 2", shortName: "tf2"},
+    { name: "Apex Legends", shortName: "ape"},
+  ]
   const updateScrollPosition = () => {
     setY(window.scrollY);
   };
@@ -106,7 +112,8 @@ export default function Home() {
   const handleRequestError = async (msg: string) => {
     setWaitingForResponse(false);
     setRequestDone(true);
-
+    // Create toasts
+    createToast(msg, 'error', 'Error');
     // Enable Error
     setError(true);
     await delay();
@@ -114,9 +121,6 @@ export default function Home() {
     // End handle
     setError(false);
     setRequestDone(false);
-
-    // Create toasts
-    createToast(msg, 'error', 'Error');
   };
 
   const handleRequestSuccess = async () => {
@@ -127,7 +131,7 @@ export default function Home() {
     await delay();
 
     setIsOpen(false);
-
+    setSelectedGame('csg')
     setCurrentUrl('');
     setRequestDone(false);
     createToast(
@@ -140,6 +144,7 @@ export default function Home() {
   const handleClipUpload = async () => {
     if (requestDone) {
       setIsOpen(false);
+      setSelectedGame('csg')
       setCurrentUrl('');
       setRequestDone(false);
       setError(false);
@@ -162,6 +167,9 @@ export default function Home() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         userSession.user.access_token,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        selectedGame,
       ).then(async res => {
         if (res.error || !res.isInGuild) {
           handleRequestError(res.message);
@@ -439,13 +447,16 @@ export default function Home() {
                       </MenuButton>
                       <MenuList>
                         <MenuOptionGroup
-                          defaultValue="csgo"
+                          defaultValue="csg"
                           title="Games"
                           type="radio"
+                          onChange={game => setSelectedGame(game.toString())}
                         >
-                          <MenuItemOption value="csgo">
-                            Counter Strike: Global Offensive
+                          {games && games.map(game => (
+                          <MenuItemOption key={game.shortName} value={game.shortName}>
+                            {game.name}
                           </MenuItemOption>
+                          ))}
                         </MenuOptionGroup>
                       </MenuList>
                     </Menu>
