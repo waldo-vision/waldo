@@ -3,7 +3,14 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["PORT", "HOST", "DB_URL", "FS_LOCATION", "NODE_ENV"],
+      "env": [
+        "PORT",
+        "HOST",
+        "DB_URL",
+        "FS_LOCATION",
+        "NODE_ENV",
+        "OTLP_COLLECTOR_BASE"
+      ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },
     "lint": {
@@ -19,7 +26,14 @@
     "start": {
       "dependsOn": ["^build"],
       "cache": true,
-      "env": ["PORT", "HOST", "DB_URL", "FS_LOCATION", "NODE_ENV"]
+      "env": [
+        "PORT",
+        "HOST",
+        "DB_URL",
+        "FS_LOCATION",
+        "NODE_ENV",
+        "OTLP_COLLECTOR_BASE"
+      ]
     }
   }
 }
