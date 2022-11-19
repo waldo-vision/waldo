@@ -15,5 +15,21 @@ services:
     restart: on-failure
     ports:
       - 8081:8081
+    depends_on:
+      - mongo
     environment:
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+
+  otel-collector:
+    image: otel/opentelemetry-collector
+    command: ['--config=/etc/otel-collector-config.yaml']
+    volumes:
+      - ./docker/otel/config.yaml:/etc/otel-collector-config.yaml:ro
+    ports:
+      # - '1888:1888' # pprof extension
+      - '8888:8888' # Prometheus metrics exposed by the collector
+      - '8889:8889' # Prometheus exporter metrics
+      # - '13133:13133' # health_check extension
+      - '4317:4317' # OTLP gRPC receiver
+      - '4318:4318' # OTLP http receiver
+      # - '55679:55679' # zpages extension
