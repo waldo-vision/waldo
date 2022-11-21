@@ -20,7 +20,9 @@
     "mime": "^3.0.0",
     "mongoose": "^6.7.1",
     "uuid": "^9.0.0",
-    "ytdl-core": "^4.11.2"
+    "ytdl-core": "^4.11.2",
+    "database": "workspace:*"
+
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

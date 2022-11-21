@@ -1,18 +1,17 @@
 import { APIPartialGuild, Routes } from 'discord-api-types/v10';
 import axios from 'axios';
 import dotenv from 'dotenv';
-
+import { PrismaClient } from 'database'
 import { defaultEndpointsFactory, z } from 'express-zod-api';
 dotenv.config()
 const IsInGuildReturn = z.object({
   message: z.string(),
   isInGuild: z.boolean(),
 });
-type IsInGuild = z.infer<typeof IsInGuildReturn>;
 
 const DiscordApi = "https://discord.com/api/v10/users/@me/guilds";
 const WaldoGuildId = process.env.WALDO_DISCORD_ID;
-
+const prisma = new PrismaClient()
 /**
  * GET /discord/isInGuild/:id
  * @summary Checks if user is in the Waldo guild
@@ -21,18 +20,22 @@ const WaldoGuildId = process.env.WALDO_DISCORD_ID;
 export const isInGuild = defaultEndpointsFactory.build({
   method: 'get',
   input: z.object({
-    discordId: z.string().optional(),
-    token: z.string()
+    discordId: z.string(),
   }),
   output: IsInGuildReturn,
-  handler: async ({ input: { discordId, token }, options, logger }) => {
-    const accessToken = token;
+  handler: async ({ input: { discordId }, options, logger }) => {
+    const query = await prisma.account.findFirst({
+      where: {
+        providerAccountId: discordId
+      },
+    })
+    const access_token = query?.access_token
     try {
       const response = await axios.get<APIPartialGuild[]>(
         DiscordApi,
         {
           headers: {
-            "Authorization": `Bearer ${accessToken}`,
+            "Authorization": `Bearer ${access_token}`,
           },
         },
       );

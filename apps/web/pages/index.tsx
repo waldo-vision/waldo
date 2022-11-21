@@ -166,7 +166,7 @@ export default function Home() {
         userSession.user.id.toString(),
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        userSession.user.access_token,
+        userSession.user.email,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         selectedGame,

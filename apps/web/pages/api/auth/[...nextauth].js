@@ -11,24 +11,25 @@ export const authOptions = {
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
     }),
   ],
-  callbacks: {
-    // custom callback
-    async signIn({ user, account, profile, email, credentials }) {
-      return true
-    },
-    async session({ session, user, token }) {
-      // add user id & profile to session object
-      session.user.avatarUrl = user.image;
+  callbacks: {   
+    async session({ session, user, account }) {
+      // query for discordId
+      if (session) {
+      const email = session.user.email;
+
+      const req = await prisma.user.findUnique({
+        where: {
+          email: email
+        },
+        include: {
+          accounts: true
+        }
+      })
+      const discordId = req.accounts[0].providerAccountId
+      session.user.id = discordId
+      session.user.avatarUrl = user.image;  
+    }
       return session;
-    },
-    async jwt({ sessiontoken, account, user }) {
-        console.log(account)
-      
-      if (account?.access_token) {
-        console.log("ok")
-        token.token = account.access_token;
-      }
-      return token;
     },
   },
 };
