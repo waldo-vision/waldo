@@ -5,6 +5,9 @@ const nextConfig = {
   experimental: {
     transpilePackages: ['ui'],
   },
+  images: {
+    domains: ["cdn.discordapp.com"]
+  }
 };
 
 module.exports = nextConfig;

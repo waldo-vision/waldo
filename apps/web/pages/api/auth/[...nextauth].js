@@ -1,4 +1,3 @@
-/* eslint-disable turbo/no-undeclared-env-vars */
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
@@ -14,10 +13,22 @@ export const authOptions = {
   ],
   callbacks: {
     // custom callback
-    async session({ session, token }) {
-      // add user id to session object,
-      session.user.id = token.sub;
+    async signIn({ user, account, profile, email, credentials }) {
+      return true
+    },
+    async session({ session, user, token }) {
+      // add user id & profile to session object
+      session.user.avatarUrl = user.image;
       return session;
+    },
+    async jwt({ sessiontoken, account, user }) {
+        console.log(account)
+      
+      if (account?.access_token) {
+        console.log("ok")
+        token.token = account.access_token;
+      }
+      return token;
     },
   },
 };

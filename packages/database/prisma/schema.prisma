@@ -86,10 +86,11 @@ model User {
   sessions      Session[]
 
   // our items
-  blacklisted  Boolean
+  blacklisted  Boolean?
   footage      Footage[]
   footageVotes FootageVotes[] @relation("user")
 }
+
 
 model VerificationToken {
   identifier String

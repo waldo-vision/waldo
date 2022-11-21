@@ -1,3 +1,5 @@
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -8,10 +10,8 @@ import {
   useDisclosure,
   Heading,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -20,12 +20,11 @@ export default function Navigation() {
   const changeBackground = () => {
     setY(window.scrollY);
   };
-
   useEffect(() => {
     changeBackground();
     // adding the event when scroll change background
     window.addEventListener('scroll', changeBackground);
-  });
+  }, []);
 
   return (
     <Box
@@ -161,15 +160,11 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: 'Upload',
-    href: '/upload',
-  },
-  {
     label: 'Docs',
     href: 'https://docs.waldo.vision',
   },
   {
     label: 'Community',
-    href: 'https://discord.gg/MPAV4qP8Hx',
+    href: 'https://discord.gg/qJWcsS9TyT',
   },
 ];
