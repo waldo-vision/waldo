@@ -3,7 +3,6 @@ const api_url = 'http://localhost:8001/';
 const handleUploadFileLogic = async (
   url: string | undefined,
   userId: string,
-  email: string,
   type: string,
 ) => {
   let result;  
