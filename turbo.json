@@ -22,5 +22,6 @@
     "db:push:fdl": {
       "cache": false
     }
-  }
+  },
+  "globalEnv": ["NODE_ENV"]
 }
