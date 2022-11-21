@@ -11,24 +11,12 @@ export const authOptions = {
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
     }),
   ],
-  callbacks: {   
-    async session({ session, user, account }) {
-      // query for discordId
-      if (session) {
-      const email = session.user.email;
-
-      const req = await prisma.user.findUnique({
-        where: {
-          email: email
-        },
-        include: {
-          accounts: true
-        }
-      })
-      const discordId = req.accounts[0].providerAccountId
-      session.user.id = discordId
-      session.user.avatarUrl = user.image;  
-    }
+  callbacks: {
+    async session({ session, user }) {
+      if (session.user) {
+        session.user.id = user.id;
+        session.user.avatarUrl = user.image;
+      }
       return session;
     },
   },
