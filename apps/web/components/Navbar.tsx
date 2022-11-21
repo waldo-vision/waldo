@@ -1,3 +1,5 @@
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -8,10 +10,9 @@ import {
   useDisclosure,
   Heading,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
   const [y, setY] = useState(0);
@@ -164,6 +165,6 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: 'Community',
-    href: 'https://discord.gg/MPAV4qP8Hx',
+    href: 'https://discord.gg/qJWcsS9TyT',
   },
 ];

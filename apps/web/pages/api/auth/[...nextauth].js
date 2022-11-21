@@ -20,12 +20,26 @@ export const authOptions = {
       }
       return session;
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token, account }) {
       if (account?.access_token) {
         token.token = account.access_token;
       }
       return token;
     },
+  },
+  logger: {
+    error(code, meta) {
+      if (
+        !code === 'OAUTH_CALLBACK_ERROR' ||
+        !code === 'OAUTH_CALLBACK_HANDLER_ERROR'
+      ) {
+        console.log('Error Type:', code, 'Error Details: ', meta);
+      }
+      return;
+    },
+  },
+  pages: {
+    signIn: '/',
   },
 };
 
