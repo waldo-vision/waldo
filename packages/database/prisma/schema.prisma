@@ -9,38 +9,38 @@ datasource db {
   provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
-// 
+
 model Footage {
-  uuid String @id @default(cuid())
-  user User @relation(fields: [userId], references: [id])
-  userId String
+  uuid         String         @id @default(cuid())
+  user         User           @relation(fields: [userId], references: [id])
+  userId       String
   footageVotes FootageVotes[] @relation("footage")
-  youtubeUrl String
-  footageType footageType @default(CSG)
-  upVotes Int
-  downVotes Int
-  isAnalyzed Boolean
-  clips Clip[]
+  youtubeUrl   String
+  footageType  FootageType    @default(CSG)
+  upVotes      Int
+  downVotes    Int
+  isAnalyzed   Boolean
+  clips        Clip[]
 }
 
 model FootageVotes {
-  uuid String @id @default(cuid())
-  footage Footage @relation("footage", fields: [footageUUID], references: [uuid])
-  footageUUID String 
-  user User @relation("user", fields: [userId], references: [id])
-  userId String
-  discordId Int
-  isGame Boolean @default(false)
-  actualGame footageType
+  uuid        String      @id @default(cuid())
+  footage     Footage     @relation("footage", fields: [footageUUID], references: [uuid])
+  footageUUID String
+  user        User        @relation("user", fields: [userId], references: [id])
+  userId      String
+  discordId   Int
+  isGame      Boolean     @default(false)
+  actualGame  FootageType
 }
 
 model Clip {
-  uuid String @id @default(cuid())
-  footage Footage @relation(fields: [footageUUID], references: [uuid])
+  uuid        String  @id @default(cuid())
+  footage     Footage @relation(fields: [footageUUID], references: [uuid])
   footageUUID String
 }
 
-enum footageType {
+enum FootageType {
   VAL
   CSG
   TF2
@@ -50,18 +50,18 @@ enum footageType {
 
 // NEXT-AUTH
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  
-  access_token       String? 
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -84,8 +84,10 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  blacklisted Boolean
-  footage Footage[]
+
+  // our items
+  blacklisted  Boolean
+  footage      Footage[]
   footageVotes FootageVotes[] @relation("user")
 }
 
