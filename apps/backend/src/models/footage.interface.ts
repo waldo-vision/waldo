@@ -1,6 +1,9 @@
 import { z } from 'express-zod-api';
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
+const FootageTypeEnum = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD']);
+type FootageTypeEnumZod = z.infer<typeof FootageTypeEnum>;
+
 type FootageDocument = Document & {
   uuid: string;
   discordId: number;
@@ -21,15 +24,9 @@ const FootageZodSchema = z.object({
   isAnalyzed: z.boolean(),
 });
 
-const FootageRetrieveSchema = z.object({
-  footage: z.array(FootageZodSchema),
-});
-
-type FootageZod = z.infer<typeof FootageZodSchema>;
-type FootageRetrieveZod = z.infer<typeof FootageRetrieveSchema>;
 const FootageUpdateInputSchema = z.object({
-  uuid: z.string().uuid(),
-  footageType: z.string(),
+  id: z.string().cuid(),
+  footageType: FootageTypeEnum,
   isAnalyzed: z.boolean(),
 });
 
@@ -85,20 +82,5 @@ const Footage: Model<FootageDocument> = mongoose.model<FootageDocument>(
   footageSchema,
 );
 
-const FootageTypeEnum = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD']);
-type FootageTypeEnumZod = z.infer<typeof FootageTypeEnum>;
-
-export {
-  Footage,
-  FootageZodSchema,
-  FootageUpdateInputSchema,
-  FootageRetrieveSchema,
-  FootageTypeEnum,
-};
-export type {
-  FootageZod,
-  FootageDocument,
-  FootageUpdateInput,
-  FootageRetrieveZod,
-  FootageTypeEnumZod,
-};
+export { Footage, FootageZodSchema, FootageUpdateInputSchema, FootageTypeEnum };
+export type { FootageDocument, FootageUpdateInput, FootageTypeEnumZod };

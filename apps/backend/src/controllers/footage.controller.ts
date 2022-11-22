@@ -1,17 +1,11 @@
 import ytdl from 'ytdl-core';
 import * as fs from 'fs';
 import {
-  Footage,
-  FootageZod,
   FootageZodSchema,
   FootageUpdateInputSchema,
-  FootageRetrieveSchema,
-  FootageRetrieveZod,
   FootageTypeEnum,
 } from '../models/footage.interface';
-import { Clip, ClipZodSchema } from '../models/clip.interface';
 import { createHttpError, defaultEndpointsFactory, z } from 'express-zod-api';
-import { any } from 'express-zod-api/dist/extend-zod';
 import { prisma } from '../services/database';
 
 /**
@@ -85,130 +79,122 @@ export const createFootage = defaultEndpointsFactory.build({
 });
 
 /**
- * GET /footage/:uuid
+ * GET /footage/:id
  * @summary Endpoint to get a specific Footage document.
  * @return {FootageDocument} 200 - Success response returns the Footage document.
- * @return 404 - Footage with UUID could not be found.
+ * @return 404 - Footage with ID could not be found.
  */
 export const getFootage = defaultEndpointsFactory.build({
   method: 'get',
   input: z.object({
-    uuid: z.string().uuid().optional(),
-    type: z.string().optional(),
+    id: z.string().cuid(),
   }),
-  // ignores the output error below uncomment if you want to try and fix it
-  // the error doesn't cause any problems with operations.
-  output: FootageRetrieveSchema,
-  handler: async ({ input: { uuid, type }, options, logger }) => {
-    // all footage returns
-    const footageResult: any[] = [];
-    if (uuid) {
-      if (type) {
-        const footage = await Footage.findOne({ uuid, footageType: type });
-        if (footage === null) {
-          console.log('error');
-          throw createHttpError(
-            404,
-            'No footage document with the UUID or type provided could be found.',
-          );
-        }
-        footageResult.push(footage);
-      } else {
-        const footage = await Footage.findOne({ uuid });
+  output: FootageZodSchema,
+  handler: async ({ input: { id }, options, logger }) => {
+    const footage = await prisma.footage.findUnique({
+      where: {
+        id,
+      },
+    });
 
-        if (footage === null) {
-          console.log('error');
-          throw createHttpError(
-            404,
-            'No footage document with the UUID provided could be found.',
-          );
-        }
-        footageResult.push(footage);
-      }
-    } else {
-      if (type) {
-        const allFootage = await Footage.find({ footageType: type })
-          .sort('-createdAt')
-          .exec();
+    if (footage === null)
+      throw createHttpError(
+        404,
+        'No footage document with the UUID or type provided could be found.',
+      );
 
-        allFootage.forEach((doc, index) => {
-          footageResult.push(doc);
-        });
-      } else {
-        const allFootage = await Footage.find().sort('-createdAt').exec();
-
-        if (allFootage.length === 0) {
-          throw createHttpError(404, 'No footage documents could be found.');
-        }
-        allFootage.forEach((doc, index) => {
-          footageResult.push(doc);
-        });
-      }
-    }
-    return { footage: footageResult };
+    return footage;
   },
 });
 
 /**
  * GET /footage/user/:id
- * @summary Endpoint to get all Footage documents associated to a user.
- * @return {array<FootageDocument>} 200 - Success response returns the Footage document.
+ * @summary Endpoint to get all Footage ids associated to a user.
+ * @return {array<FootageDocument>} 200 - Success response returns the Footage ids.
  * @return 404 - No Footage found with the provided User ID.
  */
 export const getUserFootage = defaultEndpointsFactory.build({
   method: 'get',
   input: z.object({
     // had to change to string because the param is sent as a string not as a number for some reason.
-    discordId: z.string(),
+    id: z.string(),
   }),
   output: z.object({
-    footage: z.array(FootageZodSchema),
+    footage: z.array(
+      z.object({
+        id: z.string().cuid(),
+      }),
+    ),
   }),
-  handler: async ({ input: { discordId }, options, logger }) => {
-    const footage = await Footage.find({ discordId });
+  handler: async ({ input: { id }, options, logger }) => {
+    const data = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        footage: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
 
-    if (footage.length === 0)
+    if (data === null || data.footage.length === 0)
       throw createHttpError(404, 'No footage found with the provided User ID.');
 
-    return { footage };
+    return { footage: data.footage };
   },
 });
 
 /**
- * GET /footage/clips/:uuid
- * @summary Endpoint to get all Clip documents associated to a specific Footage UUID.
+ * GET /footage/clips/:id
+ * @summary Endpoint to get all Clip id associated to a specific Footage id.
  * @return {array<ClipDocument>} 200 - Success response returns the Footage document.
- * @return 404 - No Clips found for the provided Footage UUID.
+ * @return 404 - No Clips found for the provided Footage id.
  */
 export const getFootageClips = defaultEndpointsFactory.build({
   method: 'get',
   input: z.object({
-    uuid: z.string().uuid(),
+    id: z.string().cuid(),
   }),
   output: z.object({
-    clips: z.array(ClipZodSchema),
+    clips: z.array(
+      z.object({
+        id: z.string().cuid(),
+      }),
+    ),
   }),
-  handler: async ({ input: { uuid }, options, logger }) => {
-    const clips = await Clip.find({ footage: uuid });
+  handler: async ({ input: { id }, options, logger }) => {
+    const data = await prisma.footage.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        clips: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
 
-    if (clips.length === 0)
+    if (data === null || data.clips.length === 0)
       throw createHttpError(
         404,
-        `No clips found for footage with uuid "${uuid}"`,
+        'No clips found with the provided footage ID.',
       );
 
-    return { clips };
+    return { clips: data.clips };
   },
 });
 
 /**
- * PATCH /footage/:uuid
+ * PATCH /footage/:id
  * @summary Endpoint to update a specific Footage document.
  * @return {FootageDocument} 200 - Success response returns the Footage document updated and a message.
  * @return {string} 200 - Success response returns the Footage document updated and a message.
- * @return 400 - Fields footageType & isAnalyzed were not provided.
- * @return 406 - One of the params (UUID, footageType or isAnalyzed) was not provided.
- * @return 412 - No document with the provided UUID was found.
+ * @return 404 - No document with the provided UUID was found.
  * @return 418 - An error occured while attempting to update the FootageDocument.
  * @return 500 - Some internal error
  */
@@ -217,27 +203,25 @@ export const updateFootage = defaultEndpointsFactory.build({
   input: FootageUpdateInputSchema,
   output: FootageZodSchema,
   handler: async ({
-    input: { uuid, isAnalyzed, footageType },
+    input: { id, isAnalyzed, footageType },
     options,
     logger,
   }) => {
-    const updatedFootage = {
-      isAnalyzed,
-      footageType,
-    };
-
-    const filter = { uuid: uuid };
     try {
-      const result = await Footage.findOneAndUpdate(filter, updatedFootage);
-      if (!result)
-        throw createHttpError(412, 'No document with that UUID was found.');
+      const data = await prisma.footage.update({
+        where: {
+          id,
+        },
+        data: {
+          isAnalyzed,
+          footageType,
+        },
+      });
 
-      return result;
+      return data;
     } catch (error) {
-      if (error instanceof Error) {
-        // probably don't want to do this in prod
-        throw createHttpError(418, error.message);
-      }
+      // throws RecordNotFound if record not found to update
+      // but can't import for some reason
 
       throw createHttpError(500, 'Something went wrong processing the video.');
     }
@@ -245,7 +229,7 @@ export const updateFootage = defaultEndpointsFactory.build({
 });
 
 /**
- * DELETE /footage/:uuid
+ * DELETE /footage/:id
  * @summary Endpoint to delete a specific Footage document.
  * @return 200 - Successfully deleted Footage document based on UUID.
  * @return 404 - Footage UUID not found.
@@ -253,16 +237,24 @@ export const updateFootage = defaultEndpointsFactory.build({
 export const deleteFootage = defaultEndpointsFactory.build({
   method: 'delete',
   input: z.object({
-    uuid: z.string().uuid(),
+    id: z.string().cuid(),
   }),
   output: z.object({
     message: z.string(),
   }),
-  handler: async ({ input: { uuid }, options, logger }) => {
-    const deleteResult = await Footage.deleteOne({ uuid: uuid });
+  handler: async ({ input: { id }, options, logger }) => {
+    try {
+      await prisma.footage.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      // throws RecordNotFound if record not found to update
+      // but can't import for some reason
 
-    if (deleteResult.deletedCount === 0)
-      throw createHttpError(404, `Footage with uuid "${uuid}" not found.`);
+      throw createHttpError(500, 'Something went wrong processing the video.');
+    }
 
     return { message: 'Footage deleted successfully.' };
   },
