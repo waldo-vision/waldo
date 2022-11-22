@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import ytdl from 'ytdl-core';
 import * as fs from 'fs';
 import {
@@ -8,10 +7,12 @@ import {
   FootageUpdateInputSchema,
   FootageRetrieveSchema,
   FootageRetrieveZod,
+  FootageTypeEnum,
 } from '../models/footage.interface';
 import { Clip, ClipZodSchema } from '../models/clip.interface';
 import { createHttpError, defaultEndpointsFactory, z } from 'express-zod-api';
 import { any } from 'express-zod-api/dist/extend-zod';
+import { prisma } from '../services/database';
 
 /**
  * POST /footage
@@ -28,25 +29,35 @@ import { any } from 'express-zod-api/dist/extend-zod';
 export const createFootage = defaultEndpointsFactory.build({
   method: 'post',
   input: z.object({
-    id: z.number(),
+    id: z.string(),
     url: z.string().url(),
-    type: z.string(),
+    type: FootageTypeEnum,
   }),
   output: FootageZodSchema,
   handler: async ({ input: { id, url, type }, options, logger }) => {
-    const existingFootage = await Footage.findOne({ youtubeUrl: url });
+    const existingFootage = await prisma.footage.findUnique({
+      where: {
+        youtubeUrl: url,
+      },
+    });
 
-    if (existingFootage) {
+    if (existingFootage !== null) {
       throw createHttpError(400, `URL ${url} has already been submitted.`);
     }
 
     try {
-      const footageId = uuidv4();
+      const data = await prisma.footage.create({
+        data: {
+          userId: id,
+          youtubeUrl: url,
+          footageType: type,
+        },
+      });
 
       // Validate that the URL contains a video that can be downloaded.
       await ytdl.getInfo(url);
       // Download video and save as a local MP4 to be used for processing.
-      await ytdl(url).pipe(fs.createWriteStream(`${footageId}.mp4`));
+      await ytdl(url).pipe(fs.createWriteStream(`${data.id}.mp4`));
 
       // TODO: Implement functionality to trigger python kill shot parsing script.
       // https://www.tutorialspoint.com/run-python-script-from-node-js-using-child-process-spawn-method
@@ -61,17 +72,7 @@ export const createFootage = defaultEndpointsFactory.build({
       // Each clip should be submitted to the database as a ClipInput.
       // Each clip should be stored to a location on the local server where it can be obtained by the Analysis team.
 
-      const footageInput: FootageZod = {
-        uuid: footageId,
-        discordId: id,
-        youtubeUrl: url,
-        footageType: type,
-        isAnalyzed: false,
-      };
-
-      await Footage.create(footageInput);
-
-      return footageInput;
+      return data;
     } catch (error) {
       if (error instanceof Error) {
         // probably don't want to do this in prod
@@ -103,45 +104,46 @@ export const getFootage = defaultEndpointsFactory.build({
     const footageResult: any[] = [];
     if (uuid) {
       if (type) {
-      const footage = await Footage.findOne({ uuid, footageType: type });
-      if (footage === null) {
-        console.log('error');
-        throw createHttpError(
-          404,
-          'No footage document with the UUID or type provided could be found.',
-        );
-      }
-      footageResult.push(footage);
+        const footage = await Footage.findOne({ uuid, footageType: type });
+        if (footage === null) {
+          console.log('error');
+          throw createHttpError(
+            404,
+            'No footage document with the UUID or type provided could be found.',
+          );
+        }
+        footageResult.push(footage);
       } else {
         const footage = await Footage.findOne({ uuid });
 
-      if (footage === null) {
-        console.log('error');
-        throw createHttpError(
-          404,
-          'No footage document with the UUID provided could be found.',
-        );
+        if (footage === null) {
+          console.log('error');
+          throw createHttpError(
+            404,
+            'No footage document with the UUID provided could be found.',
+          );
+        }
+        footageResult.push(footage);
       }
-      footageResult.push(footage);
-      }
-    
     } else {
       if (type) {
-      const allFootage = await Footage.find({ footageType:type  }).sort('-createdAt').exec();
-      
-      allFootage.forEach((doc, index) => {
-        footageResult.push(doc);
-      });
-    } else {
-      const allFootage = await Footage.find().sort('-createdAt').exec();
+        const allFootage = await Footage.find({ footageType: type })
+          .sort('-createdAt')
+          .exec();
 
-      if (allFootage.length === 0) {
-        throw createHttpError(404, 'No footage documents could be found.');
+        allFootage.forEach((doc, index) => {
+          footageResult.push(doc);
+        });
+      } else {
+        const allFootage = await Footage.find().sort('-createdAt').exec();
+
+        if (allFootage.length === 0) {
+          throw createHttpError(404, 'No footage documents could be found.');
+        }
+        allFootage.forEach((doc, index) => {
+          footageResult.push(doc);
+        });
       }
-      allFootage.forEach((doc, index) => {
-        footageResult.push(doc);
-      });
-    }
     }
     return { footage: footageResult };
   },

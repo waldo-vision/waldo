@@ -12,8 +12,8 @@ type FootageDocument = Document & {
 };
 
 const FootageZodSchema = z.object({
-  uuid: z.string().uuid(),
-  discordId: z.number(),
+  id: z.string().cuid(),
+  userId: z.string(),
   youtubeUrl: z.string().url(),
   footageType: z.string(),
   upVotes: z.number().optional(),
@@ -62,13 +62,13 @@ const footageSchema = new Schema(
     upVotes: {
       type: Schema.Types.Number,
       required: false,
-      default: 0
+      default: 0,
     },
     downVotes: {
       type: Schema.Types.Number,
       required: false,
-      default: 0
-    }
+      default: 0,
+    },
   },
   {
     collection: 'footage',
@@ -85,15 +85,20 @@ const Footage: Model<FootageDocument> = mongoose.model<FootageDocument>(
   footageSchema,
 );
 
+const FootageTypeEnum = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD']);
+type FootageTypeEnumZod = z.infer<typeof FootageTypeEnum>;
+
 export {
   Footage,
   FootageZodSchema,
   FootageUpdateInputSchema,
   FootageRetrieveSchema,
+  FootageTypeEnum,
 };
 export type {
   FootageZod,
   FootageDocument,
   FootageUpdateInput,
   FootageRetrieveZod,
+  FootageTypeEnumZod,
 };
