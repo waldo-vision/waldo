@@ -11,6 +11,6 @@
   "scripts": {
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
-    "db:push:fdl": "prisma db push --accept-data-loss"
+    "db:push:fdl": "prisma db push --force-reset"
   }
 }
