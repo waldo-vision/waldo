@@ -15,7 +15,7 @@ model Footage {
   user         User           @relation(fields: [userId], references: [id])
   userId       String
   footageVotes FootageVotes[] @relation("footage")
-  youtubeUrl   String
+  youtubeUrl   String         @unique
   footageType  FootageType    @default(CSG)
   upVotes      Int
   downVotes    Int
@@ -90,7 +90,6 @@ model User {
   footage      Footage[]
   footageVotes FootageVotes[] @relation("user")
 }
-
 
 model VerificationToken {
   identifier String
