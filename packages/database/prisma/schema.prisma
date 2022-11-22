@@ -17,9 +17,9 @@ model Footage {
   footageVotes FootageVotes[] @relation("footage")
   youtubeUrl   String         @unique
   footageType  FootageType    @default(CSG)
-  upVotes      Int
-  downVotes    Int
-  isAnalyzed   Boolean
+  upVotes      Int            @default(0)
+  downVotes    Int            @default(0)
+  isAnalyzed   Boolean        @default(false)
   clips        Clip[]
 }
 
