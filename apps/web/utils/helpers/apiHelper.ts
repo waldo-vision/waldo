@@ -4,12 +4,12 @@ const handleUploadFileLogic = async (
   url: string | undefined,
   userId: string,
   token: string,
+  type: string,
 ) => {
-  let result;
-  console.log(token);
+  let result;  
   const options = {
     method: 'POST',
-    body: JSON.stringify({ id: parseInt(userId), url: url, username: 'ok' }),
+    body: JSON.stringify({ id: parseInt(userId), url: url, type: type }),
     headers: { 'Content-Type': 'application/json' },
   };
   const options2 = {
