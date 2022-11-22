@@ -71,10 +71,10 @@ export default function Home() {
   const router = useRouter();
   const toast = useToast();
   let games = [
-    { name: "Counter Strike: Global Offensive", shortName: "csg"},
-    { name: "VALORANT", shortName: "val"},
-    { name: "Team Fortress 2", shortName: "tf2"},
-    { name: "Apex Legends", shortName: "ape"},
+    { name: "Counter Strike: Global Offensive", shortName: "csg" },
+    { name: "VALORANT", shortName: "val" },
+    { name: "Team Fortress 2", shortName: "tf2" },
+    { name: "Apex Legends", shortName: "ape" },
   ]
   const updateScrollPosition = () => {
     setY(window.scrollY);
@@ -164,9 +164,6 @@ export default function Home() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         userSession.user.id.toString(),
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        userSession.user.access_token,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         selectedGame,
@@ -453,9 +450,9 @@ export default function Home() {
                           onChange={game => setSelectedGame(game.toString())}
                         >
                           {games && games.map(game => (
-                          <MenuItemOption key={game.shortName} value={game.shortName}>
-                            {game.name}
-                          </MenuItemOption>
+                            <MenuItemOption key={game.shortName} value={game.shortName}>
+                              {game.name}
+                            </MenuItemOption>
                           ))}
                         </MenuOptionGroup>
                       </MenuList>

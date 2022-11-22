@@ -11,6 +11,9 @@ const nextConfig = {
       },
     ],
   },
+  images: {
+    domains: ["cdn.discordapp.com"]
+  }
 };
 
 module.exports = nextConfig;

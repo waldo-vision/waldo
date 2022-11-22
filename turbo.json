@@ -2,9 +2,13 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^^build"],
+      "dependsOn": ["^db:generate", "^^build"],
       "env": ["PORT", "HOST", "DB_URL"],
       "outputs": ["dist/**", ".next/**", "out/**"]
+    },
+    "dev": {
+      "dependsOn": ["^db:generate"],
+      "cache": false
     },
     "lint": {
       "dependsOn": ["^build"],
@@ -12,6 +16,16 @@
     },
     "clean": {
       "cache": false
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:push:fdl": {
+      "cache": false
     }
-  }
+  },
+  "globalEnv": ["NODE_ENV"]
 }
