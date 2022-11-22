@@ -1,8 +1,3 @@
-import mongoose from 'mongoose';
+import { PrismaClient } from 'database';
 
-export async function connect(): Promise<void> {
-  const { DB_URL } = process.env;
-
-  await mongoose.connect(DB_URL || '');
-  console.log('Successfully connected to database');
-}
+export const prisma = new PrismaClient();
