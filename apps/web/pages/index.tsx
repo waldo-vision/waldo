@@ -1,8 +1,5 @@
 /* eslint-disable arrow-parens */
 import { ReactElement, useEffect, useState, useRef } from 'react';
-import { handleUploadFileLogic, checkURL } from '@utils/helpers/apiHelper';
-import { signIn, getSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import {
   Button,
   ButtonGroup,
@@ -12,176 +9,32 @@ import {
   Flex,
   Container,
   Stack,
-  FormControl,
-  FormLabel,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  FormHelperText,
-  useToast,
-  Box,
-  SlideFade,
-  PopoverTrigger,
-  Popover,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverFooter,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItemOption,
-  MenuOptionGroup,
 } from '@chakra-ui/react';
 import {
   ArrowUpTrayIcon,
   ArrowRightIcon,
-  ShieldCheckIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  ChevronDownIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Layout from '@components/Layout';
-import Link from 'next/link';
 import Head from 'next/head';
 
 import DashboardImage from '../public/Dashboard.png';
 import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
-import { Session } from 'next-auth';
 
 export default function Home() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
-  const [requestDone, setRequestDone] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const [selectedGame, setSelectedGame] = useState<string>('csg');
   const ref = useRef<null | HTMLDivElement>(null);
 
-  const [currentUrl, setCurrentUrl] = useState<string>('');
-  const [userSession, setUserSession] = useState<Session | undefined>();
   const [y, setY] = useState(0);
-  const router = useRouter();
-  const toast = useToast();
-  let games = [
-    { name: "Counter Strike: Global Offensive", shortName: "csg" },
-    { name: "VALORANT", shortName: "val" },
-    { name: "Team Fortress 2", shortName: "tf2" },
-    { name: "Apex Legends", shortName: "ape" },
-  ]
+ 
   const updateScrollPosition = () => {
     setY(window.scrollY);
-  };
-
-  const getCurrentSession = async () => {
-    const session = await getSession();
-    if (session === null) {
-      setUserSession(undefined);
-    } else {
-      setUserSession(session);
-    }
-  };
-
-  const handleSignout = () => {
-    signOut();
-    router.push('/');
-  };
-
-  const createToast = (msg: string, type: any, title: string) => {
-    toast({
-      position: 'bottom-right',
-      title: title,
-      description: msg,
-      status: type,
-      duration: 9000,
-      isClosable: true,
-    });
-  };
-
-  const delay = () => {
-    return new Promise(resolve => setTimeout(resolve, 4000));
-  };
-
-  const handleRequestError = async (msg: string) => {
-    setWaitingForResponse(false);
-    setRequestDone(true);
-    // Create toasts
-    createToast(msg, 'error', 'Error');
-    // Enable Error
-    setError(true);
-    await delay();
-
-    // End handle
-    setError(false);
-    setRequestDone(false);
-  };
-
-  const handleRequestSuccess = async () => {
-    setWaitingForResponse(false);
-    setRequestDone(true);
-    setError(false);
-
-    await delay();
-
-    setIsOpen(false);
-    setSelectedGame('csg')
-    setCurrentUrl('');
-    setRequestDone(false);
-    createToast(
-      "Successfully uploaded your footage to waldo's server!",
-      'success',
-      'Sucess!',
-    );
-  };
-
-  const handleClipUpload = async () => {
-    if (requestDone) {
-      setIsOpen(false);
-      setSelectedGame('csg')
-      setCurrentUrl('');
-      setRequestDone(false);
-      setError(false);
-      return;
-    }
-
-    setWaitingForResponse(true);
-
-    if (!checkURL(currentUrl)) {
-      handleRequestError('Please enter a valid youtube link');
-      return;
-    }
-
-    if (userSession !== undefined) {
-      await handleUploadFileLogic(
-        currentUrl,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        userSession.user.id.toString(),
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        selectedGame,
-      ).then(async res => {
-        if (res.error || !res.isInGuild) {
-          handleRequestError(res.message);
-        } else {
-          handleRequestSuccess();
-        }
-      });
-    }
   };
 
   useEffect(() => {
     updateScrollPosition();
     // adding the event when scroll change background
     window.addEventListener('scroll', updateScrollPosition);
-    getCurrentSession();
   }, []);
   return (
     <>
@@ -257,7 +110,7 @@ export default function Home() {
               <Button
                 variant={'solid'}
                 colorScheme={'purple'}
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => {}}
               >
                 <ArrowUpTrayIcon height={16} width={16} />
                 <Text marginLeft={2}>Clip Submission</Text>
@@ -322,7 +175,7 @@ export default function Home() {
                 <Button
                   variant={'solid'}
                   colorScheme={'purple'}
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={() => {}}
                 >
                   <ArrowUpTrayIcon height={16} width={16} />
                   <Text marginLeft={2}>Clip Submission</Text>
@@ -349,168 +202,6 @@ export default function Home() {
             </Flex>
           </Stack>
         </Container>
-        <Modal
-          isOpen={isOpen}
-          onClose={() => {
-            setIsOpen(false);
-            setRequestDone(false);
-            setCurrentUrl('');
-            setError(false);
-          }}
-          isCentered
-          size={'xl'}
-        >
-          <ModalOverlay backdropFilter="blur(10px)" />
-          <ModalContent>
-            <ModalHeader>
-              <Text>Clip Submission</Text>
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>Youtube URL</FormLabel>
-                <Input
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  onChange={event => setCurrentUrl(event.target.value)}
-                />
-                <FormHelperText>
-                  <Flex direction={'column'} gap={1}>
-                    {userSession !== undefined ? (
-                      <Flex alignItems={'center'}>
-                        <Text>You are securely connected to a&nbsp;</Text>
-                        <Popover>
-                          <PopoverTrigger>
-                            <Text
-                              as={'span'}
-                              fontWeight={'bold'}
-                              cursor={'pointer'}
-                            >
-                              discord account!
-                            </Text>
-                          </PopoverTrigger>
-                          <PopoverContent>
-                            <PopoverArrow />
-                            <PopoverCloseButton />
-                            <PopoverHeader>
-                              <Flex
-                                justify={'center'}
-                                align={'center'}
-                                gap={2}
-                                p={2}
-                              >
-                                <Image
-                                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                  // @ts-ignore
-                                  src={userSession.user.avatarUrl}
-                                  alt="Avatar"
-                                  width={85}
-                                  height={85}
-                                  style={{ borderRadius: 5 }}
-                                />
-                              </Flex>
-                              <PopoverFooter gap={2}>
-                                <Flex align={'center'} justify={'center'}>
-                                  <Text fontSize={15}>
-                                    Thank you for joining us,{' '}
-                                    <Text as={'span'} fontWeight={'bold'}>
-                                      {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore */}
-                                      {userSession.user.name}
-                                    </Text>
-                                    !
-                                  </Text>
-                                </Flex>
-                              </PopoverFooter>
-                            </PopoverHeader>
-                          </PopoverContent>
-                        </Popover>
-
-                        <Box paddingLeft={1}>
-                          <ShieldCheckIcon
-                            width={14}
-                            height={14}
-                            color={'black'}
-                          />
-                        </Box>
-                      </Flex>
-                    ) : (
-                      'You must be connected to a discord account to submit a clip.'
-                    )}
-                  </Flex>
-                  <Flex mt={5}>
-                    <Menu>
-                      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        Choose a game:
-                      </MenuButton>
-                      <MenuList>
-                        <MenuOptionGroup
-                          defaultValue="csg"
-                          title="Games"
-                          type="radio"
-                          onChange={game => setSelectedGame(game.toString())}
-                        >
-                          {games && games.map(game => (
-                            <MenuItemOption key={game.shortName} value={game.shortName}>
-                              {game.name}
-                            </MenuItemOption>
-                          ))}
-                        </MenuOptionGroup>
-                      </MenuList>
-                    </Menu>
-                  </Flex>
-                </FormHelperText>
-              </FormControl>
-            </ModalBody>
-            <ModalFooter gap={5}>
-              <Text>
-                By submitting you agree to the{' '}
-                <Link href={'/tos'} passHref target={'_blank'}>
-                  <Text
-                    as={'span'}
-                    fontWeight={'bold'}
-                    textDecorationLine={'underline'}
-                  >
-                    Terms of Service.
-                  </Text>
-                </Link>
-              </Text>
-              <Button
-                colorScheme={userSession !== undefined ? 'red' : 'purple'}
-                onClick={() => {
-                  userSession !== undefined
-                    ? handleSignout()
-                    : signIn('discord');
-                }}
-                width={'81px'}
-              >
-                {userSession !== undefined ? 'Log out' : 'Log in'}
-              </Button>
-              <Button
-                colorScheme={userSession !== undefined ? 'purple' : 'gray'}
-                disabled={!(userSession !== undefined) ? true : false}
-                onClick={() => handleClipUpload()}
-                isLoading={waitingForResponse}
-                width={'81px'}
-              >
-                {!requestDone ? (
-                  <SlideFade in={!requestDone} offsetY="5px">
-                    <Text>Submit</Text>
-                  </SlideFade>
-                ) : (
-                  <Flex direction={'row'} alignItems={'center'}>
-                    <SlideFade in={requestDone} offsetY="5px" delay={0.3}>
-                      {error ? (
-                        <XCircleIcon color="white" width={26} height={26} />
-                      ) : (
-                        <CheckCircleIcon color="white" width={26} height={26} />
-                      )}
-                    </SlideFade>
-                  </Flex>
-                )}
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
       </div>
     </>
   );
