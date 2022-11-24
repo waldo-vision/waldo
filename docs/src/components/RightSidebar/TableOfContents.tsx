@@ -2,92 +2,100 @@ import { unescape } from 'html-escaper';
 import type { MarkdownHeading } from 'astro';
 import type { FunctionalComponent } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
+import type { MouseEventHandler } from 'react';
 
 type ItemOffsets = {
-	id: string;
-	topOffset: number;
+  id: string;
+  topOffset: number;
 };
 
 const TableOfContents: FunctionalComponent<{ headings: MarkdownHeading[] }> = ({
-	headings = [],
+  headings = [],
 }) => {
-	const toc = useRef<HTMLUListElement>();
-	const onThisPageID = 'on-this-page-heading';
-	const itemOffsets = useRef<ItemOffsets[]>([]);
-	const [currentID, setCurrentID] = useState('overview');
-	useEffect(() => {
-		const getItemOffsets = () => {
-			const titles = document.querySelectorAll('article :is(h1, h2, h3, h4)');
-			itemOffsets.current = Array.from(titles).map((title) => ({
-				id: title.id,
-				topOffset: title.getBoundingClientRect().top + window.scrollY,
-			}));
-		};
+  const toc = useRef<HTMLUListElement>(null);
 
-		getItemOffsets();
-		window.addEventListener('resize', getItemOffsets);
+  const onThisPageID = 'on-this-page-heading';
+  const itemOffsets = useRef<ItemOffsets[]>([]);
+  const [currentID, setCurrentID] = useState('overview');
+  useEffect(() => {
+    const getItemOffsets = () => {
+      const titles = document.querySelectorAll('article :is(h1, h2, h3, h4)');
+      itemOffsets.current = Array.from(titles).map((title) => ({
+        id: title.id,
+        topOffset: title.getBoundingClientRect().top + window.scrollY,
+      }));
+    };
 
-		return () => {
-			window.removeEventListener('resize', getItemOffsets);
-		};
-	}, []);
+    getItemOffsets();
+    window.addEventListener('resize', getItemOffsets);
 
-	useEffect(() => {
-		if (!toc.current) return;
+    return () => {
+      window.removeEventListener('resize', getItemOffsets);
+    };
+  }, []);
 
-		const setCurrent: IntersectionObserverCallback = (entries) => {
-			for (const entry of entries) {
-				if (entry.isIntersecting) {
-					const { id } = entry.target;
-					if (id === onThisPageID) continue;
-					setCurrentID(entry.target.id);
-					break;
-				}
-			}
-		};
+  useEffect(() => {
+    if (!toc.current) return;
 
-		const observerOptions: IntersectionObserverInit = {
-			// Negative top margin accounts for `scroll-margin`.
-			// Negative bottom margin means heading needs to be towards top of viewport to trigger intersection.
-			rootMargin: '-100px 0% -66%',
-			threshold: 1,
-		};
+    const setCurrent: IntersectionObserverCallback = (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          const { id } = entry.target;
+          if (id === onThisPageID) continue;
+          setCurrentID(entry.target.id);
+          break;
+        }
+      }
+    };
 
-		const headingsObserver = new IntersectionObserver(setCurrent, observerOptions);
+    const observerOptions: IntersectionObserverInit = {
+      // Negative top margin accounts for `scroll-margin`.
+      // Negative bottom margin means heading needs to be towards top of viewport to trigger intersection.
+      rootMargin: '-100px 0% -66%',
+      threshold: 1,
+    };
 
-		// Observe all the headings in the main page content.
-		document.querySelectorAll('article :is(h1,h2,h3)').forEach((h) => headingsObserver.observe(h));
+    const headingsObserver = new IntersectionObserver(
+      setCurrent,
+      observerOptions,
+    );
 
-		// Stop observing when the component is unmounted.
-		return () => headingsObserver.disconnect();
-	}, [toc.current]);
+    // Observe all the headings in the main page content.
+    document
+      .querySelectorAll('article :is(h1,h2,h3)')
+      .forEach((h) => headingsObserver.observe(h));
 
-	const onLinkClick = (e) => {
-		setCurrentID(e.target.getAttribute('href').replace('#', ''));
-	};
+    // Stop observing when the component is unmounted.
+    return () => headingsObserver.disconnect();
+  }, [toc.current]);
 
-	return (
-		<>
-			<h2 id={onThisPageID} className="heading">
-				On this page
-			</h2>
-			<ul ref={toc}>
-				{headings
-					.filter(({ depth }) => depth > 1 && depth < 4)
-					.map((heading) => (
-						<li
-							className={`header-link depth-${heading.depth} ${
-								currentID === heading.slug ? 'current-header-link' : ''
-							}`.trim()}
-						>
-							<a href={`#${heading.slug}`} onClick={onLinkClick}>
-								{unescape(heading.text)}
-							</a>
-						</li>
-					))}
-			</ul>
-		</>
-	);
+  const onLinkClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    const href = e.currentTarget.getAttribute('href');
+    if (href !== null) setCurrentID(href.replace('#', ''));
+  };
+
+  return (
+    <>
+      <h2 id={onThisPageID} className="heading">
+        On this page
+      </h2>
+      <ul ref={toc}>
+        {headings
+          .filter(({ depth }) => depth > 1 && depth < 4)
+          .map((heading) => (
+            <li
+              className={`header-link depth-${heading.depth} ${
+                currentID === heading.slug ? 'current-header-link' : ''
+              }`.trim()}
+            >
+              <a href={`#${heading.slug}`} onClick={onLinkClick}>
+                {unescape(heading.text)}
+              </a>
+            </li>
+          ))}
+      </ul>
+    </>
+  );
 };
 
 export default TableOfContents;

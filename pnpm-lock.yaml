@@ -128,6 +128,7 @@ importers:
       '@astrojs/react': ^1.2.2
       '@docsearch/css': ^3.1.0
       '@docsearch/react': ^3.1.0
+      '@types/html-escaper': ^3.0.0
       '@types/node': ^18.0.0
       '@types/react': ^17.0.45
       '@types/react-dom': ^18.0.0
@@ -150,6 +151,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
+      '@types/html-escaper': 3.0.0
       html-escaper: 3.0.3
 
   packages/eslint-config-custom:
@@ -2047,7 +2049,6 @@ packages:
 
   /@types/html-escaper/3.0.0:
     resolution: {integrity: sha512-OcJcvP3Yk8mjYwf/IdXZtTE1tb/u0WF0qa29ER07ZHCYUBZXSN29Z1mBS+/96+kNMGTFUAbSz9X+pHmHpZrTCw==}
-    dev: false
 
   /@types/http-errors/2.0.1:
     resolution: {integrity: sha512-/K3ds8TRAfBvi5vfjuz8y6+GiAYBZ0x4tXv1Av6CWBWn0IlADc+ZX9pMq7oU0fNQPnBwIZl3rmeLp6SBApbxSQ==}
