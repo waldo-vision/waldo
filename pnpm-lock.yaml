@@ -143,15 +143,15 @@ importers:
       '@astrojs/react': 1.2.2_xdijmfbahxpgszynoo5ahfixze
       '@docsearch/css': 3.3.0
       '@docsearch/react': 3.3.0_td2vyuhkun7ncjzyxmwvhkjv3m
-      '@types/node': 18.11.9
-      '@types/react': 17.0.52
-      '@types/react-dom': 18.0.8
       astro: 1.6.10_@types+node@18.11.9
       preact: 10.11.3
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
       '@types/html-escaper': 3.0.0
+      '@types/node': 18.11.9
+      '@types/react': 17.0.52
+      '@types/react-dom': 18.0.8
       html-escaper: 3.0.3
 
   packages/eslint-config-custom:
@@ -2116,7 +2116,6 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
-    dev: false
 
   /@types/react/18.0.25:
     resolution: {integrity: sha512-xD6c0KDT4m7n9uD4ZHi02lzskaiqcBxf4zi+tXZY98a04wvc0hi/TcCPC2FOESZi51Nd7tlUeOJY8RofL799/g==}
