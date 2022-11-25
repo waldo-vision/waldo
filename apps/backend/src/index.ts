@@ -11,6 +11,7 @@ import {
 
 import swaggerUi from 'swagger-ui-express';
 import { clipRouter } from './routes/clip.route';
+import { discordRouter } from './routes/discord.route';
 import { footageRouter } from './routes/footage.route';
 import { connect } from './services/database';
 
@@ -43,6 +44,7 @@ const APIRouter: Routing = {
   v1: {
     footage: footageRouter.footage,
     clip: clipRouter.clip,
+    discord: discordRouter.discord,
   },
 };
 
@@ -58,7 +60,10 @@ const openapi = new OpenAPI({
   config: zodConfig,
   version: '0.0.1',
   title: 'Waldo Backend API Documentation',
-  serverUrl: process.env.NODE_ENV === 'production' ? 'https://waldo.vision' : 'http://localhost',
+  serverUrl:
+    process.env.NODE_ENV === 'production'
+      ? 'https://waldo.vision'
+      : 'http://localhost',
 });
 
 openapi.addLicense({
