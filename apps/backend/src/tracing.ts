@@ -3,6 +3,7 @@ import * as opentelemetry from '@opentelemetry/sdk-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 // import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+import { PrismaInstrumentation } from '@prisma/instrumentation';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -21,9 +22,12 @@ const sdk = new opentelemetry.NodeSDK({
     // an optional limit on pending requests
     concurrencyLimit: 10,
   }),
-  // basically does every intrumentation for us, can fine tune later if needed
-  // https://opentelemetry.io/registry/?language=js&component=instrumentation
-  instrumentations: [getNodeAutoInstrumentations()],
+  instrumentations: [
+    // basically does every intrumentation for us, can fine tune later if needed
+    // https://opentelemetry.io/registry/?language=js&component=instrumentation
+    getNodeAutoInstrumentations(),
+    new PrismaInstrumentation(),
+  ],
 });
 
 sdk.start();
