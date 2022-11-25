@@ -26,6 +26,9 @@ import {
     MenuList,
     MenuItemOption,
     MenuOptionGroup,
+    Image as CIMG,
+    Checkbox,
+    chakra,
   } from '@chakra-ui/react';
   import {
     ShieldCheckIcon,
@@ -51,6 +54,12 @@ const Upload = () => {
     { name: "VALORANT", shortName: "val" },
     { name: "Team Fortress 2", shortName: "tf2" },
     { name: "Apex Legends", shortName: "ape" },
+  ]
+
+  let options = [
+    { option: "Do you have permission from the owner to submit?"},
+    { option: "Does this video contain the confirmed game footage?"},
+    { option: "Do you understand that any violations will result in a ban?"},
   ]
 
   const getCurrentSession = async () => {
@@ -159,169 +168,81 @@ const Upload = () => {
           borderRadius={8}
           borderColor={'white'}
           borderWidth={1}
-        
-        >
-          <Box
-        my={6}
-        mx={6}
-          >
-            <Box>
-              <Text 
-              fontWeight={'semibold'} 
-              fontSize={'2xl'} 
-              mb={5}
-              >Clip Submission</Text>
-            </Box>
-            <Box />
-            <Box pb={6}>
-              <FormControl>
-                <FormLabel>Youtube URL</FormLabel>
-                <Input
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  onChange={event => setCurrentUrl(event.target.value)}
-                />
-                <FormHelperText>
-                  <Flex direction={'column'} gap={1}>
-                    {userSession !== undefined ? (
-                      <Flex alignItems={'center'}>
-                        <Text>You are securely logged into a&nbsp;</Text>
-                        <Popover>
-                          <PopoverTrigger>
-                            <Text
-                              as={'span'}
-                              fontWeight={'bold'}
-                              cursor={'pointer'}
-                            >
-                              {userSession && userSession.user.provider} account!
-                            </Text>
-                          </PopoverTrigger>
-                          <PopoverContent>
-                            <PopoverArrow />
-                            <PopoverCloseButton />
-                            <PopoverHeader>
-                              <Flex
-                                justify={'center'}
-                                align={'center'}
-                                gap={2}
-                                p={2}
-                              >
-                                <Image
-                                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                  // @ts-ignore
-                                  src={userSession.user.avatarUrl}
-                                  alt="Avatar"
-                                  width={85}
-                                  height={85}
-                                  style={{ borderRadius: 5 }}
-                                />
-                              </Flex>
-                              <PopoverFooter gap={2}>
-                                <Flex align={'center'} justify={'center'}>
-                                  <Text fontSize={15}>
-                                    Thank you for joining us,{' '}
-                                    <Text as={'span'} fontWeight={'bold'}>
-                                      {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore */}
-                                      {userSession.user.name}
-                                    </Text>
-                                    !
-                                  </Text>
-                                </Flex>
-                              </PopoverFooter>
-                            </PopoverHeader>
-                          </PopoverContent>
-                        </Popover>
 
-                        <Box paddingLeft={1}>
-                          <ShieldCheckIcon
-                            width={14}
-                            height={14}
-                            color={'black'}
-                          />
-                        </Box>
-                      </Flex>
-                    ) : (
-                      'You must be logged into an account to submit a clip.'
-                    )}
-                  </Flex>
-                  <Flex mt={5}>
-                    <Menu>
-                      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        Choose a game:
-                      </MenuButton>
-                      <MenuList>
-                        <MenuOptionGroup
-                          defaultValue="csg"
-                          title="Games"
-                          type="radio"
-                          onChange={game => setSelectedGame(game.toString())}
-                        >
-                          {games && games.map(game => (
-                            <MenuItemOption key={game.shortName} value={game.shortName}>
-                              {game.name}
-                            </MenuItemOption>
-                          ))}
-                        </MenuOptionGroup>
-                      </MenuList>
-                    </Menu>
-                  </Flex>
-                </FormHelperText>
-              </FormControl>
+        >
+          <Box my={6} mx={6}>
+          <Flex direction={'row'}>
+            <CIMG src={userSession?.user.avatarUrl} alt={"img"} borderRadius={40} width={20} height={20}/>
+            <Center>
+            <Box ml={3}>
+              <Text  fontWeight={'bold'} fontSize={'2xl'}>{userSession?.user.name}</Text>
+              <Text>Logged in from {userSession?.user.provider}</Text>
             </Box>
-            <Flex 
-            gap={5}
-            direction={'row'}
-            alignItems={'center'}
-            >
-              <Text>
-                By submitting you agree to the{' '}
-                <Link href={'/tos'} passHref target={'_blank'}>
-                  <Text
-                    as={'span'}
-                    fontWeight={'bold'}
-                    textDecorationLine={'underline'}
+            </Center>
+            </Flex>
+            <Flex direction={'column'} mt={6}>
+            <Box>
+              <Text mb={2}>Youtube URL</Text>
+              <Input placeholder='https://youtube.com/example' size='lg' borderRadius={15} w={'50vh'}/>
+            </Box>
+            <Box mt={4}>
+            <Menu>
+              <MenuButton as={Button} rightIcon={<ChevronDownIcon width={16} height={16} />} borderRadius={15}>
+                Select a Game
+              </MenuButton>
+              <MenuList>
+              <MenuOptionGroup
+                defaultValue="csg"
+                title="Games"
+                type="radio"
+                onChange={game => setSelectedGame(game.toString())}
+              >
+              {games && games.map(game => (
+                <MenuItemOption key={game.shortName} value={game.shortName}>
+                  {game.name}
+                </MenuItemOption>
+                  ))}
+              </MenuOptionGroup>
+              </MenuList>
+            </Menu>
+            </Box>
+            <Box mt={6}>
+              {options.map(option => (
+                <Flex direction={'column'}>
+                <Checkbox size='md' colorScheme='purple' required={true} mb={3}>
+                {option.option}
+              </Checkbox>
+              </Flex>
+
+              ))}
+            </Box>
+            <Flex direction={'row'}>
+            <Center>
+              <Box mt={6}>
+                <Text>By submitting, you are agreeing to the 
+                  <chakra.span 
+                  fontWeight={'bold'} 
+                  textDecoration={'underline'}
                   >
-                    Terms of Service.
-                  </Text>
-                </Link>
-              </Text>
-              <Button
-                colorScheme={userSession !== undefined ? 'red' : 'purple'}
-                onClick={() => {
-                  userSession !== undefined
-                    ? handleSignout()
-                    : signIn('discord');
-                }}
-                width={'81px'}
-              >
-                {userSession !== undefined ? 'Log out' : 'Log in'}
-              </Button>
-              <Button
-                colorScheme={userSession !== undefined ? 'purple' : 'gray'}
-                disabled={!(userSession !== undefined) ? true : false}
-                onClick={() => handleClipUpload()}
-                isLoading={waitingForResponse}
-                width={'81px'}
-              >
-                {!requestDone ? (
-                  <SlideFade in={!requestDone} offsetY="5px">
-                    <Text>Submit</Text>
-                  </SlideFade>
-                ) : (
-                  <Flex direction={'row'} alignItems={'center'}>
-                    <SlideFade in={requestDone} offsetY="5px" delay={0.3}>
-                      {error ? (
-                        <XCircleIcon color="white" width={26} height={26} />
-                      ) : (
-                        <CheckCircleIcon color="white" width={26} height={26} />
-                      )}
-                    </SlideFade>
-                  </Flex>
-                )}
-              </Button>
+                    Terms of Service
+                  </chakra.span>
+                  <br/>
+                   and the&nbsp;
+                   <chakra.span
+                   fontWeight={'bold'} 
+                   textDecoration={'underline'}
+                   >
+                    Privacy Policy.
+                   </chakra.span>
+                </Text>
+            </Box>
+            <Button ml={4} backgroundColor={'gray.800'} colorScheme={'blackAlpha'} boxShadow='lg' mt={5}>Submit</Button>
+
+            </Center>
+            </Flex>
             </Flex>
           </Box>
-        </Flex>
+          </Flex>
         </Center>
     </div>
   )

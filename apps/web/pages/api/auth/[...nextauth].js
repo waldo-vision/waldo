@@ -17,14 +17,16 @@ export const authOptions = {
       if (session.user) {
         session.user.id = user.id;
         session.user.avatarUrl = user.image;
+        if (user) {
+          const userAccount = await prisma.account.findFirst({ 
+            where: {
+              userId: user.id
+            }
+           })
+           session.user.provider = userAccount.provider
+          }
       }
       return session;
-    },
-    async jwt({ token, account }) {
-      if (account?.access_token) {
-        token.token = account.access_token;
-      }
-      return token;
     },
   },
 };
