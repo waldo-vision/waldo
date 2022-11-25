@@ -13,7 +13,7 @@ import swaggerUi from 'swagger-ui-express';
 import { clipRouter } from './routes/clip.route';
 import { discordRouter } from './routes/discord.route';
 import { footageRouter } from './routes/footage.route';
-import { connect } from './services/database';
+import { prisma } from './services/database';
 
 dotenv.config();
 
@@ -77,9 +77,11 @@ app.use('/v1', express.json(), notFoundHandler);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/documentation', swaggerUi.serve, swaggerUi.setup(openapi.rootDoc));
+app.get('/metrics', async (_req, res) => {
+  const metrics = await prisma.$metrics.prometheus();
+  res.end(metrics);
+});
 app.use(notFoundHandler);
 app.listen(PORT, async () => {
-  await connect();
-
   console.log(`Web application started on URL ${HOST}:${PORT} 🎉`);
 });
