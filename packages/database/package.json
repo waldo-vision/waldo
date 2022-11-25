@@ -3,7 +3,8 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "dependencies": {
-    "@prisma/client": "^4.6.1"
+    "@prisma/client": "^4.6.1",
+    "@prisma/instrumentation": "^4.6.1"
   },
   "devDependencies": {
     "prisma": "4.6.1"

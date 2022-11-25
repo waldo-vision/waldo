@@ -172,9 +172,11 @@ importers:
   packages/database:
     specifiers:
       '@prisma/client': ^4.6.1
+      '@prisma/instrumentation': ^4.6.1
       prisma: 4.6.1
     dependencies:
       '@prisma/client': 4.6.1_prisma@4.6.1
+      '@prisma/instrumentation': 4.6.1
     devDependencies:
       prisma: 4.6.1
 
@@ -3008,6 +3010,14 @@ packages:
       '@opentelemetry/api': 1.3.0
     dev: false
 
+  /@opentelemetry/api-metrics/0.33.0:
+    resolution: {integrity: sha512-78evfPRRRnJA6uZ3xuBuS3VZlXTO/LRs+Ff1iv3O/7DgibCtq9k27T6Zlj8yRdJDFmcjcbQrvC0/CpDpWHaZYA==}
+    engines: {node: '>=14'}
+    deprecated: Please use @opentelemetry/api >= 1.3.0
+    dependencies:
+      '@opentelemetry/api': 1.3.0
+    dev: false
+
   /@opentelemetry/api/1.3.0:
     resolution: {integrity: sha512-YveTnGNsFFixTKJz09Oi4zYkiLT5af3WpZDu4aIUM7xX+2bHAkOJayFTVQd6zB8kkWPpbua4Ha6Ql00grdLlJQ==}
     engines: {node: '>=8.0.0'}
@@ -3645,6 +3655,21 @@ packages:
       - supports-color
     dev: false
 
+  /@opentelemetry/instrumentation/0.33.0_@opentelemetry+api@1.3.0:
+    resolution: {integrity: sha512-8joPjKJ6TznNt04JbnzZG+m1j/4wm1OIrX7DEw/V5lyZ9/2fahIqG72jeZ26VKOZnLOpVzUUnU/dweURqBzT3Q==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@opentelemetry/api': ^1.0.0
+    dependencies:
+      '@opentelemetry/api': 1.3.0
+      '@opentelemetry/api-metrics': 0.33.0
+      require-in-the-middle: 5.2.0
+      semver: 7.3.8
+      shimmer: 1.2.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@opentelemetry/instrumentation/0.34.0_@opentelemetry+api@1.3.0:
     resolution: {integrity: sha512-VET/bOh4StOQV4vf1sAvn2JD67BhW2vPZ/ynl2gHXyafme2yB8Hs9+tr1TLzFwNGo7jwMFviFQkZjCYxMuK0AA==}
     engines: {node: '>=14'}
@@ -3866,6 +3891,15 @@ packages:
   /@prisma/engines/4.6.1:
     resolution: {integrity: sha512-3u2/XxvxB+Q7cMXHnKU0CpBiUK1QWqpgiBv28YDo1zOIJE3FCF8DI2vrp6vuwjGt5h0JGXDSvmSf4D4maVjJdw==}
     requiresBuild: true
+
+  /@prisma/instrumentation/4.6.1:
+    resolution: {integrity: sha512-NMdTibhiwFhMcxN/qFfcAubF+02SmoPIzSE6axdAKK/JyzA9WQQ1ir7og5Y0xAnmGZL+eE65IQIEWTpDFtyw7g==}
+    dependencies:
+      '@opentelemetry/api': 1.3.0
+      '@opentelemetry/instrumentation': 0.33.0_@opentelemetry+api@1.3.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@protobufjs/aspromise/1.1.2:
     resolution: {integrity: sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==}
