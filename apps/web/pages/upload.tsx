@@ -57,9 +57,9 @@ const Upload = () => {
   ]
 
   let options = [
-    { option: "Do you have permission from the owner to submit?"},
-    { option: "Does this video contain the confirmed game footage?"},
-    { option: "Do you understand that any violations will result in a ban?"},
+    { option: "Do you have permission from the owner to submit?", checked: false},
+    { option: "Does this video contain the confirmed game footage?", checked: false},
+    { option: "Do you understand that any violations will result in a ban?", checked: false},
   ]
 
   const getCurrentSession = async () => {
@@ -71,23 +71,19 @@ const Upload = () => {
     }
   };
 
-  const handleSignout = () => {
-    signOut();
-  };
-
   const createToast = (msg: string, type: any, title: string) => {
     toast({
       position: 'bottom-right',
       title: title,
       description: msg,
       status: type,
-      duration: 9000,
+      duration: 5000,
       isClosable: true,
     });
   };
 
   const delay = () => {
-    return new Promise(resolve => setTimeout(resolve, 4000));
+    return new Promise(resolve => setTimeout(resolve, 2200));
   };
 
   const handleRequestError = async (msg: string) => {
@@ -129,25 +125,23 @@ const Upload = () => {
       setError(false);
       return;
     }
-
     setWaitingForResponse(true);
 
     if (!checkURL(currentUrl)) {
       handleRequestError('Please enter a valid youtube link');
       return;
     }
-
     if (userSession !== undefined) {
       await handleUploadFileLogic(
         currentUrl,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        userSession.user.id.toString(),
+        userSession.user.id,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        selectedGame,
+        selectedGame.toUpperCase(),
       ).then(async res => {
-        if (res.error || !res.isInGuild) {
+        if (res.error) {
           handleRequestError(res.message);
         } else {
           handleRequestSuccess();
@@ -176,14 +170,20 @@ const Upload = () => {
             <Center>
             <Box ml={3}>
               <Text  fontWeight={'bold'} fontSize={'2xl'}>{userSession?.user.name}</Text>
-              <Text>Logged in from {userSession?.user.provider}</Text>
+              <Flex direction={'row'}>
+              <Text>Logged in from {userSession?.user.provider}
+              </Text>
+              <Box mt={'1.5'} ml={1}>
+              <ShieldCheckIcon height={14} width={14} color={'black'}/>
+              </Box>
+              </Flex>
             </Box>
             </Center>
             </Flex>
             <Flex direction={'column'} mt={6}>
             <Box>
               <Text mb={2}>Youtube URL</Text>
-              <Input placeholder='https://youtube.com/example' size='lg' borderRadius={15} w={'50vh'}/>
+              <Input placeholder='https://youtube.com/example' size='lg' onChange={event => setCurrentUrl(event.target.value)} borderRadius={15} w={'50vh'}/>
             </Box>
             <Box mt={4}>
             <Menu>
@@ -207,13 +207,14 @@ const Upload = () => {
             </Menu>
             </Box>
             <Box mt={6}>
-              {options.map(option => (
+              {options.map((option, index) => (
+                <Box key={index}>
                 <Flex direction={'column'}>
-                <Checkbox size='md' colorScheme='purple' required={true} mb={3}>
+                <Checkbox size='md' colorScheme='purple' required={true} mb={3} onChange={event => options[index].checked = event.target.checked} checked={option.checked}>
                 {option.option}
               </Checkbox>
               </Flex>
-
+              </Box>
               ))}
             </Box>
             <Flex direction={'row'}>
@@ -236,7 +237,30 @@ const Upload = () => {
                    </chakra.span>
                 </Text>
             </Box>
-            <Button ml={4} backgroundColor={'gray.800'} colorScheme={'blackAlpha'} boxShadow='lg' mt={5}>Submit</Button>
+            <Button 
+            ml={4} 
+            backgroundColor={'gray.800'} 
+            colorScheme={'blackAlpha'} 
+            boxShadow='lg' mt={5}
+            onClick={() => handleClipUpload()}
+            isLoading={waitingForResponse}
+            >
+            {!requestDone ? (
+                  <SlideFade in={!requestDone} offsetY="5px">
+                    <Text>Submit</Text>
+                  </SlideFade>
+                ) : (
+                  <Flex direction={'row'} alignItems={'center'}>
+                    <SlideFade in={requestDone} offsetY="5px" delay={0.3}>
+                      {error ? (
+                        <XCircleIcon color="white" width={26} height={26} />
+                      ) : (
+                        <CheckCircleIcon color="white" width={26} height={26} />
+                      )}
+                    </SlideFade>
+                  </Flex>
+                )}
+            </Button>
 
             </Center>
             </Flex>
