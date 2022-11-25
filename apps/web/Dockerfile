@@ -1,0 +1,57 @@
+FROM node:18-alpine AS builder
+# ensure deps can build
+RUN apk add --no-cache libc6-compat
+RUN apk update
+# enable pnpm
+RUN corepack enable
+# set workdir
+WORKDIR /app
+# copy over entire project
+COPY . .
+# remove everything not needed for web
+RUN pnpm --package=turbo dlx turbo prune --scope=web --docker
+# See https://github.com/vercel/turborepo/issues/1997#issuecomment-1271372326
+RUN rm -rf /app/out/full/*/*/node_modules
+
+FROM node:18-alpine AS installer
+# ensure deps can build
+RUN apk add --no-cache libc6-compat
+RUN apk update
+# enable pnpm
+RUN corepack enable
+# set workdir
+WORKDIR /app
+
+# First install the dependencies (as they change less often)
+COPY .gitignore .gitignore
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN pnpm install
+
+# Build the project
+COPY --from=builder /app/out/full/ .
+COPY turbo.json turbo.json
+RUN pnpm turbo run build --filter=web...
+
+FROM node:18-alpine AS runner
+
+# set workdir
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
+
+COPY --from=installer /app/apps/web/next.config.js .
+COPY --from=installer /app/apps/web/package.json .
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+
+CMD node apps/web/server.js
