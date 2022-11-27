@@ -11,9 +11,6 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",
-    "@types/node": "18.11.9",
-    "@types/react": "^18.0.22",
-    "@types/react-dom": "^18.0.7",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.0",
     "next": "13.0.3",
@@ -23,6 +20,9 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.2.0",
+    "@types/node": "18.11.9",
+    "@types/react": "^18.0.22",
+    "@types/react-dom": "^18.0.7",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*"
   }

@@ -2,10 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    transpilePackages: ['ui'],
-  },
   images: {
+    domains: ["cdn.discordapp.com"],
     unoptimized: true,
     remotePatterns: [
       {
@@ -22,7 +20,7 @@ const nextConfig = {
     return {
       '/': { page: '/' },
     }
-  },
+  }
 };
 
 module.exports = nextConfig;

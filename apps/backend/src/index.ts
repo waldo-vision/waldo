@@ -11,8 +11,9 @@ import {
 
 import swaggerUi from 'swagger-ui-express';
 import { clipRouter } from './routes/clip.route';
+import { discordRouter } from './routes/discord.route';
 import { footageRouter } from './routes/footage.route';
-import { connect } from './services/database';
+import { prisma } from './services/database';
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ const app = express();
 const jsonParser = json();
 app.use(jsonParser);
 
-export const zodConfig = createConfig({
+const zodConfig = createConfig({
   app,
   server: {
     listen: PORT, // port or socket
@@ -43,6 +44,7 @@ const APIRouter: Routing = {
   v1: {
     footage: footageRouter.footage,
     clip: clipRouter.clip,
+    discord: discordRouter.discord,
   },
 };
 
@@ -58,7 +60,10 @@ const openapi = new OpenAPI({
   config: zodConfig,
   version: '0.0.1',
   title: 'Waldo Backend API Documentation',
-  serverUrl: process.env.NODE_ENV === 'production' ? 'https://waldo.vision' : 'http://localhost',
+  serverUrl:
+    process.env.NODE_ENV === 'production'
+      ? 'https://waldo.vision'
+      : 'http://localhost',
 });
 
 openapi.addLicense({
@@ -72,9 +77,11 @@ app.use('/v1', express.json(), notFoundHandler);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/documentation', swaggerUi.serve, swaggerUi.setup(openapi.rootDoc));
+app.get('/metrics', async (_req, res) => {
+  const metrics = await prisma.$metrics.prometheus();
+  res.end(metrics);
+});
 app.use(notFoundHandler);
 app.listen(PORT, async () => {
-  await connect();
-
   console.log(`Web application started on URL ${HOST}:${PORT} 🎉`);
 });

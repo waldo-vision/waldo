@@ -1,38 +1,33 @@
 import { z } from 'express-zod-api';
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
+const FootageTypeEnum = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD']);
+type FootageTypeEnumZod = z.infer<typeof FootageTypeEnum>;
+
 type FootageDocument = Document & {
   uuid: string;
   discordId: number;
   youtubeUrl: string;
-  parsed?: boolean;
-  csgoFootage?: boolean;
-  analyzed?: boolean;
-  clips?: Array<string>;
+  footageType: string;
+  upVotes: number;
+  downVotes: number;
+  isAnalyzed: boolean;
 };
 
 const FootageZodSchema = z.object({
-  uuid: z.string().uuid(),
-  discordId: z.number(),
+  id: z.string().cuid(),
+  userId: z.string(),
   youtubeUrl: z.string().url(),
-  parsed: z.boolean().optional(),
-  csgoFootage: z.boolean().optional(),
-  analyzed: z.boolean().optional(),
-  clips: z.string().array().optional(),
+  footageType: z.string(),
+  upVotes: z.number().optional(),
+  downVotes: z.number().optional(),
+  isAnalyzed: z.boolean(),
 });
 
-const FootageRetrieveSchema = z.object({
-  footage: z.array(FootageZodSchema),
-});
-
-type FootageZod = z.infer<typeof FootageZodSchema>;
-type FootageRetrieveZod = z.infer<typeof FootageRetrieveSchema>;
 const FootageUpdateInputSchema = z.object({
-  uuid: z.string().uuid(),
-  parsed: z.boolean(),
-  csgoFootage: z.boolean(),
-  analyzed: z.boolean(),
-  clips: z.string().array().optional(),
+  id: z.string().cuid(),
+  footageType: FootageTypeEnum,
+  isAnalyzed: z.boolean(),
 });
 
 type FootageUpdateInput = z.infer<typeof FootageUpdateInputSchema>;
@@ -59,10 +54,10 @@ const footageSchema = new Schema(
       type: Schema.Types.String,
       required: true,
     },
-    parsed: {
-      type: Schema.Types.Boolean,
-      required: false,
-      default: undefined,
+    footageType: {
+      type: Schema.Types.String,
+      required: true,
+      default: 'csgo',
     },
     csgoFootage: {
       type: Schema.Types.Boolean,
@@ -78,6 +73,16 @@ const footageSchema = new Schema(
       type: Array<string>(),
       required: false,
       default: undefined,
+    },
+    upVotes: {
+      type: Schema.Types.Number,
+      required: false,
+      default: 0,
+    },
+    downVotes: {
+      type: Schema.Types.Number,
+      required: false,
+      default: 0,
     },
   },
   {
@@ -95,17 +100,5 @@ const Footage: Model<FootageDocument> = mongoose.model<FootageDocument>(
   footageSchema,
 );
 
-export {
-  Footage,
-  FootageZodSchema,
-  FootageUpdateInputSchema,
-  FootageCreateInputSchema,
-  FootageRetrieveSchema,
-};
-export type {
-  FootageZod,
-  FootageDocument,
-  FootageUpdateInput,
-  FootageCreateInput,
-  FootageRetrieveZod,
-};
+export { Footage, FootageZodSchema, FootageUpdateInputSchema, FootageTypeEnum };
+export type { FootageDocument, FootageUpdateInput, FootageTypeEnumZod };

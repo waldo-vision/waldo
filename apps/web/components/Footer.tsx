@@ -52,7 +52,7 @@ export default function Footer() {
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Legal</ListHeader>
-            <Link href={'https://waldo.vision/ts'}>Terms of Service</Link>
+            <Link href={'/tos'}>Terms of Service</Link>
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Follow Us</ListHeader>
