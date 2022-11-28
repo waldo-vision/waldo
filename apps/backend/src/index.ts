@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import { createConfig, Routing, createServer } from 'express-zod-api';
 import { clipRouter } from './routes/clip.route';
+import { discordRouter } from './routes/discord.route';
 import { footageRouter } from './routes/footage.route';
 import { connect } from './services/database';
 dotenv.config();
@@ -23,6 +24,7 @@ connect();
 const APIRouter: Routing = {
   footage: footageRouter.footage,
   clip: clipRouter.clip,
+  discord: discordRouter.discord,
 };
 
 createServer(zodConfig, APIRouter);
