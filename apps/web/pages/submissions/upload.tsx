@@ -29,6 +29,7 @@ import {
   Image as CIMG,
   Checkbox,
   chakra,
+  Spinner,
 } from '@chakra-ui/react';
 import {
   ShieldCheckIcon,
@@ -38,8 +39,10 @@ import {
 } from '@heroicons/react/24/outline';
 import { Session } from 'next-auth';
 import { getSession, signOut, signIn } from 'next-auth/react';
+import Loading from '@components/Loading';
 const Upload = () => {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
+  const [loading, setLoading] = useState<boolean>(true)
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [selectedGame, setSelectedGame] = useState<string>('csg');
@@ -67,6 +70,8 @@ const Upload = () => {
     } else {
       setUserSession(session);
     }
+    setLoading(false)
+    console.log(session)
   };
 
   const createToast = (msg: string, type: any, title: string) => {
@@ -154,6 +159,11 @@ const Upload = () => {
   return (
     <div>
       <Center h={'100vh'}>
+        {loading ?
+        <Box>
+          <Loading color={"blue.500"}/>
+        </Box>
+        :
         <Flex
           direction={'column'}
           backgroundColor={'white'}
@@ -167,7 +177,7 @@ const Upload = () => {
               <CIMG src={userSession?.user.avatarUrl} alt={"img"} borderRadius={40} width={20} height={20} />
               <Center>
                 <Box ml={3}>
-                  <Text fontWeight={'bold'} fontSize={'2xl'}>{userSession?.user.name}</Text>
+                  <Text fontWeight={'bold'} fontSize={'2xl'} onClick={() => signOut()}>{userSession?.user.name}</Text>
                   <Flex direction={'row'}>
                     <Text>Logged in from {userSession?.user.provider}
                     </Text>
@@ -265,6 +275,7 @@ const Upload = () => {
             </Flex>
           </Box>
         </Flex>
+        }
       </Center>
     </div>
   )

@@ -15,6 +15,7 @@ importers:
       node-fetch: ^3.3.0
       npm: ^9.1.1
       prettier: latest
+      react-icons: ^4.6.0
       tsconfig: workspace:0.0.0
       turbo: latest
       typescript: ^4.8.4
@@ -24,13 +25,14 @@ importers:
       next-auth: 4.16.4_ogpkrxaz2lg6nectum6dl66tn4
       node-fetch: 3.3.0
       npm: 9.1.1
+      react-icons: 4.6.0_react@18.2.0
     devDependencies:
       '@types/node': 17.0.45
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.8
       eslint: 8.28.0
       eslint-config-custom: link:packages/eslint-config-custom
-      prettier: 2.7.1
+      prettier: 2.8.0
       tsconfig: link:packages/tsconfig
       turbo: 1.6.3
       typescript: 4.8.4
@@ -5251,7 +5253,7 @@ packages:
       '@panva/hkdf': 1.0.2
       cookie: 0.5.0
       jose: 4.11.0
-      next: 13.0.3_mqvh5p7ejg4taogoj6tpk3gd5a
+      next: 13.0.3_biqbaboplfbrettd7655fr4n2y
       oauth: 0.9.15
       openid-client: 5.3.0
       preact: 10.11.3
@@ -5681,6 +5683,13 @@ packages:
     resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
     engines: {node: '>=10.13.0'}
     hasBin: true
+    dev: false
+
+  /prettier/2.8.0:
+    resolution: {integrity: sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dev: true
 
   /pretty-format/3.8.0:
     resolution: {integrity: sha512-WuxUnVtlWL1OfZFQFuqvnvs6MiAGk9UNsBostyBOB0Is9wb5uRESevA6rnl/rkksXaGX3GzZhPup5d6Vp1nFew==}

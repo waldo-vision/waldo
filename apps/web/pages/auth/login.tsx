@@ -1,20 +1,52 @@
-import { Box, Button, Center, Flex, FormControl, FormLabel, Image, Input, Text, chakra, Divider } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, ModalFooter } from '@chakra-ui/react';
 import Layout from '@components/Layout';
-import Link from 'next/link';
+import { Session } from 'next-auth'
+import { signIn, getSession, signOut } from 'next-auth/react';
 import React, { ReactElement, useState, useEffect } from 'react'
 import { FaDiscord, FaGithub } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 const Login = () => {
     const [formError, setFormError] = useState<boolean>(false);
+    const [userSession, setUserSession] = useState<Session | null>();
     const [email, setEmail] = useState<string>();
+    const [attemptedLoginProvider, setAttemptedLoginProvider] = useState<string>();
     const [password, setPassword] = useState<string>();
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+
+    const retrieveUserSession = async () => {
+      const session = await getSession()
+      setUserSession(session)
+
+    }
+
+    const login = async (type: string) => {
+      setAttemptedLoginProvider(type)
+
+      if (userSession) {
+        setIsOpen(true)
+        console.log("is session")
+        return;
+      }
+      setIsOpen(false)
+      if(type == "discord") {
+        signIn("discord")
+      } else if (type == "github") {
+        signIn("github")
+      } else if (type == "google") {
+        signIn("google")
+      }
+    }
+    useEffect(() => {
+      retrieveUserSession()
+    }, [])
+
   return (
     <div>
         <Center h={'100vh'}>
         <Flex 
           alignItems={'center'} 
           backgroundColor={'white'}
-          borderRadius={8}
+          borderRadius={15}
           borderColor={'white'}
           borderWidth={1}
         >
@@ -25,23 +57,21 @@ const Login = () => {
               <Text fontWeight={'bold'} fontSize={40}>Sign In</Text>
             </Box>
             </Center>
-            {/* main form flex box */}
+            {/*
+  
             <Flex direction={'column'} gap={6}>
-            {/* Email Input */}
             <Box>
             <FormControl>
               <FormLabel>Email</FormLabel>
               <Input type='email' borderRadius={15} placeholder="me@example.com" w={'xs'}/>
             </FormControl>
             </Box>
-            {/* Password Input */}
             <Box>
             <FormControl>
               <FormLabel>Password</FormLabel>
               <Input type='password' borderRadius={15} placeholder="Enter your Password" w={'xs'}/>
             </FormControl>
             </Box>
-            {/* signin button */}
             <Box>
               <Button 
               boxShadow={'lg'} 
@@ -54,9 +84,7 @@ const Login = () => {
                 Sign In
               </Button>
             </Box>
-            {/* Login Footer and divider */}
             <Box>
-              {/* legal statement */}
               <Box>
                 <Center>
                 <Text fontSize={14}>
@@ -71,7 +99,6 @@ const Login = () => {
                 </Text>
                 </Center>
               </Box>
-              {/* Other options divider */}
               <Box mt={5}>
                 <Center>
                 <Divider 
@@ -80,7 +107,6 @@ const Login = () => {
                 
                 />
                 <Box mx={6}>
-                  {/* cheap way of doing this but for now it's fine; see below */}
                 <Text fontSize={'sm'} textColor={'gray.500'} fontWeight={'semibold'}>or&nbsp;log&nbsp;in&nbsp;with</Text>
                 </Box>
                 <Divider 
@@ -92,20 +118,72 @@ const Login = () => {
               </Box>
             </Box>
             </Flex>
+            */}
             {/* social login options */}
-            <Flex direction={'row'} justifyContent={'space-between'} mt={6}>
-              <Box>
+            <Flex direction={'row'} justifyContent={'space-between'} width={'xs'} grow={'unset'}>
+              <Box cursor={'pointer'}
+              borderWidth={6}
+              borderColor={'white'}
+              onClick={
+                () => login("google")
+              }
+              _hover={
+                { borderColor: "gray.200", borderRadius: 8, borderWidth: 6, backgroundColor: "gray.200"}
+                }>
                 <FcGoogle size={40}/>
               </Box>
-              <Box>
+              <Box cursor={'pointer'}
+              borderWidth={6}
+              borderColor={'white'}
+              onClick={
+                () => login("discord")
+              }
+              _hover={
+                { borderColor: "gray.200", borderRadius: 8, borderWidth: 6, backgroundColor: "gray.200"}
+                }>
                 <FaDiscord size={40} color={'#6A5ACD'}/>
               </Box>
-              <Box>
-                <FaGithub size={40} color={'black'}/>
+              <Box 
+              cursor={'pointer'}
+              borderWidth={6}
+              borderColor={'white'}
+              onClick={
+                () => login("github")
+              }
+              _hover={
+                { borderColor: "gray.200", borderRadius: 8, borderWidth: 6, backgroundColor: "gray.200"}
+                }>
+              
+                <FaGithub size={40} color={'black' } />
               </Box>
             </Flex>
           </Box>
         </Flex>
+        
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Account Linking</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+             To prevent accidental account linking, please confirm that you wish to link 
+             your current account; {userSession && userSession.user.provider} with the account you are trying to login to; {attemptedLoginProvider && attemptedLoginProvider}.
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='purple' mr={3} onClick={() => setIsOpen(false)}>
+              Cancel
+            </Button>
+            <Button colorScheme='purple' mr={3} onClick={() => signOut()}>
+              Logout
+            </Button>
+            <Button variant='outline' onClick={
+              () => 
+                signIn(attemptedLoginProvider)
+            }>Continue</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
         </Center>
     </div>
   )
