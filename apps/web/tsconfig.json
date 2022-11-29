@@ -11,7 +11,8 @@
     "paths" :{
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
-      "@context/*": ["context/*"]
+      "@context/*": ["context/*"],
+      "@server/*": ["server/*"]
     },
   },
   "exclude": [
