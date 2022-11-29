@@ -18,13 +18,13 @@ export const authOptions = {
         session.user.id = user.id;
         session.user.avatarUrl = user.image;
         if (user) {
-          const userAccount = await prisma.account.findFirst({ 
+          const userAccount = await prisma.account.findFirst({
             where: {
               userId: user.id
             }
-           })
-           session.user.provider = userAccount.provider
-          }
+          })
+          session.user.provider = userAccount.provider
+        }
       }
       return session;
     },
