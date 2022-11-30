@@ -3,6 +3,7 @@ import ytdl from 'ytdl-core';
 import { GameplaySchema, GameplayTypes } from "@utils/zod/gameplay";
 import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
+import { SegmentSchema } from "@utils/zod/segment";
 
 export const gameplayRouter = router({
   getGameplay: protectedProcedure.input(z.object({
@@ -99,9 +100,92 @@ export const gameplayRouter = router({
     if (user === null)
       throw new TRPCError({
         code: "NOT_FOUND",
-        message: 'No user found with the provided User ID.'
+        message: 'No user found with the provided ID.'
       })
 
     return user.footage;
+  }),
+  getGameplayClips: protectedProcedure.input(z.object({
+    gameplayId: z.string().cuid()
+  })).output(SegmentSchema.array()).query(async ({input, ctx}) => {
+    const gameplay = await ctx.prisma.footage.findUnique({
+      where: {
+        id: input.gameplayId,
+      },
+      include: {
+        clips: true
+      },
+    });
+
+    // if gameplay not found, or not the user who made it
+    // TODO: need to do role checking
+    if (gameplay === null || gameplay.userId !== ctx.session.user.id)
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Could not find that requested gameplay"
+      })
+
+    return gameplay.clips;
+  }),
+  updateGameplay: protectedProcedure.input(z.object({
+    gameplayId: z.string().cuid(),
+    footageType: GameplayTypes,
+    isAnalyzed: z.boolean(),
+  })).output(GameplaySchema).query(async ({input, ctx}) => {
+
+    // TODO: need check if user making request is the
+    // user who owns the gameplay
+
+    // TODO: need to prevent users from modifying isAnalyzed
+    // need to do a role check here
+
+    try {
+      const gameplay = await ctx.prisma.footage.update({
+        where: {
+          id: input.gameplayId,
+        },
+        data: {
+          isAnalyzed: input.isAnalyzed,
+          footageType: input.footageType,
+        },
+      });
+
+      return gameplay;
+    } catch (error) {
+      // throws RecordNotFound if record not found to update
+      // but can't import for some reason
+
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "An error occurred in the server",
+        // not sure if this is secure
+        cause: error
+      })
+    }
+  }),
+  deleteGameplay: protectedProcedure.input(z.object({
+    gameplayId: z.string().cuid()
+  })).query(async ({input, ctx}) => {
+
+    // TODO: need check if user making request is the
+    // user who owns the gameplay
+
+    try {
+      await ctx.prisma.footage.delete({
+        where: {
+          id: input.gameplayId,
+        },
+      });
+    } catch (error) {
+      // throws RecordNotFound if record not found to update
+      // but can't import for some reason
+
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "An error occurred in the server",
+        // not sure if this is secure
+        cause: error
+      })
+    }
   })
 });
