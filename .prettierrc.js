@@ -5,6 +5,6 @@ module.exports = {
   printWidth: 80,
   tabWidth: 2,
   endOfLine: 'lf',
-  arrowParens: 'avoid'
-  editorconfig: true,
+  arrowParens: 'avoid',
+  editorconfig: true
 };
