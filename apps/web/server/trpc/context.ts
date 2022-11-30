@@ -3,7 +3,7 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { unstable_getServerSession } from "next-auth";
 import { type Session } from "next-auth";
 import { authOptions } from "pages/api/auth/[...nextauth]";
-import { prisma} from "@utils/client"
+import { prisma} from "@server/db/client"
 
 type CreateContextOptions = {
   session: Session | null;
