@@ -7,7 +7,7 @@ import { router, publicProcedure, protectedProcedure } from "../trpc";
 export const gameplayRouter = router({
   getGameplay: protectedProcedure.input(z.object({
     gameplayId: z.string().cuid(),
-  })).output(GameplaySchema.nullish()).query(async ({input, ctx}) => {
+  })).output(GameplaySchema).query(async ({input, ctx}) => {
     const gameplay = await ctx.prisma.footage.findUnique({
       where: {
         id: input.gameplayId,
@@ -77,4 +77,31 @@ export const gameplayRouter = router({
       })
     }
   }),
+  getUserGameplay: protectedProcedure.input(z.object({
+    userId: z.string().cuid().nullish(),
+  })).output(GameplaySchema.array()).query(async ({input, ctx}) => {
+
+    // if no user id provided, use user id from session
+    // userId should only be passed by system admins, not avg users
+    // TODO: check roles and prevent users from getting other users
+    const userId = input.userId === null ? ctx.session.user.id : input.userId;
+
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        footage: true
+      },
+    });
+
+    // if no user
+    if (user === null)
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: 'No user found with the provided User ID.'
+      })
+
+    return user.footage;
+  })
 });
