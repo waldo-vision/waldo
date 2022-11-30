@@ -28,7 +28,7 @@ export const gameplayRouter = router({
   createGameplay: protectedProcedure.input(z.object({
     youtubeUrl: z.string().url(),
     gameplayType: GameplayTypes,
-  })).output(GameplaySchema).query(async ({input, ctx}) => {
+  })).output(GameplaySchema).mutation(async ({input, ctx}) => {
     const existingGameplay = await ctx.prisma.footage.findUnique({
       where: {
         youtubeUrl: input.youtubeUrl
@@ -131,7 +131,7 @@ export const gameplayRouter = router({
     gameplayId: z.string().cuid(),
     footageType: GameplayTypes,
     isAnalyzed: z.boolean(),
-  })).output(GameplaySchema).query(async ({input, ctx}) => {
+  })).output(GameplaySchema).mutation(async ({input, ctx}) => {
 
     // TODO: need check if user making request is the
     // user who owns the gameplay
@@ -165,7 +165,7 @@ export const gameplayRouter = router({
   }),
   deleteGameplay: protectedProcedure.input(z.object({
     gameplayId: z.string().cuid()
-  })).query(async ({input, ctx}) => {
+  })).mutation(async ({input, ctx}) => {
 
     // TODO: need check if user making request is the
     // user who owns the gameplay
