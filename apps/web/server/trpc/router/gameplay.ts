@@ -8,13 +8,21 @@ export const gameplayRouter = router({
   getGameplay: protectedProcedure.input(z.object({
     gameplayId: z.string().cuid(),
   })).output(GameplaySchema.nullish()).query(async ({input, ctx}) => {
-    const footage = await ctx.prisma.footage.findUnique({
+    const gameplay = await ctx.prisma.footage.findUnique({
       where: {
         id: input.gameplayId,
       },
     });
 
-    return footage;
+    // if gameplay not found, or not the user who made it
+    // TODO: need to do role checking
+    if (gameplay === null || (gameplay !== null && gameplay.userId !== ctx.session.user.id))
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Could not find that requested gameplay"
+      })
+
+    return gameplay;
   }),
   createGameplay: protectedProcedure.input(z.object({
     youtubeUrl: z.string().url(),
