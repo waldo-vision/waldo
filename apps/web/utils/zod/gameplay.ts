@@ -9,3 +9,5 @@ export const GameplaySchema = z.object({
   downVotes: z.number().optional(),
   isAnalyzed: z.boolean(),
 });
+
+export const GameplayTypes = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD']);

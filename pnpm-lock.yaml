@@ -138,6 +138,7 @@ importers:
       superjson: ^1.11.0
       tsconfig: workspace:*
       typescript: 4.8.4
+      ytdl-core: ^4.11.2
       zod: ^3.19.1
     dependencies:
       '@babel/core': 7.20.2
@@ -163,6 +164,7 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       superjson: 1.11.0
       typescript: 4.8.4
+      ytdl-core: 4.11.2
       zod: 3.19.1
     devDependencies:
       eslint-config-custom: link:../../packages/eslint-config-custom
