@@ -8,7 +8,7 @@ import {
   Stack,
   Collapse,
   useDisclosure,
-  Heading,
+  Heading
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -84,7 +84,6 @@ export default function Navigation() {
             </Flex>
           </Link>
         </Flex>
-
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'end' }}>
           <Flex display={{ base: 'none', md: 'flex' }}>
             <DesktopNav />
@@ -94,7 +93,6 @@ export default function Navigation() {
           <Image alt="Github" src="/navbar_github.png" width={35} height={35} />
         </Link>
       </Flex>
-
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
       </Collapse>
@@ -166,5 +164,9 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Community',
     href: 'https://discord.gg/qJWcsS9TyT',
+  },
+  {
+    label: 'Submissions',
+    href: '/submissions'
   },
 ];

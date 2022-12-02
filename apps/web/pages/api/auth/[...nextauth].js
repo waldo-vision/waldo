@@ -1,8 +1,8 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import NextAuth from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google'
 import GitHubProvider from "next-auth/providers/github";
+import NextAuth from 'next-auth';
 
 import { prisma } from '@utils/client';
 
@@ -39,6 +39,9 @@ export const authOptions = {
       }
       return session;
     },
+    async redirect({ baseUrl }) {
+      return baseUrl
+    }
   },
 };
 
