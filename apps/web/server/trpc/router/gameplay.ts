@@ -2,11 +2,12 @@ import { TRPCError } from '@trpc/server';
 import ytdl from 'ytdl-core';
 import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
-import { router, publicProcedure, protectedProcedure } from '../trpc';
+import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 
 export const gameplayRouter = router({
   getGameplay: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/gameplay' } })
     .input(
       z.object({
         gameplayId: z.string().cuid(),
@@ -34,6 +35,7 @@ export const gameplayRouter = router({
       return gameplay;
     }),
   createGameplay: protectedProcedure
+    .meta({ openapi: { method: 'POST', path: '/gameplay' } })
     .input(
       z.object({
         youtubeUrl: z.string().url(),
@@ -93,6 +95,7 @@ export const gameplayRouter = router({
       }
     }),
   getUserGameplay: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/gameplay/user' } })
     .input(
       z.object({
         userId: z.string().cuid().nullish(),
@@ -124,6 +127,7 @@ export const gameplayRouter = router({
       return user.footage;
     }),
   getGameplayClips: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/gameplay/clips' } })
     .input(
       z.object({
         gameplayId: z.string().cuid(),
@@ -151,6 +155,7 @@ export const gameplayRouter = router({
       return gameplay.clips;
     }),
   updateGameplay: protectedProcedure
+    .meta({ openapi: { method: 'PATCH', path: '/gameplay' } })
     .input(
       z.object({
         gameplayId: z.string().cuid(),
@@ -191,6 +196,7 @@ export const gameplayRouter = router({
       }
     }),
   deleteGameplay: protectedProcedure
+    .meta({ openapi: { method: 'DELETE', path: '/gameplay' } })
     .input(
       z.object({
         gameplayId: z.string().cuid(),
