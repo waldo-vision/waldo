@@ -21,10 +21,9 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useInViewport } from 'react-in-viewport';
 import { FaCodeBranch, FaRocket } from 'react-icons/fa';
-import { MdAllInclusive, MdMoneyOff, MdInfoOutline } from 'react-icons/md'
-import { HiUpload } from 'react-icons/hi'
-import { TbEyeCheck } from 'react-icons/tb'
-
+import { MdAllInclusive, MdMoneyOff, MdInfoOutline } from 'react-icons/md';
+import { HiUpload } from 'react-icons/hi';
+import { TbEyeCheck } from 'react-icons/tb';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
@@ -113,10 +112,7 @@ export default function Home() {
               </Text>
               <ButtonGroup gap={'4'} m={3}>
                 <Link href={'/submissions'}>
-                  <Button
-                    variant={'solid'}
-                    colorScheme={'purple'}
-                  >
+                  <Button variant={'solid'} colorScheme={'purple'}>
                     <HiUpload height={16} width={16} />
                     <Text marginLeft={2}>Submissions</Text>
                   </Button>
@@ -172,19 +168,17 @@ export default function Home() {
                 </Text>
               </Heading>
               <Text>
-                Waldo analyses POV clips and returns a probability that the user is cheating.
-                How? Waldo is trained to detect the human behavioral characteristics of
-                moving a mouse, of which the program contrasts the model to the footage.
+                Waldo analyses POV clips and returns a probability that the user
+                is cheating. How? Waldo is trained to detect the human
+                behavioral characteristics of moving a mouse, of which the
+                program contrasts the model to the footage.
               </Text>
               <Stack
                 spacing={{ base: 4, sm: 6 }}
                 direction={{ base: 'column', sm: 'row' }}
               >
                 <Link href={'https://discord.gg/MPAV4qP8Hx'}>
-                  <Button
-                    variant={'solid'}
-                    colorScheme={'purple'}
-                  >
+                  <Button variant={'solid'} colorScheme={'purple'}>
                     Join the Discord
                   </Button>
                 </Link>
@@ -222,30 +216,24 @@ export default function Home() {
                 fontWeight={600}
                 fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
               >
-                <Text>
-                  Waldo needs your help!
-                </Text>
+                <Text>Waldo needs your help!</Text>
               </Heading>
               <Text maxW={'3xl'}>
-                However, Waldo is not ready yet. In order to have a model as accurate as possible We
-                need thousands of hours of footage, which we do not currently have. We are asking
-                the community to link their own clips from Youtube and upload the videos to Waldo.
+                However, Waldo is not ready yet. In order to have a model as
+                accurate as possible We need thousands of hours of footage,
+                which we do not currently have. We are asking the community to
+                link their own clips from Youtube and upload the videos to
+                Waldo.
               </Text>
               <ButtonGroup gap={'4'} m={3}>
                 <Link href={'/submissions/upload'}>
-                  <Button
-                    variant={'solid'}
-                    colorScheme={'purple'}
-                  >
+                  <Button variant={'solid'} colorScheme={'purple'}>
                     <HiUpload height={16} width={16} />
                     <Text marginLeft={2}>Upload your footage</Text>
                   </Button>
                 </Link>
                 <Link href={'/submissions/review'}>
-                  <Button
-                    variant={'outline'}
-                    colorScheme={'purple'}
-                  >
+                  <Button variant={'outline'} colorScheme={'purple'}>
                     <TbEyeCheck height={16} width={16} />
                     <Text marginLeft={2}>Review Submissions</Text>
                   </Button>
@@ -273,8 +261,7 @@ const Feature = ({ title, text, image }: FeatureProps) => {
         <Text fontWeight={600}>{title}</Text>
         {text}
       </Flex>
-    </Center >
-
+    </Center>
   );
 };
 
@@ -282,23 +269,32 @@ const Features = () => {
   return (
     <Container maxW={'7xl'}>
       <Grid
-        h='650px'
-        templateRows='repeat(2, 1fr)'
-        templateColumns='repeat(5, 1fr)'
+        h="650px"
+        templateRows="repeat(2, 1fr)"
+        templateColumns="repeat(5, 1fr)"
         gap={4}
       >
-        <GridItem rowSpan={2} colSpan={2} bg={"#8552D910"} overflow={'hidden'} p={3} textAlign={'center'} borderRadius={'16px'}>
+        <GridItem
+          rowSpan={2}
+          colSpan={2}
+          bg={'#8552D910'}
+          overflow={'hidden'}
+          p={3}
+          textAlign={'center'}
+          borderRadius={'16px'}
+        >
           <Center h={'100%'}>
             <Flex align={'center'} direction={'column'} gap={20}>
               <Flex direction={'column'}>
-                <Text fontSize={'2rem'} fontWeight={'bold'}>Waldo</Text>
-                <Text fontWeight={450}>Bring back the fun in your games with Waldo.</Text>
+                <Text fontSize={'2rem'} fontWeight={'bold'}>
+                  Waldo
+                </Text>
+                <Text fontWeight={450}>
+                  Bring back the fun in your games with Waldo.
+                </Text>
               </Flex>
               <Link href={'https://discord.gg/MPAV4qP8Hx'}>
-                <Button
-                  variant={'solid'}
-                  colorScheme={'purple'}
-                >
+                <Button variant={'solid'} colorScheme={'purple'}>
                   Join the Discord
                 </Button>
               </Link>
@@ -306,47 +302,92 @@ const Features = () => {
           </Center>
         </GridItem>
         <GridItem rowSpan={2} colSpan={3}>
-          <Grid h={'100%'} gap={4} templateColumns='repeat(4, 1fr)' templateRows='repeat(5, 1fr)' textAlign={'center'}>
-            <GridItem rowSpan={2} colSpan={2} bg='white' borderRadius={'16px'} p={3}>
+          <Grid
+            h={'100%'}
+            gap={4}
+            templateColumns="repeat(4, 1fr)"
+            templateRows="repeat(5, 1fr)"
+            textAlign={'center'}
+          >
+            <GridItem
+              rowSpan={2}
+              colSpan={2}
+              bg="white"
+              borderRadius={'16px'}
+              p={3}
+            >
               <Feature
                 image={<FaCodeBranch size={35} />}
                 title={'Open Source'}
                 text={
                   <Text>
-                    You can view the source code on our <Link href={'https://github.com/waldo-vision'}><Text as={'span'} fontWeight={'bold'}>github</Text></Link>.
+                    You can view the source code on our{' '}
+                    <Link href={'https://github.com/waldo-vision'}>
+                      <Text as={'span'} fontWeight={'bold'}>
+                        github
+                      </Text>
+                    </Link>
+                    .
                   </Text>
                 }
               />
             </GridItem>
-            <GridItem rowSpan={3} colSpan={2} bg='white' borderRadius={'16px'} p={3}>
+            <GridItem
+              rowSpan={3}
+              colSpan={2}
+              bg="white"
+              borderRadius={'16px'}
+              p={3}
+            >
               <Feature
                 image={<MdMoneyOff size={45} />}
                 title={'Free to use'}
                 text={
                   <Text>
-                    Waldo uses a community driven model to learn, you are the one who supports us.
+                    Waldo uses a community driven model to learn, you are the
+                    one who supports us.
                   </Text>
                 }
               />
             </GridItem>
-            <GridItem rowSpan={3} colSpan={2} bg='white' borderRadius={'16px'} p={3}>
+            <GridItem
+              rowSpan={3}
+              colSpan={2}
+              bg="white"
+              borderRadius={'16px'}
+              p={3}
+            >
               <Feature
                 image={<MdAllInclusive size={60} />}
                 title={'Inclusive'}
                 text={
                   <Text>
-                    Anybody can use Waldo, we pride ourselves for the ease of use.
+                    Anybody can use Waldo, we pride ourselves for the ease of
+                    use.
                   </Text>
                 }
               />
             </GridItem>
-            <GridItem rowSpan={2} colSpan={2} bg='white' borderRadius={'16px'} p={3}>
+            <GridItem
+              rowSpan={2}
+              colSpan={2}
+              bg="white"
+              borderRadius={'16px'}
+              p={3}
+            >
               <Feature
                 image={<FaRocket size={35} />}
                 title={'Stability'}
                 text={
                   <Text>
-                    Issues and fixes are much quicker through the community. Check the <Link href={'https://github.com/waldo-vision'}><Text as={'span'} fontWeight={'bold'}>issues</Text></Link> tab.
+                    Issues and fixes are much quicker through the community.
+                    Check the{' '}
+                    <Link href={'https://github.com/waldo-vision'}>
+                      <Text as={'span'} fontWeight={'bold'}>
+                        issues
+                      </Text>
+                    </Link>{' '}
+                    tab.
                   </Text>
                 }
               />
@@ -355,9 +396,8 @@ const Features = () => {
         </GridItem>
       </Grid>
     </Container>
-  )
-}
-
+  );
+};
 
 Home.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
