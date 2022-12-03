@@ -27,7 +27,6 @@ import { TbEyeCheck } from 'react-icons/tb';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
-
   const [y, setY] = useState(0);
 
   const updateScrollPosition = () => {
