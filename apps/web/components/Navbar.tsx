@@ -118,7 +118,7 @@ const DesktopNav = () => {
                 color: linkHoverColor,
               }}
               fontWeight={
-                pathName != null && router.pathname == pathName
+                pathName != null && router.pathname.includes(pathName)
                   ? 'bold'
                   : 'regular'
               }

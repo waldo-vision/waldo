@@ -129,6 +129,8 @@ importers:
       '@types/node': 18.11.9
       '@types/react': ^18.0.22
       '@types/react-dom': ^18.0.7
+      '@upstash/ratelimit': ^0.1.5
+      '@upstash/redis': ^1.18.1
       database: workspace:*
       eslint: 8.27.0
       eslint-config-custom: workspace:*
@@ -160,6 +162,8 @@ importers:
       '@types/node': 18.11.9
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.8
+      '@upstash/ratelimit': 0.1.5_@upstash+redis@1.18.1
+      '@upstash/redis': 1.18.1
       database: link:../../packages/database
       eslint: 8.27.0
       eslint-config-next: 13.0.0_rmayb2veg2btbq6mbmnyivgasy
@@ -3219,6 +3223,22 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: false
 
+  /@upstash/ratelimit/0.1.5_@upstash+redis@1.18.1:
+    resolution: {integrity: sha512-v0zq3Xpq42HQBvXDvm0C4djYvKC5TjHG29uCpbIQcOw0znJNroHewI8y4Yk4tBeEF1rvj2RjDkFihjCp6uTExQ==}
+    peerDependencies:
+      '@upstash/redis': ^1.4.0
+    dependencies:
+      '@upstash/redis': 1.18.1
+    dev: false
+
+  /@upstash/redis/1.18.1:
+    resolution: {integrity: sha512-wk0KTRBW1VENdkJY62Oh0RZWSzrXOHQh6nvVs5fes/zYZzB9byUDN7oB2uylh+YjPHtAxbdrjZ68MA6g2mRQow==}
+    dependencies:
+      isomorphic-fetch: 3.0.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /@zag-js/element-size/0.1.0:
     resolution: {integrity: sha512-QF8wp0+V8++z+FHXiIw93+zudtubYszOtYbNgK39fg3pi+nCZtuSm4L1jC5QZMatNZ83MfOzyNCfgUubapagJQ==}
     dev: false
@@ -5079,6 +5099,15 @@ packages:
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
+  /isomorphic-fetch/3.0.0:
+    resolution: {integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==}
+    dependencies:
+      node-fetch: 2.6.7
+      whatwg-fetch: 3.6.2
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /jose/4.11.0:
     resolution: {integrity: sha512-wLe+lJHeG8Xt6uEubS4x0LVjS/3kXXu9dGoj9BNnlhYq7Kts0Pbb2pvv5KiI0yaKH/eaiR0LUOBhOVo9ktd05A==}
     dev: false
@@ -5490,6 +5519,18 @@ packages:
   /node-domexception/1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    dev: false
+
+  /node-fetch/2.6.7:
+    resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
+    engines: {node: 4.x || >=6.0.0}
+    peerDependencies:
+      encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
+    dependencies:
+      whatwg-url: 5.0.0
     dev: false
 
   /node-fetch/3.3.0:
@@ -6461,6 +6502,10 @@ packages:
     engines: {node: '>=0.6'}
     dev: false
 
+  /tr46/0.0.3:
+    resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+    dev: false
+
   /tr46/3.0.0:
     resolution: {integrity: sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==}
     engines: {node: '>=12'}
@@ -6777,9 +6822,17 @@ packages:
     engines: {node: '>= 8'}
     dev: false
 
+  /webidl-conversions/3.0.1:
+    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+    dev: false
+
   /webidl-conversions/7.0.0:
     resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
     engines: {node: '>=12'}
+    dev: false
+
+  /whatwg-fetch/3.6.2:
+    resolution: {integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==}
     dev: false
 
   /whatwg-url/11.0.0:
@@ -6788,6 +6841,13 @@ packages:
     dependencies:
       tr46: 3.0.0
       webidl-conversions: 7.0.0
+    dev: false
+
+  /whatwg-url/5.0.0:
+    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
+    dependencies:
+      tr46: 0.0.3
+      webidl-conversions: 3.0.1
     dev: false
 
   /which-boxed-primitive/1.0.2:

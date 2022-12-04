@@ -157,11 +157,6 @@ const Upload = () => {
       return;
     }
 
-    if (!userSession) {
-      handleRequestError('Please login first to submit a clips(s)');
-      return;
-    }
-    console.log(legalConfirmations);
     if (legalConfirmations != 3) {
       handleRequestError('Please check the required legal agreement options.');
       return;
@@ -180,8 +175,9 @@ const Upload = () => {
     try {
       await createGameplay.mutateAsync(input);
       handleRequestSuccess();
-    } catch (cause) {
-      handleRequestError('Failed to create gameplay.');
+    } catch (error: any) {
+      console.log(error);
+      handleRequestError(error.toString());
     }
   };
 
@@ -240,6 +236,7 @@ const Upload = () => {
                   <Input
                     placeholder="https://youtube.com/example"
                     size="lg"
+                    value={currentUrl}
                     onChange={(
                       event: React.FormEvent<HTMLFormElement>,
                     ): void => {

@@ -23,6 +23,8 @@
     "@types/node": "18.11.9",
     "@types/react": "^18.0.22",
     "@types/react-dom": "^18.0.7",
+    "@upstash/ratelimit": "^0.1.5",
+    "@upstash/redis": "^1.18.1",
     "database": "workspace:*",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.0",
@@ -30,13 +32,13 @@
     "next": "13.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.6.0",
+    "react-in-viewport": "1.0.0-alpha.28",
     "superjson": "^1.11.0",
     "trpc-openapi": "^1.0.0",
     "typescript": "4.8.4",
     "ytdl-core": "^4.11.2",
-    "zod": "^3.19.1",
-    "react-icons": "^4.6.0",
-    "react-in-viewport": "1.0.0-alpha.28"
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
