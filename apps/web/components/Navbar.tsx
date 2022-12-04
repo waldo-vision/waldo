@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -104,9 +105,11 @@ export default function Navigation() {
 
 const DesktopNav = () => {
   const linkHoverColor = 'purple.800';
+  const router = useRouter();
+
   return (
     <Stack direction={'row'} spacing={4}>
-      {NAV_ITEMS.map(({ label, href }: NavItem) => (
+      {NAV_ITEMS.map(({ label, href, pathName }: NavItem) => (
         <Box key={label}>
           <Link href={href ?? '#'}>
             <Text
@@ -114,6 +117,11 @@ const DesktopNav = () => {
                 textDecoration: 'none',
                 color: linkHoverColor,
               }}
+              fontWeight={
+                pathName != null && router.pathname == pathName
+                  ? 'bold'
+                  : 'regular'
+              }
             >
               {label}
             </Text>
@@ -156,15 +164,23 @@ const githubIconHref = 'https://github.com/waldo-vision';
 interface NavItem {
   label: string;
   href: string;
+  pathName: string | null;
 }
 
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Docs',
     href: 'https://docs.waldo.vision',
+    pathName: null,
   },
   {
     label: 'Community',
     href: 'https://discord.gg/qJWcsS9TyT',
+    pathName: null,
+  },
+  {
+    label: 'Submissions',
+    href: '/submissions/',
+    pathName: '/submissions',
   },
 ];
