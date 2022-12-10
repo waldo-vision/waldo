@@ -24,9 +24,12 @@ export const isInGuild = defaultEndpointsFactory.build({
   }),
   output: IsInGuildReturn,
   handler: async ({ input: { discordId }, options, logger }) => {
-    const query = await prisma.account.findFirst({
+    const query = await prisma.account.findUnique({
       where: {
-        providerAccountId: discordId,
+        provider_providerAccountId: {
+          provider: "discord",
+          providerAccountId: discordId
+        }
       },
     });
     const access_token = query?.access_token;

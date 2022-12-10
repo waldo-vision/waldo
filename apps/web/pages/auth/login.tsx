@@ -1,137 +1,263 @@
-import { Box, Button, Center, Flex, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, ModalFooter } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Square,
+  Divider,
+} from '@chakra-ui/react';
 import Layout from '@components/Layout';
-import { Session } from 'next-auth'
+import { Session } from 'next-auth';
 import { signIn, getSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/router'
-import { ReactElement, useState, useEffect } from 'react'
-import { FaDiscord, FaGithub } from 'react-icons/fa'
-import { FcGoogle } from 'react-icons/fc'
-
-export default function Login() {
+import Link from 'next/link';
+import React, { ReactElement, useState, useEffect } from 'react';
+import {
+  FaDiscord,
+  FaGithub,
+  FaGoogle,
+  FaBattleNet,
+  FaSteam,
+  FaApple,
+} from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { BsGithub } from 'react-icons/bs';
+import { SiFaceit } from 'react-icons/si';
+const Login = () => {
+  type Provider = {
+    provider: string;
+    docs: string;
+    hex: string;
+    selected: boolean;
+  };
+  const [linkAlertOpen, setLinkAlertOpen] = useState<boolean>(false);
   const [userSession, setUserSession] = useState<Session | null>();
-  const [attemptedLoginProvider, setAttemptedLoginProvider] = useState<string>();
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-  const router = useRouter()
-
-  const getCurrentSession = async () => {
-    await getSession()
-      .then((session) => {
-        if (session != null) {
-          router.push('/account')
-        }
-        setUserSession(session);
-      })
+  const [lastSelected, setLastSelected] = useState<number | null>(null);
+  const [currentProvider, setCurrentProvider] = useState<string>();
+  const [authProviders, setAuthProviders] = useState<Array<Provider>>();
+  const retrieveUserSession = async () => {
+    const session = await getSession();
+    setUserSession(session);
   };
 
-  const login = async (type: string) => {
-    setAttemptedLoginProvider(type)
+  const handleSelect = (index: number) => {
+    setCurrentProvider(authProviders[index].provider.toLowerCase());
+    setLastSelected(index);
+    if (lastSelected == null) {
+      const val = authProviders[index];
+      val.selected = !val.selected;
+    } else {
+      const resetLastItem = (authProviders[lastSelected].selected = false);
+      const val = authProviders[index];
+      val.selected = !val.selected;
+    }
+  };
 
+  const handleLoginLogic = () => {
+    console.log('running');
     if (userSession) {
-      setIsOpen(true)
-      console.log("is session")
+      setLinkAlertOpen(true);
       return;
+    } else {
+      setLinkAlertOpen(false);
     }
-    setIsOpen(false)
-    if (type == "discord") {
-      signIn("discord")
-    } else if (type == "github") {
-      signIn("github")
-    } else if (type == "google") {
-      signIn("google")
-    }
-  }
+    signIn(currentProvider);
+  };
+
+  let providers = [
+    {
+      provider: 'Discord',
+      docs: 'https://example.com',
+      hex: '#5865F2',
+      selected: false,
+    },
+    { provider: 'Google', docs: 'https://example.com', selectedd: false },
+    {
+      provider: 'Github',
+      docs: 'https://example.com',
+      hex: '#000000',
+      selected: false,
+    },
+    {
+      provider: 'BattleNET',
+      docs: 'https://example.com',
+      hex: '#009AE4',
+      selected: false,
+    },
+    {
+      provider: 'Faceit',
+      docs: 'https://example.com',
+      hex: '#FF5500',
+      selected: false,
+    },
+    {
+      provider: 'Steam',
+      docs: 'https://example.com',
+      hex: '#00adee',
+      selected: false,
+    },
+    {
+      provider: 'Apple',
+      docs: 'https://example.com',
+      hex: '#000000',
+      selected: false,
+    },
+  ];
+
   useEffect(() => {
-    getCurrentSession()
-  }, [])
+    retrieveUserSession();
+    setAuthProviders(providers);
+  }, []);
 
   return (
     <div>
-      <Center h={'100vh'}>
-        <Flex
-          alignItems={'center'}
-          backgroundColor={'white'}
-          borderRadius={15}
-          borderColor={'white'}
-          borderWidth={1}
-        >
-          <Box my={10} mx={10}>
-            {/* Title Container */}
-            <Center>
-              <Box mb={12}>
-                <Text fontWeight={'bold'} fontSize={40}>Sign In</Text>
-              </Box>
-            </Center>
-
-            {/* social login options */}
-            <Flex direction={'row'} justifyContent={'space-between'} width={'xs'} grow={'unset'}>
-              <Box cursor={'pointer'}
-                borderWidth={6}
-                borderColor={'white'}
-                onClick={
-                  () => login("google")
-                }
-                _hover={
-                  { borderColor: "gray.200", borderRadius: 8, borderWidth: 6, backgroundColor: "gray.200" }
-                }>
-                <FcGoogle size={40} />
-              </Box>
-              <Box cursor={'pointer'}
-                borderWidth={6}
-                borderColor={'white'}
-                onClick={
-                  () => login("discord")
-                }
-                _hover={
-                  { borderColor: "gray.200", borderRadius: 8, borderWidth: 6, backgroundColor: "gray.200" }
-                }>
-                <FaDiscord size={40} color={'#6A5ACD'} />
-              </Box>
-              <Box
-                cursor={'pointer'}
-                borderWidth={6}
-                borderColor={'white'}
-                onClick={
-                  () => login("github")
-                }
-                _hover={
-                  { borderColor: "gray.200", borderRadius: 8, borderWidth: 6, backgroundColor: "gray.200" }
-                }>
-
-                <FaGithub size={40} color={'black'} />
-              </Box>
-            </Flex>
+      <Flex direction={'row'} minHeight={'100vh'} position={'relative'}>
+        <Flex color="white">
+          <Box w={'xl'} bottom="0">
+            <Text position={'absolute'} bottom="0"></Text>
           </Box>
         </Flex>
+        <Box w={'full'} bg="white">
+          <Box mt={12} ml={12}>
+            <Text fontWeight={'semibold'} fontSize={32}>
+              Sign up with an authentication gateway
+            </Text>
+            <Text>Choose your gateway to connect with below.</Text>
+          </Box>
+          <Divider mt={12} />
+          {authProviders &&
+            authProviders.map(({ provider, docs, hex, selected }, index) => (
+              <Box
+                w={'full'}
+                mt={12}
+                mb={provider == 'Apple' && 12}
+                cursor={'pointer'}
+                onClick={() => handleSelect(index)}
+                key={index}
+              >
+                <Box
+                  ml={16}
+                  mr={16}
+                  boxShadow={'lg'}
+                  borderRadius={8}
+                  h={24}
+                  bgColor={selected ? 'gray.700' : 'white'}
+                >
+                  <Flex direction={'row'}>
+                    <Center h={24}>
+                      <Box ml={6}>
+                        <Flex direction={'row'}>
+                          <Center>
+                            {provider == 'Discord' && (
+                              <FaDiscord size={40} color={hex} />
+                            )}
+                            {provider == 'Google' && <FcGoogle size={40} />}
+                            {provider == 'Github' && (
+                              <BsGithub size={40} color={hex} />
+                            )}
+                            {provider == 'BattleNET' && (
+                              <FaBattleNet size={40} color={hex} />
+                            )}
+                            {provider == 'Faceit' && (
+                              <SiFaceit size={40} color={hex} />
+                            )}
+                            {provider == 'Steam' && (
+                              <FaSteam size={40} color={hex} />
+                            )}
+                            {provider == 'Apple' && (
+                              <FaApple size={40} color={hex} />
+                            )}
 
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Account Linking</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              To prevent accidental account linking, please confirm that you wish to link
-              your current account; {userSession && userSession.user.provider} with the account you are trying to login to; {attemptedLoginProvider && attemptedLoginProvider}.
-            </ModalBody>
+                            <Flex direction={'column'} ml={3}>
+                              <Text
+                                fontWeight={'semibold'}
+                                fontSize={15}
+                                color={selected ? 'white' : ''}
+                              >
+                                {provider}
+                              </Text>
+                              <Text color={selected ? 'white' : ''}>
+                                Use your {provider} account to gain access to
+                                waldo services.
+                              </Text>
+                            </Flex>
+                          </Center>
+                        </Flex>
+                      </Box>
+                    </Center>
+                    <Flex right="0" ml={'auto'}>
+                      <Center>
+                        <Button variant="none" mr={6}>
+                          <Link href={docs}>
+                            <Text color={selected ? 'white' : ''}>
+                              Learn More
+                            </Text>
+                          </Link>
+                        </Button>
+                      </Center>
+                    </Flex>
+                  </Flex>
+                </Box>
+              </Box>
+            ))}
+          <Flex justifyContent={'end'}>
+            <Button
+              mr={16}
+              mb={12}
+              bgColor="black"
+              _hover={{ backgroundColor: 'gray.800' }}
+              color="white"
+              onClick={() => handleLoginLogic()}
+            >
+              Connect
+            </Button>
+          </Flex>
+        </Box>
+        <Center h={'100vh'}>
+          <Modal isOpen={linkAlertOpen} onClose={() => setLinkAlertOpen(false)}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Account Linking</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                To prevent accidental account linking, please confirm that you
+                wish to link your current account;{' '}
+                {userSession && userSession?.user?.provider} with the account
+                you are trying to login to; {currentProvider && currentProvider}
+                .
+              </ModalBody>
 
-            <ModalFooter>
-              <Button colorScheme='purple' mr={3} onClick={() => setIsOpen(false)}>
-                Cancel
-              </Button>
-              <Button colorScheme='purple' mr={3} onClick={() => signOut()}>
-                Logout
-              </Button>
-              <Button variant='outline' onClick={
-                () =>
-                  signIn(attemptedLoginProvider)
-              }>Continue</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </Center>
+              <ModalFooter>
+                <Button
+                  colorScheme="purple"
+                  mr={3}
+                  onClick={() => setLinkAlertOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button colorScheme="purple" mr={3} onClick={() => signOut()}>
+                  Logout
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => signIn(currentProvider)}
+                >
+                  Continue
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </Center>
+      </Flex>
     </div>
-  )
-}
-
-Login.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+  );
 };
+
+export default Login;

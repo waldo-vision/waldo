@@ -98,7 +98,6 @@ export default function index() {
     </>
   )
 }
-
 index.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
