@@ -30,6 +30,8 @@ import {
   Checkbox,
   chakra,
   Spinner,
+  Container,
+  Heading,
 } from '@chakra-ui/react';
 import {
   ShieldCheckIcon,
@@ -66,6 +68,8 @@ const Upload = () => {
   const handleRequestError = async (msg: string) => {
     setWaitingForResponse(false);
     setRequestDone(true);
+    setCurrentUrl('');
+
     // Create toasts
     createToast(msg, 'error', 'Error');
     // Enable Error
@@ -186,186 +190,193 @@ const Upload = () => {
   }, []);
   return (
     <div>
-      <Center h={'100vh'}>
-        {loading ? (
-          <Box>
-            <Loading color={'blue.500'} />
-          </Box>
-        ) : (
-          <Flex
-            direction={'column'}
-            backgroundColor={'white'}
-            borderRadius={8}
-            borderColor={'white'}
-            borderWidth={1}
-          >
-            <Box my={6} mx={6}>
-              <Flex direction={'row'}>
-                <CIMG
-                  src={userSession?.user?.avatarUrl}
-                  alt={'img'}
-                  borderRadius={40}
-                  width={20}
-                  height={20}
-                />
-                <Center>
-                  <Box ml={3}>
-                    <Text
-                      fontWeight={'bold'}
-                      fontSize={'2xl'}
-                      onClick={() => signOut()}
-                    >
-                      {userSession?.user?.name}
-                    </Text>
-                    <Flex direction={'row'}>
-                      <Text>Logged in from {userSession?.user?.provider}</Text>
-                      <Box mt={'1.5'} ml={1}>
-                        <ShieldCheckIcon
-                          height={14}
-                          width={14}
-                          color={'black'}
-                        />
-                      </Box>
-                    </Flex>
-                  </Box>
-                </Center>
+      {loading ? (
+        <Box>
+          <Loading color={'blue.500'} />
+        </Box>
+      ) : (
+        <Center h={'100vh'} maxW={'7xl'}>
+          <Flex direction={{ lg: 'row', base: 'column' }}>
+            <Container width={{ lg: '30%' }}>
+              <Flex gap={5} direction={'column'}>
+                <Heading>Sumbit Your Clips</Heading>
+                <Text>
+                  Before you submit a video make sure you have read the rules
+                  regarding
+                </Text>
               </Flex>
-              <Flex direction={'column'} mt={6}>
-                <Box>
-                  <Text mb={2}>Youtube URL</Text>
-                  <Input
-                    placeholder="https://youtube.com/example"
-                    size="lg"
-                    value={currentUrl}
-                    onChange={(
-                      event: React.FormEvent<HTMLFormElement>,
-                    ): void => {
-                      let target = event.target as HTMLInputElement;
-                      setCurrentUrl(target.value);
-                    }}
-                    borderRadius={15}
-                    w={'50vh'}
+            </Container>
+            <Container>
+              <Box
+                py={6}
+                px={6}
+                bg={'white'}
+                borderRadius={'16px'}
+                maxW={{ sm: '450px', lg: '700px' }}
+              >
+                <Flex direction={'row'}>
+                  <CIMG
+                    src={userSession?.user?.avatarUrl}
+                    alt={'img'}
+                    borderRadius={40}
+                    width={20}
+                    height={20}
                   />
-                </Box>
-                <Box mt={4}>
-                  <Menu>
-                    <MenuButton
-                      as={Button}
-                      rightIcon={<ChevronDownIcon width={16} height={16} />}
-                      borderRadius={15}
-                    >
-                      Select a Game
-                    </MenuButton>
-                    <MenuList>
-                      <MenuOptionGroup
-                        defaultValue="csg"
-                        title="Games"
-                        type="radio"
-                        onChange={(game: string) =>
-                          setSelectedGame(game.toString())
-                        }
+                  <Center>
+                    <Box ml={3}>
+                      <Text
+                        fontWeight={'bold'}
+                        fontSize={'2xl'}
+                        onClick={() => signOut()}
                       >
-                        {games &&
-                          games.map(game => (
-                            <MenuItemOption
-                              key={game.shortName}
-                              value={game.shortName}
-                            >
-                              {game.name}
-                            </MenuItemOption>
-                          ))}
-                      </MenuOptionGroup>
-                    </MenuList>
-                  </Menu>
-                </Box>
-                <Box mt={6}>
-                  {options.map((option, index) => (
-                    <Box key={index}>
-                      <Flex direction={'column'}>
-                        <Checkbox
-                          size="md"
-                          colorScheme="purple"
-                          required={true}
-                          mb={3}
-                          onChange={(event: React.SyntheticEvent): void => {
-                            let target = event.target as HTMLInputElement;
-                            if (target.checked) {
-                              setLegalConfirmations(legalConfirmations + 1);
-                            } else {
-                              setLegalConfirmations(legalConfirmations - 1);
-                            }
-                          }}
-                          checked={option.checked}
-                        >
-                          {option.option}
-                        </Checkbox>
+                        {userSession?.user?.name}
+                      </Text>
+                      <Flex direction={'row'}>
+                        <Text>
+                          Logged in from {userSession?.user?.provider}
+                        </Text>
+                        <Box mt={'1.5'} ml={1}>
+                          <ShieldCheckIcon
+                            height={14}
+                            width={14}
+                            color={'black'}
+                          />
+                        </Box>
                       </Flex>
                     </Box>
-                  ))}
-                </Box>
-                <Flex direction={'row'}>
-                  <Center>
-                    <Box mt={6}>
-                      <Text>
-                        By submitting, you are agreeing to the
-                        <chakra.span
-                          fontWeight={'bold'}
-                          textDecoration={'underline'}
-                        >
-                          Terms of Service
-                        </chakra.span>
-                        <br />
-                        and the&nbsp;
-                        <chakra.span
-                          fontWeight={'bold'}
-                          textDecoration={'underline'}
-                        >
-                          Privacy Policy.
-                        </chakra.span>
-                      </Text>
-                    </Box>
-                    <Button
-                      ml={4}
-                      backgroundColor={'gray.800'}
-                      colorScheme={'blackAlpha'}
-                      boxShadow="lg"
-                      mt={5}
-                      onClick={(event: React.SyntheticEvent) =>
-                        handleClipUpload(event)
-                      }
-                      isLoading={waitingForResponse}
-                    >
-                      {!requestDone ? (
-                        <SlideFade in={!requestDone} offsetY="5px">
-                          <Text>Submit</Text>
-                        </SlideFade>
-                      ) : (
-                        <Flex direction={'row'} alignItems={'center'}>
-                          <SlideFade in={requestDone} offsetY="5px" delay={0.3}>
-                            {error ? (
-                              <XCircleIcon
-                                color="white"
-                                width={26}
-                                height={26}
-                              />
-                            ) : (
-                              <CheckCircleIcon
-                                color="white"
-                                width={26}
-                                height={26}
-                              />
-                            )}
-                          </SlideFade>
-                        </Flex>
-                      )}
-                    </Button>
                   </Center>
                 </Flex>
-              </Flex>
-            </Box>
+                <Flex direction={'column'} mt={6}>
+                  <Box>
+                    <Text mb={2}>Youtube URL</Text>
+                    <Input
+                      placeholder={'https://youtube.com/example'}
+                      size={'lg'}
+                      value={currentUrl}
+                      onChange={event => setCurrentUrl(event.target.value)}
+                      borderRadius={15}
+                    />
+                  </Box>
+                  <Box mt={4}>
+                    <Menu>
+                      <MenuButton
+                        as={Button}
+                        rightIcon={<ChevronDownIcon width={16} height={16} />}
+                        borderRadius={15}
+                      >
+                        Select a Game:
+                      </MenuButton>
+                      <MenuList>
+                        <MenuOptionGroup
+                          defaultValue="csg"
+                          title="Games"
+                          type="radio"
+                          onChange={game => setSelectedGame(game.toString())}
+                        >
+                          {games &&
+                            games.map(game => (
+                              <MenuItemOption
+                                key={game.shortName}
+                                value={game.shortName}
+                              >
+                                {game.name}
+                              </MenuItemOption>
+                            ))}
+                        </MenuOptionGroup>
+                      </MenuList>
+                    </Menu>
+                  </Box>
+                  <Box mt={6}>
+                    {options.map((option, index) => (
+                      <Box key={index}>
+                        <Flex direction={'column'}>
+                          <Checkbox
+                            size="md"
+                            colorScheme="purple"
+                            required={true}
+                            mb={3}
+                            onChange={event => {
+                              let target = event.target;
+                              if (target.checked) {
+                                setLegalConfirmations(legalConfirmations + 1);
+                              } else {
+                                setLegalConfirmations(legalConfirmations - 1);
+                              }
+                            }}
+                          >
+                            {option.option}
+                          </Checkbox>
+                        </Flex>
+                      </Box>
+                    ))}
+                  </Box>
+                  <Flex direction={'row'}>
+                    <Center>
+                      <Box mt={6} maxW={'400px'}>
+                        <Text>
+                          By submitting, you are agreeing to the&nbsp;
+                          <chakra.span
+                            fontWeight={'bold'}
+                            textDecoration={'underline'}
+                          >
+                            Terms of Service
+                          </chakra.span>
+                          &nbsp;and the&nbsp;
+                          <chakra.span
+                            fontWeight={'bold'}
+                            textDecoration={'underline'}
+                          >
+                            Privacy Policy
+                          </chakra.span>
+                          .
+                        </Text>
+                      </Box>
+                      <Button
+                        ml={4}
+                        width={'100px'}
+                        backgroundColor={'gray.800'}
+                        colorScheme={'blackAlpha'}
+                        boxShadow="lg"
+                        mt={5}
+                        onClick={event => handleClipUpload(event)}
+                        isLoading={waitingForResponse}
+                      >
+                        {!requestDone ? (
+                          <SlideFade in={!requestDone} offsetY="5px">
+                            <Text>Submit</Text>
+                          </SlideFade>
+                        ) : (
+                          <Flex direction={'row'} alignItems={'center'}>
+                            <SlideFade
+                              in={requestDone}
+                              offsetY="5px"
+                              delay={0.3}
+                            >
+                              {error ? (
+                                <XCircleIcon
+                                  color="white"
+                                  width={26}
+                                  height={26}
+                                />
+                              ) : (
+                                <CheckCircleIcon
+                                  color="white"
+                                  width={26}
+                                  height={26}
+                                />
+                              )}
+                            </SlideFade>
+                          </Flex>
+                        )}
+                      </Button>
+                    </Center>
+                  </Flex>
+                </Flex>
+              </Box>
+            </Container>
           </Flex>
-        )}
-      </Center>
+        </Center>
+      )}
     </div>
   );
 };

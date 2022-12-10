@@ -267,23 +267,15 @@ const Feature = ({ title, text, image }: FeatureProps) => {
 const Features = () => {
   return (
     <Container maxW={'7xl'}>
-      <Grid
-        h="650px"
-        templateRows="repeat(2, 1fr)"
-        templateColumns="repeat(5, 1fr)"
+       <Grid
+        h={{ sm: '1250px', md: '650px' }}
+        templateRows={{ md: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' }}
+        templateColumns={{ md: 'repeat(5, 1fr)', sm: 'repeat(2, 1fr)' }}
         gap={4}
       >
-        <GridItem
-          rowSpan={2}
-          colSpan={2}
-          bg={'#8552D910'}
-          overflow={'hidden'}
-          p={3}
-          textAlign={'center'}
-          borderRadius={'16px'}
-        >
+        <GridItem rowSpan={{ sm: 2, md: 2 }} colSpan={{ sm: 3, md: 2 }} bg={"#8552D910"} overflow={'hidden'} p={3} textAlign={'center'} borderRadius={'16px'} >
           <Center h={'100%'}>
-            <Flex align={'center'} direction={'column'} gap={20}>
+            <Flex align={'center'} direction={'column'} gap={{ md: 20, sm: 5 }}>
               <Flex direction={'column'}>
                 <Text fontSize={'2rem'} fontWeight={'bold'}>
                   Waldo
