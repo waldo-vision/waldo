@@ -23,8 +23,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "scripts": {
-    "build": "next build"
   }
 }

@@ -5,7 +5,7 @@ import type { NextPage } from 'next';
 import theme from '@utils/theme';
 import { SessionProvider } from 'next-auth/react';
 import { trpc } from '@utils/trpc';
-
+import React from 'react';
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
   IP

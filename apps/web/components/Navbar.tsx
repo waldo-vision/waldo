@@ -8,7 +8,7 @@ import {
   Stack,
   Collapse,
   useDisclosure,
-  Heading
+  Heading,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
