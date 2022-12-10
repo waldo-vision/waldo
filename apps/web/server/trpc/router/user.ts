@@ -6,7 +6,7 @@ import { router, protectedProcedure } from '../trpc';
 
 export const userRouter = router({
   blackListUser: protectedProcedure
-    .meta({ openapi: { method: 'POST', path: '/user' } })
+    .meta({ openapi: { method: 'PUT', path: '/user' } })
     .input(
       z.object({
         userId: z.string().cuid(),
@@ -36,8 +36,33 @@ export const userRouter = router({
           cause: error,
         });
       }
-
-      // if gameplay not found, or not the user who made it
-      // TODO: need to do role checking
+    }),
+  deleteUser: protectedProcedure
+    .meta({ openapi: { method: 'DELETE', path: '/user' } })
+    .input(
+      z.object({
+        userId: z.string().cuid(),
+      }),
+    )
+    .output(z.object({ message: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const userDocument = await ctx.prisma.user.delete({
+          where: {
+            id: input.userId,
+          },
+        });
+        return {
+          message: `Successfully removed user ${input.userId}.`,
+        };
+      } catch (error) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message:
+            'An error occured while trying to delete user. Please contact support if this contiunes occuring.',
+          // not sure if its safe to give this to the user
+          cause: error,
+        });
+      }
     }),
 });

@@ -38,6 +38,10 @@ export const authOptions = {
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // redirects to home page instead of auth page on signup/in/ or logout.
+      return baseUrl;
+    },
   },
 };
 

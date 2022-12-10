@@ -37,6 +37,7 @@ const Login = () => {
     hex: string;
     selected: boolean;
   };
+  const [linkAlertOpen, setLinkAlertOpen] = useState<boolean>(false);
   const [userSession, setUserSession] = useState<Session | null>();
   const [lastSelected, setLastSelected] = useState<number | null>(null);
   const [currentProvider, setCurrentProvider] = useState<string>();
@@ -57,6 +58,17 @@ const Login = () => {
       const val = authProviders[index];
       val.selected = !val.selected;
     }
+  };
+
+  const handleLoginLogic = () => {
+    console.log('running');
+    if (userSession) {
+      setLinkAlertOpen(true);
+      return;
+    } else {
+      setLinkAlertOpen(false);
+    }
+    signIn(currentProvider);
   };
 
   let providers = [
@@ -99,15 +111,6 @@ const Login = () => {
     },
   ];
 
-  const login = async (type: string) => {
-    if (type == 'discord') {
-      signIn('discord');
-    } else if (type == 'github') {
-      signIn('github');
-    } else if (type == 'google') {
-      signIn('google');
-    }
-  };
   useEffect(() => {
     retrieveUserSession();
     setAuthProviders(providers);
@@ -211,51 +214,48 @@ const Login = () => {
               bgColor="black"
               _hover={{ backgroundColor: 'gray.800' }}
               color="white"
-              onClick={() => signIn(currentProvider)}
+              onClick={() => handleLoginLogic()}
             >
               Connect
             </Button>
           </Flex>
         </Box>
-      </Flex>
-      {/*
-      <Center h={'100vh'}>
-        
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Account Linking</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              To prevent accidental account linking, please confirm that you
-              wish to link your current account;{' '}
-              {userSession && userSession?.user?.provider} with the account you
-              are trying to login to;{' '}
-              {attemptedLoginProvider && attemptedLoginProvider}.
-            </ModalBody>
+        <Center h={'100vh'}>
+          <Modal isOpen={linkAlertOpen} onClose={() => setLinkAlertOpen(false)}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Account Linking</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                To prevent accidental account linking, please confirm that you
+                wish to link your current account;{' '}
+                {userSession && userSession?.user?.provider} with the account
+                you are trying to login to; {currentProvider && currentProvider}
+                .
+              </ModalBody>
 
-            <ModalFooter>
-              <Button
-                colorScheme="purple"
-                mr={3}
-                onClick={() => setIsOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button colorScheme="purple" mr={3} onClick={() => signOut()}>
-                Logout
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => signIn(attemptedLoginProvider)}
-              >
-                Continue
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </Center>
-  */}
+              <ModalFooter>
+                <Button
+                  colorScheme="purple"
+                  mr={3}
+                  onClick={() => setLinkAlertOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button colorScheme="purple" mr={3} onClick={() => signOut()}>
+                  Logout
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => signIn(currentProvider)}
+                >
+                  Continue
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </Center>
+      </Flex>
     </div>
   );
 };
