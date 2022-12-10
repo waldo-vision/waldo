@@ -23,6 +23,7 @@ const handleUploadFileLogic = async (
       };
     }
   } catch (error) {
+    console.log(error)
     result = {
       message:
         'Sorry, but our server seems to be down. Please try again later.',

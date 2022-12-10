@@ -167,6 +167,11 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
+    label: 'Submissions',
+    href: '/submissions/',
+    pathName: '/submissions',
+  },
+  {
     label: 'Docs',
     href: 'https://docs.waldo.vision',
     pathName: null,
@@ -175,14 +180,5 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'Community',
     href: 'https://discord.gg/qJWcsS9TyT',
     pathName: null,
-  },
-  {
-    label: 'Submissions',
-    href: '/submissions/',
-    pathName: '/submissions',
-  },
-  {
-    label: 'Submissions',
-    href: '/submissions'
   },
 ];
