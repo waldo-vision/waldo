@@ -5,7 +5,7 @@ import { protectedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
 
 export const clipRouter = router({
-  getClip: protectedProcedure
+  get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/clip' } })
     .input(
       z.object({
@@ -32,7 +32,7 @@ export const clipRouter = router({
         });
       }
     }),
-  deleteClip: protectedProcedure
+  delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/clip' } })
     .input(
       z.object({
@@ -57,7 +57,7 @@ export const clipRouter = router({
         });
       }
     }),
-  createClip: protectedProcedure
+  create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/clip' } })
     .input(
       z.object({

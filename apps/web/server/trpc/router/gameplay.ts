@@ -6,7 +6,7 @@ import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 
 export const gameplayRouter = router({
-  getGameplay: protectedProcedure
+  get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay' } })
     .input(
       z.object({
@@ -34,7 +34,7 @@ export const gameplayRouter = router({
 
       return gameplay;
     }),
-  createGameplay: protectedProcedure
+  create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/gameplay' } })
     .input(
       z.object({
@@ -94,7 +94,7 @@ export const gameplayRouter = router({
         });
       }
     }),
-  getUserGameplay: protectedProcedure
+  getUsers: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/user' } })
     .input(
       z.object({
@@ -126,7 +126,7 @@ export const gameplayRouter = router({
 
       return user.footage;
     }),
-  getGameplayClips: protectedProcedure
+  getClips: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/clips' } })
     .input(
       z.object({
@@ -154,7 +154,7 @@ export const gameplayRouter = router({
 
       return gameplay.clips;
     }),
-  updateGameplay: protectedProcedure
+  update: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay' } })
     .input(
       z.object({
@@ -195,7 +195,7 @@ export const gameplayRouter = router({
         });
       }
     }),
-  deleteGameplay: protectedProcedure
+  delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/gameplay' } })
     .input(
       z.object({
