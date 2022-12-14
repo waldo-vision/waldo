@@ -20,16 +20,22 @@ export function hasPerms({
   userRole,
   itemOwnerId,
   requiredPerms,
+  blacklisted,
 }: {
   userId: string;
   userRole: Roles;
   itemOwnerId: string;
   requiredPerms: Perms;
+  blacklisted: boolean;
 }): boolean {
+  // if blacklisted immediately deny
+  if (blacklisted) return false;
   // if user owns the item
-  if (userId === itemOwnerId) return true;
+  else if (userId === itemOwnerId) return true;
   // if userRole is greater than or equal to the required perms
   else if (userRole >= requiredPerms) return true;
+
+  // TODO: blacklist check
 
   return false;
 }
