@@ -5,7 +5,7 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { type Context } from './context';
 import { Session } from 'next-auth';
 import { Prisma, PrismaClient } from 'database';
-import { redisClient } from '@redisclient';
+import { redisClient } from '@server/utils/redisClient';
 import RateLimiter from 'async-ratelimiter';
 
 const rateLimiter = new RateLimiter({
