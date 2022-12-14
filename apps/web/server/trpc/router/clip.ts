@@ -3,6 +3,7 @@ import { ClipSchema } from '@utils/zod/clip';
 
 import { protectedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
+import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
 
 export const clipRouter = router({
   get: protectedProcedure
@@ -14,10 +15,27 @@ export const clipRouter = router({
     )
     .output(ClipSchema)
     .query(async ({ input, ctx }) => {
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.roleMod,
+          // when this api is used check for owner
+          // itemOwnerId: clip.footage.userId,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       try {
         const clip = await ctx.prisma.clip.findUnique({
           where: {
             id: input.clipId,
+          },
+          include: {
+            footage: true,
           },
         });
 
@@ -41,6 +59,20 @@ export const clipRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.roleMod,
+          // when this api is used check for owner
+          // itemOwnerId: clip.footage.userId,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       try {
         const result = await ctx.prisma.clip.delete({
           where: {
@@ -66,6 +98,18 @@ export const clipRouter = router({
     )
     .output(ClipSchema)
     .mutation(async ({ input, ctx }) => {
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.roleMod,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       try {
         const clip = await ctx.prisma.clip.create({
           data: {
