@@ -125,7 +125,6 @@ importers:
 
   apps/web:
     specifiers:
-      '@babel/core': ^7.0.0
       '@chakra-ui/icons': ^2.0.12
       '@chakra-ui/react': ^2.4.2
       '@emotion/react': ^11.10.5
@@ -159,7 +158,6 @@ importers:
       ytdl-core: ^4.11.2
       zod: ^3.19.1
     dependencies:
-      '@babel/core': 7.20.2
       '@chakra-ui/icons': 2.0.12_xivvz2l3eyrkvszadds3phcwaq
       '@chakra-ui/react': 2.4.2_ydu7fid2w3vesyc65jyv4dbawa
       '@emotion/react': 11.10.5_cuziicjcvwawlf5iuhzacuhqcy
