@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import Image from 'next/image';
+import React from 'react';
 
 const Logo = () => {
   return (
