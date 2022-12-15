@@ -14,6 +14,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
+import WaldoLogo from '../public/android-chrome-256x256.png';
+import GithubLogo from '../public/navbar_github.png';
+
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
   const [y, setY] = useState(0);
@@ -73,12 +76,7 @@ export default function Navigation() {
               alignItems={'center'}
               display={{ base: 'none', md: 'flex' }}
             >
-              <Image
-                src="/android-chrome-256x256.png"
-                width={40}
-                height={40}
-                alt="Logo"
-              />
+              <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
               <Heading size={'md'} pl={3}>
                 Waldo
               </Heading>
@@ -91,7 +89,7 @@ export default function Navigation() {
           </Flex>
         </Flex>
         <Link href={githubIconHref}>
-          <Image alt="Github" src="/navbar_github.png" width={35} height={35} />
+          <Image alt="Github" src={GithubLogo} width={35} height={35} />
         </Link>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
