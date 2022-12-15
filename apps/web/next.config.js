@@ -12,8 +12,12 @@ const nextConfig = {
     ],
   },
   images: {
-    domains: ["cdn.discordapp.com"]
-  }
+    domains: ['cdn.discordapp.com'],
+  },
+  i18n: {
+    locales: ['en-US'],
+    defaultLocale: 'en-US',
+  },
 };
 
 module.exports = nextConfig;
