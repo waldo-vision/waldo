@@ -14,8 +14,7 @@
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
       "@context/*": ["context/*"],
-      "@server/*": ["server/*"],
-      "@redisclient": ["utils/redisClient"]
+      "@server/*": ["server/*"]
     }
   },
   "exclude": ["node_modules"]

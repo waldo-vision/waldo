@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@babel/core": "^7.0.0",
     "@chakra-ui/icons": "^2.0.12",
     "@chakra-ui/layout": "^2.1.11",
     "@chakra-ui/react": "^2.4.2",
@@ -35,6 +34,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
     "react-in-viewport": "1.0.0-alpha.28",
+    "sharp": "^0.31.2",
     "superjson": "^1.11.0",
     "trpc-openapi": "^1.0.0",
     "typescript": "4.8.4",

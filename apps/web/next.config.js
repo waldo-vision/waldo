@@ -17,6 +17,10 @@ const nextConfig = {
   env: {
     YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
   },
+  i18n: {
+    locales: ['en-US'],
+    defaultLocale: 'en-US',
+  },
 };
 
 module.exports = nextConfig;

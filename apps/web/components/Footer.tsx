@@ -10,16 +10,11 @@ import {
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import Image from 'next/image';
+import React from 'react';
+import WaldoLogo from '../public/android-chrome-256x256.png';
 
 const Logo = () => {
-  return (
-    <Image
-      src="/android-chrome-256x256.png"
-      width={40}
-      height={40}
-      alt="Logo"
-    />
-  );
+  return <Image src={WaldoLogo} width={40} height={40} alt="Logo" />;
 };
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
