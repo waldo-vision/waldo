@@ -4,6 +4,7 @@ declare namespace NodeJS {
     REDIS_PORT: number;
     RATELIMIT_MAX_REQUESTS: number;
     RATELIMIT_DURATION: number;
+    YOUTUBE_API_KEY: string;
   }
 }
 declare namespace NodeJS {
@@ -12,5 +13,6 @@ declare namespace NodeJS {
     REDIS_PORT: number;
     RATELIMIT_MAX_REQUESTS: number;
     RATELIMIT_DURATION: number;
+    YOUTUBE_API_KEY: string;
   }
 }

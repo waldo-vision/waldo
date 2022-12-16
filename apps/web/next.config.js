@@ -12,8 +12,11 @@ const nextConfig = {
     ],
   },
   images: {
-    domains: ["cdn.discordapp.com"]
-  }
+    domains: ['cdn.discordapp.com'],
+  },
+  env: {
+    YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
+  },
 };
 
 module.exports = nextConfig;

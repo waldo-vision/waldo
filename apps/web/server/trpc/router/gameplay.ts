@@ -98,7 +98,7 @@ export const gameplayRouter = router({
     .meta({ openapi: { method: 'GET', path: '/gameplay/user' } })
     .input(
       z.object({
-        userId: z.string().cuid().nullish(),
+        userId: z.string().cuid().nullish().optional(),
       }),
     )
     .output(GameplaySchema.array())
@@ -106,8 +106,9 @@ export const gameplayRouter = router({
       // if no user id provided, use user id from session
       // userId should only be passed by system admins, not avg users
       // TODO: check roles and prevent users from getting other users
-      const userId = input.userId === null ? ctx.session.user.id : input.userId;
-
+      const userId =
+        input.userId === null ? ctx.session.user?.id : input.userId;
+      console.log(userId);
       const user = await ctx.prisma.user.findUnique({
         where: {
           id: userId,

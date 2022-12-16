@@ -46,8 +46,9 @@ export const userRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
+      console.log(input.userId);
       try {
-        const userDocument = await ctx.prisma.user.delete({
+        const deletUser = await ctx.prisma.user.delete({
           where: {
             id: input.userId,
           },
@@ -56,10 +57,71 @@ export const userRouter = router({
           message: `Successfully removed user ${input.userId}.`,
         };
       } catch (error) {
+        console.log(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message:
             'An error occured while trying to delete user. Please contact support if this contiunes occuring.',
+          // not sure if its safe to give this to the user
+          cause: error,
+        });
+      }
+    }),
+  getLinkedAccounts: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/user/linkedaccounts' } })
+
+    .output(
+      z.array(
+        z.object({
+          userId: z.string().cuid(),
+          provider: z.string(),
+          id: z.string().cuid(),
+        }),
+      ),
+    )
+    .query(async ({ ctx }) => {
+      try {
+        const linkedAccounts = await ctx.prisma.account.findMany({
+          where: {
+            userId: ctx.session.user?.id,
+          },
+        });
+        return linkedAccounts;
+      } catch (error) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'An error occured while trying to contact the database.',
+          // not sure if its safe to give this to the user
+          cause: error,
+        });
+      }
+    }),
+  unlinkAccount: protectedProcedure
+    .meta({ openapi: { method: 'DELETE', path: '/user/linkedaccounts' } })
+    .input(
+      z.object({
+        accountId: z.string().cuid(),
+      }),
+    )
+    .output(
+      z.object({
+        message: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const deleteAccount = await ctx.prisma.account.delete({
+          where: {
+            id: input.accountId,
+          },
+        });
+        return {
+          message: `Successfully deleted the account with id: ${input.accountId}.`,
+        };
+      } catch (error) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `An error occured while attempting to delete the account with id: ${input.accountId}.`,
           // not sure if its safe to give this to the user
           cause: error,
         });

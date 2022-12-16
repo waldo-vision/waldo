@@ -1,11 +1,10 @@
-// just creating helper functions... no logic or type etc rn.
 const api_url = 'http://localhost:4500/';
 const handleUploadFileLogic = async (
   url: string | undefined,
   userId: string | number,
   type: string,
 ) => {
-  let result;  
+  let result;
   const options = {
     method: 'POST',
     body: JSON.stringify({ id: userId, url: url, type: type }),
@@ -23,7 +22,7 @@ const handleUploadFileLogic = async (
       };
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     result = {
       message:
         'Sorry, but our server seems to be down. Please try again later.',
@@ -42,4 +41,23 @@ const checkURL = (url: string): boolean => {
   }
   return false;
 };
-export { handleUploadFileLogic, checkURL };
+
+const getYtVidDataFromId = async (videoId: string) => {
+  console.log('ran');
+  const baseUrl =
+    'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=';
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  };
+  const url = baseUrl + videoId + '&key=' + `${process.env.YOUTUBE_API_KEY}`;
+  try {
+    const request = await fetch(url, options);
+    const res = await request.json();
+    return res.items[0].snippet;
+  } catch (error) {
+    throw new Error('Error Fetching');
+  }
+};
+
+export { handleUploadFileLogic, checkURL, getYtVidDataFromId };

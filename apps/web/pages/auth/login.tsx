@@ -19,14 +19,7 @@ import { Session } from 'next-auth';
 import { signIn, getSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import React, { ReactElement, useState, useEffect } from 'react';
-import {
-  FaDiscord,
-  FaGithub,
-  FaGoogle,
-  FaBattleNet,
-  FaSteam,
-  FaApple,
-} from 'react-icons/fa';
+import { FaDiscord, FaBattleNet, FaSteam, FaApple } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { BsGithub } from 'react-icons/bs';
 import { SiFaceit } from 'react-icons/si';
