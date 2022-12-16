@@ -64,7 +64,10 @@ export default function index() {
                     <b>Upload</b> or <b>Review</b> community clips.
                   </Text>
                 </Heading>
-                <Text maxW={'4xl'}>
+                <Text
+                  maxW={'4xl'}
+                  fontSize={{ base: 0, sm: 0, md: 16, lg: 16 }}
+                >
                   To aid Waldo's progress, we need the community to post and
                   submit their own gameplay video! We now accept a broad variety
                   of first-person shooter games which can be found on the upload

@@ -93,7 +93,7 @@ export default function Account() {
           <>
             <DeleteAccModal show={showM} />
             <Box bg={'white'} p={8} borderRadius={12}>
-              <Flex direction={'column'} w={'lg'}>
+              <Flex direction={'column'} w={{ base: 'xs', md: 'sm', lg: 'xl' }}>
                 {/* heading */}
                 <Box>
                   <Text fontWeight={'bold'} fontSize={30}>

@@ -45,7 +45,7 @@ import Loading from '@components/Loading';
 import { trpc } from '@utils/trpc';
 import { inferProcedureInput } from '@trpc/server';
 import { AppRouter } from '@server/trpc/router/_app';
-
+import { useRouter } from 'next/router';
 const Upload = () => {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -58,6 +58,7 @@ const Upload = () => {
   const [userSession, setUserSession] = useState<Session | undefined>();
   const toast = useToast();
   const utils = trpc.useContext();
+  const router = useRouter();
 
   const createGameplay = trpc.gameplay.createGameplay.useMutation({
     async onSuccess() {
@@ -106,12 +107,11 @@ const Upload = () => {
   const getCurrentSession = async () => {
     const session = await getSession();
     if (session === null) {
-      setUserSession(undefined);
+      router.push('/auth/login');
     } else {
       setUserSession(session);
+      setLoading(false);
     }
-    setLoading(false);
-    console.log(session);
   };
 
   const createToast = (msg: string, type: any, title: string) => {
@@ -186,6 +186,7 @@ const Upload = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getCurrentSession();
   }, []);
   return (
@@ -199,8 +200,10 @@ const Upload = () => {
           <Flex direction={{ lg: 'row', base: 'column' }}>
             <Container width={{ lg: '30%' }}>
               <Flex gap={5} direction={'column'}>
-                <Heading>Sumbit Your Clips</Heading>
-                <Text>
+                <Heading mt={{ base: 16, md: 0, lg: 0, sm: 16 }}>
+                  Submit Your Clips
+                </Heading>
+                <Text fontSize={{ base: 0, sm: 0, md: 14, lg: 14 }}>
                   Before you submit a video make sure you have read the rules
                   regarding
                 </Text>

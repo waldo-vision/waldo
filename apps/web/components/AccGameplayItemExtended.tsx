@@ -14,6 +14,12 @@ import { trpc } from '@utils/trpc';
 import Loading from './Loading';
 import { BiTrash } from 'react-icons/bi';
 import { getYtVidDataFromId } from '@utils/helpers/apiHelper';
+// TODO
+interface Item {}
+
+interface Id {
+  id: string;
+}
 const AccGameplayItemExtended = ({ item, id }) => {
   const [meta, setMeta] = useState();
   const utils = trpc.useContext();
@@ -65,21 +71,28 @@ const AccGameplayItemExtended = ({ item, id }) => {
             <Spinner color={'default'} size={'sm'} mt={2} />
           ) : (
             <>
-              <Text fontSize={16} fontWeight={'bold'}>
-                {meta && meta.title.substring(0, 15) + ' ...'}
+              <Text
+                fontSize={{ base: 0, sm: 0, md: 16, lg: 16 }}
+                fontWeight={'bold'}
+              >
+                {meta && meta.title.substring(0, 15) + '...'}
               </Text>
-              <Text fontSize={8}>{item && item.youtubeUrl}</Text>
+              <Text fontSize={{ base: 0, sm: 0, md: 8, lg: 8 }}>
+                {item && item.youtubeUrl}
+              </Text>
             </>
           )}
         </Box>
-        <Button
-          ml={3}
-          variant={'ghost'}
-          color={'red'}
-          onClick={() => deleteGameplay()}
-        >
-          <BiTrash size={20} />
-        </Button>
+        <Flex ml={'auto'} right={0}>
+          <Button
+            ml={3}
+            variant={'ghost'}
+            color={'red'}
+            onClick={() => deleteGameplay()}
+          >
+            <BiTrash size={20} />
+          </Button>
+        </Flex>
       </Flex>
     </div>
   );

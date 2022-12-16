@@ -76,8 +76,18 @@ const AccGameplayItems = () => {
                     <Center>
                       <Image
                         src={getThumbnail(item.youtubeUrl)}
-                        height={'60px'}
-                        width={'90px'}
+                        height={{
+                          base: '40px',
+                          sm: '40px',
+                          md: '40px',
+                          lg: '60px',
+                        }}
+                        width={{
+                          base: '60px',
+                          sm: '60px',
+                          md: '60px',
+                          lg: '90px',
+                        }}
                         borderRadius={14}
                         onClick={() => {
                           console.log(gameplayItems);
