@@ -9,6 +9,7 @@ import {
   Collapse,
   useDisclosure,
   Heading,
+  Chakra,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -178,5 +179,15 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'Community',
     href: 'https://discord.gg/qJWcsS9TyT',
     pathName: null,
+  },
+  {
+    label: 'Account',
+    href: '/account',
+    pathName: '/account',
+  },
+  {
+    label: 'Login',
+    href: '/auth/login',
+    pathName: '/auth/login',
   },
 ];

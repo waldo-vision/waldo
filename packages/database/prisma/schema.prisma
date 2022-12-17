@@ -14,7 +14,7 @@ datasource db {
 
 model Footage {
   id           String         @id @default(cuid())
-  user         User           @relation(fields: [userId], references: [id])
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
   footageVotes FootageVotes[] @relation("footage")
   youtubeUrl   String         @unique

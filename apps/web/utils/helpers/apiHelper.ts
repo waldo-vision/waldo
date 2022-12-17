@@ -1,11 +1,10 @@
-// just creating helper functions... no logic or type etc rn.
 const api_url = 'http://localhost:4500/';
 const handleUploadFileLogic = async (
   url: string | undefined,
   userId: string | number,
   type: string,
 ) => {
-  let result;  
+  let result;
   const options = {
     method: 'POST',
     body: JSON.stringify({ id: userId, url: url, type: type }),
@@ -23,7 +22,7 @@ const handleUploadFileLogic = async (
       };
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     result = {
       message:
         'Sorry, but our server seems to be down. Please try again later.',
@@ -42,4 +41,5 @@ const checkURL = (url: string): boolean => {
   }
   return false;
 };
+
 export { handleUploadFileLogic, checkURL };

@@ -13,23 +13,23 @@ import {
   ModalFooter,
   Square,
   Divider,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Image,
 } from '@chakra-ui/react';
 import Layout from '@components/Layout';
 import { Session } from 'next-auth';
 import { signIn, getSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import React, { ReactElement, useState, useEffect } from 'react';
-import {
-  FaDiscord,
-  FaGithub,
-  FaGoogle,
-  FaBattleNet,
-  FaSteam,
-  FaApple,
-} from 'react-icons/fa';
+import { FaDiscord, FaBattleNet, FaSteam, FaApple } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { BsGithub } from 'react-icons/bs';
 import { SiFaceit } from 'react-icons/si';
+import LoginTabItems from '@components/LoginTabItems';
 const Login = () => {
   type Provider = {
     provider: string;
@@ -46,6 +46,8 @@ const Login = () => {
     const session = await getSession();
     setUserSession(session);
   };
+
+  const tabItems = [{}, {}, {}];
 
   const handleSelect = (index: number) => {
     setCurrentProvider(authProviders[index].provider.toLowerCase());
@@ -118,10 +120,40 @@ const Login = () => {
 
   return (
     <div>
-      <Flex direction={'row'} minHeight={'100vh'} position={'relative'}>
-        <Flex color="white">
-          <Box w={'xl'} bottom="0">
-            <Text position={'absolute'} bottom="0"></Text>
+      <Flex direction={'row'} minHeight={'0vh'} position={'relative'}>
+        <Flex
+          color="white"
+          w={{ base: 0, md: 0, lg: 'xl' }}
+          h={{ base: 0, md: 0, lg: 'auto' }}
+        >
+          <Box w={{ base: 0, md: 0, lg: 'xl' }} bottom="0" mt={'auto'} mb={12}>
+            <Center h={{ base: 0, md: 0, lg: '100vh' }}>
+              <Image
+                src={'/group.png'}
+                width={'xl'}
+                height={{ base: 0, md: 0, lg: '305px' }}
+              />
+            </Center>
+            {/* add in v1.1 */}
+            {/* <LoginTabItems /> */}
+            <Flex alignItems={'left'} mx={12} direction={'column'}>
+              <Text
+                fontWeight={'bold'}
+                fontSize={{ base: 0, md: 20, lg: 30 }}
+                color={'gray.600'}
+                mb={2}
+              >
+                Sign up
+              </Text>
+              <Text
+                fontWeight={'semibold'}
+                fontSize={{ base: 0, md: 10, lg: 20 }}
+                color={'gray.600'}
+              >
+                To access uploading and reviewing community clips you must be
+                logged in
+              </Text>
+            </Flex>
           </Box>
         </Flex>
         <Box w={'full'} bg="white">
@@ -183,7 +215,10 @@ const Login = () => {
                               >
                                 {provider}
                               </Text>
-                              <Text color={selected ? 'white' : ''}>
+                              <Text
+                                color={selected ? 'white' : ''}
+                                fontSize={{ md: 0, base: 0, lg: 14 }}
+                              >
                                 Use your {provider} account to gain access to
                                 waldo services.
                               </Text>
@@ -196,7 +231,11 @@ const Login = () => {
                       <Center>
                         <Button variant="none" mr={6}>
                           <Link href={docs}>
-                            <Text color={selected ? 'white' : ''}>
+                            <Text
+                              color={selected ? 'white' : ''}
+                              fontSize={{ base: 10, sm: 10, md: 10, lg: 10 }}
+                              textOverflow={'ellipsis'}
+                            >
                               Learn More
                             </Text>
                           </Link>

@@ -8,12 +8,6 @@ import { Prisma, PrismaClient } from 'database';
 import { redisClient } from '@server/utils/redisClient';
 import RateLimiter from 'async-ratelimiter';
 
-const rateLimiter = new RateLimiter({
-  db: redisClient,
-  max: process.env.RATELIMIT_MAX_REQUESTS,
-  duration: process.env.RATELIMIT_DURATION,
-});
-
 const t = initTRPC
   .context<Context>()
   .meta<OpenApiMeta>()
@@ -49,10 +43,6 @@ const isAuthed = t.middleware(({ ctx, next }) => {
 });
 
 const rateLimit = t.middleware(async ({ ctx, next }) => {
-  const limit = await rateLimiter.get({ id: ctx.session?.user?.id });
-  if (!limit.remaining) {
-    throw new TRPCError({ code: 'TOO_MANY_REQUESTS' });
-  }
   return next({
     ctx: {
       // infers the `session` as non-nullable
@@ -64,4 +54,4 @@ const rateLimit = t.middleware(async ({ ctx, next }) => {
 /**
  * Protected procedure
  **/
-export const protectedProcedure = t.procedure.use(isAuthed).use(rateLimit);
+export const protectedProcedure = t.procedure.use(isAuthed);
