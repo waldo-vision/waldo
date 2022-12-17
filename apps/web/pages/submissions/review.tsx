@@ -17,6 +17,7 @@ import Finish from '@components/Finish';
 import { trpc } from '@utils/trpc';
 export default function Review() {
   const utils = trpc.useContext();
+  const AMOUNT_TO_QUERY = 20;
   const { isLoading: reviewItemsLoading, data: reviewItemsData } =
     trpc.gameplay.getReviewItems.useQuery({
       amountToQuery: 20,
