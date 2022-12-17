@@ -10,8 +10,6 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
-import Loading from './Loading';
-import { getYtVidDataFromId } from '@utils/helpers/apiHelper';
 import AccGameplayItemExtended from './AccGameplayItemExtended';
 interface Gameplay {
   id: string;
@@ -72,6 +70,7 @@ const AccGameplayItems = () => {
                     mt={2}
                     boxShadow={'lg'}
                     borderRadius={14}
+                    key={index}
                   >
                     <Center>
                       <Image

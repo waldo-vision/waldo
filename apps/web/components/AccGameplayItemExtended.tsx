@@ -21,23 +21,31 @@ interface Id {
   id: string;
 }
 const AccGameplayItemExtended = ({ item, id }) => {
-  const [meta, setMeta] = useState();
+  const [meta, setMeta] = useState<String>();
   const utils = trpc.useContext();
   const deleteGameplayTrpc = trpc.gameplay.deleteGameplay.useMutation({
     async onSuccess() {
       await utils.gameplay.invalidate();
     },
   });
+  const { isLoading, data, refetch } = trpc.util.getYtVidDataFromId.useQuery(
+    {
+      videoId: id,
+    },
+    {
+      enabled: false,
+    },
+  );
   const [componentLoading, setComponentLoading] = useState<boolean>(true);
   const toast = useToast();
   const getd = async () => {
-    const data = await getYtVidDataFromId(id);
-    setMeta(data);
+    refetch();
+    setMeta(data?.title);
     setComponentLoading(false);
   };
   useEffect(() => {
     getd();
-  }, [item]);
+  }, [item, data]);
 
   const deleteGameplay = () => {
     try {
@@ -75,7 +83,7 @@ const AccGameplayItemExtended = ({ item, id }) => {
                 fontSize={{ base: 0, sm: 0, md: 16, lg: 16 }}
                 fontWeight={'bold'}
               >
-                {meta && meta.title.substring(0, 15) + '...'}
+                {meta && meta.substring(0, 15) + '...'}
               </Text>
               <Text fontSize={{ base: 0, sm: 0, md: 8, lg: 8 }}>
                 {item && item.youtubeUrl}

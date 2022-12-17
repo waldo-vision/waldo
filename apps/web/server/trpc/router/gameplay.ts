@@ -1,6 +1,10 @@
 import { TRPCError } from '@trpc/server';
 import ytdl from 'ytdl-core';
-import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
+import {
+  GameplayPlusUserSchema,
+  GameplaySchema,
+  GameplayTypes,
+} from '@utils/zod/gameplay';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
@@ -224,5 +228,75 @@ export const gameplayRouter = router({
           cause: error,
         });
       }
+    }),
+  getReviewItems: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/gameplay/review' } })
+    .input(
+      z.object({
+        amountToQuery: z.number(),
+      }),
+    )
+    .output(z.array(GameplayPlusUserSchema))
+    .query(async ({ input, ctx }) => {
+      const reviewItems = await ctx.prisma.footage.findMany({
+        take: input.amountToQuery,
+        include: {
+          user: true,
+        },
+      });
+      if (reviewItems === null)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `Could not query ${input.amountToQuery} gameplay documents`,
+        });
+
+      return reviewItems;
+    }),
+  reviewGameplay: protectedProcedure
+    .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })
+    .input(
+      z.object({
+        gameplayId: z.string().cuid(),
+        upVotes: z.number().optional(),
+        downVotes: z.number().optional(),
+      }),
+    )
+    .output(z.object({ message: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      if (input.upVotes == null) {
+        const updateDownVotes = await ctx.prisma.footage.update({
+          where: {
+            id: input.gameplayId,
+          },
+          data: {
+            downVotes: {
+              increment: input.downVotes,
+            },
+          },
+        });
+        if (updateDownVotes === null)
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: `Could not find a gameplay document with id:${input.gameplayId}.`,
+          });
+      } else {
+        const updateUpVotes = await ctx.prisma.footage.update({
+          where: {
+            id: input.gameplayId,
+          },
+          data: {
+            upVotes: {
+              increment: input.upVotes,
+            },
+          },
+        });
+        if (updateUpVotes === null)
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: `Could not find a gameplay document with id:${input.gameplayId}.`,
+          });
+      }
+
+      return { message: 'Updated the gameplay document successfully.' };
     }),
 });
