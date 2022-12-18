@@ -2,7 +2,6 @@ import Layout from '@components/Layout';
 import { checkURL } from '@utils/helpers/apiHelper';
 import { ReactElement, useEffect, useState } from 'react';
 import { AlertStatus } from '@chakra-ui/alert';
-import { Turnstile } from '@marsidev/react-turnstile';
 import {
   Button,
   Center,
@@ -32,6 +31,7 @@ import {
 import { Session } from 'next-auth';
 import { getSession, signOut } from 'next-auth/react';
 import Loading from '@components/Loading';
+import TurnstileWidget from '@components/TurnstileWidget';
 import { trpc } from '@utils/trpc';
 import { inferProcedureInput } from '@trpc/server';
 import { AppRouter } from '@server/trpc/router/_app';
@@ -56,7 +56,6 @@ const Upload = () => {
       await utils.gameplay.invalidate();
     },
   });
-
   const handleRequestError = async (error: TRPCError | string) => {
     setWaitingForResponse(false);
     setRequestDone(true);
@@ -197,6 +196,7 @@ const Upload = () => {
                   Before you submit a video make sure you have read the rules
                   regarding
                 </Text>
+                <TurnstileWidget />
               </Flex>
             </Container>
             <Container>
@@ -367,16 +367,6 @@ const Upload = () => {
                 </Flex>
               </Box>
             </Container>
-            <Flex mt={'auto'} bottom={0} position={'absolute'}>
-              <Turnstile
-                siteKey="0x4AAAAAAABo8HTQWDGAUKf_"
-                options={{
-                  theme: 'light',
-                  size: 'normal',
-                }}
-                onSuccess={res => console.log(res)}
-              />
-            </Flex>
           </Flex>
         </Center>
       )}
