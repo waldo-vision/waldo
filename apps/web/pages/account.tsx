@@ -1,12 +1,4 @@
-import {
-  Box,
-  Text,
-  Button,
-  Center,
-  Flex,
-  Tag,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Text, Button, Center, Flex, useToast } from '@chakra-ui/react';
 import Layout from '@components/Layout';
 import { useState, useEffect } from 'react';
 import { signOut, getSession } from 'next-auth/react';
@@ -34,20 +26,6 @@ export default function Account() {
   const [showM, setShowM] = useState(false);
   const [siteLoading, setSiteLoading] = useState<boolean>(true);
   const router = useRouter();
-  const getCurrentSession = async () => {
-    const session = await getSession();
-    if (session) {
-      setUserSession(session);
-    } else {
-      router.push('/auth/login');
-    }
-    setSiteLoading(false);
-  };
-  const getNecessaryData = () => {
-    if (!laLoading) setLinkedAccounts(laData);
-    // in the future perhaps we add getting names for linked accounts, so we make a query here to get the user model
-    // associated with the linked account.
-  };
 
   const handleAccountDeletion = async () => {
     if (showM) {
@@ -57,7 +35,11 @@ export default function Account() {
     }
   };
 
-  const unlinkProvider = async account => {
+  const unlinkProvider = async (account: {
+    id: string;
+    userId: string;
+    provider: string;
+  }) => {
     console.log(account);
     try {
       await unlinkAccount.mutateAsync({ accountId: account.id });
@@ -73,7 +55,7 @@ export default function Account() {
       toast({
         position: 'bottom-right',
         title: 'Unlink Account',
-        description: error.message,
+        description: 'An unexpected error occured, please try again later.',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -81,9 +63,23 @@ export default function Account() {
     }
   };
   useEffect(() => {
+    const getCurrentSession = async () => {
+      const session = await getSession();
+      if (session) {
+        setUserSession(session);
+      } else {
+        router.push('/auth/login');
+      }
+      setSiteLoading(false);
+    };
+    const getNecessaryData = () => {
+      if (!laLoading) setLinkedAccounts(laData);
+      // in the future perhaps we add getting names for linked accounts, so we make a query here to get the user model
+      // associated with the linked account.
+    };
     getCurrentSession();
     getNecessaryData();
-  }, [laData]);
+  }, [laData, laLoading, router]);
   return (
     <div>
       <Center h={'100vh'}>
@@ -128,7 +124,7 @@ export default function Account() {
                                   <Text fontSize={'xx-small'} ml={2}>
                                     {account.provider.toUpperCase()}{' '}
                                     {account.provider ==
-                                    userSession?.user?.provider
+                                      userSession?.user?.provider
                                       ? 'Primary'
                                       : 'Secondary'}
                                   </Text>
@@ -139,13 +135,13 @@ export default function Account() {
                           <Box mt={2} ml={2}>
                             {account.provider !=
                               userSession?.user?.provider && (
-                              <FaMinusCircle
-                                size={15}
-                                color={'red'}
-                                onClick={() => unlinkProvider(account)}
-                                cursor={'pointer'}
-                              />
-                            )}
+                                <FaMinusCircle
+                                  size={15}
+                                  color={'red'}
+                                  onClick={() => unlinkProvider(account)}
+                                  cursor={'pointer'}
+                                />
+                              )}
                           </Box>
                         </Flex>
                       ))}

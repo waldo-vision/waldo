@@ -11,25 +11,17 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalFooter,
-  Square,
   Divider,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
   Image,
 } from '@chakra-ui/react';
-import Layout from '@components/Layout';
 import { Session } from 'next-auth';
 import { signIn, getSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
-import React, { ReactElement, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FaDiscord, FaBattleNet, FaSteam, FaApple } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { BsGithub } from 'react-icons/bs';
 import { SiFaceit } from 'react-icons/si';
-import LoginTabItems from '@components/LoginTabItems';
 const Login = () => {
   type Provider = {
     provider: string;
@@ -47,16 +39,14 @@ const Login = () => {
     setUserSession(session);
   };
 
-  const tabItems = [{}, {}, {}];
-
   const handleSelect = (index: number) => {
+    if (!authProviders) return;
     setCurrentProvider(authProviders[index].provider.toLowerCase());
     setLastSelected(index);
     if (lastSelected == null) {
       const val = authProviders[index];
       val.selected = !val.selected;
     } else {
-      const resetLastItem = (authProviders[lastSelected].selected = false);
       const val = authProviders[index];
       val.selected = !val.selected;
     }
@@ -73,47 +63,46 @@ const Login = () => {
     signIn(currentProvider);
   };
 
-  let providers = [
-    {
-      provider: 'Discord',
-      docs: 'https://example.com',
-      hex: '#5865F2',
-      selected: false,
-    },
-    { provider: 'Google', docs: 'https://example.com', selectedd: false },
-    {
-      provider: 'Github',
-      docs: 'https://example.com',
-      hex: '#000000',
-      selected: false,
-    },
-    {
-      provider: 'BattleNET',
-      docs: 'https://example.com',
-      hex: '#009AE4',
-      selected: false,
-    },
-    {
-      provider: 'Faceit',
-      docs: 'https://example.com',
-      hex: '#FF5500',
-      selected: false,
-    },
-    {
-      provider: 'Steam',
-      docs: 'https://example.com',
-      hex: '#00adee',
-      selected: false,
-    },
-    {
-      provider: 'Apple',
-      docs: 'https://example.com',
-      hex: '#000000',
-      selected: false,
-    },
-  ];
-
   useEffect(() => {
+    const providers = [
+      {
+        provider: 'Discord',
+        docs: 'https://example.com',
+        hex: '#5865F2',
+        selected: false,
+      },
+      { provider: 'Google', docs: 'https://example.com', selectedd: false },
+      {
+        provider: 'Github',
+        docs: 'https://example.com',
+        hex: '#000000',
+        selected: false,
+      },
+      {
+        provider: 'BattleNET',
+        docs: 'https://example.com',
+        hex: '#009AE4',
+        selected: false,
+      },
+      {
+        provider: 'Faceit',
+        docs: 'https://example.com',
+        hex: '#FF5500',
+        selected: false,
+      },
+      {
+        provider: 'Steam',
+        docs: 'https://example.com',
+        hex: '#00adee',
+        selected: false,
+      },
+      {
+        provider: 'Apple',
+        docs: 'https://example.com',
+        hex: '#000000',
+        selected: false,
+      },
+    ];
     retrieveUserSession();
     setAuthProviders(providers);
   }, []);
@@ -132,6 +121,7 @@ const Login = () => {
                 src={'/group.png'}
                 width={'xl'}
                 height={{ base: 0, md: 0, lg: '305px' }}
+                alt={'Group'}
               />
             </Center>
             {/* add in v1.1 */}
@@ -169,7 +159,6 @@ const Login = () => {
               <Box
                 w={'full'}
                 mt={12}
-                mb={provider == 'Apple' && 12}
                 cursor={'pointer'}
                 onClick={() => handleSelect(index)}
                 key={index}

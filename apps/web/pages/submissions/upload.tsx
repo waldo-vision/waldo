@@ -1,26 +1,16 @@
 import Layout from '@components/Layout';
-import React, { FormEvent } from 'react';
 import { checkURL } from '@utils/helpers/apiHelper';
 import { ReactElement, useEffect, useState } from 'react';
+import { AlertStatus } from '@chakra-ui/alert';
 import {
   Button,
   Center,
   Text,
   Flex,
-  FormControl,
-  FormLabel,
   Input,
-  FormHelperText,
   useToast,
   Box,
   SlideFade,
-  PopoverTrigger,
-  Popover,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverFooter,
   Menu,
   MenuButton,
   MenuList,
@@ -29,7 +19,6 @@ import {
   Image as CIMG,
   Checkbox,
   chakra,
-  Spinner,
   Container,
   Heading,
 } from '@chakra-ui/react';
@@ -82,14 +71,14 @@ const Upload = () => {
     setRequestDone(false);
   };
 
-  let games = [
+  const games = [
     { name: 'Counter Strike: Global Offensive', shortName: 'csg' },
     { name: 'VALORANT', shortName: 'val' },
     { name: 'Team Fortress 2', shortName: 'tf2' },
     { name: 'Apex Legends', shortName: 'ape' },
   ];
 
-  let options = [
+  const options = [
     {
       option: 'Do you have permission from the owner to submit?',
       checked: false,
@@ -104,17 +93,7 @@ const Upload = () => {
     },
   ];
 
-  const getCurrentSession = async () => {
-    const session = await getSession();
-    if (session === null) {
-      router.push('/auth/login');
-    } else {
-      setUserSession(session);
-      setLoading(false);
-    }
-  };
-
-  const createToast = (msg: string, type: any, title: string) => {
+  const createToast = (msg: string, type: AlertStatus, title: string) => {
     toast({
       position: 'bottom-right',
       title: title,
@@ -146,7 +125,7 @@ const Upload = () => {
     );
   };
 
-  const handleClipUpload = async (e: FormEvent<HTMLFormElement>) => {
+  const handleClipUpload = async () => {
     if (requestDone) {
       setSelectedGame('csg');
       setCurrentUrl('');
@@ -186,9 +165,18 @@ const Upload = () => {
   };
 
   useEffect(() => {
+    const getCurrentSession = async () => {
+      const session = await getSession();
+      if (session === null) {
+        router.push('/auth/login');
+      } else {
+        setUserSession(session);
+        setLoading(false);
+      }
+    };
     setLoading(true);
     getCurrentSession();
-  }, []);
+  }, [router]);
   return (
     <div>
       {loading ? (
@@ -299,7 +287,7 @@ const Upload = () => {
                             required={true}
                             mb={3}
                             onChange={event => {
-                              let target = event.target;
+                              const target = event.target;
                               if (target.checked) {
                                 setLegalConfirmations(legalConfirmations + 1);
                               } else {
@@ -341,7 +329,7 @@ const Upload = () => {
                         colorScheme={'blackAlpha'}
                         boxShadow="lg"
                         mt={5}
-                        onClick={event => handleClipUpload(event)}
+                        onClick={() => handleClipUpload()}
                         isLoading={waitingForResponse}
                       >
                         {!requestDone ? (

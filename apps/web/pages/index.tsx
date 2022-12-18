@@ -19,7 +19,6 @@ import ScansImage from '../public/Scans.png';
 import Image from 'next/image';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useInViewport } from 'react-in-viewport';
 import { FaCodeBranch, FaRocket } from 'react-icons/fa';
 import { MdAllInclusive, MdMoneyOff, MdInfoOutline } from 'react-icons/md';
 import { HiUpload } from 'react-icons/hi';
@@ -267,13 +266,21 @@ const Feature = ({ title, text, image }: FeatureProps) => {
 const Features = () => {
   return (
     <Container maxW={'7xl'}>
-       <Grid
+      <Grid
         h={{ sm: '1250px', md: '650px' }}
         templateRows={{ md: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' }}
         templateColumns={{ md: 'repeat(5, 1fr)', sm: 'repeat(2, 1fr)' }}
         gap={4}
       >
-        <GridItem rowSpan={{ sm: 2, md: 2 }} colSpan={{ sm: 3, md: 2 }} bg={"#8552D910"} overflow={'hidden'} p={3} textAlign={'center'} borderRadius={'16px'} >
+        <GridItem
+          rowSpan={{ sm: 2, md: 2 }}
+          colSpan={{ sm: 3, md: 2 }}
+          bg={'#8552D910'}
+          overflow={'hidden'}
+          p={3}
+          textAlign={'center'}
+          borderRadius={'16px'}
+        >
           <Center h={'100%'}>
             <Flex align={'center'} direction={'column'} gap={{ md: 20, sm: 5 }}>
               <Flex direction={'column'}>

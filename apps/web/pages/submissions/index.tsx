@@ -1,24 +1,11 @@
-import {
-  Container,
-  Center,
-  Flex,
-  Heading,
-  Button,
-  Text,
-  Card,
-  Box,
-  Image,
-  Stack,
-  CardBody,
-  CardFooter,
-} from '@chakra-ui/react';
+import { Container, Center, Flex, Heading, Text, Box } from '@chakra-ui/react';
 import { ReactElement, useEffect, useState } from 'react';
 import Layout from '@components/Layout';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Session } from 'next-auth';
-import { getSession, signOut } from 'next-auth/react';
-export default function index() {
+import { getSession } from 'next-auth/react';
+export default function Index() {
   const [userSession, setUserSession] = useState<Session | null>();
 
   const getCurrentSession = async () => {
@@ -68,12 +55,12 @@ export default function index() {
                   maxW={'4xl'}
                   fontSize={{ base: 0, sm: 0, md: 16, lg: 16 }}
                 >
-                  To aid Waldo's progress, we need the community to post and
-                  submit their own gameplay video! We now accept a broad variety
-                  of first-person shooter games which can be found on the upload
-                  page. To help the project forward, we are seeking for manual
-                  reviewers to ensure the game uploaded is under the right
-                  title.
+                  To aid Waldo&apos;s progress, we need the community to post
+                  and submit their own gameplay video! We now accept a broad
+                  variety of first-person shooter games which can be found on
+                  the upload page. To help the project forward, we are seeking
+                  for manual reviewers to ensure the game uploaded is under the
+                  right title.
                 </Text>
               </Flex>
             </Box>
@@ -99,13 +86,19 @@ export default function index() {
                 </Link>
               </Box>
             </Flex>
-            <Text>You are logged in as {userSession?.user.name}</Text>
+            {userSession?.user?.name ? (
+              <Text>You are logged in as {userSession.user.name}</Text>
+            ) : (
+              <Text>
+                You must be signed in to upload or review submissions.
+              </Text>
+            )}
           </Flex>
         </Center>
       </Container>
     </>
   );
 }
-index.getLayout = function getLayout(page: ReactElement) {
+Index.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
