@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.2.0",
-    "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*"
+    "eslint-config-custom": "*",
+    "tsconfig": "*"
   }
 }

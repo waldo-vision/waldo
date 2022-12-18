@@ -25,7 +25,7 @@
     "@types/react-dom": "^18.0.7",
     "@upstash/ratelimit": "^0.1.5",
     "@upstash/redis": "^1.18.1",
-    "database": "workspace:*",
+    "database": "*",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.0",
     "framer-motion": "^7.6.6",
@@ -42,7 +42,7 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*"
+    "eslint-config-custom": "*",
+    "tsconfig": "*"
   }
 }

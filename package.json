@@ -18,9 +18,9 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "eslint": "latest",
-    "eslint-config-custom": "workspace:0.0.0",
+    "eslint-config-custom": "0.0.0",
     "prettier": "latest",
-    "tsconfig": "workspace:0.0.0",
+    "tsconfig": "0.0.0",
     "turbo": "latest",
     "typescript": "^4.8.4"
   },
