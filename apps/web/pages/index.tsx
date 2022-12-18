@@ -1,6 +1,5 @@
 /* eslint-disable arrow-parens */
 import { ReactElement, useEffect, useState, useRef } from 'react';
-import { Turnstile } from '@marsidev/react-turnstile';
 import {
   Button,
   ButtonGroup,
@@ -51,13 +50,6 @@ export default function Home() {
       </Head>
 
       <Flex direction={'column'} gap={25} mb={150}>
-        <Turnstile
-          siteKey="0x4AAAAAAABo8HTQWDGAUKf_"
-          options={{
-            theme: 'light',
-            size: 'normal',
-          }}
-        />
         <Container display={{ base: 'none', lg: 'fixed' }}>
           <Image
             style={{

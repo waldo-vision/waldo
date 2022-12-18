@@ -127,4 +127,37 @@ export const userRouter = router({
         });
       }
     }),
+  verifyUser: protectedProcedure
+    .meta({ openapi: { method: 'PUT', path: '/user/verify' } })
+    .input(
+      z.object({
+        tsToken: z.string(),
+      }),
+    )
+    .output(
+      z.object({
+        message: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const endpoint =
+        'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+      const secret = '0x4AAAAAAABo8KRLiXVr1Z4-RucWMfEmZls';
+      const body = `secret=${encodeURIComponent(
+        secret,
+      )}&response=${encodeURIComponent(input.tsToken)}`;
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        body,
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      const data = await res.json();
+      console.log(data);
+      return {
+        message: `Contacted the api.`,
+      };
+    }),
 });

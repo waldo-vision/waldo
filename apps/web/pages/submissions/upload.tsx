@@ -2,6 +2,7 @@ import Layout from '@components/Layout';
 import { checkURL } from '@utils/helpers/apiHelper';
 import { ReactElement, useEffect, useState } from 'react';
 import { AlertStatus } from '@chakra-ui/alert';
+import { Turnstile } from '@marsidev/react-turnstile';
 import {
   Button,
   Center,
@@ -366,6 +367,16 @@ const Upload = () => {
                 </Flex>
               </Box>
             </Container>
+            <Flex mt={'auto'} bottom={0} position={'absolute'}>
+              <Turnstile
+                siteKey="0x4AAAAAAABo8HTQWDGAUKf_"
+                options={{
+                  theme: 'light',
+                  size: 'normal',
+                }}
+                onSuccess={res => console.log(res)}
+              />
+            </Flex>
           </Flex>
         </Center>
       )}
