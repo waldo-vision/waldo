@@ -52,7 +52,7 @@ export default function Home() {
 
       <Flex direction={'column'} gap={25} mb={150}>
         <Turnstile
-          siteKey="2x00000000000000000000AB"
+          siteKey="0x4AAAAAAABo8HTQWDGAUKf_"
           options={{
             theme: 'light',
             size: 'normal',
