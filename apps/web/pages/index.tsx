@@ -1,6 +1,8 @@
 /* eslint-disable arrow-parens */
 import { ReactElement, useEffect, useState, useRef } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import {
+  Box,
   Button,
   ButtonGroup,
   Center,
@@ -48,7 +50,15 @@ export default function Home() {
           content="Waldo is an Open-source visual cheat detection, powered by A.I"
         />
       </Head>
+
       <Flex direction={'column'} gap={25} mb={150}>
+        <Turnstile
+          siteKey="2x00000000000000000000AB"
+          options={{
+            theme: 'light',
+            size: 'normal',
+          }}
+        />
         <Container display={{ base: 'none', lg: 'fixed' }}>
           <Image
             style={{
