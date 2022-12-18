@@ -1768,7 +1768,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/react@npm:^2.4.2":
+"@chakra-ui/react@npm:^2.4.2, @chakra-ui/react@npm:^2.4.4":
   version: 2.4.4
   resolution: "@chakra-ui/react@npm:2.4.4"
   dependencies:
@@ -2959,7 +2959,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.20.4":
+"@tanstack/query-core@npm:4.20.4, @tanstack/query-core@npm:^4.20.4":
   version: 4.20.4
   resolution: "@tanstack/query-core@npm:4.20.4"
   checksum: bdb652296e4093d8cb042a67b9c035bc0a756e09a3b12aeb070068b07adc1c71174c2e6108f2a8c3322a26cb73ba57f431326aa0b813c81621674b9cc208cd93
@@ -9978,8 +9978,10 @@ turbo@latest:
   dependencies:
     "@chakra-ui/layout": ^2.1.11
     "@chakra-ui/provider": ^2.0.25
+    "@chakra-ui/react": ^2.4.4
     "@heroicons/react": ^2.0.13
     "@marsidev/react-turnstile": ^0.0.5
+    "@tanstack/query-core": ^4.20.4
     "@types/node": ^17.0.45
     "@types/react": ^18.0.25
     "@types/react-dom": ^18.0.8

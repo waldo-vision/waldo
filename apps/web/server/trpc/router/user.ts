@@ -142,9 +142,8 @@ export const userRouter = router({
     .mutation(async ({ input, ctx }) => {
       const endpoint =
         'https://challenges.cloudflare.com/turnstile/v0/siteverify';
-      let secret;
       const body = `secret=${encodeURIComponent(
-        secret,
+        process.env.CLOUDFLARE_TURNSTILE_SECRET,
       )}&response=${encodeURIComponent(input.tsToken)}`;
       const res = await fetch(endpoint, {
         method: 'POST',

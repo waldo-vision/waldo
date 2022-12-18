@@ -5,6 +5,7 @@ declare namespace NodeJS {
     RATELIMIT_MAX_REQUESTS: number;
     RATELIMIT_DURATION: number;
     YOUTUBE_API_KEY: string;
+    CLOUDFLARE_TURNSTILE_SECRET: string;
   }
 }
 declare namespace NodeJS {
@@ -14,5 +15,6 @@ declare namespace NodeJS {
     RATELIMIT_MAX_REQUESTS: number;
     RATELIMIT_DURATION: number;
     YOUTUBE_API_KEY: string;
+    CLOUDFLARE_TURNSTILE_SECRET: string;
   }
 }

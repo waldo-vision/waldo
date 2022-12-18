@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { Box, useToast } from '@chakra-ui/react';
+import React from 'react';
+import { Box } from '@chakra-ui/react';
 import { Turnstile } from '@marsidev/react-turnstile';
 
 const TurnstileWidget = () => {
-  const [token, setToken] = useState<string>();
   return (
     <div>
       <Box>
@@ -13,7 +12,6 @@ const TurnstileWidget = () => {
             theme: 'light',
             size: 'normal',
           }}
-          onSuccess={token => setToken(token)}
         />
       </Box>
     </div>

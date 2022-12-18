@@ -59,12 +59,13 @@ const AccGameplayItems = () => {
           <>
             <Box>
               {gameplayItems &&
-                gameplayItems?.map(item => (
+                gameplayItems?.map((item, index) => (
                   <Flex
                     direction={'row'}
                     mt={2}
                     boxShadow={'lg'}
                     borderRadius={14}
+                    key={index}
                   >
                     <Center>
                       <Image

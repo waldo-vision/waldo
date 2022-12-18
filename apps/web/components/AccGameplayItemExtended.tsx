@@ -2,8 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Flex, Button, Text, Spinner, useToast } from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
 import { BiTrash } from 'react-icons/bi';
-import { getYtVidDataFromId } from '@utils/helpers/apiHelper';
-// TODO
 interface Item {
   item: {
     youtubeUrl: string;
@@ -19,13 +17,23 @@ const AccGameplayItemExtended = (props: Item) => {
       await utils.gameplay.invalidate();
     },
   });
+  const { data, refetch } = trpc.util.getYtVidDataFromId.useQuery(
+    {
+      videoId: props.id,
+    },
+    {
+      enabled: false,
+    },
+  );
   const [componentLoading, setComponentLoading] = useState<boolean>(true);
   const toast = useToast();
   const getData = useCallback(async () => {
-    const data = await getYtVidDataFromId(props.id);
-    setMeta(data.title);
+    await refetch();
+    if (data) {
+      setMeta(data.title);
+    }
     setComponentLoading(false);
-  }, [props.id]);
+  }, [data, refetch]);
 
   useEffect(() => {
     getData();
@@ -67,6 +75,7 @@ const AccGameplayItemExtended = (props: Item) => {
                 fontSize={{ base: 0, sm: 0, md: 16, lg: 16 }}
                 fontWeight={'bold'}
               >
+                {meta && meta.substring(0, 15) + '...'}
                 {meta && meta.substring(0, 15) + '...'}
               </Text>
               <Text fontSize={{ base: 0, sm: 0, md: 8, lg: 8 }}>

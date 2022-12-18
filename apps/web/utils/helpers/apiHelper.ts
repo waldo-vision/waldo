@@ -42,22 +42,4 @@ const checkURL = (url: string): boolean => {
   return false;
 };
 
-const getYtVidDataFromId = async (videoId: string) => {
-  console.log('ran');
-  const baseUrl =
-    'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=';
-  const options = {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  };
-  const url = baseUrl + videoId + '&key=' + `${process.env.YOUTUBE_API_KEY}`;
-  try {
-    const request = await fetch(url, options);
-    const res = await request.json();
-    return res.items[0].snippet;
-  } catch (error) {
-    throw new Error('Error Fetching');
-  }
-};
-
-export { handleUploadFileLogic, checkURL, getYtVidDataFromId };
+export { handleUploadFileLogic, checkURL };
