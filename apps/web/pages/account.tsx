@@ -124,7 +124,7 @@ export default function Account() {
                                   <Text fontSize={'xx-small'} ml={2}>
                                     {account.provider.toUpperCase()}{' '}
                                     {account.provider ==
-                                      userSession?.user?.provider
+                                    userSession?.user?.provider
                                       ? 'Primary'
                                       : 'Secondary'}
                                   </Text>
@@ -135,13 +135,13 @@ export default function Account() {
                           <Box mt={2} ml={2}>
                             {account.provider !=
                               userSession?.user?.provider && (
-                                <FaMinusCircle
-                                  size={15}
-                                  color={'red'}
-                                  onClick={() => unlinkProvider(account)}
-                                  cursor={'pointer'}
-                                />
-                              )}
+                              <FaMinusCircle
+                                size={15}
+                                color={'red'}
+                                onClick={() => unlinkProvider(account)}
+                                cursor={'pointer'}
+                              />
+                            )}
                           </Box>
                         </Flex>
                       ))}

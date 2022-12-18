@@ -34,6 +34,7 @@ import Loading from '@components/Loading';
 import { trpc } from '@utils/trpc';
 import { inferProcedureInput } from '@trpc/server';
 import { AppRouter } from '@server/trpc/router/_app';
+import { TRPCError } from '@trpc/server';
 import { useRouter } from 'next/router';
 const Upload = () => {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
@@ -55,13 +56,13 @@ const Upload = () => {
     },
   });
 
-  const handleRequestError = async (msg: string) => {
+  const handleRequestError = async (error: TRPCError | string) => {
     setWaitingForResponse(false);
     setRequestDone(true);
     setCurrentUrl('');
 
     // Create toasts
-    createToast(msg, 'error', 'Error');
+    createToast(error.toString() as unknown as string, 'error', 'Error');
     // Enable Error
     setError(true);
     await delay();
@@ -158,9 +159,9 @@ const Upload = () => {
     try {
       await createGameplay.mutateAsync(input);
       handleRequestSuccess();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log(error);
-      handleRequestError(error.toString());
+      handleRequestError(error as TRPCError);
     }
   };
 

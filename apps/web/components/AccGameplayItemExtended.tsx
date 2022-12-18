@@ -1,27 +1,18 @@
-import React, { useState, useEffect, use } from 'react';
-import {
-  Box,
-  Flex,
-  Button,
-  Text,
-  Tag,
-  Spinner,
-  Center,
-  Image,
-  useToast,
-} from '@chakra-ui/react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Box, Flex, Button, Text, Spinner, useToast } from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
-import Loading from './Loading';
 import { BiTrash } from 'react-icons/bi';
 import { getYtVidDataFromId } from '@utils/helpers/apiHelper';
 // TODO
-interface Item {}
-
-interface Id {
+interface Item {
+  item: {
+    youtubeUrl: string;
+    id: string;
+  };
   id: string;
 }
-const AccGameplayItemExtended = ({ item, id }) => {
-  const [meta, setMeta] = useState();
+const AccGameplayItemExtended = (props: Item) => {
+  const [meta, setMeta] = useState<string>();
   const utils = trpc.useContext();
   const deleteGameplayTrpc = trpc.gameplay.deleteGameplay.useMutation({
     async onSuccess() {
@@ -30,18 +21,19 @@ const AccGameplayItemExtended = ({ item, id }) => {
   });
   const [componentLoading, setComponentLoading] = useState<boolean>(true);
   const toast = useToast();
-  const getd = async () => {
-    const data = await getYtVidDataFromId(id);
-    setMeta(data);
+  const getData = useCallback(async () => {
+    const data = await getYtVidDataFromId(props.id);
+    setMeta(data.title);
     setComponentLoading(false);
-  };
+  }, [props.id]);
+
   useEffect(() => {
-    getd();
-  }, [item]);
+    getData();
+  }, [props.item, getData]);
 
   const deleteGameplay = () => {
     try {
-      deleteGameplayTrpc.mutateAsync({ gameplayId: item.id });
+      deleteGameplayTrpc.mutateAsync({ gameplayId: props.item.id });
       toast({
         position: 'bottom-right',
         title: 'Gameplay Deletion',
@@ -75,10 +67,10 @@ const AccGameplayItemExtended = ({ item, id }) => {
                 fontSize={{ base: 0, sm: 0, md: 16, lg: 16 }}
                 fontWeight={'bold'}
               >
-                {meta && meta.title.substring(0, 15) + '...'}
+                {meta && meta.substring(0, 15) + '...'}
               </Text>
               <Text fontSize={{ base: 0, sm: 0, md: 8, lg: 8 }}>
-                {item && item.youtubeUrl}
+                {props.item && props.item.youtubeUrl}
               </Text>
             </>
           )}

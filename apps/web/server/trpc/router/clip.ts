@@ -63,7 +63,7 @@ export const clipRouter = router({
         uuid: z.string().uuid(),
       }),
     )
-    .output(ClipZodSchema)
+    .output(z.object({ uuid: z.string().uuid() }))
     .mutation(async ({ input, ctx }) => {
       const uniqueId = uuidv4();
       try {

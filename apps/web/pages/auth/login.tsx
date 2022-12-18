@@ -22,13 +22,13 @@ import { FaDiscord, FaBattleNet, FaSteam, FaApple } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { BsGithub } from 'react-icons/bs';
 import { SiFaceit } from 'react-icons/si';
+type Provider = {
+  provider: string;
+  docs: string;
+  hex?: string;
+  selected?: boolean;
+};
 const Login = () => {
-  type Provider = {
-    provider: string;
-    docs: string;
-    hex: string;
-    selected: boolean;
-  };
   const [linkAlertOpen, setLinkAlertOpen] = useState<boolean>(false);
   const [userSession, setUserSession] = useState<Session | null>();
   const [lastSelected, setLastSelected] = useState<number | null>(null);
@@ -239,6 +239,7 @@ const Login = () => {
             <Button
               mr={16}
               mb={12}
+              mt={4}
               bgColor="black"
               _hover={{ backgroundColor: 'gray.800' }}
               color="white"

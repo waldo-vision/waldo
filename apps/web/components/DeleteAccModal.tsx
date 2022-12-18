@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
   Box,
-  Flex,
   Button,
   Modal,
   ModalOverlay,
@@ -12,39 +11,27 @@ import {
   ModalCloseButton,
   Text,
 } from '@chakra-ui/react';
-import { FaDiscord, FaBattleNet, FaSteam, FaApple } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
-import { BsGithub } from 'react-icons/bs';
-import { SiFaceit } from 'react-icons/si';
 import { trpc } from '@utils/trpc';
 import { getSession } from 'next-auth/react';
-import { Session } from 'next-auth';
 import Loading from './Loading';
-import { useRouter } from 'next/router';
-
-const DeleteAccModal = ({ show }) => {
-  const [showModal, setShowModal] = useState<boolean | null>(null);
-  const [userSession, setUserSession] = useState<Session | undefined>();
-  const [loading, setLoading] = useState<boolean>(false);
+interface Props {
+  show: boolean;
+}
+const DeleteAccModal = (props: Props) => {
+  const [showModal, setShowModal] = useState<boolean | null>(true);
+  const [userId, setUserId] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(true);
   const utils = trpc.useContext();
-  const router = useRouter();
 
   const getCurrentSession = async () => {
     const session = await getSession();
-    if (session) {
-      setUserSession(session);
-    } else {
-      setUserSession(undefined);
-    }
+    setUserId(session?.user?.id);
+    setLoading(false);
   };
   useEffect(() => {
-    if (showModal == null) {
-      setShowModal(false);
-    } else {
-      setShowModal(true);
-    }
+    setShowModal(props.show);
     getCurrentSession();
-  }, [show]);
+  }, [props.show]);
   const deleteUser = trpc.user.deleteUser.useMutation({
     async onSuccess() {
       await utils.user.invalidate();
@@ -54,15 +41,20 @@ const DeleteAccModal = ({ show }) => {
   const handleDelete = async () => {
     window.location.reload();
 
-    await deleteUser.mutateAsync({ userId: userSession?.user?.id });
+    await deleteUser.mutateAsync({ userId: userId as string });
   };
   return (
     <div>
       <Box>
-        {loading ? (
+        {loading && props.show ? (
           <Loading color={'default'} />
         ) : (
-          <Modal isOpen={showModal}>
+          <Modal
+            isOpen={showModal as boolean}
+            onClose={() => {
+              return;
+            }}
+          >
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Account Deletion</ModalHeader>
