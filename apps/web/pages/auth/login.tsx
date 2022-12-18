@@ -71,7 +71,11 @@ const Login = () => {
         hex: '#5865F2',
         selected: false,
       },
-      { provider: 'Google', docs: 'https://example.com', selected: false },
+      {
+        provider: 'Google',
+        docs: 'https://example.com',
+        selected: false,
+      },
       {
         provider: 'Github',
         docs: 'https://example.com',
