@@ -1,6 +1,7 @@
 {
   "name": "backend",
   "version": "0.0.1",
+  "private": true,
   "description": "Back end application to process videos based on YouTube URL for AI/ML model usage.",
   "scripts": {
     "db": "docker compose up",

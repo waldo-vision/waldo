@@ -29,7 +29,6 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "pnpm@7.15.0",
   "dependencies": {
     "@chakra-ui/layout": "^2.1.11",
     "@chakra-ui/provider": "^2.0.25",
