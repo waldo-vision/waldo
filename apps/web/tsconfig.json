@@ -7,7 +7,7 @@
     ".next/types/**/*.ts",
     "pages/api/auth/[...nextauth].js",
     "pages/account.jsx"
-  ],
+, "context/tsContext.js"  ],
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
