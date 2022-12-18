@@ -22,6 +22,7 @@ import {
   Container,
   Heading,
 } from '@chakra-ui/react';
+import TurnstileWidget from '@components/TurnstileWidget';
 import {
   ShieldCheckIcon,
   CheckCircleIcon,
@@ -31,7 +32,6 @@ import {
 import { Session } from 'next-auth';
 import { getSession, signOut } from 'next-auth/react';
 import Loading from '@components/Loading';
-import TurnstileWidget from '@components/TurnstileWidget';
 import { trpc } from '@utils/trpc';
 import { inferProcedureInput } from '@trpc/server';
 import { AppRouter } from '@server/trpc/router/_app';
@@ -40,6 +40,7 @@ import { useRouter } from 'next/router';
 const Upload = () => {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [selectedGame, setSelectedGame] = useState<string>('csg');
@@ -127,6 +128,10 @@ const Upload = () => {
   };
 
   const handleClipUpload = async () => {
+    if (!isRequestValid) {
+      handleRequestError('Request Invalid. Reload and try again.');
+      return;
+    }
     if (requestDone) {
       setSelectedGame('csg');
       setCurrentUrl('');
@@ -135,7 +140,6 @@ const Upload = () => {
       return;
     }
     setWaitingForResponse(true);
-
     if (!checkURL(currentUrl)) {
       handleRequestError('Please enter a valid youtube link');
       return;
@@ -196,7 +200,7 @@ const Upload = () => {
                   Before you submit a video make sure you have read the rules
                   regarding
                 </Text>
-                <TurnstileWidget />
+                <TurnstileWidget valid={result => setIsRequestValid(result)} />
               </Flex>
             </Container>
             <Container>
