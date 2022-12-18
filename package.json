@@ -21,9 +21,9 @@
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "eslint": "^8.30.0",
-    "eslint-config-custom": "0.0.0",
+    "eslint-config-custom": "workspace:*",
     "prettier": "latest",
-    "tsconfig": "0.0.0",
+    "tsconfig": "workspace:*",    
     "turbo": "latest",
     "typescript": "^4.8.4"
   },

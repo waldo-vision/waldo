@@ -64,8 +64,8 @@ export const gameplayRouter = router({
       try {
         const data = await ctx.prisma.footage.create({
           data: {
-            userId: ctx.session.user.id as string,
-            youtubeUrl: input.youtubeUrl as string,
+            userId: ctx.session.user.id,
+            youtubeUrl: input.youtubeUrl,
             footageType: input.gameplayType,
           },
         });
