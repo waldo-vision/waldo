@@ -18,10 +18,9 @@ import { Session } from 'next-auth';
 import { signIn, getSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { FaDiscord, FaBattleNet, FaSteam, FaApple } from 'react-icons/fa';
+import { FaDiscord, FaBattleNet, FaTwitch } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { BsGithub } from 'react-icons/bs';
-import { SiFaceit } from 'react-icons/si';
+import { BsGithub, BsFacebook } from 'react-icons/bs';
 type Provider = {
   provider: string;
   docs: string;
@@ -47,6 +46,7 @@ const Login = () => {
       const val = authProviders[index];
       val.selected = !val.selected;
     } else {
+      authProviders[lastSelected].selected = false;
       const val = authProviders[index];
       val.selected = !val.selected;
     }
@@ -71,7 +71,7 @@ const Login = () => {
         hex: '#5865F2',
         selected: false,
       },
-      { provider: 'Google', docs: 'https://example.com', selectedd: false },
+      { provider: 'Google', docs: 'https://example.com', selected: false },
       {
         provider: 'Github',
         docs: 'https://example.com',
@@ -85,21 +85,15 @@ const Login = () => {
         selected: false,
       },
       {
-        provider: 'Faceit',
+        provider: 'FaceBook',
         docs: 'https://example.com',
-        hex: '#FF5500',
+        hex: ' #0165E1',
         selected: false,
       },
       {
-        provider: 'Steam',
+        provider: 'Twitch',
         docs: 'https://example.com',
-        hex: '#00adee',
-        selected: false,
-      },
-      {
-        provider: 'Apple',
-        docs: 'https://example.com',
-        hex: '#000000',
+        hex: '#9146FF',
         selected: false,
       },
     ];
@@ -186,16 +180,12 @@ const Login = () => {
                             {provider == 'BattleNET' && (
                               <FaBattleNet size={40} color={hex} />
                             )}
-                            {provider == 'Faceit' && (
-                              <SiFaceit size={40} color={hex} />
+                            {provider == 'FaceBook' && (
+                              <BsFacebook size={40} color={hex} />
                             )}
-                            {provider == 'Steam' && (
-                              <FaSteam size={40} color={hex} />
+                            {provider == 'Twitch' && (
+                              <FaTwitch size={40} color={hex} />
                             )}
-                            {provider == 'Apple' && (
-                              <FaApple size={40} color={hex} />
-                            )}
-
                             <Flex direction={'column'} ml={3}>
                               <Text
                                 fontWeight={'semibold'}
