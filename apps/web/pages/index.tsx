@@ -1,8 +1,5 @@
 /* eslint-disable arrow-parens */
 import { ReactElement, useEffect, useState, useRef } from 'react';
-import { handleUploadFileLogic, checkURL } from '@utils/helpers/apiHelper';
-import { signIn, getSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import {
   Button,
   ButtonGroup,
@@ -12,176 +9,36 @@ import {
   Flex,
   Container,
   Stack,
-  FormControl,
-  FormLabel,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  FormHelperText,
-  useToast,
-  Box,
-  SlideFade,
-  PopoverTrigger,
-  Popover,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverFooter,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItemOption,
-  MenuOptionGroup,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react';
-import {
-  ArrowUpTrayIcon,
-  ArrowRightIcon,
-  ShieldCheckIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  ChevronDownIcon,
-} from '@heroicons/react/24/outline';
-import Image from 'next/image';
 import Layout from '@components/Layout';
-import Link from 'next/link';
-import Head from 'next/head';
-
 import DashboardImage from '../public/Dashboard.png';
 import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
-import { Session } from 'next-auth';
+import Image from 'next/image';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useInViewport } from 'react-in-viewport';
+import { FaCodeBranch, FaRocket } from 'react-icons/fa';
+import { MdAllInclusive, MdMoneyOff, MdInfoOutline } from 'react-icons/md'
+import { HiUpload } from 'react-icons/hi'
+import { TbEyeCheck } from 'react-icons/tb'
+
 
 export default function Home() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
-  const [requestDone, setRequestDone] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const [selectedGame, setSelectedGame] = useState<string>('csg');
-  const ref = useRef<null | HTMLDivElement>(null);
+  const helpRef = useRef<null | HTMLDivElement>(null);
 
-  const [currentUrl, setCurrentUrl] = useState<string>('');
-  const [userSession, setUserSession] = useState<Session | undefined>();
   const [y, setY] = useState(0);
-  const router = useRouter();
-  const toast = useToast();
-  let games = [
-    { name: "Counter Strike: Global Offensive", shortName: "csg" },
-    { name: "VALORANT", shortName: "val" },
-    { name: "Team Fortress 2", shortName: "tf2" },
-    { name: "Apex Legends", shortName: "ape" },
-  ]
+
   const updateScrollPosition = () => {
     setY(window.scrollY);
-  };
-
-  const getCurrentSession = async () => {
-    const session = await getSession();
-    if (session === null) {
-      setUserSession(undefined);
-    } else {
-      setUserSession(session);
-    }
-  };
-
-  const handleSignout = () => {
-    signOut();
-    router.push('/');
-  };
-
-  const createToast = (msg: string, type: any, title: string) => {
-    toast({
-      position: 'bottom-right',
-      title: title,
-      description: msg,
-      status: type,
-      duration: 9000,
-      isClosable: true,
-    });
-  };
-
-  const delay = () => {
-    return new Promise(resolve => setTimeout(resolve, 4000));
-  };
-
-  const handleRequestError = async (msg: string) => {
-    setWaitingForResponse(false);
-    setRequestDone(true);
-    // Create toasts
-    createToast(msg, 'error', 'Error');
-    // Enable Error
-    setError(true);
-    await delay();
-
-    // End handle
-    setError(false);
-    setRequestDone(false);
-  };
-
-  const handleRequestSuccess = async () => {
-    setWaitingForResponse(false);
-    setRequestDone(true);
-    setError(false);
-
-    await delay();
-
-    setIsOpen(false);
-    setSelectedGame('csg')
-    setCurrentUrl('');
-    setRequestDone(false);
-    createToast(
-      "Successfully uploaded your footage to waldo's server!",
-      'success',
-      'Sucess!',
-    );
-  };
-
-  const handleClipUpload = async () => {
-    if (requestDone) {
-      setIsOpen(false);
-      setSelectedGame('csg')
-      setCurrentUrl('');
-      setRequestDone(false);
-      setError(false);
-      return;
-    }
-
-    setWaitingForResponse(true);
-
-    if (!checkURL(currentUrl)) {
-      handleRequestError('Please enter a valid youtube link');
-      return;
-    }
-
-    if (userSession !== undefined) {
-      await handleUploadFileLogic(
-        currentUrl,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        userSession.user.id.toString(),
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        selectedGame,
-      ).then(async res => {
-        if (res.error || !res.isInGuild) {
-          handleRequestError(res.message);
-        } else {
-          handleRequestSuccess();
-        }
-      });
-    }
   };
 
   useEffect(() => {
     updateScrollPosition();
     // adding the event when scroll change background
     window.addEventListener('scroll', updateScrollPosition);
-    getCurrentSession();
   }, []);
   return (
     <>
@@ -194,7 +51,7 @@ export default function Home() {
           content="Waldo is an Open-source visual cheat detection, powered by A.I"
         />
       </Head>
-      <div>
+      <Flex direction={'column'} gap={25} mb={150}>
         <Container display={{ base: 'none', lg: 'fixed' }}>
           <Image
             style={{
@@ -233,51 +90,55 @@ export default function Home() {
             placeholder={'blur'}
           />
         </Container>
-        <Center h={'100vh'}>
-          <Flex
-            direction={'column'}
-            textAlign={'center'}
-            alignItems={'center'}
-            gap={'5px'}
-          >
-            <Heading fontSize={'57px'} py={2} textAlign={'center'}>
-              Waldo
-            </Heading>
-            <Flex>
-              <Text fontSize={'27px'} textAlign={'center'}>
-                <b>Open-source </b>
-                <span>visual cheat detection, </span>
-                <b>powered by A.I</b>
+        <Container>
+          <Center h={'100vh'}>
+            <Flex
+              direction={'column'}
+              textAlign={'center'}
+              alignItems={'center'}
+              gap={'5px'}
+            >
+              <Heading fontSize={'57px'} py={2} textAlign={'center'}>
+                Waldo
+              </Heading>
+              <Flex>
+                <Text fontSize={'27px'} textAlign={'center'}>
+                  <b>Open-source </b>
+                  <span>visual cheat detection, </span>
+                  <b>powered by A.I</b>
+                </Text>
+              </Flex>
+              <Text fontSize={'l'} fontWeight={'thin'}>
+                Currently in construction
               </Text>
+              <ButtonGroup gap={'4'} m={3}>
+                <Link href={'/submissions'}>
+                  <Button
+                    variant={'solid'}
+                    colorScheme={'purple'}
+                  >
+                    <HiUpload height={16} width={16} />
+                    <Text marginLeft={2}>Submissions</Text>
+                  </Button>
+                </Link>
+                <Button
+                  variant={'outline'}
+                  colorScheme={'purple'}
+                  leftIcon={<MdInfoOutline />}
+                  onClick={() =>
+                    helpRef.current?.scrollIntoView({ behavior: 'smooth' })
+                  }
+                >
+                  Learn More
+                </Button>
+              </ButtonGroup>
             </Flex>
-            <Text fontSize={'l'} fontWeight={'thin'}>
-              Currently in construction
-            </Text>
-            <ButtonGroup gap={'4'} m={3}>
-              <Button
-                variant={'solid'}
-                colorScheme={'purple'}
-                onClick={() => setIsOpen(!isOpen)}
-              >
-                <ArrowUpTrayIcon height={16} width={16} />
-                <Text marginLeft={2}>Clip Submission</Text>
-              </Button>
-              <Button
-                variant={'outline'}
-                colorScheme={'purple'}
-                onClick={() =>
-                  ref.current?.scrollIntoView({ behavior: 'smooth' })
-                }
-              >
-                <Text marginRight={2}>Learn More</Text>
-                <ArrowRightIcon height={16} width={16} />
-              </Button>
-            </ButtonGroup>
-          </Flex>
-        </Center>
+          </Center>
+        </Container>
+        <Features />
         <Container maxW={'7xl'}>
           <Stack
-            ref={ref}
+            ref={helpRef}
             align={'center'}
             spacing={{ base: 8, md: 10 }}
             py={{ base: 20, md: 28 }}
@@ -303,30 +164,30 @@ export default function Home() {
                     zIndex: -1,
                   }}
                 >
-                  Waldo,
+                  What is
                 </Text>
                 <br />
                 <Text as={'span'} color={'purple.400'}>
-                  needs your help!
+                  Waldo?
                 </Text>
               </Heading>
               <Text>
-                Waldo requires hundreds of hours of footage. We are in the
-                stages of training the AI and you can help now by uploading your
-                gaming clips!
+                Waldo analyses POV clips and returns a probability that the user is cheating.
+                How? Waldo is trained to detect the human behavioral characteristics of
+                moving a mouse, of which the program contrasts the model to the footage.
               </Text>
               <Stack
                 spacing={{ base: 4, sm: 6 }}
                 direction={{ base: 'column', sm: 'row' }}
               >
-                <Button
-                  variant={'solid'}
-                  colorScheme={'purple'}
-                  onClick={() => setIsOpen(!isOpen)}
-                >
-                  <ArrowUpTrayIcon height={16} width={16} />
-                  <Text marginLeft={2}>Clip Submission</Text>
-                </Button>
+                <Link href={'https://discord.gg/MPAV4qP8Hx'}>
+                  <Button
+                    variant={'solid'}
+                    colorScheme={'purple'}
+                  >
+                    Join the Discord
+                  </Button>
+                </Link>
               </Stack>
             </Stack>
             <Flex
@@ -349,172 +210,154 @@ export default function Home() {
             </Flex>
           </Stack>
         </Container>
-        <Modal
-          isOpen={isOpen}
-          onClose={() => {
-            setIsOpen(false);
-            setRequestDone(false);
-            setCurrentUrl('');
-            setError(false);
-          }}
-          isCentered
-          size={'xl'}
-        >
-          <ModalOverlay backdropFilter="blur(10px)" />
-          <ModalContent>
-            <ModalHeader>
-              <Text>Clip Submission</Text>
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>Youtube URL</FormLabel>
-                <Input
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  onChange={event => setCurrentUrl(event.target.value)}
-                />
-                <FormHelperText>
-                  <Flex direction={'column'} gap={1}>
-                    {userSession !== undefined ? (
-                      <Flex alignItems={'center'}>
-                        <Text>You are securely connected to a&nbsp;</Text>
-                        <Popover>
-                          <PopoverTrigger>
-                            <Text
-                              as={'span'}
-                              fontWeight={'bold'}
-                              cursor={'pointer'}
-                            >
-                              discord account!
-                            </Text>
-                          </PopoverTrigger>
-                          <PopoverContent>
-                            <PopoverArrow />
-                            <PopoverCloseButton />
-                            <PopoverHeader>
-                              <Flex
-                                justify={'center'}
-                                align={'center'}
-                                gap={2}
-                                p={2}
-                              >
-                                <Image
-                                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                  // @ts-ignore
-                                  src={userSession.user.avatarUrl}
-                                  alt="Avatar"
-                                  width={85}
-                                  height={85}
-                                  style={{ borderRadius: 5 }}
-                                />
-                              </Flex>
-                              <PopoverFooter gap={2}>
-                                <Flex align={'center'} justify={'center'}>
-                                  <Text fontSize={15}>
-                                    Thank you for joining us,{' '}
-                                    <Text as={'span'} fontWeight={'bold'}>
-                                      {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore */}
-                                      {userSession.user.name}
-                                    </Text>
-                                    !
-                                  </Text>
-                                </Flex>
-                              </PopoverFooter>
-                            </PopoverHeader>
-                          </PopoverContent>
-                        </Popover>
-
-                        <Box paddingLeft={1}>
-                          <ShieldCheckIcon
-                            width={14}
-                            height={14}
-                            color={'black'}
-                          />
-                        </Box>
-                      </Flex>
-                    ) : (
-                      'You must be connected to a discord account to submit a clip.'
-                    )}
-                  </Flex>
-                  <Flex mt={5}>
-                    <Menu>
-                      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        Choose a game:
-                      </MenuButton>
-                      <MenuList>
-                        <MenuOptionGroup
-                          defaultValue="csg"
-                          title="Games"
-                          type="radio"
-                          onChange={game => setSelectedGame(game.toString())}
-                        >
-                          {games && games.map(game => (
-                            <MenuItemOption key={game.shortName} value={game.shortName}>
-                              {game.name}
-                            </MenuItemOption>
-                          ))}
-                        </MenuOptionGroup>
-                      </MenuList>
-                    </Menu>
-                  </Flex>
-                </FormHelperText>
-              </FormControl>
-            </ModalBody>
-            <ModalFooter gap={5}>
-              <Text>
-                By submitting you agree to the{' '}
-                <Link href={'/tos'} passHref target={'_blank'}>
-                  <Text
-                    as={'span'}
-                    fontWeight={'bold'}
-                    textDecorationLine={'underline'}
-                  >
-                    Terms of Service.
-                  </Text>
-                </Link>
+        <Container maxW={'7xl'}>
+          <Center>
+            <Flex
+              direction={'column'}
+              textAlign={'center'}
+              alignItems={'center'}
+              gap={'5px'}
+            >
+              <Heading
+                fontWeight={600}
+                fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
+              >
+                <Text>
+                  Waldo needs your help!
+                </Text>
+              </Heading>
+              <Text maxW={'3xl'}>
+                However, Waldo is not ready yet. In order to have a model as accurate as possible We
+                need thousands of hours of footage, which we do not currently have. We are asking
+                the community to link their own clips from Youtube and upload the videos to Waldo.
               </Text>
-              <Button
-                colorScheme={userSession !== undefined ? 'red' : 'purple'}
-                onClick={() => {
-                  userSession !== undefined
-                    ? handleSignout()
-                    : signIn('discord');
-                }}
-                width={'81px'}
-              >
-                {userSession !== undefined ? 'Log out' : 'Log in'}
-              </Button>
-              <Button
-                colorScheme={userSession !== undefined ? 'purple' : 'gray'}
-                disabled={!(userSession !== undefined) ? true : false}
-                onClick={() => handleClipUpload()}
-                isLoading={waitingForResponse}
-                width={'81px'}
-              >
-                {!requestDone ? (
-                  <SlideFade in={!requestDone} offsetY="5px">
-                    <Text>Submit</Text>
-                  </SlideFade>
-                ) : (
-                  <Flex direction={'row'} alignItems={'center'}>
-                    <SlideFade in={requestDone} offsetY="5px" delay={0.3}>
-                      {error ? (
-                        <XCircleIcon color="white" width={26} height={26} />
-                      ) : (
-                        <CheckCircleIcon color="white" width={26} height={26} />
-                      )}
-                    </SlideFade>
-                  </Flex>
-                )}
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </div>
+              <ButtonGroup gap={'4'} m={3}>
+                <Link href={'/submissions/upload'}>
+                  <Button
+                    variant={'solid'}
+                    colorScheme={'purple'}
+                  >
+                    <HiUpload height={16} width={16} />
+                    <Text marginLeft={2}>Upload your footage</Text>
+                  </Button>
+                </Link>
+                <Link href={'/submissions/review'}>
+                  <Button
+                    variant={'outline'}
+                    colorScheme={'purple'}
+                  >
+                    <TbEyeCheck height={16} width={16} />
+                    <Text marginLeft={2}>Review Submissions</Text>
+                  </Button>
+                </Link>
+              </ButtonGroup>
+            </Flex>
+          </Center>
+        </Container>
+      </Flex>
     </>
   );
 }
+
+interface FeatureProps {
+  title: string;
+  text: ReactElement;
+  image?: ReactElement;
+}
+
+const Feature = ({ title, text, image }: FeatureProps) => {
+  return (
+    <Center h={'100%'}>
+      <Flex align={'center'} direction={'column'} gap={2}>
+        {image}
+        <Text fontWeight={600}>{title}</Text>
+        {text}
+      </Flex>
+    </Center >
+
+  );
+};
+
+const Features = () => {
+  return (
+    <Container maxW={'7xl'}>
+      <Grid
+        h='650px'
+        templateRows='repeat(2, 1fr)'
+        templateColumns='repeat(5, 1fr)'
+        gap={4}
+      >
+        <GridItem rowSpan={2} colSpan={2} bg={"#8552D910"} overflow={'hidden'} p={3} textAlign={'center'} borderRadius={'16px'}>
+          <Center h={'100%'}>
+            <Flex align={'center'} direction={'column'} gap={20}>
+              <Flex direction={'column'}>
+                <Text fontSize={'2rem'} fontWeight={'bold'}>Waldo</Text>
+                <Text fontWeight={450}>Bring back the fun in your games with Waldo.</Text>
+              </Flex>
+              <Link href={'https://discord.gg/MPAV4qP8Hx'}>
+                <Button
+                  variant={'solid'}
+                  colorScheme={'purple'}
+                >
+                  Join the Discord
+                </Button>
+              </Link>
+            </Flex>
+          </Center>
+        </GridItem>
+        <GridItem rowSpan={2} colSpan={3}>
+          <Grid h={'100%'} gap={4} templateColumns='repeat(4, 1fr)' templateRows='repeat(5, 1fr)' textAlign={'center'}>
+            <GridItem rowSpan={2} colSpan={2} bg='white' borderRadius={'16px'} p={3}>
+              <Feature
+                image={<FaCodeBranch size={35} />}
+                title={'Open Source'}
+                text={
+                  <Text>
+                    You can view the source code on our <Link href={'https://github.com/waldo-vision'}><Text as={'span'} fontWeight={'bold'}>github</Text></Link>.
+                  </Text>
+                }
+              />
+            </GridItem>
+            <GridItem rowSpan={3} colSpan={2} bg='white' borderRadius={'16px'} p={3}>
+              <Feature
+                image={<MdMoneyOff size={45} />}
+                title={'Free to use'}
+                text={
+                  <Text>
+                    Waldo uses a community driven model to learn, you are the one who supports us.
+                  </Text>
+                }
+              />
+            </GridItem>
+            <GridItem rowSpan={3} colSpan={2} bg='white' borderRadius={'16px'} p={3}>
+              <Feature
+                image={<MdAllInclusive size={60} />}
+                title={'Inclusive'}
+                text={
+                  <Text>
+                    Anybody can use Waldo, we pride ourselves for the ease of use.
+                  </Text>
+                }
+              />
+            </GridItem>
+            <GridItem rowSpan={2} colSpan={2} bg='white' borderRadius={'16px'} p={3}>
+              <Feature
+                image={<FaRocket size={35} />}
+                title={'Stability'}
+                text={
+                  <Text>
+                    Issues and fixes are much quicker through the community. Check the <Link href={'https://github.com/waldo-vision'}><Text as={'span'} fontWeight={'bold'}>issues</Text></Link> tab.
+                  </Text>
+                }
+              />
+            </GridItem>
+          </Grid>
+        </GridItem>
+      </Grid>
+    </Container>
+  )
+}
+
 
 Home.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
