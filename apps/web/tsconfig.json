@@ -9,7 +9,7 @@
     "pages/account.jsx"
   ],
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
