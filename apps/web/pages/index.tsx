@@ -2,7 +2,6 @@
 import { ReactElement, useEffect, useState, useRef } from 'react';
 import { Turnstile } from '@marsidev/react-turnstile';
 import {
-  Box,
   Button,
   ButtonGroup,
   Center,
