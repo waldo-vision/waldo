@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { trpc } from '@utils/trpc';
-/* eslint-disable no-unused-vars */
+
 interface WidgetProps {
   valid(valid: boolean): void;
 }
@@ -39,7 +39,7 @@ const TurnstileWidget = (props: WidgetProps) => {
     <div>
       <Box>
         <Turnstile
-          siteKey={process.env.CLOUDFLARE_TURNSTILE_SITE_KEY as string}
+          siteKey={process.env.CLOUDFLARE_TURNSTILE_SITE_KEY}
           options={{
             theme: 'light',
             size: 'normal',

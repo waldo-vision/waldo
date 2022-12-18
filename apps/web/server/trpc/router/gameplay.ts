@@ -238,12 +238,33 @@ export const gameplayRouter = router({
     )
     .output(z.array(GameplayPlusUserSchema))
     .query(async ({ input, ctx }) => {
+      const randomPick = (values: string[]) => {
+        const index = Math.floor(Math.random() * values.length);
+        return values[index];
+      };
+      const itemCount = await ctx.prisma.footage.count();
+
+      const randomNumber = (min: number, max: number) => {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      };
+
+      const orderBy = randomPick([
+        'userId',
+        'id',
+        'youtubeUrl',
+        `upVotes`,
+        `downVotes`,
+      ]);
+      const orderDir = randomPick([`asc`, `desc`]);
       const reviewItems = await ctx.prisma.footage.findMany({
         take: input.amountToQuery,
+        skip: randomNumber(0, itemCount - 1),
+        orderBy: { [orderBy]: orderDir },
         include: {
           user: true,
         },
       });
+      console.log(reviewItems);
       if (reviewItems === null)
         throw new TRPCError({
           code: 'NOT_FOUND',
