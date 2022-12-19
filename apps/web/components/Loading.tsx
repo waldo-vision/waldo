@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Spinner,
   Center,
@@ -10,6 +10,8 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { NextPage } from 'next';
+import { getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 interface Props {
   color: string;
@@ -17,6 +19,15 @@ interface Props {
 
 const Loading: NextPage<Props> = props => {
   const { color } = props;
+  const [session, setSession] = useState<Session>();
+  useEffect(() => {
+    const getUserSession = async () => {
+      const session = await getSession();
+      if (session) {
+        setSession(session);
+      }
+    };
+  }, [props]);
   return (
     <div>
       <Center h={'100vh'}>
@@ -29,13 +40,15 @@ const Loading: NextPage<Props> = props => {
           <Box>
             <Spinner color={color && color} size={'xl'} />
           </Box>
-          <Alert status={'error'} borderRadius={12}>
-            <AlertIcon />
-            <AlertTitle>Your Account is suspended</AlertTitle>
-            <AlertDescription>
-              Some data may appear absent or incomplete and may not load.
-            </AlertDescription>
-          </Alert>
+          {session && session.user?.blacklisted && (
+            <Alert status={'error'} borderRadius={12}>
+              <AlertIcon />
+              <AlertTitle>Your Account is suspended</AlertTitle>
+              <AlertDescription>
+                Some data may appear absent or incomplete and may not load.
+              </AlertDescription>
+            </Alert>
+          )}
         </Flex>
       </Center>
     </div>

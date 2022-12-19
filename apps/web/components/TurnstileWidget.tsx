@@ -39,7 +39,7 @@ const TurnstileWidget = (props: WidgetProps) => {
     <div>
       <Box>
         <Turnstile
-          siteKey={process.env.CLOUDFLARE_TURNSTILE_SITE_KEY}
+          siteKey={'1x00000000000000000000AA'}
           options={{
             theme: 'light',
             size: 'normal',
