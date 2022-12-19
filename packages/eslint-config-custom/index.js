@@ -24,6 +24,7 @@ module.exports = {
     'prettier/prettier': 'error',
     'no-trailing-spaces': 'error',
     'import/extensions': 'off',
+    'no-unused-vars': 'off',
     'max-len': [
       'error',
       {

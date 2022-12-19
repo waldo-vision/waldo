@@ -27,6 +27,7 @@ const Loading: NextPage<Props> = props => {
         setSession(session);
       }
     };
+    getUserSession();
   }, [props]);
   return (
     <div>
@@ -40,7 +41,7 @@ const Loading: NextPage<Props> = props => {
           <Box>
             <Spinner color={color && color} size={'xl'} />
           </Box>
-          {session && session.user?.blacklisted && (
+          {session && session?.user?.blacklisted && (
             <Alert status={'error'} borderRadius={12}>
               <AlertIcon />
               <AlertTitle>Your Account is suspended</AlertTitle>

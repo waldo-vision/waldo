@@ -4,7 +4,7 @@ import Sidebar from '@components/dashboard/Sidebar';
 import User from '@components/dashboard/user/User';
 import RolePerms from '@components/dashboard/rolperms/RolePerms';
 import Gameplay from '@components/dashboard/gameplay/Gameplay';
-const admin = () => {
+const Dash = () => {
   const [page, setPage] = useState<number>(0);
   return (
     <div>
@@ -20,4 +20,4 @@ const admin = () => {
   );
 };
 
-export default admin;
+export default Dash;
