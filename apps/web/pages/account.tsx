@@ -88,7 +88,7 @@ export default function Account() {
         ) : (
           <>
             <DeleteAccModal show={showM} />
-            <Box bg={'white'} p={8} borderRadius={12}>
+            <Box bg={'white'} p={8} overflow={'hidden'}>
               <Flex direction={'column'} w={{ base: 'xs', md: 'sm', lg: 'xl' }}>
                 {/* heading */}
                 <Box>

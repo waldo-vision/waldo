@@ -19,7 +19,9 @@
         "FB_CLIENT_ID",
         "FB_CLIENT_SECRET",
         "TWITCH_CLIENT_ID",
-        "TWITCH_CLIENT_SECRET"
+        "TWITCH_CLIENT_SECRET",
+        "UPSTASH_REDIS_REST_URL",
+        "UPSTASH_REDIS_REST_TOKEN"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },

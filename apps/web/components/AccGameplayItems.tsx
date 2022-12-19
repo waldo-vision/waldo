@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, Flex, Tag, Spinner, Center, Image } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Tag,
+  Spinner,
+  Center,
+  Image,
+  Container,
+} from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
 import AccGameplayItemExtended from './AccGameplayItemExtended';
 interface Gameplay {

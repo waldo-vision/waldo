@@ -5,7 +5,7 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { type Context } from './context';
 import { Session } from 'next-auth';
 import { Prisma, PrismaClient } from 'database';
-import { redisClient } from '@server/utils/redisClient';
+import { ratelimit } from '@server/utils/rateLimitService';
 import RateLimiter from 'async-ratelimiter';
 
 const t = initTRPC
@@ -43,6 +43,20 @@ const isAuthed = t.middleware(({ ctx, next }) => {
 });
 
 const rateLimit = t.middleware(async ({ ctx, next }) => {
+  const identity = ctx.session?.user?.id;
+  if (!identity)
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'No user with the current session found.',
+    });
+  const result = await ratelimit.limit(identity);
+  if (!result.success) {
+    throw new TRPCError({
+      code: 'TOO_MANY_REQUESTS',
+      message: 'Too many requests.',
+    });
+  }
+
   return next({
     ctx: {
       // infers the `session` as non-nullable
@@ -54,4 +68,4 @@ const rateLimit = t.middleware(async ({ ctx, next }) => {
 /**
  * Protected procedure
  **/
-export const protectedProcedure = t.procedure.use(isAuthed);
+export const protectedProcedure = t.procedure.use(isAuthed).use(rateLimit);
