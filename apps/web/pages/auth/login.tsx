@@ -13,6 +13,7 @@ import {
   ModalFooter,
   Divider,
   Image,
+  useToast,
 } from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import { signIn, getSession, signOut } from 'next-auth/react';
@@ -33,6 +34,18 @@ const Login = () => {
   const [lastSelected, setLastSelected] = useState<number | null>(null);
   const [currentProvider, setCurrentProvider] = useState<string>();
   const [authProviders, setAuthProviders] = useState<Array<Provider>>();
+  const toast = useToast();
+  const createToast = () => {
+    toast({
+      position: 'bottom-right',
+      title: 'Error',
+      description:
+        "You can't login with the provider currently associated with your account.",
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+    });
+  };
   const retrieveUserSession = async () => {
     const session = await getSession();
     setUserSession(session);
@@ -41,6 +54,13 @@ const Login = () => {
   const handleSelect = (index: number) => {
     if (!authProviders) return;
     setCurrentProvider(authProviders[index].provider.toLowerCase());
+    if (
+      userSession?.user?.provider.toLocaleLowerCase() ==
+      authProviders[index].provider.toLocaleLowerCase()
+    ) {
+      createToast();
+      return;
+    }
     setLastSelected(index);
     if (lastSelected == null) {
       const val = authProviders[index];
