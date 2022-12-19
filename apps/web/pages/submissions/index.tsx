@@ -20,9 +20,7 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>
-          Waldo | Open-source visual cheat detection, powered by A.I
-        </title>
+        <title>Waldo | Submissions </title>
         <meta
           name="description"
           content="Submit your clips to the Waldo AI. Community submission reviewer will be available soon! Check out our discord for more information "

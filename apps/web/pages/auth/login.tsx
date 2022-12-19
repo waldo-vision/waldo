@@ -22,6 +22,7 @@ import { useState, useEffect } from 'react';
 import { FaDiscord, FaBattleNet, FaTwitch } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { BsGithub, BsFacebook } from 'react-icons/bs';
+import Head from 'next/head';
 type Provider = {
   provider: string;
   docs: string;
@@ -126,180 +127,197 @@ const Login = () => {
   }, []);
 
   return (
-    <div>
-      <Flex direction={'row'} minHeight={'0vh'} position={'relative'}>
-        <Flex
-          color="white"
-          w={{ base: 0, md: 0, lg: 'xl' }}
-          h={{ base: 0, md: 0, lg: 'auto' }}
-        >
-          <Box w={{ base: 0, md: 0, lg: 'xl' }} bottom="0" mt={'auto'} mb={12}>
-            <Center h={{ base: 0, md: 0, lg: '100vh' }}>
-              <Image
-                src={'/group.png'}
-                width={'xl'}
-                height={{ base: 0, md: 0, lg: '305px' }}
-                alt={'Group'}
-              />
-            </Center>
-            {/* add in v1.1 */}
-            {/* <LoginTabItems /> */}
-            <Flex alignItems={'left'} mx={12} direction={'column'}>
-              <Text
-                fontWeight={'bold'}
-                fontSize={{ base: 0, md: 20, lg: 30 }}
-                color={'gray.600'}
-                mb={2}
-              >
-                Sign up
+    <>
+      <Head>
+        <title>Waldo | Login</title>
+        <meta
+          name="description"
+          content="Waldo is an Open-source visual cheat detection, powered by A.I"
+        />
+      </Head>
+      <div>
+        <Flex direction={'row'} minHeight={'0vh'} position={'relative'}>
+          <Flex
+            color="white"
+            w={{ base: 0, md: 0, lg: 'xl' }}
+            h={{ base: 0, md: 0, lg: 'auto' }}
+          >
+            <Box
+              w={{ base: 0, md: 0, lg: 'xl' }}
+              bottom="0"
+              mt={'auto'}
+              mb={12}
+            >
+              <Center h={{ base: 0, md: 0, lg: '100vh' }}>
+                <Image
+                  src={'/group.png'}
+                  width={'xl'}
+                  height={{ base: 0, md: 0, lg: '305px' }}
+                  alt={'Group'}
+                />
+              </Center>
+              {/* add in v1.1 */}
+              {/* <LoginTabItems /> */}
+              <Flex alignItems={'left'} mx={12} direction={'column'}>
+                <Text
+                  fontWeight={'bold'}
+                  fontSize={{ base: 0, md: 20, lg: 30 }}
+                  color={'gray.600'}
+                  mb={2}
+                >
+                  Sign up
+                </Text>
+                <Text
+                  fontWeight={'semibold'}
+                  fontSize={{ base: 0, md: 10, lg: 20 }}
+                  color={'gray.600'}
+                >
+                  To access uploading and reviewing community clips you must be
+                  logged in
+                </Text>
+              </Flex>
+            </Box>
+          </Flex>
+          <Box w={'full'} bg="white">
+            <Box mt={12} ml={12}>
+              <Text fontWeight={'semibold'} fontSize={32}>
+                Sign up with an authentication gateway
               </Text>
-              <Text
-                fontWeight={'semibold'}
-                fontSize={{ base: 0, md: 10, lg: 20 }}
-                color={'gray.600'}
+              <Text>Choose your gateway to connect with below.</Text>
+            </Box>
+            <Divider mt={12} />
+            {authProviders &&
+              authProviders.map(({ provider, docs, hex, selected }, index) => (
+                <Box
+                  w={'full'}
+                  mt={12}
+                  cursor={'pointer'}
+                  onClick={() => handleSelect(index)}
+                  key={index}
+                >
+                  <Box
+                    ml={16}
+                    mr={16}
+                    boxShadow={'lg'}
+                    borderRadius={8}
+                    h={24}
+                    bgColor={selected ? 'gray.700' : 'white'}
+                  >
+                    <Flex direction={'row'}>
+                      <Center h={24}>
+                        <Box ml={6}>
+                          <Flex direction={'row'}>
+                            <Center>
+                              {provider == 'Discord' && (
+                                <FaDiscord size={40} color={hex} />
+                              )}
+                              {provider == 'Google' && <FcGoogle size={40} />}
+                              {provider == 'Github' && (
+                                <BsGithub size={40} color={hex} />
+                              )}
+                              {provider == 'BattleNET' && (
+                                <FaBattleNet size={40} color={hex} />
+                              )}
+                              {provider == 'FaceBook' && (
+                                <BsFacebook size={40} color={hex} />
+                              )}
+                              {provider == 'Twitch' && (
+                                <FaTwitch size={40} color={hex} />
+                              )}
+                              <Flex direction={'column'} ml={3}>
+                                <Text
+                                  fontWeight={'semibold'}
+                                  fontSize={15}
+                                  color={selected ? 'white' : ''}
+                                >
+                                  {provider}
+                                </Text>
+                                <Text
+                                  color={selected ? 'white' : ''}
+                                  fontSize={{ md: 0, base: 0, lg: 14 }}
+                                >
+                                  Use your {provider} account to gain access to
+                                  waldo services.
+                                </Text>
+                              </Flex>
+                            </Center>
+                          </Flex>
+                        </Box>
+                      </Center>
+                      <Flex right="0" ml={'auto'}>
+                        <Center>
+                          <Button variant="none" mr={6}>
+                            <Link href={docs}>
+                              <Text
+                                color={selected ? 'white' : ''}
+                                fontSize={{ base: 10, sm: 10, md: 10, lg: 10 }}
+                                textOverflow={'ellipsis'}
+                              >
+                                Learn More
+                              </Text>
+                            </Link>
+                          </Button>
+                        </Center>
+                      </Flex>
+                    </Flex>
+                  </Box>
+                </Box>
+              ))}
+            <Flex justifyContent={'end'}>
+              <Button
+                mr={16}
+                mb={12}
+                mt={4}
+                bgColor="black"
+                _hover={{ backgroundColor: 'gray.800' }}
+                color="white"
+                onClick={() => handleLoginLogic()}
               >
-                To access uploading and reviewing community clips you must be
-                logged in
-              </Text>
+                Connect
+              </Button>
             </Flex>
           </Box>
-        </Flex>
-        <Box w={'full'} bg="white">
-          <Box mt={12} ml={12}>
-            <Text fontWeight={'semibold'} fontSize={32}>
-              Sign up with an authentication gateway
-            </Text>
-            <Text>Choose your gateway to connect with below.</Text>
-          </Box>
-          <Divider mt={12} />
-          {authProviders &&
-            authProviders.map(({ provider, docs, hex, selected }, index) => (
-              <Box
-                w={'full'}
-                mt={12}
-                cursor={'pointer'}
-                onClick={() => handleSelect(index)}
-                key={index}
-              >
-                <Box
-                  ml={16}
-                  mr={16}
-                  boxShadow={'lg'}
-                  borderRadius={8}
-                  h={24}
-                  bgColor={selected ? 'gray.700' : 'white'}
-                >
-                  <Flex direction={'row'}>
-                    <Center h={24}>
-                      <Box ml={6}>
-                        <Flex direction={'row'}>
-                          <Center>
-                            {provider == 'Discord' && (
-                              <FaDiscord size={40} color={hex} />
-                            )}
-                            {provider == 'Google' && <FcGoogle size={40} />}
-                            {provider == 'Github' && (
-                              <BsGithub size={40} color={hex} />
-                            )}
-                            {provider == 'BattleNET' && (
-                              <FaBattleNet size={40} color={hex} />
-                            )}
-                            {provider == 'FaceBook' && (
-                              <BsFacebook size={40} color={hex} />
-                            )}
-                            {provider == 'Twitch' && (
-                              <FaTwitch size={40} color={hex} />
-                            )}
-                            <Flex direction={'column'} ml={3}>
-                              <Text
-                                fontWeight={'semibold'}
-                                fontSize={15}
-                                color={selected ? 'white' : ''}
-                              >
-                                {provider}
-                              </Text>
-                              <Text
-                                color={selected ? 'white' : ''}
-                                fontSize={{ md: 0, base: 0, lg: 14 }}
-                              >
-                                Use your {provider} account to gain access to
-                                waldo services.
-                              </Text>
-                            </Flex>
-                          </Center>
-                        </Flex>
-                      </Box>
-                    </Center>
-                    <Flex right="0" ml={'auto'}>
-                      <Center>
-                        <Button variant="none" mr={6}>
-                          <Link href={docs}>
-                            <Text
-                              color={selected ? 'white' : ''}
-                              fontSize={{ base: 10, sm: 10, md: 10, lg: 10 }}
-                              textOverflow={'ellipsis'}
-                            >
-                              Learn More
-                            </Text>
-                          </Link>
-                        </Button>
-                      </Center>
-                    </Flex>
-                  </Flex>
-                </Box>
-              </Box>
-            ))}
-          <Flex justifyContent={'end'}>
-            <Button
-              mr={16}
-              mb={12}
-              mt={4}
-              bgColor="black"
-              _hover={{ backgroundColor: 'gray.800' }}
-              color="white"
-              onClick={() => handleLoginLogic()}
+          <Center h={'100vh'}>
+            <Modal
+              isOpen={linkAlertOpen}
+              onClose={() => setLinkAlertOpen(false)}
             >
-              Connect
-            </Button>
-          </Flex>
-        </Box>
-        <Center h={'100vh'}>
-          <Modal isOpen={linkAlertOpen} onClose={() => setLinkAlertOpen(false)}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Account Linking</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                To prevent accidental account linking, please confirm that you
-                wish to link your current account;{' '}
-                {userSession && userSession?.user?.provider} with the account
-                you are trying to login to; {currentProvider && currentProvider}
-                .
-              </ModalBody>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Account Linking</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  To prevent accidental account linking, please confirm that you
+                  wish to link your current account;{' '}
+                  {userSession && userSession?.user?.provider} with the account
+                  you are trying to login to;{' '}
+                  {currentProvider && currentProvider}.
+                </ModalBody>
 
-              <ModalFooter>
-                <Button
-                  colorScheme="purple"
-                  mr={3}
-                  onClick={() => setLinkAlertOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button colorScheme="purple" mr={3} onClick={() => signOut()}>
-                  Logout
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => signIn(currentProvider)}
-                >
-                  Continue
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-        </Center>
-      </Flex>
-    </div>
+                <ModalFooter>
+                  <Button
+                    colorScheme="purple"
+                    mr={3}
+                    onClick={() => setLinkAlertOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button colorScheme="purple" mr={3} onClick={() => signOut()}>
+                    Logout
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => signIn(currentProvider)}
+                  >
+                    Continue
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </Center>
+        </Flex>
+      </div>
+    </>
   );
 };
 
