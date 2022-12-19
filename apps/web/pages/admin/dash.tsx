@@ -10,7 +10,7 @@ const admin = () => {
     <div>
       <Flex direction={'row'}>
         <Sidebar callback={page => setPage(page)} />
-        <Box>
+        <Box w={'100%'}>
           {page == 0 && <User />}
           {page == 1 && <RolePerms />}
           {page == 2 && <Gameplay />}
