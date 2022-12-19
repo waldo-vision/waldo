@@ -48,6 +48,7 @@ export const authOptions = {
             },
           });
           session.user.provider = userAccount.provider;
+          session.user.role = userAccount.role;
         }
       }
       return session;

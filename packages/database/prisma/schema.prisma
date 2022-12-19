@@ -76,6 +76,12 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+ enum Roles {
+  USER
+  MOD
+  ADMIN
+ }
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -88,6 +94,7 @@ model User {
   // our items
   blacklisted  Boolean?
   footage      Footage[]
+  role         Roles @default(USER)
   footageVotes FootageVotes[] @relation("user")
 }
 
