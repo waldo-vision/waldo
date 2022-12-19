@@ -46,9 +46,13 @@ export const authOptions = {
             where: {
               userId: user.id,
             },
+            include: {
+              user: true,
+            },
           });
           session.user.provider = userAccount.provider;
-          session.user.role = userAccount.role;
+          session.user.role = userAccount.user.role;
+          session.user.blacklisted = userAccount.user.blacklisted;
         }
       }
       return session;

@@ -1,5 +1,5 @@
 /* eslint-disable arrow-parens */
-import { ReactElement, useEffect, useState, useRef } from 'react';
+import { ReactElement, useEffect, useState, useRef, use } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -23,9 +23,13 @@ import { FaCodeBranch, FaRocket } from 'react-icons/fa';
 import { MdAllInclusive, MdMoneyOff, MdInfoOutline } from 'react-icons/md';
 import { HiUpload } from 'react-icons/hi';
 import { TbEyeCheck } from 'react-icons/tb';
+import { Session } from 'next-auth';
+import { getSession } from 'next-auth/react';
+import BlacklistedModal from '@components/BlacklistedModal';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
+  const [userSession, setUserSession] = useState<Session | undefined>();
   const [y, setY] = useState(0);
 
   const updateScrollPosition = () => {
@@ -34,6 +38,16 @@ export default function Home() {
 
   useEffect(() => {
     updateScrollPosition();
+    const getUserSession = async () => {
+      const session = await getSession();
+      if (session) {
+        setUserSession(session);
+        console.log(session);
+      } else {
+        setUserSession(undefined);
+      }
+    };
+    getUserSession();
     // adding the event when scroll change background
     window.addEventListener('scroll', updateScrollPosition);
   }, []);
@@ -48,7 +62,6 @@ export default function Home() {
           content="Waldo is an Open-source visual cheat detection, powered by A.I"
         />
       </Head>
-
       <Flex direction={'column'} gap={25} mb={150}>
         <Container display={{ base: 'none', lg: 'fixed' }}>
           <Image
@@ -69,6 +82,7 @@ export default function Home() {
             // quality={1}
             placeholder={'blur'}
           />
+
           <Image
             style={{
               position: 'fixed',
@@ -96,6 +110,9 @@ export default function Home() {
               alignItems={'center'}
               gap={'5px'}
             >
+              {userSession && userSession.user?.blacklisted && (
+                <BlacklistedModal show={true} />
+              )}
               <Heading fontSize={'57px'} py={2} textAlign={'center'}>
                 Waldo
               </Heading>
@@ -242,6 +259,7 @@ export default function Home() {
           </Center>
         </Container>
       </Flex>
+      <Center h={'100vh'}></Center>
     </>
   );
 }
