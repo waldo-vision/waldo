@@ -1,26 +1,16 @@
 import Layout from '@components/Layout';
-import React, { FormEvent } from 'react';
 import { checkURL } from '@utils/helpers/apiHelper';
 import { ReactElement, useEffect, useState } from 'react';
+import { AlertStatus } from '@chakra-ui/alert';
 import {
   Button,
   Center,
   Text,
   Flex,
-  FormControl,
-  FormLabel,
   Input,
-  FormHelperText,
   useToast,
   Box,
   SlideFade,
-  PopoverTrigger,
-  Popover,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverFooter,
   Menu,
   MenuButton,
   MenuList,
@@ -29,10 +19,10 @@ import {
   Image as CIMG,
   Checkbox,
   chakra,
-  Spinner,
   Container,
   Heading,
 } from '@chakra-ui/react';
+import TurnstileWidget from '@components/TurnstileWidget';
 import {
   ShieldCheckIcon,
   CheckCircleIcon,
@@ -45,10 +35,12 @@ import Loading from '@components/Loading';
 import { trpc } from '@utils/trpc';
 import { inferProcedureInput } from '@trpc/server';
 import { AppRouter } from '@server/trpc/router/_app';
+import { TRPCError } from '@trpc/server';
 import { useRouter } from 'next/router';
 const Upload = () => {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [selectedGame, setSelectedGame] = useState<string>('csg');
@@ -65,14 +57,13 @@ const Upload = () => {
       await utils.gameplay.invalidate();
     },
   });
-
-  const handleRequestError = async (msg: string) => {
+  const handleRequestError = async (error: TRPCError | string) => {
     setWaitingForResponse(false);
     setRequestDone(true);
     setCurrentUrl('');
 
     // Create toasts
-    createToast(msg, 'error', 'Error');
+    createToast(error.toString() as unknown as string, 'error', 'Error');
     // Enable Error
     setError(true);
     await delay();
@@ -82,14 +73,14 @@ const Upload = () => {
     setRequestDone(false);
   };
 
-  let games = [
+  const games = [
     { name: 'Counter Strike: Global Offensive', shortName: 'csg' },
     { name: 'VALORANT', shortName: 'val' },
     { name: 'Team Fortress 2', shortName: 'tf2' },
     { name: 'Apex Legends', shortName: 'ape' },
   ];
 
-  let options = [
+  const options = [
     {
       option: 'Do you have permission from the owner to submit?',
       checked: false,
@@ -104,17 +95,7 @@ const Upload = () => {
     },
   ];
 
-  const getCurrentSession = async () => {
-    const session = await getSession();
-    if (session === null) {
-      router.push('/auth/login');
-    } else {
-      setUserSession(session);
-      setLoading(false);
-    }
-  };
-
-  const createToast = (msg: string, type: any, title: string) => {
+  const createToast = (msg: string, type: AlertStatus, title: string) => {
     toast({
       position: 'bottom-right',
       title: title,
@@ -146,7 +127,11 @@ const Upload = () => {
     );
   };
 
-  const handleClipUpload = async (e: FormEvent<HTMLFormElement>) => {
+  const handleClipUpload = async () => {
+    if (!isRequestValid) {
+      handleRequestError('Request Invalid. Reload and try again.');
+      return;
+    }
     if (requestDone) {
       setSelectedGame('csg');
       setCurrentUrl('');
@@ -155,7 +140,6 @@ const Upload = () => {
       return;
     }
     setWaitingForResponse(true);
-
     if (!checkURL(currentUrl)) {
       handleRequestError('Please enter a valid youtube link');
       return;
@@ -179,16 +163,25 @@ const Upload = () => {
     try {
       await createGameplay.mutateAsync(input);
       handleRequestSuccess();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log(error);
-      handleRequestError(error.toString());
+      handleRequestError(error as TRPCError);
     }
   };
 
   useEffect(() => {
+    const getCurrentSession = async () => {
+      const session = await getSession();
+      if (session === null) {
+        router.push('/auth/login');
+      } else {
+        setUserSession(session);
+        setLoading(false);
+      }
+    };
     setLoading(true);
     getCurrentSession();
-  }, []);
+  }, [router]);
   return (
     <div>
       {loading ? (
@@ -207,6 +200,7 @@ const Upload = () => {
                   Before you submit a video make sure you have read the rules
                   regarding
                 </Text>
+                <TurnstileWidget valid={result => setIsRequestValid(result)} />
               </Flex>
             </Container>
             <Container>
@@ -299,7 +293,7 @@ const Upload = () => {
                             required={true}
                             mb={3}
                             onChange={event => {
-                              let target = event.target;
+                              const target = event.target;
                               if (target.checked) {
                                 setLegalConfirmations(legalConfirmations + 1);
                               } else {
@@ -341,7 +335,7 @@ const Upload = () => {
                         colorScheme={'blackAlpha'}
                         boxShadow="lg"
                         mt={5}
-                        onClick={event => handleClipUpload(event)}
+                        onClick={() => handleClipUpload()}
                         isLoading={waitingForResponse}
                       >
                         {!requestDone ? (

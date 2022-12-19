@@ -1,13 +1,12 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Flex,
-  Button,
-  Text,
   Tag,
   Spinner,
   Center,
   Image,
+  Container,
 } from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
 import AccGameplayItemExtended from './AccGameplayItemExtended';
@@ -16,8 +15,8 @@ interface Gameplay {
   userId: string;
   youtubeUrl: string;
   footageType: string;
-  upVotes: number;
-  downVotes: number;
+  upVotes?: number;
+  downVotes?: number;
   isAnalyzed: boolean;
 }
 const AccGameplayItems = () => {
@@ -28,31 +27,35 @@ const AccGameplayItems = () => {
   const { isLoading, data } = trpc.gameplay.getUserGameplay.useQuery({
     userId: null,
   });
-
-  var videoIdFromUrlRegex =
+  const videoIdFromUrlRegex =
+    /* eslint-disable-next-line no-useless-escape */
     /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   // format http://img.youtube.com/vi/[video-id]/[thumbnail-number].jpg
-  var youtubeThumbnailRetrievalUrl = 'http://img.youtube.com/vi/';
+  const youtubeThumbnailRetrievalUrl = 'http://img.youtube.com/vi/';
   const getVideoId = (url: string) => {
-    var result = url.match(videoIdFromUrlRegex);
+    const result = url.match(videoIdFromUrlRegex);
+    if (result == null) {
+      // will never happen types are just wack.
+      return 'No result';
+    }
     return result[2];
   };
 
-  const getThumbnail = (url: string) => {
-    var videoId = getVideoId(url);
-    var url = `${youtubeThumbnailRetrievalUrl}${videoId}/${0}.jpg`;
+  const getThumbnail = (urlInput: string) => {
+    const videoId = getVideoId(urlInput);
+    const url = `${youtubeThumbnailRetrievalUrl}${videoId}/${0}.jpg`;
     return url;
   };
 
-  const getNecessaryData = async () => {
+  const getNecessaryData = useCallback(() => {
     if (!isLoading) setGameplayItems(data);
     if (!data) setGameplayItems(undefined);
     setComponentLoading(false);
-  };
+  }, [data, isLoading]);
 
   useEffect(() => {
     getNecessaryData();
-  }, [data]);
+  }, [data, getNecessaryData]);
   return (
     <div>
       <Flex>
@@ -75,6 +78,7 @@ const AccGameplayItems = () => {
                     <Center>
                       <Image
                         src={getThumbnail(item.youtubeUrl)}
+                        alt={'Profile Icon'}
                         height={{
                           base: '40px',
                           sm: '40px',

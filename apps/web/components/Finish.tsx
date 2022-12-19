@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Center, Flex, Text, Button } from '@chakra-ui/react';
+import { Flex, Text, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 const Finish = () => {
   const router = useRouter();

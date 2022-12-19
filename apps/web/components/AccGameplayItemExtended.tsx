@@ -1,36 +1,25 @@
-import React, { useState, useEffect, use } from 'react';
-import {
-  Box,
-  Flex,
-  Button,
-  Text,
-  Tag,
-  Spinner,
-  Center,
-  Image,
-  useToast,
-} from '@chakra-ui/react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Box, Flex, Button, Text, Spinner, useToast } from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
-import Loading from './Loading';
 import { BiTrash } from 'react-icons/bi';
-import { getYtVidDataFromId } from '@utils/helpers/apiHelper';
-// TODO
-interface Item {}
-
-interface Id {
+interface Item {
+  item: {
+    youtubeUrl: string;
+    id: string;
+  };
   id: string;
 }
-const AccGameplayItemExtended = ({ item, id }) => {
-  const [meta, setMeta] = useState<String>();
+const AccGameplayItemExtended = (props: Item) => {
+  const [meta, setMeta] = useState<string>();
   const utils = trpc.useContext();
   const deleteGameplayTrpc = trpc.gameplay.deleteGameplay.useMutation({
     async onSuccess() {
       await utils.gameplay.invalidate();
     },
   });
-  const { isLoading, data, refetch } = trpc.util.getYtVidDataFromId.useQuery(
+  const { data, refetch } = trpc.util.getYtVidDataFromId.useQuery(
     {
-      videoId: id,
+      videoId: props.id,
     },
     {
       enabled: false,
@@ -38,18 +27,21 @@ const AccGameplayItemExtended = ({ item, id }) => {
   );
   const [componentLoading, setComponentLoading] = useState<boolean>(true);
   const toast = useToast();
-  const getd = async () => {
-    refetch();
-    setMeta(data?.title);
+  const getData = useCallback(async () => {
+    await refetch();
+    if (data) {
+      setMeta(data.title);
+    }
     setComponentLoading(false);
-  };
+  }, [data, refetch]);
+
   useEffect(() => {
-    getd();
-  }, [item, data]);
+    getData();
+  }, [props.item, getData]);
 
   const deleteGameplay = () => {
     try {
-      deleteGameplayTrpc.mutateAsync({ gameplayId: item.id });
+      deleteGameplayTrpc.mutateAsync({ gameplayId: props.item.id });
       toast({
         position: 'bottom-right',
         title: 'Gameplay Deletion',
@@ -84,9 +76,10 @@ const AccGameplayItemExtended = ({ item, id }) => {
                 fontWeight={'bold'}
               >
                 {meta && meta.substring(0, 15) + '...'}
+                {meta && meta.substring(0, 15) + '...'}
               </Text>
               <Text fontSize={{ base: 0, sm: 0, md: 8, lg: 8 }}>
-                {item && item.youtubeUrl}
+                {props.item && props.item.youtubeUrl}
               </Text>
             </>
           )}

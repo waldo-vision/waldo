@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Center, Flex, Text, Tabs, Tab, TabList } from '@chakra-ui/react';
+import { Center, Flex, Tabs, Tab, TabList } from '@chakra-ui/react';
 const LoginTabItems = () => {
   const items = [{}, {}, {}];
   return (

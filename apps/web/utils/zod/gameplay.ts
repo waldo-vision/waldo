@@ -17,7 +17,9 @@ export const GameplayPlusUserSchema = z.object({
   upVotes: z.number().optional(),
   downVotes: z.number().optional(),
   isAnalyzed: z.boolean(),
-  user: z.object({ name: z.string() }).optional(),
+  user: z.object({
+    name: z.string().nullable().optional(),
+  }),
 });
 
 export const GameplayTypes = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD']);

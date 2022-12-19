@@ -2,6 +2,9 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
+import BattleNetProvider from 'next-auth/providers/battlenet';
+import FaceBookProvider from 'next-auth/providers/facebook';
+import TwitchProvider from 'next-auth/providers/twitch';
 import { prisma } from '@server/db/client';
 import NextAuth from 'next-auth/next';
 export const authOptions = {
@@ -20,6 +23,18 @@ export const authOptions = {
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
     }),
+    BattleNetProvider({
+      clientId: process.env.BTLNET_CLIENT_ID,
+      clientSecret: process.env.BTLNET_CLIENT_SECRET,
+    }),
+    FaceBookProvider({
+      clientId: process.env.FB_CLIENT_ID,
+      clientSecret: process.env.FB_CLIENT_SECRET,
+    }),
+    TwitchProvider({
+      clientId: process.env.TWITCH_CLIENT_ID,
+      clientSecret: process.env.TWITCH_CLIENT_SECRET,
+    }),
   ],
   callbacks: {
     async session({ session, user }) {
@@ -37,7 +52,7 @@ export const authOptions = {
       }
       return session;
     },
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }) {
       // redirects to home page instead of auth page on signup/in/ or logout.
       return baseUrl;
     },

@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import React, { Suspense } from 'react';
 
-import { Box, Center } from '@chakra-ui/react';
+import { Center, Box } from '@chakra-ui/react';
 import Navigation from './Navbar';
 const Footer = dynamic(() => import('./Footer'), {
   suspense: true,

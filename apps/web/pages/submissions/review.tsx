@@ -9,18 +9,34 @@ import {
 } from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
-import { useState, useEffect, ReactElement } from 'react';
+import { useState, useEffect, ReactElement, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Loading from '@components/Loading';
 import Layout from '@components/Layout';
 import Finish from '@components/Finish';
 import { trpc } from '@utils/trpc';
+
+interface ReviewItems {
+  user?:
+    | {
+        name?: string | null;
+      }
+    | undefined;
+  upVotes?: number | undefined;
+  downVotes?: number | undefined;
+  id: string;
+  userId: string;
+  youtubeUrl: string;
+  footageType: string;
+  isAnalyzed: boolean;
+}
+
 export default function Review() {
   const utils = trpc.useContext();
   const AMOUNT_TO_QUERY = 20;
   const { isLoading: reviewItemsLoading, data: reviewItemsData } =
     trpc.gameplay.getReviewItems.useQuery({
-      amountToQuery: 20,
+      amountToQuery: AMOUNT_TO_QUERY,
     });
 
   const reviewGameplay = trpc.gameplay.reviewGameplay.useMutation({
@@ -31,20 +47,25 @@ export default function Review() {
 
   const [selectedItem, setSelectedItem] = useState<number>(0);
   const [userSession, setUserSession] = useState<Session | undefined>();
-  const [reviewItems, setReviewItems] = useState(reviewItemsData);
+  const [reviewItems, setReviewItems] = useState<
+    Array<ReviewItems> | undefined
+  >();
   const [loading, setLoading] = useState<boolean>(true);
   const [finish, setFinish] = useState<boolean>(false);
   const router = useRouter();
-  var videoIdFromUrlRegex =
+  const videoIdFromUrlRegex =
+    // eslint-disable-next-line no-useless-escape
     /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   // format http://img.youtube.com/vi/[video-id]/[thumbnail-number].jpg
-  var youtubeThumbnailRetrievalUrl = 'http://img.youtube.com/vi/';
   const getYtEmbedLink = (url: string) => {
-    var result = url.match(videoIdFromUrlRegex);
+    const result = url.match(videoIdFromUrlRegex);
+    if (result == null) {
+      return;
+    }
     return `https://youtube.com/embed/${result[2]}`;
   };
 
-  const getCurrentSession = async () => {
+  const getCurrentSession = useCallback(async () => {
     const session = await getSession();
     if (session === null) {
       router.push('/auth/login');
@@ -52,11 +73,11 @@ export default function Review() {
       setUserSession(session);
       setLoading(false);
     }
-  };
+  }, [router]);
 
-  const getNecessaryData = async () => {
+  const getNecessaryData = useCallback(async () => {
     if (!reviewItemsLoading) setReviewItems(reviewItemsData);
-  };
+  }, [reviewItemsLoading, reviewItemsData]);
 
   const doClickLogic = async (action: 'yes' | 'no') => {
     setLoading(true);
@@ -67,10 +88,11 @@ export default function Review() {
     } else {
       downVotes = 1;
     }
+    if (reviewItems == null) return;
     if (upVotes == null) {
       await reviewGameplay.mutateAsync({
         gameplayId: reviewItems[selectedItem].id,
-        downVotes: downVotes,
+        downVotes: downVotes as number,
       });
     } else {
       await reviewGameplay.mutateAsync({
@@ -96,7 +118,7 @@ export default function Review() {
   useEffect(() => {
     getCurrentSession();
     getNecessaryData();
-  }, [reviewItemsData]);
+  }, [reviewItemsData, getNecessaryData, getCurrentSession]);
   return (
     <div>
       <Center h={'100vh'}>
@@ -112,7 +134,8 @@ export default function Review() {
                   {/* User Icon */}
                   <Box>
                     <Image
-                      src={userSession?.user?.image}
+                      src={userSession?.user?.image as string}
+                      alt={'User Icon'}
                       w={54}
                       h={54}
                       borderRadius={28}

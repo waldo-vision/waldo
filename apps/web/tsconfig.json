@@ -6,10 +6,10 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "pages/api/auth/[...nextauth].js",
-    "pages/account.jsx"
-  ],
+    "pages/account.jsx",
+    ],
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
