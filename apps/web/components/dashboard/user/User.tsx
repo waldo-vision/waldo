@@ -8,6 +8,7 @@ const User = () => {
     <div>
       <Flex direction={'column'} w={'inherit'}>
         <SearchFilters />
+        <Main />
       </Flex>
     </div>
   );

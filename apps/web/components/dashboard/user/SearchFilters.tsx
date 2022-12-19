@@ -58,7 +58,7 @@ const RoleFilter = () => {
         Select Role <ChevronDownIcon />
       </MenuButton>
       <MenuList>
-        <MenuOptionGroup defaultValue={'admin'}>
+        <MenuOptionGroup defaultValue={'user'}>
           <MenuItemOption icon={<UserIcon />} value={'user'}>
             User
           </MenuItemOption>
