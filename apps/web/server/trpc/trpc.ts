@@ -1,12 +1,8 @@
 import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { OpenApiMeta } from 'trpc-openapi';
-import { Ratelimit } from '@upstash/ratelimit';
 import { type Context } from './context';
-import { Session } from 'next-auth';
-import { Prisma, PrismaClient } from 'database';
 import { ratelimit } from '@server/utils/rateLimitService';
-import RateLimiter from 'async-ratelimiter';
 
 const t = initTRPC
   .context<Context>()
@@ -42,6 +38,22 @@ const isAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
+const isBlacklisted = t.middleware(({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
+  }
+  if (ctx.session.user.blacklisted) {
+    throw new TRPCError({ code: 'FORBIDDEN' });
+  }
+
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
 const rateLimit = t.middleware(async ({ ctx, next }) => {
   const identity = ctx.session?.user?.id;
   if (!identity)
@@ -68,4 +80,7 @@ const rateLimit = t.middleware(async ({ ctx, next }) => {
 /**
  * Protected procedure
  **/
-export const protectedProcedure = t.procedure.use(isAuthed).use(rateLimit);
+export const protectedProcedure = t.procedure
+  .use(isAuthed)
+  .use(isBlacklisted)
+  .use(rateLimit);

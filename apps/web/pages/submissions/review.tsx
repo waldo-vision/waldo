@@ -67,6 +67,11 @@ export default function Review() {
 
   const getCurrentSession = useCallback(async () => {
     const session = await getSession();
+    // if blacklisted just keep loading, don't load page
+    if (session?.user?.blacklisted) {
+      setLoading(true);
+      return;
+    }
     if (session === null) {
       router.push('/auth/login');
     } else {
