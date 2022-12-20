@@ -7,6 +7,20 @@ import FaceBookProvider from 'next-auth/providers/facebook';
 import TwitchProvider from 'next-auth/providers/twitch';
 import { prisma } from '@server/db/client';
 import NextAuth from 'next-auth/next';
+import { Session, User } from 'next-auth';
+type BattleNetIssuer =
+  | 'https://www.battlenet.com.cn/oauth'
+  | 'https://us.battle.net/oauth'
+  | 'https://eu.battle.net/oauth'
+  | 'https://kr.battle.net/oauth'
+  | 'https://tw.battle.net/oauth';
+interface SessionCallback {
+  session: Session;
+  user: User;
+}
+interface RedirectCallback {
+  baseUrl: string;
+}
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -26,6 +40,7 @@ export const authOptions = {
     BattleNetProvider({
       clientId: process.env.BTLNET_CLIENT_ID,
       clientSecret: process.env.BTLNET_CLIENT_SECRET,
+      issuer: 'https://us.battle.net/oauth',
     }),
     FaceBookProvider({
       clientId: process.env.FB_CLIENT_ID,
@@ -37,10 +52,11 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, user }) {
+    async session(sessionCallback: SessionCallback) {
+      const session = sessionCallback.session;
+      const user = sessionCallback.user;
       if (session.user) {
         session.user.id = user.id;
-        session.user.avatarUrl = user.image;
         if (user) {
           const userAccount = await prisma.account.findFirst({
             where: {
@@ -57,9 +73,9 @@ export const authOptions = {
       }
       return session;
     },
-    async redirect({ baseUrl }) {
+    async redirect(redirectCallback: RedirectCallback) {
       // redirects to home page instead of auth page on signup/in/ or logout.
-      return baseUrl;
+      return redirectCallback.baseUrl;
     },
   },
 };

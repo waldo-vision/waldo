@@ -224,7 +224,7 @@ const Upload = () => {
                 >
                   <Flex direction={'row'}>
                     <CIMG
-                      src={userSession?.user?.avatarUrl}
+                      src={userSession?.user?.image}
                       alt={'img'}
                       borderRadius={40}
                       width={20}
