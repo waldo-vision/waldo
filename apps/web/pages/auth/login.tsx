@@ -10,13 +10,15 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  useToast,
   ModalFooter,
   Divider,
-  Image,
-  useToast,
+  Heading,
 } from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import { signIn, getSession, signOut } from 'next-auth/react';
+import WaldoLogo from '../../public/android-chrome-256x256.png';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { FaDiscord, FaBattleNet, FaTwitch } from 'react-icons/fa';
@@ -29,7 +31,7 @@ type Provider = {
   hex?: string;
   selected?: boolean;
 };
-const Login = () => {
+export default function Login() {
   const [linkAlertOpen, setLinkAlertOpen] = useState<boolean>(false);
   const [userSession, setUserSession] = useState<Session | null>();
   const [lastSelected, setLastSelected] = useState<number | null>(null);
@@ -135,55 +137,77 @@ const Login = () => {
           content="Waldo is an Open-source visual cheat detection, powered by A.I"
         />
       </Head>
-      <div>
-        <Flex direction={'row'} minHeight={'0vh'} position={'relative'}>
-          <Flex
-            color="white"
-            w={{ base: 0, md: 0, lg: 'xl' }}
-            h={{ base: 0, md: 0, lg: 'auto' }}
+      <Box maxWidth={'100%'} maxHeight={'100vh'} textAlign={'left'}>
+        <Flex direction={'row'} height={'100vh'} width={'100v'}>
+          <Box
+            display={{ base: 'nonce', md: 'flex' }}
+            w={{ base: 0, md: 0, lg: '50%' }}
+            height={'full'}
           >
-            <Box
-              w={{ base: 0, md: 0, lg: 'xl' }}
-              bottom="0"
-              mt={'auto'}
-              mb={12}
+            <Flex
+              width={'100%'}
+              height={'100%'}
+              direction={'column'}
+              py={10}
+              px={20}
+              justify={'space-between'}
             >
-              <Center h={{ base: 0, md: 0, lg: '100vh' }}>
-                <Image
-                  src={'/group.png'}
-                  width={'xl'}
-                  height={{ base: 0, md: 0, lg: '305px' }}
-                  alt={'Group'}
-                />
-              </Center>
-              {/* add in v1.1 */}
-              {/* <LoginTabItems /> */}
-              <Flex alignItems={'left'} mx={12} direction={'column'}>
-                <Text
-                  fontWeight={'bold'}
-                  fontSize={{ base: 0, md: 20, lg: 30 }}
-                  color={'gray.600'}
-                  mb={2}
-                >
-                  Sign up
-                </Text>
-                <Text
-                  fontWeight={'semibold'}
-                  fontSize={{ base: 0, md: 10, lg: 20 }}
-                  color={'gray.600'}
-                >
-                  To access uploading and reviewing community clips you must be
-                  logged in
-                </Text>
-              </Flex>
-            </Box>
-          </Flex>
-          <Box w={'full'} bg="white">
-            <Box mt={12} ml={12}>
-              <Text fontWeight={'semibold'} fontSize={32}>
+              <Box>
+                <Link href={'/'}>
+                  <Flex
+                    flexDirection={'row'}
+                    alignItems={'center'}
+                    display={{ base: 'none', md: 'flex' }}
+                  >
+                    <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
+                    <Heading size={'md'} pl={3}>
+                      Waldo
+                    </Heading>
+                  </Flex>
+                </Link>
+              </Box>
+              <Box>
+                <Flex direction={'column'}>
+                  <Text
+                    fontWeight={'bold'}
+                    fontSize={{ base: 0, md: 25, lg: 30 }}
+                    color={'gray.600'}
+                    mb={2}
+                  >
+                    Sign up
+                  </Text>
+                  <Text
+                    fontWeight={'semibold'}
+                    fontSize={{ base: 0, md: 15, lg: 20 }}
+                    color={'gray.600'}
+                  >
+                    To access uploading and reviewing community clips you must
+                    be logged in.
+                  </Text>
+                </Flex>
+              </Box>
+            </Flex>
+          </Box>
+          <Box w={'full'} maxHeight={'full'} bg="white" overflowY={'scroll'}>
+            <Box mt={6} mx={'20px'}>
+              <Box mb={10}>
+                <Link href={'/'}>
+                  <Flex
+                    flexDirection={'row'}
+                    alignItems={'center'}
+                    display={{ base: 'flex', lg: 'none' }}
+                  >
+                    <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
+                    <Heading size={'md'} pl={3}>
+                      Waldo
+                    </Heading>
+                  </Flex>
+                </Link>
+              </Box>
+              <Heading fontWeight={'semibold'} fontSize={32}>
                 Sign up with an authentication gateway
-              </Text>
-              <Text>Choose your gateway to connect with below.</Text>
+              </Heading>
+              <Text mt={2}>Choose your gateway to connect with below.</Text>
             </Box>
             <Divider mt={12} />
             {authProviders &&
@@ -244,13 +268,26 @@ const Login = () => {
                           </Flex>
                         </Box>
                       </Center>
-                      <Flex right="0" ml={'auto'}>
+                      <Flex right={'0'} ml={'auto'}>
                         <Center>
-                          <Button variant="none" mr={6}>
+                          <Button
+                            variant="outline"
+                            visibility={{
+                              base: 'hidden',
+                              sm: 'hidden',
+                              md: 'hidden',
+                              lg: 'visible',
+                            }}
+                            mr={6}
+                            _hover={{
+                              backgroundColor: 'gray.700',
+                              color: 'white',
+                            }}
+                          >
                             <Link href={docs}>
                               <Text
                                 color={selected ? 'white' : ''}
-                                fontSize={{ base: 10, sm: 10, md: 10, lg: 10 }}
+                                fontSize={{ base: 12, sm: 12, md: 12, lg: 14 }}
                                 textOverflow={'ellipsis'}
                               >
                                 Learn More
@@ -272,9 +309,11 @@ const Login = () => {
                 _hover={{ backgroundColor: 'gray.800' }}
                 color="white"
                 onClick={() => handleLoginLogic()}
+                disabled={currentProvider ? false : true}
               >
                 Connect
               </Button>
+              ~
             </Flex>
           </Box>
           <Center h={'100vh'}>
@@ -316,9 +355,7 @@ const Login = () => {
             </Modal>
           </Center>
         </Flex>
-      </div>
+      </Box>
     </>
   );
-};
-
-export default Login;
+}
