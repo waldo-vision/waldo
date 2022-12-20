@@ -1,6 +1,7 @@
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/layout';
 import Sidebar from '@components/dashboard/Sidebar';
-export default function User() {
+
+export default function Gameplay() {
   return (
     <div>
       <Flex direction={'row'}>

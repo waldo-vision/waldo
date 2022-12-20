@@ -3,29 +3,20 @@ import { Box, Flex, Center, Text, Image } from '@chakra-ui/react';
 import { FaRegUser } from 'react-icons/fa';
 import { GrGamepad } from 'react-icons/gr';
 import { FcLock } from 'react-icons/fc';
+import { router } from '@server/trpc/trpc';
+import { useRouter } from 'next/router';
 type Tab = {
   tabName: string;
-  selected: boolean;
+  path: string;
 };
-interface Props {
-  callback(value: number): void;
-}
-const Sidebar = (props: Props) => {
+const Sidebar = () => {
   const sidebarTabs = [
-    { tabName: 'Users', selected: true },
-    { tabName: 'Roles/Permissions', selected: false },
-    { tabName: 'Gameplay', selected: false },
+    { tabName: 'Users', path: '/user' },
+    { tabName: 'Roles/Permissions', path: '/roleperms' },
+    { tabName: 'Gameplay', path: '/gameplay' },
   ];
   const [tabs, setTabs] = useState<Array<Tab>>(sidebarTabs);
-  const [prevTab, setPrevTab] = useState<number>(0);
-  const handleTabSelect = (i: number) => {
-    props.callback(i);
-
-    tabs[i].selected = true;
-    tabs[prevTab].selected = false;
-
-    setPrevTab(i);
-  };
+  const router = useRouter();
   useEffect(() => {
     setTabs(sidebarTabs);
   }, []);
@@ -44,7 +35,9 @@ const Sidebar = (props: Props) => {
           <Box>
             {tabs.map((tab, index) => (
               <Flex
-                bgColor={tab.selected ? 'purple.500' : 'white'}
+                bgColor={
+                  '/dash' + tab.path == router.pathname ? 'purple.500' : 'white'
+                }
                 borderRadius={16}
                 p={3}
                 alignItems={'center'}
@@ -54,20 +47,32 @@ const Sidebar = (props: Props) => {
                 mb={4}
                 cursor={'pointer'}
                 _hover={
-                  tab.selected
+                  '/dash' + tab.path == router.pathname
                     ? { bgColor: 'purple.600' }
                     : { bgColor: 'gray.400' }
                 }
-                onClick={() => handleTabSelect(index)}
+                onClick={() => router.push('/dash/' + tab.path)}
               >
                 {/* ICONS */}
                 <Box pl={2}>
                   {index == 0 && (
-                    <FaRegUser color={tab.selected ? 'white' : 'black'} />
+                    <FaRegUser
+                      color={
+                        '/dash' + tab.path == router.pathname
+                          ? 'white'
+                          : 'black'
+                      }
+                    />
                   )}
                   {index == 1 && <FcLock />}
                   {index == 2 && (
-                    <GrGamepad color={tab.selected ? 'black' : 'white'} />
+                    <GrGamepad
+                      color={
+                        '/dash' + tab.path == router.pathname
+                          ? 'black'
+                          : 'white'
+                      }
+                    />
                   )}
                 </Box>
                 {/* NAMING */}
@@ -75,7 +80,11 @@ const Sidebar = (props: Props) => {
                   <Text
                     fontWeight={'semibold'}
                     fontSize={14}
-                    color={tab.selected ? 'white' : 'gray.700'}
+                    color={
+                      '/dash' + tab.path == router.pathname
+                        ? 'white'
+                        : 'gray.700'
+                    }
                   >
                     {tab.tabName}
                   </Text>
