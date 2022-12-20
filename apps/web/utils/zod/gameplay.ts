@@ -19,6 +19,7 @@ export const GameplayPlusUserSchema = z.object({
   isAnalyzed: z.boolean(),
   user: z.object({
     name: z.string().optional(),
+    image: z.string().url().optional(),
   }),
 });
 
