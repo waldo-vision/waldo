@@ -25,9 +25,9 @@ model Footage {
 
 model FootageVotes {
   id         String      @id @default(cuid())
-  footage    Footage     @relation("footage", fields: [footageId], references: [id])
+  footage    Footage     @relation("footage", fields: [footageId], references: [id], onDelete: Cascade)
   footageId  String
-  user       User        @relation("user", fields: [userId], references: [id])
+  user       User        @relation("user", fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   isGame     Boolean     @default(false)
   actualGame FootageType
