@@ -18,7 +18,7 @@ export const GameplayPlusUserSchema = z.object({
   downVotes: z.number().optional(),
   isAnalyzed: z.boolean(),
   user: z.object({
-    name: z.string().nullable().optional(),
+    name: z.string().optional(),
   }),
 });
 

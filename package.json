@@ -46,6 +46,7 @@
     "node-redis": "^0.1.7",
     "npm": "^9.1.1",
     "react-icons": "^4.6.0",
+    "react-youtube": "^10.1.0",
     "redis": "^4.5.1"
   },
   "packageManager": "yarn@3.3.0"

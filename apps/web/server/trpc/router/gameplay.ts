@@ -5,7 +5,7 @@ import {
   GameplaySchema,
   GameplayTypes,
 } from '@utils/zod/gameplay';
-import { z } from 'zod';
+import { input, z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 
@@ -231,92 +231,63 @@ export const gameplayRouter = router({
     }),
   getReviewItems: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/review' } })
-    .input(
-      z.object({
-        amountToQuery: z.number(),
-      }),
-    )
-    .output(z.array(GameplayPlusUserSchema))
+    .output(GameplayPlusUserSchema)
     .query(async ({ input, ctx }) => {
       const randomPick = (values: string[]) => {
         const index = Math.floor(Math.random() * values.length);
         return values[index];
       };
       const itemCount = await ctx.prisma.footage.count();
-
-      const randomNumber = (min: number, max: number) => {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+      const tenDocs = () => {
+        return Math.floor(Math.random() * (itemCount - 1 + 1)) + 0;
       };
 
-      const orderBy = randomPick([
-        'userId',
-        'id',
-        'youtubeUrl',
-        `upVotes`,
-        `downVotes`,
-      ]);
-      const orderDir = randomPick([`asc`, `desc`]);
+      const orderBy = randomPick(['userId', 'id', 'youtubeUrl']);
+      const orderDir = randomPick([`desc`, 'asc']);
       const reviewItems = await ctx.prisma.footage.findMany({
-        take: input.amountToQuery,
-        skip: randomNumber(0, itemCount - 1),
+        take: 1,
+        skip: tenDocs(),
         orderBy: { [orderBy]: orderDir },
         include: {
           user: true,
         },
       });
-      console.log(reviewItems);
+      console.log(reviewItems[0]);
       if (reviewItems === null)
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: `Could not query ${input.amountToQuery} gameplay documents`,
+          message: `Could not query ${min} gameplay documents`,
         });
-
-      return reviewItems;
+      return reviewItems[0];
     }),
   reviewGameplay: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })
     .input(
       z.object({
         gameplayId: z.string().cuid(),
-        upVotes: z.number().optional(),
-        downVotes: z.number().optional(),
+        isGame: z.boolean(),
+        actualGame: GameplayTypes,
       }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      if (input.upVotes == null) {
-        const updateDownVotes = await ctx.prisma.footage.update({
-          where: {
-            id: input.gameplayId,
-          },
-          data: {
-            downVotes: {
-              increment: input.downVotes,
-            },
-          },
-        });
-        if (updateDownVotes === null)
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: `Could not find a gameplay document with id:${input.gameplayId}.`,
-          });
-      } else {
-        const updateUpVotes = await ctx.prisma.footage.update({
-          where: {
-            id: input.gameplayId,
-          },
-          data: {
-            upVotes: {
-              increment: input.upVotes,
-            },
-          },
-        });
-        if (updateUpVotes === null)
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: `Could not find a gameplay document with id:${input.gameplayId}.`,
-          });
+      console.log(input.gameplayId);
+      if (!ctx.session.user?.id) {
+        return { message: 'No user' };
       }
+      const footageVote = await ctx.prisma.footageVotes.create({
+        data: {
+          footageId: input.gameplayId,
+          isGame: input.isGame,
+          actualGame: input.actualGame,
+          userId: ctx.session.user?.id,
+        },
+      });
+      if (!footageVote)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `Could not find a gameplay document with id:${input.gameplayId}.`,
+        });
 
       return { message: 'Updated the gameplay document successfully.' };
     }),
