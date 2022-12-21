@@ -8,6 +8,8 @@ declare module 'next-auth' {
     user?: {
       id: string;
       avatarUrl: string;
+      provider: string;
+      role: string;
       blacklisted: boolean;
     } & DefaultSession['user'];
   }

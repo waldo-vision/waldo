@@ -1,7 +1,11 @@
 import { TRPCError } from '@trpc/server';
 import ytdl from 'ytdl-core';
-import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
-import { z } from 'zod';
+import {
+  GameplayPlusUserSchema,
+  GameplaySchema,
+  GameplayTypes,
+} from '@utils/zod/gameplay';
+import { input, z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
@@ -117,7 +121,7 @@ export const gameplayRouter = router({
     .meta({ openapi: { method: 'GET', path: '/gameplay/user' } })
     .input(
       z.object({
-        userId: z.string().cuid().nullish(),
+        userId: z.string().cuid().nullish().optional(),
       }),
     )
     .output(GameplaySchema.array())
@@ -301,5 +305,67 @@ export const gameplayRouter = router({
           cause: error,
         });
       }
+    }),
+  getReviewItems: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/gameplay/review' } })
+    .output(GameplayPlusUserSchema)
+    .query(async ({ input, ctx }) => {
+      const randomPick = (values: string[]) => {
+        const index = Math.floor(Math.random() * values.length);
+        return values[index];
+      };
+      const itemCount = await ctx.prisma.footage.count();
+      const tenDocs = () => {
+        return Math.floor(Math.random() * (itemCount - 1 + 1)) + 0;
+      };
+
+      const orderBy = randomPick(['userId', 'id', 'youtubeUrl']);
+      const orderDir = randomPick([`desc`, 'asc']);
+      const reviewItems = await ctx.prisma.footage.findMany({
+        take: 1,
+        skip: tenDocs(),
+        orderBy: { [orderBy]: orderDir },
+        include: {
+          user: true,
+        },
+      });
+      console.log(reviewItems[0]);
+      if (reviewItems === null)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `Could not query ${min} gameplay documents`,
+        });
+      return reviewItems[0];
+    }),
+  review: protectedProcedure
+    .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })
+    .input(
+      z.object({
+        gameplayId: z.string().cuid(),
+        isGame: z.boolean(),
+        actualGame: GameplayTypes,
+      }),
+    )
+    .output(z.object({ message: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      console.log(input.gameplayId);
+      if (!ctx.session.user?.id) {
+        return { message: 'No user' };
+      }
+      const footageVote = await ctx.prisma.footageVotes.create({
+        data: {
+          footageId: input.gameplayId,
+          isGame: input.isGame,
+          actualGame: input.actualGame,
+          userId: ctx.session.user?.id,
+        },
+      });
+      if (!footageVote)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `Could not find a gameplay document with id:${input.gameplayId}.`,
+        });
+
+      return { message: 'Updated the gameplay document successfully.' };
     }),
 });

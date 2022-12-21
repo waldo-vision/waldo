@@ -12,6 +12,9 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import WaldoLogo from '../public/android-chrome-256x256.png';
+import GithubLogo from '../public/navbar_github.png';
 
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -46,7 +49,7 @@ export default function Navigation() {
         py={{ base: 2 }}
         align={'center'}
         gap={5}
-        px={{ base: 0, md: 50 }}
+        px={{ base: 2, sm: 4, md: 50 }}
       >
         <Flex
           flex={{ base: 1, md: 'auto' }}
@@ -62,7 +65,7 @@ export default function Navigation() {
             aria-label={'Toggle Navigation'}
           />
           <Heading size={'md'} pb={1} pl={3}>
-            Waldo
+            <Link href={'/'}>Waldo</Link>
           </Heading>
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'left' }}>
@@ -72,29 +75,22 @@ export default function Navigation() {
               alignItems={'center'}
               display={{ base: 'none', md: 'flex' }}
             >
-              <Image
-                src="/android-chrome-256x256.png"
-                width={40}
-                height={40}
-                alt="Logo"
-              />
+              <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
               <Heading size={'md'} pl={3}>
                 Waldo
               </Heading>
             </Flex>
           </Link>
         </Flex>
-
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'end' }}>
           <Flex display={{ base: 'none', md: 'flex' }}>
             <DesktopNav />
           </Flex>
         </Flex>
         <Link href={githubIconHref}>
-          <Image alt="Github" src="/navbar_github.png" width={35} height={35} />
+          <Image alt="Github" src={GithubLogo} width={35} height={35} />
         </Link>
       </Flex>
-
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
       </Collapse>
@@ -104,9 +100,11 @@ export default function Navigation() {
 
 const DesktopNav = () => {
   const linkHoverColor = 'purple.800';
+  const router = useRouter();
+
   return (
     <Stack direction={'row'} spacing={4}>
-      {NAV_ITEMS.map(({ label, href }: NavItem) => (
+      {NAV_ITEMS.map(({ label, href, pathName }: NavItem) => (
         <Box key={label}>
           <Link href={href ?? '#'}>
             <Text
@@ -114,6 +112,11 @@ const DesktopNav = () => {
                 textDecoration: 'none',
                 color: linkHoverColor,
               }}
+              fontWeight={
+                pathName != null && router.pathname.includes(pathName)
+                  ? 'bold'
+                  : 'regular'
+              }
             >
               {label}
             </Text>
@@ -156,15 +159,28 @@ const githubIconHref = 'https://github.com/waldo-vision';
 interface NavItem {
   label: string;
   href: string;
+  pathName: string | null;
 }
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: 'Docs',
-    href: 'https://docs.waldo.vision',
+    label: 'Submissions',
+    href: '/submissions/',
+    pathName: '/submissions',
+  },
+  {
+    label: 'Account',
+    href: '/account',
+    pathName: '/account',
   },
   {
     label: 'Community',
     href: 'https://discord.gg/qJWcsS9TyT',
+    pathName: null,
+  },
+  {
+    label: 'Docs',
+    href: 'https://docs.waldo.vision',
+    pathName: null,
   },
 ];
