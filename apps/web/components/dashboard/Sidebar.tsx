@@ -1,101 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Flex, Center, Text, Image } from '@chakra-ui/react';
-import { FaRegUser } from 'react-icons/fa';
-import { GrGamepad } from 'react-icons/gr';
-import { FcLock } from 'react-icons/fc';
-import { router } from '@server/trpc/trpc';
+import { FaUserAlt, FaGamepad } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+
 type Tab = {
   tabName: string;
   path: string;
+  icon: React.ReactElement;
 };
-const Sidebar = () => {
-  const sidebarTabs = [
-    { tabName: 'Users', path: '/user' },
-    { tabName: 'Roles/Permissions', path: '/roleperms' },
-    { tabName: 'Gameplay', path: '/gameplay' },
-  ];
+
+const sidebarTabs = [
+  { tabName: 'Users', path: '/user', icon: <FaUserAlt /> },
+  { tabName: 'Gameplay', path: '/gameplay', icon: <FaGamepad /> },
+];
+
+export default function Sidebar() {
   const [tabs, setTabs] = useState<Array<Tab>>(sidebarTabs);
   const router = useRouter();
   useEffect(() => {
     setTabs(sidebarTabs);
   }, []);
   return (
-    <div>
-      <Flex direction={'column'}>
-        <Flex direction={'row'} m={6}>
-          <Center h={'100%'}>
-            <Image src={'../android-chrome-192x192.png'} w={12} h={12} />
-            <Text ml={2} fontWeight={'bold'} fontSize={20}>
-              Waldo
-            </Text>
-          </Center>
-        </Flex>
+    <Box height={'100vh'} minWidth={60} bgColor={'white'} py={3} px={5}>
+      <Flex direction={'column'} height={'100%'} gap={'24px'}>
+        <Link href={'/'}>
+          <Flex direction={'row'}>
+            <Center h={'100%'}>
+              <Image
+                src={'../android-chrome-192x192.png'}
+                w={12}
+                h={12}
+                alt={'Logo'}
+              />
+              <Text ml={2} fontWeight={'bold'} fontSize={20}>
+                Waldo
+              </Text>
+            </Center>
+          </Flex>
+        </Link>
         {tabs && (
-          <Box>
+          <Flex direction={'column'} gap={2}>
             {tabs.map((tab, index) => (
               <Flex
                 bgColor={
                   '/dash' + tab.path == router.pathname ? 'purple.500' : 'white'
                 }
+                color={'/dash' + tab.path == router.pathname ? 'white' : ''}
+                fontWeight={'medium'}
                 borderRadius={16}
-                p={3}
+                py={3}
+                px={5}
                 alignItems={'center'}
                 gap={2}
                 key={index}
-                ml={6}
-                mb={4}
                 cursor={'pointer'}
                 _hover={
                   '/dash' + tab.path == router.pathname
                     ? { bgColor: 'purple.600' }
-                    : { bgColor: 'gray.400' }
+                    : {
+                        bgColor: 'gray.100',
+                      }
                 }
                 onClick={() => router.push('/dash/' + tab.path)}
               >
                 {/* ICONS */}
-                <Box pl={2}>
-                  {index == 0 && (
-                    <FaRegUser
-                      color={
-                        '/dash' + tab.path == router.pathname
-                          ? 'white'
-                          : 'black'
-                      }
-                    />
-                  )}
-                  {index == 1 && <FcLock />}
-                  {index == 2 && (
-                    <GrGamepad
-                      color={
-                        '/dash' + tab.path == router.pathname
-                          ? 'black'
-                          : 'white'
-                      }
-                    />
-                  )}
-                </Box>
+                {tab.icon}
                 {/* NAMING */}
-                <Box pr={2}>
-                  <Text
-                    fontWeight={'semibold'}
-                    fontSize={14}
-                    color={
-                      '/dash' + tab.path == router.pathname
-                        ? 'white'
-                        : 'gray.700'
-                    }
-                  >
-                    {tab.tabName}
-                  </Text>
-                </Box>
+
+                {tab.tabName}
               </Flex>
             ))}
-          </Box>
+          </Flex>
         )}
       </Flex>
-    </div>
+    </Box>
   );
-};
-
-export default Sidebar;
+}

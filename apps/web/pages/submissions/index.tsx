@@ -1,12 +1,14 @@
 import { Container, Center, Flex, Heading, Text, Box } from '@chakra-ui/react';
 import { ReactElement, useEffect, useState } from 'react';
+import { AiOutlineCloudUpload } from 'react-icons/ai';
+import { VscOpenPreview } from 'react-icons/vsc';
 import Layout from '@components/Layout';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 export default function Index() {
-  const [userSession, setUserSession] = useState<Session | null>();
+  const [, setUserSession] = useState<Session | null>();
 
   const getCurrentSession = async () => {
     const session = await getSession();
@@ -23,10 +25,15 @@ export default function Index() {
         <title>Waldo | Submissions </title>
         <meta
           name="description"
-          content="Submit your clips to the Waldo AI. Community submission reviewer will be available soon! Check out our discord for more information "
+          content="Submit your gameplay to the Waldo AI. Check out our discord for more information "
         />
       </Head>
-      <Container maxW={'7xl'} minH={'100vh'}>
+      <Container
+        maxW={'7xl'}
+        minH={'100vh'}
+        pt={{ base: '60px', md: '120px', lg: 0 }}
+        pb={10}
+      >
         <Center minH={'100vh'}>
           <Flex
             direction={'column'}
@@ -35,24 +42,17 @@ export default function Index() {
             gap={8}
           >
             <Box>
-              <Flex
-                direction={'column'}
-                textAlign={'center'}
-                alignItems={'center'}
-                gap={4}
-              >
+              <Flex direction={'column'} textAlign={'left'} gap={4}>
                 <Heading
+                  textAlign={'left'}
                   fontWeight={600}
-                  fontSize={{ base: '3xl', sm: '4xl', lg: '5xl' }}
+                  fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
                 >
                   <Text>
-                    <b>Upload</b> or <b>Review</b> community clips.
+                    <b>Upload</b> or <b>Review</b> community gameplay.
                   </Text>
                 </Heading>
-                <Text
-                  maxW={'4xl'}
-                  fontSize={{ base: 0, sm: 0, md: 16, lg: 16 }}
-                >
+                <Text maxW={'4xl'} fontSize={{ base: 13, md: 16, lg: 16 }}>
                   To aid Waldo&apos;s progress, we need the community to post
                   and submit their own gameplay video! We now accept a broad
                   variety of first-person shooter games which can be found on
@@ -62,7 +62,11 @@ export default function Index() {
                 </Text>
               </Flex>
             </Box>
-            <Flex direction={'row'} width={'100%'} gap={4}>
+            <Flex
+              direction={{ base: 'column', lg: 'row' }}
+              width={'100%'}
+              gap={4}
+            >
               <Box
                 width={'100%'}
                 height={'45vh'}
@@ -70,7 +74,10 @@ export default function Index() {
                 borderRadius={'16px'}
               >
                 <Link href={'/submissions/upload'}>
-                  <Center h={'100%'}>Upload a video</Center>
+                  <Center h={'100%'} w={'full'} flexDirection={'column'}>
+                    <AiOutlineCloudUpload size={150} />
+                    <Text fontSize={'2xl'}>Upload Gameplay</Text>
+                  </Center>
                 </Link>
               </Box>
               <Box
@@ -80,17 +87,14 @@ export default function Index() {
                 borderRadius={'16px'}
               >
                 <Link href={'/submissions/review'}>
-                  <Center h={'100%'}>Review a video</Center>
+                  <Center h={'100%'} w={'full'} flexDirection={'column'}>
+                    <VscOpenPreview size={150} />
+                    <Text fontSize={'2xl'}>Review Gameplay</Text>
+                  </Center>
                 </Link>
               </Box>
             </Flex>
-            {userSession?.user?.name ? (
-              <Text>You are logged in as {userSession.user.name}</Text>
-            ) : (
-              <Text>
-                You must be signed in to upload or review submissions.
-              </Text>
-            )}
+            <Text>Please make sure you have read and understood the TOS.</Text>
           </Flex>
         </Center>
       </Container>

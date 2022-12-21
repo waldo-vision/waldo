@@ -1,13 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import {
-  Box,
-  Flex,
-  Tag,
-  Spinner,
-  Center,
-  Image,
-  Container,
-} from '@chakra-ui/react';
+import { useState, useEffect, useCallback } from 'react';
+import { Box, Flex, Tag, Spinner, Center, Image } from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
 import AccGameplayItemExtended from './AccGameplayItemExtended';
 interface Gameplay {
@@ -19,7 +11,7 @@ interface Gameplay {
   downVotes?: number;
   isAnalyzed: boolean;
 }
-const AccGameplayItems = () => {
+export default function AccGameplayItems() {
   const [gameplayItems, setGameplayItems] = useState<
     Array<Gameplay> | undefined
   >();
@@ -57,25 +49,36 @@ const AccGameplayItems = () => {
     getNecessaryData();
   }, [data, getNecessaryData]);
   return (
-    <div>
-      <Flex>
-        {componentLoading || isLoading ? (
-          <Center>
-            <Spinner color={'default'} size={'sm'} mt={2} />
-          </Center>
-        ) : (
-          <>
-            <Box>
-              {gameplayItems &&
-                gameplayItems?.map((item, index) => (
+    <Flex>
+      {componentLoading || isLoading ? (
+        <Center>
+          <Spinner color={'default'} size={'sm'} mt={2} />
+        </Center>
+      ) : (
+        <>
+          <Box
+            width={'100%'}
+            maxW={900}
+            p={5}
+            minHeight={'100%'}
+            maxHeight={'80vh'}
+            overflowY={'scroll'}
+          >
+            {gameplayItems &&
+              gameplayItems?.map((item, index) => (
+                <Center>
                   <Flex
                     direction={'row'}
                     mt={2}
-                    boxShadow={'lg'}
+                    width={'100%'}
+                    boxShadow={'md'}
                     borderRadius={14}
+                    px={10}
+                    py={5}
                     key={index}
+                    justify={'space-between'}
                   >
-                    <Center>
+                    <Flex>
                       <Image
                         src={getThumbnail(item.youtubeUrl)}
                         alt={'Profile Icon'}
@@ -83,19 +86,19 @@ const AccGameplayItems = () => {
                           base: '40px',
                           sm: '40px',
                           md: '40px',
-                          lg: '60px',
+                          lg: '80px',
                         }}
                         width={{
                           base: '60px',
                           sm: '60px',
                           md: '60px',
-                          lg: '90px',
+                          lg: '120px',
                         }}
                         borderRadius={14}
                         onClick={() => {
                           console.log(gameplayItems);
                         }}
-                      ></Image>
+                      />
                       <Box>
                         <Flex direction={'column'}>
                           <Box ml={2} mr={2}>
@@ -106,27 +109,20 @@ const AccGameplayItems = () => {
                           </Box>
                         </Flex>
                       </Box>
-                    </Center>
+                    </Flex>
                   </Flex>
-                ))}
+                </Center>
+              ))}
+          </Box>
+          {gameplayItems && gameplayItems.length < 1 && (
+            <Box>
+              <Tag size={'md'} variant={'solid'} colorScheme={'purple'} mt={2}>
+                No uploads found
+              </Tag>
             </Box>
-            {gameplayItems && gameplayItems.length < 1 && (
-              <Box>
-                <Tag
-                  size={'md'}
-                  variant={'solid'}
-                  colorScheme={'purple'}
-                  mt={2}
-                >
-                  No uploads found
-                </Tag>
-              </Box>
-            )}
-          </>
-        )}
-      </Flex>
-    </div>
+          )}
+        </>
+      )}
+    </Flex>
   );
-};
-
-export default AccGameplayItems;
+}

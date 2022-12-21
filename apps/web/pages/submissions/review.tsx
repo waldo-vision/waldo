@@ -1,15 +1,7 @@
-import {
-  Box,
-  Center,
-  Text,
-  Flex,
-  Button,
-  Image,
-  chakra,
-} from '@chakra-ui/react';
+import { Box, Center, Text, Flex, Button, Image } from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
-import { useState, useEffect, ReactElement, useCallback } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import Loading from '@components/Loading';
 import Layout from '@components/Layout';
@@ -46,10 +38,10 @@ export default function Review() {
     },
   });
 
-  const [userSession, setUserSession] = useState<Session | undefined>();
   const [reviewItem, setReviewItem] = useState<ReviewItem | undefined>(
     reviewItemData,
   );
+  const [, setUserSession] = useState<Session | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
   const videoIdFromUrlRegex =
@@ -109,7 +101,7 @@ export default function Review() {
     };
     getCurrentSession();
     getNecessaryData();
-  }, [reviewItemLoading, isDisabled]);
+  }, [refetch, reviewItemData, reviewItemLoading, router, isDisabled]);
   return (
     <>
       <Head>
@@ -130,7 +122,7 @@ export default function Review() {
                   {/* User Icon */}
                   <Box>
                     <Image
-                      src={userSession?.user?.image as string}
+                      src={reviewItem?.user?.image as string}
                       alt={'User Icon'}
                       w={54}
                       h={54}
@@ -147,16 +139,26 @@ export default function Review() {
                     >
                       <Text>
                         Submitted by&nbsp;
-                        <chakra.span fontWeight={'bold'}>
+                        <Text as={'span'} fontWeight={'bold'}>
                           {reviewItem?.user?.name}
-                        </chakra.span>
+                        </Text>
                       </Text>
 
-                      <Text fontWeight={'bold'}>
+                      <Text fontWeight={'normal'}>
                         Does this clip match gameplay from{' '}
-                        <chakra.span fontWeight={'normal'}>
-                          {reviewItem?.footageType}
-                        </chakra.span>
+                        <Text fontWeight={'bold'} as={'span'}>
+                          {reviewItem?.footageType === 'CSG'
+                            ? 'Counter Strike: Global Offensive'
+                            : reviewItem?.footageType === 'VAL'
+                            ? 'Valorant'
+                            : reviewItem?.footageType === 'APE'
+                            ? 'Apex Legends'
+                            : reviewItem?.footageType === 'TF2'
+                            ? 'Team Fortress 2'
+                            : reviewItem?.footageType === 'COD'
+                            ? 'Call of Duty'
+                            : 'a relevant First Person Shooter game?'}
+                        </Text>
                       </Text>
                     </Flex>
                   )}
@@ -179,12 +181,13 @@ export default function Review() {
                 <Flex mt={4} alignItems={'center'}>
                   <Text>
                     By answering you accept the{' '}
-                    <chakra.span
+                    <Text
+                      as={'span'}
                       fontWeight={'semibold'}
                       textDecoration={'underline'}
                     >
                       Terms of Service
-                    </chakra.span>
+                    </Text>
                   </Text>
                   {/* Button */}
                   <Box ml={'auto'} right={0}>

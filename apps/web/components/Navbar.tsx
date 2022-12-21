@@ -49,7 +49,7 @@ export default function Navigation() {
         py={{ base: 2 }}
         align={'center'}
         gap={5}
-        px={{ base: 0, md: 50 }}
+        px={{ base: 2, sm: 4, md: 50 }}
       >
         <Flex
           flex={{ base: 1, md: 'auto' }}
@@ -65,7 +65,7 @@ export default function Navigation() {
             aria-label={'Toggle Navigation'}
           />
           <Heading size={'md'} pb={1} pl={3}>
-            Waldo
+            <Link href={'/'}>Waldo</Link>
           </Heading>
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'left' }}>
@@ -169,9 +169,9 @@ const NAV_ITEMS: Array<NavItem> = [
     pathName: '/submissions',
   },
   {
-    label: 'Docs',
-    href: 'https://docs.waldo.vision',
-    pathName: null,
+    label: 'Account',
+    href: '/account',
+    pathName: '/account',
   },
   {
     label: 'Community',
@@ -179,13 +179,8 @@ const NAV_ITEMS: Array<NavItem> = [
     pathName: null,
   },
   {
-    label: 'Account',
-    href: '/account',
-    pathName: '/account',
-  },
-  {
-    label: 'Login',
-    href: '/auth/login',
-    pathName: '/auth/login',
+    label: 'Docs',
+    href: 'https://docs.waldo.vision',
+    pathName: null,
   },
 ];

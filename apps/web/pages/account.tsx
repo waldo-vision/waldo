@@ -1,17 +1,54 @@
-import { Box, Text, Button, Center, Flex, useToast } from '@chakra-ui/react';
+import { Box, Text, Button, Flex, useToast, Divider } from '@chakra-ui/react';
 import Layout from '@components/Layout';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signOut, getSession } from 'next-auth/react';
 import { ReactElement } from 'react';
-import { FaDiscord } from 'react-icons/fa';
 import { trpc } from '@utils/trpc';
 import { Session } from 'next-auth';
 import { useRouter } from 'next/router';
-import { FaMinusCircle } from 'react-icons/fa';
+import { TiTick } from 'react-icons/ti';
+import { RxCross2 } from 'react-icons/rx';
 import DeleteAccModal from '@components/DeleteAccModal';
 import Loading from '@components/Loading';
 import AccGameplayItems from '@components/AccGameplayItems';
 import Head from 'next/head';
+import { FaDiscord, FaBattleNet, FaTwitch } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { BsGithub, BsFacebook } from 'react-icons/bs';
+import { MdOutlineRemove } from 'react-icons/md';
+import Link from 'next/link';
+
+type ProvidersListType = {
+  name: string;
+  icon: React.ReactElement;
+};
+const ProvidersList: Array<ProvidersListType> = [
+  {
+    name: 'Discord',
+    icon: <FaDiscord size={30} color={'#5865F2'} />,
+  },
+  {
+    name: 'Google',
+    icon: <FcGoogle size={30} />,
+  },
+  {
+    name: 'BattleNet',
+    icon: <FaBattleNet size={30} color={'#009AE4'} />,
+  },
+  {
+    name: 'Twitch',
+    icon: <FaTwitch size={30} color={'#9146FF'} />,
+  },
+  {
+    name: 'Github',
+    icon: <BsGithub size={30} color={'#000000'} />,
+  },
+  {
+    name: 'Facebook',
+    icon: <BsFacebook size={30} color={'#0165E1'} />,
+  },
+];
+
 export default function Account() {
   const [userSession, setUserSession] = useState<Session | undefined>();
   const utils = trpc.useContext();
@@ -56,7 +93,7 @@ export default function Account() {
       toast({
         position: 'bottom-right',
         title: 'Unlink Account',
-        description: 'An unexpected error occured, please try again later.',
+        description: 'An unexpected error occurred, please try again later.',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -81,119 +118,223 @@ export default function Account() {
     getCurrentSession();
     getNecessaryData();
   }, [laData, laLoading, router]);
-  return (
-    <>
-      <Head>
-        <title>Waldo | Account</title>
-        <meta
-          name="description"
-          content="Waldo is an Open-source visual cheat detection, powered by A.I"
-        />
-      </Head>
-      <div>
-        <Center h={'100vh'}>
-          {laLoading || siteLoading ? (
-            <Loading color={'default'} />
-          ) : (
-            <>
+
+  if (laLoading || siteLoading) {
+    return (
+      <Box>
+        <Loading color={'blue.500'} />
+      </Box>
+    );
+  } else {
+    return (
+      <>
+        <Head>
+          <title>Waldo | Account</title>
+          <meta
+            name="description"
+            content="Waldo is an Open-source visual cheat detection, powered by A.I"
+          />
+        </Head>
+        <Box minHeight={'100vh'} mt={{ base: '60px' }} mb={20}>
+          <Flex direction={'column'} gap={3}>
+            <Text fontWeight={'bold'} fontSize={30}>
+              Your Account
+              <Text fontWeight={'normal'} fontSize={15}>
+                Manage your account settings.
+              </Text>
+            </Text>
+            <Box
+              borderRadius={'16px'}
+              bg={'white'}
+              p={{ base: 4, md: 8 }}
+              overflow={'hidden'}
+              minWidth={'30vw'}
+              minHeight={'60vh'}
+              width={{ base: '90vw', md: '80vw' }}
+            >
               <DeleteAccModal show={showM} />
-              <Box bg={'white'} p={8} overflow={'hidden'}>
+              <Flex direction={'column'} gap={20}>
                 <Flex
-                  direction={'column'}
-                  w={{ base: 'xs', md: 'sm', lg: 'xl' }}
+                  direction={{ base: 'column', md: 'row' }}
+                  justify={'space-between'}
+                  gap={{ base: 10, lg: 0 }}
                 >
-                  {/* heading */}
-                  <Box>
-                    <Text fontWeight={'bold'} fontSize={30}>
-                      Your Account
-                    </Text>
-                  </Box>
                   {/* Linked Account */}
-                  <Flex>
-                    <Box mt={5} mb={2}>
-                      <Text fontWeight={'regular'} fontSize={11}>
-                        Linked Accounts
-                      </Text>
+                  <Box width={{ md: '100%', lg: '30%' }}>
+                    <Text
+                      fontWeight={'normal'}
+                      mb={5}
+                      fontSize={{ base: 15, sm: 18 }}
+                    >
+                      You have linked <b>all</b> of the following accounts:
+                    </Text>
+                    <Flex direction={'column'} gap={5}>
                       {linkedAccounts &&
-                        linkedAccounts.map((account, index) => (
-                          <Flex
-                            direction={'row'}
-                            alignItems={'center'}
-                            key={index}
-                          >
-                            <Box
-                              mt={2}
-                              borderRadius={10}
-                              borderColor={'gray.500'}
-                              borderWidth={1}
-                              width={'18vh'}
-                            >
-                              <Box ml={2}>
-                                <Flex justifyItems={'center'}>
-                                  <Center>
-                                    {/* TODO: Check provider and render the logo that is associated w the provider*/}
-                                    <FaDiscord size={28} />
-                                    <Text fontSize={'xx-small'} ml={2}>
-                                      {account.provider.toUpperCase()}{' '}
-                                      {account.provider ==
-                                      userSession?.user?.provider
-                                        ? 'Primary'
-                                        : 'Secondary'}
-                                    </Text>
-                                  </Center>
+                        ProvidersList.map(({ name, icon }, index) => (
+                          <>
+                            <Divider />
+                            <Box key={index}>
+                              <Flex direction={'column'} gap={2}>
+                                <Flex
+                                  align={'center'}
+                                  direction={'row'}
+                                  gap={3}
+                                >
+                                  {icon}
+                                  <Text fontWeight={500}>{name}</Text>
                                 </Flex>
-                              </Box>
+                                <Flex direction={'column'}>
+                                  {linkedAccounts.some(
+                                    account =>
+                                      account.provider.toUpperCase() ===
+                                      name.toUpperCase(),
+                                  ) ? (
+                                    <>
+                                      {name.toUpperCase() ==
+                                      userSession?.user?.provider.toUpperCase() ? (
+                                        <Flex
+                                          direction={'row'}
+                                          align={'center'}
+                                          ml={3}
+                                          gap={1}
+                                        >
+                                          <TiTick color={'green'} />
+                                          <Text fontSize={{ base: 13, sm: 15 }}>
+                                            This is your primary account
+                                          </Text>
+                                        </Flex>
+                                      ) : (
+                                        <></>
+                                      )}
+                                      <Flex
+                                        direction={'row'}
+                                        align={'center'}
+                                        ml={3}
+                                        gap={1}
+                                      >
+                                        <TiTick color={'green'} />
+                                        <Text
+                                          fontSize={{
+                                            base: 11,
+                                            sm: 13,
+                                            md: 15,
+                                          }}
+                                        >
+                                          Your are connected to a {name}{' '}
+                                          account.
+                                        </Text>
+                                      </Flex>
+                                      {name.toUpperCase() !=
+                                      userSession?.user?.provider.toUpperCase() ? (
+                                        <Button
+                                          leftIcon={<MdOutlineRemove />}
+                                          colorScheme={'red'}
+                                          variant={'solid'}
+                                          my={3}
+                                          onClick={() => {
+                                            const account = linkedAccounts.find(
+                                              account =>
+                                                account.provider.toUpperCase() ===
+                                                name.toUpperCase(),
+                                            );
+                                            if (!account) {
+                                              toast({
+                                                position: 'bottom-right',
+                                                title: 'Account Error',
+                                                description:
+                                                  'An unexpected error occurred, please try again later.',
+                                                status: 'error',
+                                                duration: 5000,
+                                                isClosable: true,
+                                              });
+                                              return;
+                                            }
+                                            unlinkProvider(account);
+                                          }}
+                                        >
+                                          Disconnect
+                                        </Button>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </>
+                                  ) : (
+                                    <Flex
+                                      direction={'row'}
+                                      align={'center'}
+                                      ml={3}
+                                      gap={1}
+                                    >
+                                      <RxCross2 color={'red'} />
+                                      <Text
+                                        fontSize={{ base: 11, sm: 13, md: 15 }}
+                                      >
+                                        You are not connected to a {name}{' '}
+                                        account.
+                                      </Text>
+                                    </Flex>
+                                  )}
+                                </Flex>
+                              </Flex>
                             </Box>
-                            <Box mt={2} ml={2}>
-                              {account.provider !=
-                                userSession?.user?.provider && (
-                                <FaMinusCircle
-                                  size={15}
-                                  color={'red'}
-                                  onClick={() => unlinkProvider(account)}
-                                  cursor={'pointer'}
-                                />
-                              )}
-                            </Box>
-                          </Flex>
+                          </>
                         ))}
-                    </Box>
-                    {/* Uploaded Gameplay */}
-                    <Box mt={5} mb={2} right={0} ml={'auto'}>
-                      <Text fontWeight={'regular'} fontSize={11}>
-                        Your Uploads
-                      </Text>
-                      <AccGameplayItems />
-                    </Box>
-                  </Flex>
-                  <Box ml={'auto'} right={0} mt={12}>
-                    <Button
-                      color={'red.300'}
-                      variant={'ghost'}
-                      _hover={{ bgColor: 'white', color: 'red.400' }}
-                      mr={2}
-                      onClick={() => handleAccountDeletion()}
+                    </Flex>
+                  </Box>
+                  {/* Uploaded Gameplay */}
+                  <Box width={{ md: '100%', lg: '60%' }} px={{ lg: 5 }}>
+                    <Text
+                      fontWeight={'normal'}
+                      mb={5}
+                      fontSize={{ base: 15, sm: 18 }}
                     >
-                      Delete Primary Account
-                    </Button>
-                    <Button
-                      bgColor={'#373737'}
-                      boxShadow={'dark-lg'}
-                      color={'white'}
-                      _hover={{ bgColor: 'gray.700' }}
-                      onClick={() => signOut()}
-                    >
-                      Logout
-                    </Button>
+                      Your Gameplay:
+                    </Text>
+                    <AccGameplayItems />
                   </Box>
                 </Flex>
-              </Box>
-            </>
-          )}
-        </Center>
-      </div>
-    </>
-  );
+                {/* Delete Account */}
+                <Flex
+                  direction={{ base: 'column', md: 'row' }}
+                  ml={{ md: 'auto' }}
+                  right={0}
+                  gap={3}
+                >
+                  <Button
+                    bgColor={'red.300'}
+                    color={'white'}
+                    variant={'solid'}
+                    _hover={{ bgColor: 'white', color: 'red.400' }}
+                    onClick={() => handleAccountDeletion()}
+                  >
+                    Delete Account
+                  </Button>
+                  <Button
+                    bgColor={'#373737'}
+                    backgroundColor={'gray.800'}
+                    colorScheme={'blackAlpha'}
+                    boxShadow={'lg'}
+                    onClick={() => router.push('/auth/login')}
+                  >
+                    Add Connection
+                  </Button>
+                  <Button
+                    bgColor={'#373737'}
+                    backgroundColor={'gray.800'}
+                    colorScheme={'blackAlpha'}
+                    boxShadow={'lg'}
+                    onClick={() => signOut()}
+                  >
+                    Logout
+                  </Button>
+                </Flex>
+              </Flex>
+            </Box>
+          </Flex>
+        </Box>
+      </>
+    );
+  }
 }
 
 Account.getLayout = function getLayout(page: ReactElement) {

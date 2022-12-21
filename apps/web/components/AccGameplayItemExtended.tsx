@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Box, Flex, Button, Text, Spinner, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Button,
+  Text,
+  Spinner,
+  useToast,
+  Center,
+} from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
 import { BiTrash } from 'react-icons/bi';
 interface Item {
@@ -9,7 +17,7 @@ interface Item {
   };
   id: string;
 }
-const AccGameplayItemExtended = (props: Item) => {
+export default function AccGameplayItemExtended(props: Item) {
   const [meta, setMeta] = useState<string>();
   const utils = trpc.useContext();
   const deleteGameplayTrpc = trpc.gameplay.deleteGameplay.useMutation({
@@ -55,7 +63,7 @@ const AccGameplayItemExtended = (props: Item) => {
         position: 'bottom-right',
         title: 'Gameplay Deletion',
         description:
-          'An error occured while attempting to delete the gameplay. Try logging out and then back in. If the issue persists please contact support@waldo.vision',
+          'An error occurred while attempting to delete the gameplay. Try logging out and then back in. If the issue persists please contact support@waldo.vision',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -64,39 +72,32 @@ const AccGameplayItemExtended = (props: Item) => {
   };
 
   return (
-    <div>
-      <Flex direction={'row'}>
-        <Box>
-          {componentLoading ? (
-            <Spinner color={'default'} size={'sm'} mt={2} />
-          ) : (
-            <>
-              <Text
-                fontSize={{ base: 0, sm: 0, md: 16, lg: 16 }}
-                fontWeight={'bold'}
-              >
-                {meta && meta.substring(0, 15) + '...'}
-                {meta && meta.substring(0, 15) + '...'}
-              </Text>
-              <Text fontSize={{ base: 0, sm: 0, md: 8, lg: 8 }}>
-                {props.item && props.item.youtubeUrl}
-              </Text>
-            </>
-          )}
-        </Box>
-        <Flex ml={'auto'} right={0}>
-          <Button
-            ml={3}
-            variant={'ghost'}
-            color={'red'}
-            onClick={() => deleteGameplay()}
-          >
-            <BiTrash size={20} />
-          </Button>
-        </Flex>
-      </Flex>
-    </div>
+    <Flex direction={'row'} width={'100%'} justify={'space-between'}>
+      <Box>
+        {componentLoading ? (
+          <Spinner color={'default'} size={'sm'} mt={2} />
+        ) : (
+          <>
+            <Text
+              fontSize={{ base: 0, sm: 0, md: 16, lg: 18 }}
+              fontWeight={'bold'}
+            >
+              {meta && meta.substring(0, 30) + '...'}
+            </Text>
+            <Text fontSize={{ base: 0, sm: 0, md: 8, lg: 13 }}>
+              {props.item && props.item.youtubeUrl}
+            </Text>
+          </>
+        )}
+      </Box>
+      <Button
+        ml={3}
+        variant={'ghost'}
+        color={'red'}
+        onClick={() => deleteGameplay()}
+      >
+        <BiTrash size={20} />
+      </Button>
+    </Flex>
   );
-};
-
-export default AccGameplayItemExtended;
+}

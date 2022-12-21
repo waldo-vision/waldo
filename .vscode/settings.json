@@ -6,5 +6,21 @@
   "editor.formatOnSave": true,
   "eslint.rules.customizations": [{ "rule": "*", "severity": "warn" }],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "prettier.documentSelectors": ["**/*.{ts,tsx,md,json}"]
+  "prettier.documentSelectors": ["**/*.{ts,tsx,md,json}"],
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.words": [
+    "chakra",
+    "CIMG",
+    "Gameplay",
+    "heroicons",
+    "nextauth",
+    "nextjs",
+    "Nunito",
+    "trpc",
+    "Valorant",
+    "youtu"
+  ],
+  "cSpell.language": "en,en-GB,en-US"
 }

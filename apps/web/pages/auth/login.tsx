@@ -218,10 +218,9 @@ export default function Login() {
                   cursor={'pointer'}
                   onClick={() => handleSelect(index)}
                   key={index}
+                  px={5}
                 >
                   <Box
-                    ml={16}
-                    mr={16}
                     boxShadow={'lg'}
                     borderRadius={8}
                     h={24}
@@ -302,9 +301,9 @@ export default function Login() {
               ))}
             <Flex justifyContent={'end'}>
               <Button
-                mr={16}
+                mr={{ base: 5 }}
                 mb={12}
-                mt={4}
+                mt={8}
                 bgColor="black"
                 _hover={{ backgroundColor: 'gray.800' }}
                 color="white"
@@ -313,7 +312,6 @@ export default function Login() {
               >
                 Connect
               </Button>
-              ~
             </Flex>
           </Box>
           <Center h={'100vh'}>

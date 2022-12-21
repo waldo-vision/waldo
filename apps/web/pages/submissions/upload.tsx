@@ -18,7 +18,7 @@ import {
   MenuOptionGroup,
   Image as CIMG,
   Checkbox,
-  chakra,
+  Link,
   Container,
   Heading,
 } from '@chakra-ui/react';
@@ -38,7 +38,7 @@ import { AppRouter } from '@server/trpc/router/_app';
 import { TRPCError } from '@trpc/server';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-const Upload = () => {
+export default function Upload() {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>(true);
   const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
@@ -129,7 +129,7 @@ const Upload = () => {
     createToast(
       "Successfully uploaded your footage to waldo's server!",
       'success',
-      'Sucess!',
+      'Success!',
     );
   };
 
@@ -147,7 +147,9 @@ const Upload = () => {
     }
     setWaitingForResponse(true);
     if (!checkURL(currentUrl)) {
-      handleRequestError('Please enter a valid youtube link');
+      handleRequestError(
+        "That is not a valid YouTube link. Please make sure 'https' is included.",
+      );
       return;
     }
 
@@ -191,38 +193,69 @@ const Upload = () => {
     setLoading(true);
     doPageLoadThings();
   }, [router, isDisabled]);
-  return (
-    <>
-      <Head>
-        <title>Submissions | Upload</title>
-        <meta
-          name="description"
-          content="Waldo is an Open-source visual cheat detection, powered by A.I"
-        />
-      </Head>
-      <div>
-        {loading || isLoading ? (
-          <Box>
-            <Loading color={'blue.500'} />
-          </Box>
-        ) : (
-          <Center h={'100vh'} maxW={'7xl'}>
-            <Flex direction={{ lg: 'row', base: 'column' }}>
-              <Container width={{ lg: '30%' }}>
-                <Flex gap={5} direction={'column'}>
-                  <Heading mt={{ base: 16, md: 0, lg: 0, sm: 16 }}>
-                    Submit Your Clips
+
+  if (loading) {
+    return (
+      <Box>
+        <Loading color={'blue.500'} />
+      </Box>
+    );
+  } else {
+    return (
+      <>
+        <Head>
+          <title>Submissions | Upload</title>
+          <meta
+            name="description"
+            content="Waldo is an Open-source visual cheat detection, powered by A.I"
+          />
+        </Head>
+        <Container
+          mt={10}
+          maxWidth={{ base: '100%', md: '90%', lg: '80%' }}
+          minHeight={'100vh'}
+          height={'100%'}
+          textAlign={'left'}
+          pt={{ base: 0, lg: '200px' }}
+          pb={10}
+        >
+          <Flex
+            direction={{ base: 'column', lg: 'row' }}
+            height={'100%'}
+            width={'100%'}
+            gap={10}
+          >
+            <Box height={'100%'} width={{ lg: '50%' }}>
+              <Center width={'100%'} height={'100%'}>
+                <Flex direction={'column'} maxWidth={'450px'} gap={5}>
+                  <Heading mt={16} fontSize={{ base: 30, lg: 40 }}>
+                    Submit Your Gameplay
                   </Heading>
-                  <Text fontSize={{ base: 0, sm: 0, md: 14, lg: 14 }}>
+                  <Text fontSize={{ base: 14, lg: 16 }}>
+                    You can provide us <b>gameplay footage</b> so we can train
+                    the model. We require <b>hundreds of hours of footage</b>{' '}
+                    and the community is the only source available. It will be
+                    processed by the model, which will help make the model so
+                    much more <b>accurate.</b>
+                    <br />
+                    <br />
                     Before you submit a video make sure you have read the rules
-                    regarding
+                    regarding the submission and reviewing of gameplay. You can
+                    read our terms of service{' '}
+                    <Link href={'https://www.example.com'}>
+                      <Text as={'span'} fontWeight={'bold'}>
+                        here.
+                      </Text>
+                    </Link>
                   </Text>
                   <TurnstileWidget
                     valid={result => setIsRequestValid(result)}
                   />
                 </Flex>
-              </Container>
-              <Container>
+              </Center>
+            </Box>
+            <Box width={{ lg: '50%' }}>
+              <Center>
                 <Box
                   py={6}
                   px={6}
@@ -232,7 +265,7 @@ const Upload = () => {
                 >
                   <Flex direction={'row'}>
                     <CIMG
-                      src={userSession?.user?.image}
+                      src={userSession?.user?.image as string}
                       alt={'img'}
                       borderRadius={40}
                       width={20}
@@ -266,7 +299,9 @@ const Upload = () => {
                     <Box>
                       <Text mb={2}>Youtube URL</Text>
                       <Input
-                        placeholder={'https://youtube.com/example'}
+                        placeholder={
+                          'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+                        }
                         size={'lg'}
                         value={currentUrl}
                         onChange={event => setCurrentUrl(event.target.value)}
@@ -326,79 +361,76 @@ const Upload = () => {
                         </Box>
                       ))}
                     </Box>
-                    <Flex direction={'row'}>
-                      <Center>
-                        <Box mt={6} maxW={'400px'}>
-                          <Text>
-                            By submitting, you are agreeing to the&nbsp;
-                            <chakra.span
-                              fontWeight={'bold'}
-                              textDecoration={'underline'}
-                            >
-                              Terms of Service
-                            </chakra.span>
-                            &nbsp;and the&nbsp;
-                            <chakra.span
-                              fontWeight={'bold'}
-                              textDecoration={'underline'}
-                            >
-                              Privacy Policy
-                            </chakra.span>
-                            .
+                    <Flex direction={{ base: 'column', md: 'row' }} gap={5}>
+                      <Box mt={6} maxW={'400px'}>
+                        <Text>
+                          By submitting, you are agreeing to the&nbsp;
+                          <Text
+                            as={'span'}
+                            fontWeight={'bold'}
+                            textDecoration={'underline'}
+                          >
+                            Terms of Service
                           </Text>
-                        </Box>
-                        <Button
-                          ml={4}
-                          width={'100px'}
-                          backgroundColor={'gray.800'}
-                          colorScheme={'blackAlpha'}
-                          boxShadow="lg"
-                          mt={5}
-                          onClick={() => handleClipUpload()}
-                          isLoading={waitingForResponse}
-                        >
-                          {!requestDone ? (
-                            <SlideFade in={!requestDone} offsetY="5px">
-                              <Text>Submit</Text>
+                          &nbsp;and the&nbsp;
+                          <Text
+                            as={'span'}
+                            fontWeight={'bold'}
+                            textDecoration={'underline'}
+                          >
+                            Privacy Policy
+                          </Text>
+                          .
+                        </Text>
+                      </Box>
+                      <Button
+                        width={'100px'}
+                        backgroundColor={'gray.800'}
+                        colorScheme={'blackAlpha'}
+                        boxShadow="lg"
+                        mt={5}
+                        onClick={() => handleClipUpload()}
+                        isLoading={waitingForResponse}
+                      >
+                        {!requestDone ? (
+                          <SlideFade in={!requestDone} offsetY="5px">
+                            <Text>Submit</Text>
+                          </SlideFade>
+                        ) : (
+                          <Flex direction={'row'}>
+                            <SlideFade
+                              in={requestDone}
+                              offsetY="5px"
+                              delay={0.3}
+                            >
+                              {error ? (
+                                <XCircleIcon
+                                  color="white"
+                                  width={26}
+                                  height={26}
+                                />
+                              ) : (
+                                <CheckCircleIcon
+                                  color="white"
+                                  width={26}
+                                  height={26}
+                                />
+                              )}
                             </SlideFade>
-                          ) : (
-                            <Flex direction={'row'} alignItems={'center'}>
-                              <SlideFade
-                                in={requestDone}
-                                offsetY="5px"
-                                delay={0.3}
-                              >
-                                {error ? (
-                                  <XCircleIcon
-                                    color="white"
-                                    width={26}
-                                    height={26}
-                                  />
-                                ) : (
-                                  <CheckCircleIcon
-                                    color="white"
-                                    width={26}
-                                    height={26}
-                                  />
-                                )}
-                              </SlideFade>
-                            </Flex>
-                          )}
-                        </Button>
-                      </Center>
+                          </Flex>
+                        )}
+                      </Button>
                     </Flex>
                   </Flex>
                 </Box>
-              </Container>
-            </Flex>
-          </Center>
-        )}
-      </div>
-    </>
-  );
-};
-
-export default Upload;
+              </Center>
+            </Box>
+          </Flex>
+        </Container>
+      </>
+    );
+  }
+}
 
 Upload.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
