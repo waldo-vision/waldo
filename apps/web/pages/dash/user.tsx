@@ -31,6 +31,9 @@ export default function User() {
     undefined,
   );
   const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
+  const { data: d, isLoading: l } = trpc.site.isPageDisabled.useQuery({
+    pageName: 'upload',
+  });
   const handleSearch = () => {
     console.log(searchUser);
   };
@@ -41,6 +44,7 @@ export default function User() {
       if (session) {
         setUserSession(session);
       }
+      console.log(d);
     };
     getUSession();
   }, []);

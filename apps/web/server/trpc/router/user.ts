@@ -149,7 +149,6 @@ export const userRouter = router({
           take: takeValue,
           skip: skipValue,
         });
-        console.log(users);
         return users;
       } catch (error) {
         throw new TRPCError({
