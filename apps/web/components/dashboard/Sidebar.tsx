@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Flex, Center, Text, Image } from '@chakra-ui/react';
 import { FaUserAlt, FaGamepad } from 'react-icons/fa';
+import { FiGlobe } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
@@ -13,6 +14,7 @@ type Tab = {
 const sidebarTabs = [
   { tabName: 'Users', path: '/user', icon: <FaUserAlt /> },
   { tabName: 'Gameplay', path: '/gameplay', icon: <FaGamepad /> },
+  { tabName: 'Site', path: '/site', icon: <FiGlobe /> },
 ];
 
 export default function Sidebar() {
