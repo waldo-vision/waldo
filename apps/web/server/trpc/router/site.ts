@@ -35,7 +35,7 @@ export const siteRouter = router({
       }),
     )
     .output(z.object({ message: z.string() }))
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       const updatePage = await ctx.prisma.waldoPage.update({
         where: {
           name: input.pageName,

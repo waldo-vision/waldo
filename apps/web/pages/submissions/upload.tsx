@@ -58,6 +58,11 @@ const Upload = () => {
       await utils.gameplay.invalidate();
     },
   });
+
+  const { isLoading, data: isDisabled } = trpc.site.isPageDisabled.useQuery({
+    pageName: 'upload',
+  });
+
   const handleRequestError = async (error: TRPCError | string) => {
     setWaitingForResponse(false);
     setRequestDone(true);
@@ -171,18 +176,21 @@ const Upload = () => {
   };
 
   useEffect(() => {
-    const getCurrentSession = async () => {
+    const doPageLoadThings = async () => {
+      if (isDisabled?.isDisabled) {
+        router.push('/');
+      }
       const session = await getSession();
       if (session === null) {
         router.push('/auth/login');
       } else {
         setUserSession(session);
-        setLoading(false);
       }
+      setLoading(false);
     };
     setLoading(true);
-    getCurrentSession();
-  }, [router]);
+    doPageLoadThings();
+  }, [router, isDisabled]);
   return (
     <>
       <Head>
@@ -193,7 +201,7 @@ const Upload = () => {
         />
       </Head>
       <div>
-        {loading ? (
+        {loading || isLoading ? (
           <Box>
             <Loading color={'blue.500'} />
           </Box>
