@@ -4,7 +4,11 @@ import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { users } from '../../../utils/zod/dash';
-
+enum Roles {
+  USER,
+  MOD,
+  ADMIN,
+}
 export const userRouter = router({
   blackListUser: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/user' } })
@@ -129,7 +133,7 @@ export const userRouter = router({
       }
     }),
   getUsers: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/user/retrieve' } })
+    .meta({ openapi: { method: 'GET', path: '/user/dash' } })
     .input(
       z.object({
         page: z.number(),
@@ -144,6 +148,44 @@ export const userRouter = router({
         const users = await ctx.prisma.user.findMany({
           take: takeValue,
           skip: skipValue,
+        });
+        console.log(users);
+        return users;
+      } catch (error) {
+        throw new TRPCError({
+          message: 'No clip document with the UUID provided could be found.',
+          code: 'NOT_FOUND',
+        });
+      }
+    }),
+  updateUser: protectedProcedure
+    .meta({ openapi: { method: 'PATCH', path: '/user/dash' } })
+    .input(
+      z.object({
+        role: z.string(),
+        userId: z.string().cuid(),
+      }),
+    )
+    .output(z.array(users))
+    .query(async ({ input, ctx }) => {
+      if (
+        input.role == 'USER' ||
+        input.role == 'MOD' ||
+        input.role == 'ADMIN'
+      ) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Role has to be either USER, MOD, or ADMIN',
+        });
+      }
+      try {
+        const users = await ctx.prisma.user.update({
+          where: {
+            id: input.userId,
+          },
+          data: {
+            role: input.role,
+          },
         });
         console.log(users);
         return users;
