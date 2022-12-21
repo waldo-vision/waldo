@@ -15,6 +15,8 @@ model WaldoPage {
   waldosite WaldoSite @relation(fields: [siteName], references: [siteName], onDelete: Cascade)
   siteName String
   disabled Boolean @default(false)
+  customReason String
+  isCustomReason Boolean @default(false)
 }
 
 model WaldoSite {
