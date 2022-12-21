@@ -14,6 +14,18 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.discordapp.com',
+        pathname: '/**',
+      },
+    ],
+  },
+  images: {
+    domains: ['cdn.discordapp.com'],
+  },
 };
 
 module.exports = nextConfig;

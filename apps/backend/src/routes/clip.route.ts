@@ -1,4 +1,3 @@
-import { Router } from 'express';
 import { Routing, DependsOnMethod } from 'express-zod-api';
 import {
   deleteClip,
