@@ -3,6 +3,7 @@ import ytdl from 'ytdl-core';
 import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
+import { users } from '../../../utils/zod/dash';
 
 export const userRouter = router({
   blackListUser: protectedProcedure
@@ -124,6 +125,32 @@ export const userRouter = router({
           message: `An error occured while attempting to delete the account with id: ${input.accountId}.`,
           // not sure if its safe to give this to the user
           cause: error,
+        });
+      }
+    }),
+  getUsers: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/user/retrieve' } })
+    .input(
+      z.object({
+        page: z.number(),
+      }),
+    )
+    .output(z.array(users))
+    .query(async ({ input, ctx }) => {
+      const takeValue = 10;
+      var skipValue = input.page * 10 - 10;
+      console.log(skipValue);
+      try {
+        const users = await ctx.prisma.user.findMany({
+          take: takeValue,
+          skip: skipValue,
+        });
+        console.log(users);
+        return users;
+      } catch (error) {
+        throw new TRPCError({
+          message: 'No clip document with the UUID provided could be found.',
+          code: 'NOT_FOUND',
         });
       }
     }),

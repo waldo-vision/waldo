@@ -24,11 +24,13 @@ import { Session } from 'next-auth';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { FiServer, FiUser } from 'react-icons/fi';
 import { BsShieldFillCheck, BsSlashCircle } from 'react-icons/bs';
+import { trpc } from '@utils/trpc';
 export default function User() {
   const [searchUser, setSearchUser] = useState<string>();
   const [userSession, setUserSession] = useState<Session | undefined>(
     undefined,
   );
+  const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const handleSearch = () => {
     console.log(searchUser);
   };

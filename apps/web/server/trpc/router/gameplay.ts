@@ -8,6 +8,7 @@ import {
 import { input, z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
+import { users } from '../../../utils/zod/dash';
 
 export const gameplayRouter = router({
   getGameplay: protectedProcedure

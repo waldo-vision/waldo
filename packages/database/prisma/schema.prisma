@@ -10,6 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model WaldoPage {
+  name String @id
+  waldosite WaldoSite @relation(fields: [siteName], references: [siteName], onDelete: Cascade)
+  siteName String
+  disabled Boolean @default(false)
+}
+
+model WaldoSite {
+  siteName String @id @default("waldo")
+  pages WaldoPage[]
+  maintenance Boolean @default(false)
+  showLpAlert Boolean @default(false)
+  lpAlertMessage String
+}
+
 model Footage {
   id           String         @id @default(cuid())
   user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
