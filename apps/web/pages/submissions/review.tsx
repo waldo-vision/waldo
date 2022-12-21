@@ -29,7 +29,7 @@ export default function Review() {
     data: reviewItemData,
     refetch,
   } = trpc.gameplay.getReviewItems.useQuery();
-  const { isLoading, data: isDisabled } = trpc.site.isPageDisabled.useQuery({
+  const { isLoading, data: isDisabled } = trpc.site.getPageData.useQuery({
     pageName: 'review',
   });
   const reviewGameplay = trpc.gameplay.reviewGameplay.useMutation({
@@ -79,7 +79,7 @@ export default function Review() {
 
   useEffect(() => {
     const getNecessaryData = async () => {
-      if (isDisabled?.isDisabled) {
+      if (isDisabled?.disabled) {
         router.push('/');
       }
       await refetch();

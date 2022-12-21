@@ -3,28 +3,37 @@ import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 
 export const siteRouter = router({
-  isPageDisabled: protectedProcedure
+  getPageData: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/site' } })
     .input(
       z.object({
         pageName: z.string(),
       }),
     )
-    .output(z.object({ isDisabled: z.boolean() }))
+    .output(
+      z.object({
+        disabled: z.boolean(),
+        name: z.string(),
+        siteName: z.string(),
+        customReason: z.string(),
+        isCustomReason: z.boolean(),
+      }),
+    )
     .query(async ({ input, ctx }) => {
-      const isPageDisabled = await ctx.prisma.waldoPage.findUnique({
+      const pageData = await ctx.prisma.waldoPage.findUnique({
         where: {
           name: input.pageName,
         },
       });
-      if (isPageDisabled == null) {
+      if (pageData == null) {
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Waldo Page not found in the database.',
         });
       }
+      console.log(pageData);
       // no error checking because the docs will never be deleted.
-      return { isDisabled: isPageDisabled.disabled };
+      return pageData;
     }),
   updatePage: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/site' } })
