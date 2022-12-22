@@ -333,7 +333,7 @@ export const gameplayRouter = router({
       if (reviewItems === null)
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: `Could not query ${min} gameplay documents`,
+          message: `Could not query gameplay documents`,
         });
       return reviewItems[0];
     }),
