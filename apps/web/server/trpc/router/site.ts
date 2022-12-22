@@ -41,6 +41,8 @@ export const siteRouter = router({
       z.object({
         pageName: z.string(),
         isDisabled: z.boolean(),
+        isCustomReason: z.boolean(),
+        customReason: z.string(),
       }),
     )
     .output(z.object({ message: z.string() }))
@@ -51,6 +53,8 @@ export const siteRouter = router({
         },
         data: {
           disabled: input.isDisabled,
+          isCustomReason: input.isCustomReason,
+          customReason: input.customReason,
         },
       });
       if (updatePage == null) {
