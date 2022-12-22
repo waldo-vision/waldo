@@ -82,5 +82,4 @@ const rateLimit = t.middleware(async ({ ctx, next }) => {
  **/
 export const protectedProcedure = t.procedure
   .use(isAuthed)
-  .use(isBlacklisted)
-  .use(rateLimit);
+  .use(isBlacklisted);

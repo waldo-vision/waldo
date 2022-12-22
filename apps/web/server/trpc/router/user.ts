@@ -137,12 +137,14 @@ export const userRouter = router({
     .input(
       z.object({
         page: z.number(),
+        filterRoles: z.string().nullable()
       }),
     )
     .output(z.array(users))
     .query(async ({ input, ctx }) => {
       const takeValue = 10;
       var skipValue = input.page * 10 - 10;
+      if (input.filterRoles == null) {
       console.log(skipValue);
       try {
         const users = await ctx.prisma.user.findMany({
@@ -156,6 +158,24 @@ export const userRouter = router({
           code: 'NOT_FOUND',
         });
       }
+    } else {
+      console.log(skipValue);
+      try {
+        const users = await ctx.prisma.user.findMany({
+          where: {
+            role: input.filterRoles
+          },
+          take: takeValue,
+          skip: skipValue,
+        });
+        return users;
+      } catch (error) {
+        throw new TRPCError({
+          message: 'No clip document with the UUID provided could be found.',
+          code: 'NOT_FOUND',
+        });
+      }
+    }
     }),
   updateUser: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/user/dash' } })
