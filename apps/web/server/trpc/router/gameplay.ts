@@ -191,7 +191,7 @@ export const gameplayRouter = router({
           userId: ctx.session.user.id,
           userRole: Roles.User,
           itemOwnerId: gameplay.userId,
-          requiredPerms: Perms.isOwner,
+          requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })
       )
