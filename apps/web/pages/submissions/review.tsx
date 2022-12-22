@@ -7,21 +7,12 @@ import Loading from '@components/Loading';
 import Layout from '@components/Layout';
 import { trpc } from '@utils/trpc';
 import Head from 'next/head';
+import type { Footage, User } from 'database';
 
-interface ReviewItem {
-  user?:
-    | {
-        name?: string | null;
-      }
-    | undefined;
-  upVotes?: number | undefined;
-  downVotes?: number | undefined;
-  id: string;
-  userId: string;
-  youtubeUrl: string;
-  footageType: string;
-  isAnalyzed: boolean;
-}
+type ReviewItem = Footage & {
+  user: User;
+};
+
 export default function Review() {
   const utils = trpc.useContext();
   const {
@@ -32,7 +23,7 @@ export default function Review() {
   const { isLoading, data: isDisabled } = trpc.site.isPageDisabled.useQuery({
     pageName: 'review',
   });
-  const reviewGameplay = trpc.gameplay.reviewGameplay.useMutation({
+  const reviewGameplay = trpc.gameplay.review.useMutation({
     async onSuccess() {
       await utils.gameplay.invalidate();
     },
@@ -57,6 +48,8 @@ export default function Review() {
   };
 
   const doClickLogic = async (action: 'yes' | 'no') => {
+    if (reviewItem === undefined) return;
+
     setLoading(true);
     const review = action === 'yes';
     await reviewGameplay.mutateAsync({

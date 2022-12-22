@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
-export const users = z.object({
+export const UserSchema = z.object({
   id: z.string(),
   name: z.string(),
   email: z.string(),
-  emailVerified: z.boolean().nullable(),
+  emailVerified: z.date().nullable(),
   image: z.string(),
-  blacklisted: z.boolean().nullable(),
+  blacklisted: z.boolean(),
   role: z.string(),
 });

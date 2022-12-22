@@ -1,26 +1,19 @@
 import { z } from 'zod';
+import { UserSchema } from './dash';
+
+export const GameplayTypes = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD']);
 
 export const GameplaySchema = z.object({
   id: z.string().cuid(),
   userId: z.string(),
   youtubeUrl: z.string().url(),
-  footageType: z.string(),
-  upVotes: z.number().optional(),
-  downVotes: z.number().optional(),
+  footageType: GameplayTypes,
+  upVotes: z.number(),
+  downVotes: z.number(),
   isAnalyzed: z.boolean(),
 });
-export const GameplayPlusUserSchema = z.object({
-  id: z.string().cuid(),
-  userId: z.string(),
-  youtubeUrl: z.string().url(),
-  footageType: z.string(),
-  upVotes: z.number().optional(),
-  downVotes: z.number().optional(),
-  isAnalyzed: z.boolean(),
-  user: z.object({
-    name: z.string().optional(),
-    image: z.string().url().optional(),
+export const GameplayPlusUserSchema = GameplaySchema.merge(
+  z.object({
+    user: UserSchema,
   }),
-});
-
-export const GameplayTypes = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD']);
+);
