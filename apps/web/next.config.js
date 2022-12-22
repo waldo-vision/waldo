@@ -15,6 +15,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    domains: ['cdn.discordapp.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -22,9 +23,6 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-  },
-  images: {
-    domains: ['cdn.discordapp.com'],
   },
   i18n: {
     locales: ['en-US'],
