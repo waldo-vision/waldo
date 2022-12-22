@@ -3,7 +3,7 @@ import ytdl from 'ytdl-core';
 import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
-import { UserSchema } from '../../../utils/zod/dash';
+import { UserSchema } from '@utils/zod/dash';
 import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
 export const userRouter = router({
   blackList: protectedProcedure
