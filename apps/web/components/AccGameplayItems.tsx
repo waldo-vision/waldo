@@ -16,7 +16,7 @@ export default function AccGameplayItems() {
     Array<Gameplay> | undefined
   >();
   const [componentLoading, setComponentLoading] = useState<boolean>(true);
-  const { isLoading, data } = trpc.gameplay.getUserGameplay.useQuery({
+  const { isLoading, data } = trpc.gameplay.getUsers.useQuery({
     userId: null,
   });
   const videoIdFromUrlRegex =

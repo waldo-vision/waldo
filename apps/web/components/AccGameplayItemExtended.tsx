@@ -20,7 +20,7 @@ interface Item {
 export default function AccGameplayItemExtended(props: Item) {
   const [meta, setMeta] = useState<string>();
   const utils = trpc.useContext();
-  const deleteGameplayTrpc = trpc.gameplay.deleteGameplay.useMutation({
+  const deleteGameplayTrpc = trpc.gameplay.delete.useMutation({
     async onSuccess() {
       await utils.gameplay.invalidate();
     },
