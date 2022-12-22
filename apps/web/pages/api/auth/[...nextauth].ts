@@ -52,20 +52,19 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session(sessionCallback: SessionCallback) {
-      const session = sessionCallback.session;
-      const user = sessionCallback.user;
+    async session({ session, user }: SessionCallback) {
       if (session.user) {
         session.user.id = user.id;
         if (user) {
-          const userAccount = await prisma.account.findFirst({
+          const userAccount = await prisma.account.findUniqueOrThrow({
             where: {
-              userId: user.id,
+              id: user.id,
             },
             include: {
               user: true,
             },
           });
+
           session.user.provider = userAccount.provider;
           session.user.role = userAccount.user.role;
           session.user.blacklisted = userAccount.user.blacklisted;

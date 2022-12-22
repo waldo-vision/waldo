@@ -11,17 +11,17 @@ datasource db {
 }
 
 model WaldoPage {
-  name String @id
+  name      String    @id
   waldosite WaldoSite @relation(fields: [siteName], references: [siteName], onDelete: Cascade)
-  siteName String
-  disabled Boolean @default(false)
+  siteName  String
+  disabled  Boolean   @default(false)
 }
 
 model WaldoSite {
-  siteName String @id @default("waldo")
-  pages WaldoPage[]
-  maintenance Boolean @default(false)
-  showLpAlert Boolean @default(false)
+  siteName       String      @id @default("waldo")
+  pages          WaldoPage[]
+  maintenance    Boolean     @default(false)
+  showLpAlert    Boolean     @default(false)
   lpAlertMessage String
 }
 
@@ -100,9 +100,9 @@ model User {
   sessions      Session[]
 
   // our items
-  blacklisted  Boolean? @default(false)
+  blacklisted  Boolean        @default(false)
   footage      Footage[]
-  role         String @default("USER")
+  role         String         @default("USER")
   footageVotes FootageVotes[] @relation("user")
 }
 

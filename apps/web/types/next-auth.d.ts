@@ -7,7 +7,6 @@ declare module 'next-auth' {
   interface Session {
     user?: {
       id: string;
-      avatarUrl: string;
       provider: string;
       role: string;
       blacklisted: boolean;
