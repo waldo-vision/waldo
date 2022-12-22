@@ -18,12 +18,12 @@ interface Props {
 }
 export default function BlacklistedModal(props: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef();
+  const cancelRef = React.useRef(null);
   useEffect(() => {
     if (props.show) {
       onOpen();
     }
-  }, [props.show]);
+  }, [onOpen, props.show]);
   return (
     <>
       <AlertDialog
