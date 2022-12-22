@@ -53,7 +53,7 @@ export default function Upload() {
   const utils = trpc.useContext();
   const router = useRouter();
 
-  const createGameplay = trpc.gameplay.createGameplay.useMutation({
+  const createGameplay = trpc.gameplay.create.useMutation({
     async onSuccess() {
       await utils.gameplay.invalidate();
     },
@@ -157,7 +157,7 @@ export default function Upload() {
       handleRequestError('Please check the required legal agreement options.');
       return;
     }
-    type Input = inferProcedureInput<AppRouter['gameplay']['createGameplay']>;
+    type Input = inferProcedureInput<AppRouter['gameplay']['create']>;
     //    ^?
     const input: Input = {
       gameplayType: selectedGame.toUpperCase() as
