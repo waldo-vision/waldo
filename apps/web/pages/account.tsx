@@ -1,4 +1,12 @@
-import { Box, Text, Button, Flex, useToast, Divider } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Button,
+  Flex,
+  useToast,
+  Divider,
+  Center,
+} from '@chakra-ui/react';
 import Layout from '@components/Layout';
 import React, { useState, useEffect } from 'react';
 import { signOut, getSession } from 'next-auth/react';
@@ -16,7 +24,6 @@ import { FaDiscord, FaBattleNet, FaTwitch } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { BsGithub, BsFacebook } from 'react-icons/bs';
 import { MdOutlineRemove } from 'react-icons/md';
-import Link from 'next/link';
 
 type ProvidersListType = {
   name: string;
@@ -137,18 +144,22 @@ export default function Account() {
         </Head>
         <Box minHeight={'100vh'} mt={{ base: '60px' }} mb={20}>
           <Flex direction={'column'} gap={3}>
-            <Text fontWeight={'bold'} fontSize={30}>
-              Your Account
+            <Flex direction={'column'}>
+              <Text fontWeight={'bold'} fontSize={30}>
+                Your Account
+              </Text>
+
               <Text fontWeight={'normal'} fontSize={15}>
                 Manage your account settings.
               </Text>
-            </Text>
+            </Flex>
             <Box
               borderRadius={'16px'}
               bg={'white'}
               p={{ base: 4, md: 8 }}
               overflow={'hidden'}
               minWidth={'30vw'}
+              maxWidth={'7xl'}
               minHeight={'60vh'}
               width={{ base: '90vw', md: '80vw' }}
             >
@@ -157,10 +168,10 @@ export default function Account() {
                 <Flex
                   direction={{ base: 'column', md: 'row' }}
                   justify={'space-between'}
-                  gap={{ base: 10, lg: 0 }}
+                  gap={10}
                 >
                   {/* Linked Account */}
-                  <Box width={{ md: '100%', lg: '30%' }}>
+                  <Box width={{ md: '100%', lg: '50%' }}>
                     <Text
                       fontWeight={'normal'}
                       mb={5}
@@ -168,44 +179,25 @@ export default function Account() {
                     >
                       You have linked <b>all</b> of the following accounts:
                     </Text>
-                    <Flex direction={'column'} gap={5}>
+                    <Flex direction={'column'}>
                       {linkedAccounts &&
                         ProvidersList.map(({ name, icon }, index) => (
-                          <>
-                            <Divider />
-                            <Box key={index}>
-                              <Flex direction={'column'} gap={2}>
-                                <Flex
-                                  align={'center'}
-                                  direction={'row'}
-                                  gap={3}
-                                >
-                                  {icon}
-                                  <Text fontWeight={500}>{name}</Text>
-                                </Flex>
-                                <Flex direction={'column'}>
-                                  {linkedAccounts.some(
-                                    account =>
-                                      account.provider.toUpperCase() ===
-                                      name.toUpperCase(),
-                                  ) ? (
-                                    <>
-                                      {name.toUpperCase() ==
-                                      userSession?.user?.provider.toUpperCase() ? (
-                                        <Flex
-                                          direction={'row'}
-                                          align={'center'}
-                                          ml={3}
-                                          gap={1}
-                                        >
-                                          <TiTick color={'green'} />
-                                          <Text fontSize={{ base: 13, sm: 15 }}>
-                                            This is your primary account
-                                          </Text>
-                                        </Flex>
-                                      ) : (
-                                        <></>
-                                      )}
+                          <Box key={index}>
+                            <Divider my={5} />
+                            <Flex direction={'column'} gap={2}>
+                              <Flex align={'center'} direction={'row'} gap={3}>
+                                {icon}
+                                <Text fontWeight={500}>{name}</Text>
+                              </Flex>
+                              <Flex direction={'column'}>
+                                {linkedAccounts.some(
+                                  account =>
+                                    account.provider.toUpperCase() ===
+                                    name.toUpperCase(),
+                                ) ? (
+                                  <>
+                                    {name.toUpperCase() ==
+                                    userSession?.user?.provider.toUpperCase() ? (
                                       <Flex
                                         direction={'row'}
                                         align={'center'}
@@ -213,83 +205,87 @@ export default function Account() {
                                         gap={1}
                                       >
                                         <TiTick color={'green'} />
-                                        <Text
-                                          fontSize={{
-                                            base: 11,
-                                            sm: 13,
-                                            md: 15,
-                                          }}
-                                        >
-                                          Your are connected to a {name}{' '}
-                                          account.
+                                        <Text fontSize={{ base: 13, sm: 15 }}>
+                                          This is your primary account
                                         </Text>
                                       </Flex>
-                                      {name.toUpperCase() !=
-                                      userSession?.user?.provider.toUpperCase() ? (
-                                        <Button
-                                          leftIcon={<MdOutlineRemove />}
-                                          colorScheme={'red'}
-                                          variant={'solid'}
-                                          my={3}
-                                          onClick={() => {
-                                            const account = linkedAccounts.find(
-                                              account =>
-                                                account.provider.toUpperCase() ===
-                                                name.toUpperCase(),
-                                            );
-                                            if (!account) {
-                                              toast({
-                                                position: 'bottom-right',
-                                                title: 'Account Error',
-                                                description:
-                                                  'An unexpected error occurred, please try again later.',
-                                                status: 'error',
-                                                duration: 5000,
-                                                isClosable: true,
-                                              });
-                                              return;
-                                            }
-                                            unlinkProvider(account);
-                                          }}
-                                        >
-                                          Disconnect
-                                        </Button>
-                                      ) : (
-                                        <></>
-                                      )}
-                                    </>
-                                  ) : (
+                                    ) : (
+                                      <></>
+                                    )}
                                     <Flex
                                       direction={'row'}
                                       align={'center'}
                                       ml={3}
                                       gap={1}
                                     >
-                                      <RxCross2 color={'red'} />
+                                      <TiTick color={'green'} />
                                       <Text
-                                        fontSize={{ base: 11, sm: 13, md: 15 }}
+                                        fontSize={{
+                                          base: 11,
+                                          sm: 13,
+                                          md: 15,
+                                        }}
                                       >
-                                        You are not connected to a {name}{' '}
-                                        account.
+                                        Your are connected to a {name} account.
                                       </Text>
                                     </Flex>
-                                  )}
-                                </Flex>
+                                    {name.toUpperCase() !=
+                                    userSession?.user?.provider.toUpperCase() ? (
+                                      <Button
+                                        leftIcon={<MdOutlineRemove />}
+                                        colorScheme={'red'}
+                                        variant={'solid'}
+                                        my={3}
+                                        onClick={() => {
+                                          const account = linkedAccounts.find(
+                                            account =>
+                                              account.provider.toUpperCase() ===
+                                              name.toUpperCase(),
+                                          );
+                                          if (!account) {
+                                            toast({
+                                              position: 'bottom-right',
+                                              title: 'Account Error',
+                                              description:
+                                                'An unexpected error occurred, please try again later.',
+                                              status: 'error',
+                                              duration: 5000,
+                                              isClosable: true,
+                                            });
+                                            return;
+                                          }
+                                          unlinkProvider(account);
+                                        }}
+                                      >
+                                        Disconnect
+                                      </Button>
+                                    ) : (
+                                      <></>
+                                    )}
+                                  </>
+                                ) : (
+                                  <Flex
+                                    direction={'row'}
+                                    align={'center'}
+                                    ml={3}
+                                    gap={1}
+                                  >
+                                    <RxCross2 color={'red'} />
+                                    <Text
+                                      fontSize={{ base: 11, sm: 13, md: 15 }}
+                                    >
+                                      You are not connected to a {name} account.
+                                    </Text>
+                                  </Flex>
+                                )}
                               </Flex>
-                            </Box>
-                          </>
+                            </Flex>
+                          </Box>
                         ))}
                     </Flex>
                   </Box>
                   {/* Uploaded Gameplay */}
-                  <Box width={{ md: '100%', lg: '60%' }} px={{ lg: 5 }}>
-                    <Text
-                      fontWeight={'normal'}
-                      mb={5}
-                      fontSize={{ base: 15, sm: 18 }}
-                    >
-                      Your Gameplay:
-                    </Text>
+                  <Box width={{ md: '100%', lg: 'fit' }} height={'100%'}>
                     <AccGameplayItems />
                   </Box>
                 </Flex>
