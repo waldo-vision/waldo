@@ -177,6 +177,7 @@ export const userRouter = router({
     .input(
       z.object({
         page: z.number(),
+        filterRoles: z.string().nullable().optional()
       }),
     )
     .output(z.array(UserSchema))
@@ -195,12 +196,16 @@ export const userRouter = router({
 
       const takeValue = 10;
       const skipValue = input.page * 10 - 10;
-      console.log(skipValue);
+      if (input.filterRoles == null) {
+        const userCount: number = await ctx.prisma.user.count()
       try {
         const users = await ctx.prisma.user.findMany({
           take: takeValue,
           skip: skipValue,
         });
+        users.forEach((user,index) => {
+          Object.assign(users[index], { userCount: userCount})
+        })
         return users;
       } catch (error) {
         throw new TRPCError({
@@ -208,6 +213,31 @@ export const userRouter = router({
           code: 'NOT_FOUND',
         });
       }
+    } else {
+      try {
+        const userCount = await ctx.prisma.user.count({
+          where: {
+            role: input.filterRoles
+          }
+        })
+        const users = await ctx.prisma.user.findMany({
+          where: {
+            role: input.filterRoles
+          },
+          take: takeValue,
+          skip: skipValue,
+        });
+        users.forEach((user,index) => {
+          Object.assign(users[index], { userCount: userCount})
+        })
+        return users;
+      } catch (error) {
+        throw new TRPCError({
+          message: 'No clip document with the UUID provided could be found.',
+          code: 'NOT_FOUND',
+        });
+      }
+    }
     }),
   updateRole: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/user/dash' } })
@@ -218,7 +248,7 @@ export const userRouter = router({
       }),
     )
     .output(UserSchema)
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       if (
         !hasPerms({
           userId: ctx.session.user.id,

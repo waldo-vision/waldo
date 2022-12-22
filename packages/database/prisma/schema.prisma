@@ -18,11 +18,19 @@ model WaldoPage {
 }
 
 model WaldoSite {
-  siteName       String      @id @default("waldo")
-  pages          WaldoPage[]
-  maintenance    Boolean     @default(false)
-  showLpAlert    Boolean     @default(false)
-  lpAlertMessage String
+  siteName String
+  disabled Boolean @default(false)
+  customReason String
+  isCustomReason Boolean @default(false)
+}
+
+model WaldoSite {
+  siteName String @id @default("waldo")
+  pages WaldoPage[]
+  maintenance Boolean @default(false)
+  showLpAlert Boolean @default(false)
+  lpAlertTitle String
+  lpAlertDescription String
 }
 
 model Footage {

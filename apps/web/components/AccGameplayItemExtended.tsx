@@ -72,19 +72,19 @@ export default function AccGameplayItemExtended(props: Item) {
   };
 
   return (
-    <Flex direction={'row'} width={'100%'} justify={'space-between'}>
+    <Flex direction={'row'} justify={'space-between'}>
       <Box>
         {componentLoading ? (
           <Spinner color={'default'} size={'sm'} mt={2} />
         ) : (
           <>
             <Text
-              fontSize={{ base: 0, sm: 0, md: 16, lg: 18 }}
+              fontSize={{ base: 12, sm: 12, md: 16, lg: 18 }}
               fontWeight={'bold'}
             >
               {meta && meta.substring(0, 30) + '...'}
             </Text>
-            <Text fontSize={{ base: 0, sm: 0, md: 8, lg: 13 }}>
+            <Text fontSize={{ base: 7, sm: 7, md: 8, lg: 13 }}>
               {props.item && props.item.youtubeUrl}
             </Text>
           </>
@@ -92,11 +92,13 @@ export default function AccGameplayItemExtended(props: Item) {
       </Box>
       <Button
         ml={3}
-        variant={'ghost'}
-        color={'red'}
+        variant={'solid'}
+        bgColor={'red.300'}
+        _hover={{ bgColor: 'red.200' }}
+        color={'white'}
         onClick={() => deleteGameplay()}
       >
-        <BiTrash size={20} />
+        <BiTrash size={25} />
       </Button>
     </Flex>
   );

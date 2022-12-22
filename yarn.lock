@@ -4532,6 +4532,11 @@ __metadata:
   version: 2.0.0
   resolution: "define-lazy-prop@npm:2.0.0"
   checksum: 0115fdb065e0490918ba271d7339c42453d209d4cb619dfe635870d906731eff3e1ade8028bb461ea27ce8264ec5e22c6980612d332895977e89c1bbc80fcee2
+
+"default-passive-events@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "default-passive-events@npm:2.0.0"
+  checksum: 04c0cda15eebee5f74c63b6333e1324fc530e1dfc0e3e32f49e1348c01e3d32357dab72e8a3f7b3246872eb105bf23f39f76249565fdec2fb5eee7f9338f995d
   languageName: node
   linkType: hard
 
@@ -9304,6 +9309,9 @@ eslint-config-turbo@latest:
   dependencies:
     "@typescript-eslint/eslint-plugin": ^5.46.1
     "@typescript-eslint/parser": ^5.46.1
+    async-ratelimiter: ^1.3.5
+    default-passive-events: ^2.0.0
+    dotenv: ^16.0.3
     eslint: ^8.30.0
     eslint-config-custom: "workspace:*"
     prettier: ^2.8.1

@@ -329,7 +329,6 @@ export const gameplayRouter = router({
           user: true,
         },
       });
-      console.log(reviewItems[0]);
       if (reviewItems === null)
         throw new TRPCError({
           code: 'NOT_FOUND',

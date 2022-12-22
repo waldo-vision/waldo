@@ -8,4 +8,5 @@ export const UserSchema = z.object({
   image: z.string().nullable(),
   blacklisted: z.boolean(),
   role: z.string(),
-});
+  userCount: z.number().optional()
+})

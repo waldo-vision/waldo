@@ -59,7 +59,7 @@ export default function Upload() {
     },
   });
 
-  const { isLoading, data: isDisabled } = trpc.site.isPageDisabled.useQuery({
+  const { isLoading, data: isDisabled } = trpc.site.getPageData.useQuery({
     pageName: 'upload',
   });
 
@@ -179,7 +179,7 @@ export default function Upload() {
 
   useEffect(() => {
     const doPageLoadThings = async () => {
-      if (isDisabled?.isDisabled) {
+      if (isDisabled?.disabled) {
         router.push('/');
       }
       const session = await getSession();
