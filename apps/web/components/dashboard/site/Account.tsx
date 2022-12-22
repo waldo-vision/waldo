@@ -17,8 +17,8 @@ import Loading from '@components/Loading';
 export default function Review() {
   const nullCode = '--+|[]';
   // UPLOAD VARS AND LOGIC
-  const { isLoading: reviewPageQLoading, data: reviewPageQData } =
-    trpc.site.getPageData.useQuery({ pageName: 'review' }, { enabled: true });
+  const { isLoading: accountPageQLoading, data: accountPageQData } =
+    trpc.site.getPageData.useQuery({ pageName: 'account' }, { enabled: true });
   const utils = trpc.useContext();
   const [customReason, setCustomReason] = useState<string>(nullCode);
   const updatePage = trpc.site.updatePage.useMutation({
@@ -30,23 +30,23 @@ export default function Review() {
   const handleApply = (change: number) => {
     if (change == 0) {
       updatePage.mutateAsync({
-        pageName: 'review',
-        isDisabled: !reviewPageQData?.disabled,
-        isCustomReason: reviewPageQData?.isCustomReason as boolean,
-        customReason: reviewPageQData?.customReason as string,
+        pageName: 'account',
+        isDisabled: !accountPageQData?.disabled,
+        isCustomReason: accountPageQData?.isCustomReason as boolean,
+        customReason: accountPageQData?.customReason as string,
       });
     } else if (change == 1) {
       updatePage.mutateAsync({
-        pageName: 'review',
-        isDisabled: reviewPageQData?.disabled,
-        isCustomReason: !reviewPageQData?.isCustomReason as boolean,
-        customReason: reviewPageQData?.customReason as string,
+        pageName: 'account',
+        isDisabled: accountPageQData?.disabled,
+        isCustomReason: !accountPageQData?.isCustomReason as boolean,
+        customReason: accountPageQData?.customReason as string,
       });
     } else if (change == 2) {
       updatePage.mutateAsync({
-        pageName: 'review',
-        isDisabled: reviewPageQData?.disabled,
-        isCustomReason: reviewPageQData?.isCustomReason as boolean,
+        pageName: 'account',
+        isDisabled: accountPageQData?.disabled,
+        isCustomReason: accountPageQData?.isCustomReason as boolean,
         customReason: customReason as string,
       });
     }
@@ -55,7 +55,7 @@ export default function Review() {
   return (
     <div>
       <Flex direction={'row'}>
-        {reviewPageQLoading ? (
+        {accountPageQLoading ? (
           <Center w={'150vh'} h={'100vh'}>
             <Spinner size={'lg'} color={'blue.500'} />
           </Center>
@@ -65,12 +65,12 @@ export default function Review() {
               <Box
                 py={2}
                 borderTopRadius={14}
-                bgColor={reviewPageQData?.disabled ? 'red.400' : 'green.400'}
+                bgColor={accountPageQData?.disabled ? 'red.400' : 'green.400'}
               ></Box>
               <Box p={4}>
                 <Text fontWeight={'semibold'} fontSize={'3xl'}>
-                  {reviewPageQData?.name.charAt(0).toUpperCase() +
-                    reviewPageQData?.name.slice(1)}
+                  {accountPageQData?.name.charAt(0).toUpperCase() +
+                    accountPageQData?.name.slice(1)}
                 </Text>
                 <Flex mt={2} direction={'row'} alignItems={'center'} gap={2}>
                   <Text fontWeight={'normal'} fontSize={'lg'}>
@@ -78,7 +78,7 @@ export default function Review() {
                   </Text>
                   <Switch
                     size={'md'}
-                    defaultChecked={reviewPageQData?.disabled}
+                    defaultChecked={accountPageQData?.disabled}
                     onChange={() => handleApply(0)}
                   />
                 </Flex>
@@ -91,10 +91,10 @@ export default function Review() {
                     onChange={() => {
                       handleApply(1);
                     }}
-                    defaultChecked={reviewPageQData?.isCustomReason}
+                    defaultChecked={accountPageQData?.isCustomReason}
                   />
                 </Flex>
-                {reviewPageQData?.isCustomReason && (
+                {accountPageQData?.isCustomReason && (
                   <>
                     <Text
                       onClick={() => {
@@ -123,9 +123,9 @@ export default function Review() {
                         />
                         <Input
                           placeholder={
-                            reviewPageQData?.customReason == nullCode
+                            accountPageQData?.customReason == nullCode
                               ? 'Custom Reason'
-                              : reviewPageQData?.customReason
+                              : accountPageQData?.customReason
                           }
                           onChange={event =>
                             setCustomReason(event.target.value)

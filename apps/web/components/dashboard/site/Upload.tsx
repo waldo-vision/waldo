@@ -17,8 +17,8 @@ import Loading from '@components/Loading';
 export default function Review() {
   const nullCode = '--+|[]';
   // UPLOAD VARS AND LOGIC
-  const { isLoading: reviewPageQLoading, data: reviewPageQData } =
-    trpc.site.getPageData.useQuery({ pageName: 'review' }, { enabled: true });
+  const { isLoading: uploadPageQLoading, data: uploadPageQData } =
+    trpc.site.getPageData.useQuery({ pageName: 'upload' }, { enabled: true });
   const utils = trpc.useContext();
   const [customReason, setCustomReason] = useState<string>(nullCode);
   const updatePage = trpc.site.updatePage.useMutation({
@@ -30,23 +30,23 @@ export default function Review() {
   const handleApply = (change: number) => {
     if (change == 0) {
       updatePage.mutateAsync({
-        pageName: 'review',
-        isDisabled: !reviewPageQData?.disabled,
-        isCustomReason: reviewPageQData?.isCustomReason as boolean,
-        customReason: reviewPageQData?.customReason as string,
+        pageName: 'upload',
+        isDisabled: !uploadPageQData?.disabled,
+        isCustomReason: uploadPageQData?.isCustomReason as boolean,
+        customReason: uploadPageQData?.customReason as string,
       });
     } else if (change == 1) {
       updatePage.mutateAsync({
-        pageName: 'review',
-        isDisabled: reviewPageQData?.disabled,
-        isCustomReason: !reviewPageQData?.isCustomReason as boolean,
-        customReason: reviewPageQData?.customReason as string,
+        pageName: 'upload',
+        isDisabled: uploadPageQData?.disabled,
+        isCustomReason: !uploadPageQData?.isCustomReason as boolean,
+        customReason: uploadPageQData?.customReason as string,
       });
     } else if (change == 2) {
       updatePage.mutateAsync({
-        pageName: 'review',
-        isDisabled: reviewPageQData?.disabled,
-        isCustomReason: reviewPageQData?.isCustomReason as boolean,
+        pageName: 'upload',
+        isDisabled: uploadPageQData?.disabled,
+        isCustomReason: uploadPageQData?.isCustomReason as boolean,
         customReason: customReason as string,
       });
     }
@@ -55,7 +55,7 @@ export default function Review() {
   return (
     <div>
       <Flex direction={'row'}>
-        {reviewPageQLoading ? (
+        {uploadPageQLoading ? (
           <Center w={'150vh'} h={'100vh'}>
             <Spinner size={'lg'} color={'blue.500'} />
           </Center>
@@ -65,12 +65,12 @@ export default function Review() {
               <Box
                 py={2}
                 borderTopRadius={14}
-                bgColor={reviewPageQData?.disabled ? 'red.400' : 'green.400'}
+                bgColor={uploadPageQData?.disabled ? 'red.400' : 'green.400'}
               ></Box>
               <Box p={4}>
                 <Text fontWeight={'semibold'} fontSize={'3xl'}>
-                  {reviewPageQData?.name.charAt(0).toUpperCase() +
-                    reviewPageQData?.name.slice(1)}
+                  {uploadPageQData?.name.charAt(0).toUpperCase() +
+                    uploadPageQData?.name.slice(1)}
                 </Text>
                 <Flex mt={2} direction={'row'} alignItems={'center'} gap={2}>
                   <Text fontWeight={'normal'} fontSize={'lg'}>
@@ -78,7 +78,7 @@ export default function Review() {
                   </Text>
                   <Switch
                     size={'md'}
-                    defaultChecked={reviewPageQData?.disabled}
+                    defaultChecked={uploadPageQData?.disabled}
                     onChange={() => handleApply(0)}
                   />
                 </Flex>
@@ -91,10 +91,10 @@ export default function Review() {
                     onChange={() => {
                       handleApply(1);
                     }}
-                    defaultChecked={reviewPageQData?.isCustomReason}
+                    defaultChecked={uploadPageQData?.isCustomReason}
                   />
                 </Flex>
-                {reviewPageQData?.isCustomReason && (
+                {uploadPageQData?.isCustomReason && (
                   <>
                     <Text
                       onClick={() => {
@@ -123,9 +123,9 @@ export default function Review() {
                         />
                         <Input
                           placeholder={
-                            reviewPageQData?.customReason == nullCode
+                            uploadPageQData?.customReason == nullCode
                               ? 'Custom Reason'
-                              : reviewPageQData?.customReason
+                              : uploadPageQData?.customReason
                           }
                           onChange={event =>
                             setCustomReason(event.target.value)

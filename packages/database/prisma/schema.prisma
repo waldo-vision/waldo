@@ -24,7 +24,8 @@ model WaldoSite {
   pages WaldoPage[]
   maintenance Boolean @default(false)
   showLpAlert Boolean @default(false)
-  lpAlertMessage String
+  lpAlertTitle String
+  lpAlertDescription String
 }
 
 model Footage {
