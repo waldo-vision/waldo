@@ -50,7 +50,6 @@ export default function Review() {
         customReason: customReason as string,
       });
     }
-    window.location.reload();
   };
   return (
     <div>
