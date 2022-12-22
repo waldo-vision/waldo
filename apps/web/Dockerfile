@@ -1,7 +1,7 @@
 FROM node:18-alpine AS builder
 # ensure deps can build
 RUN apk add --update --no-cache openssl1.1-compat libc6-compat
-# enable pnpm
+# enable yarn
 RUN corepack enable
 # set workdir
 WORKDIR /app
@@ -15,7 +15,7 @@ RUN rm -rf /app/out/full/*/*/node_modules
 FROM node:18-alpine AS installer
 # ensure deps can build
 RUN apk add --update --no-cache openssl1.1-compat libc6-compat
-# enable pnpm
+# enable yarn
 RUN corepack enable
 # set workdir
 WORKDIR /app
