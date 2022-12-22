@@ -4688,6 +4688,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"default-passive-events@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "default-passive-events@npm:2.0.0"
+  checksum: 04c0cda15eebee5f74c63b6333e1324fc530e1dfc0e3e32f49e1348c01e3d32357dab72e8a3f7b3246872eb105bf23f39f76249565fdec2fb5eee7f9338f995d
+  languageName: node
+  linkType: hard
+
 "defaults@npm:^1.0.3":
   version: 1.0.4
   resolution: "defaults@npm:1.0.4"
@@ -10022,6 +10029,7 @@ turbo@latest:
     "@typescript-eslint/eslint-plugin": ^5.46.1
     "@typescript-eslint/parser": ^5.46.1
     async-ratelimiter: ^1.3.5
+    default-passive-events: ^2.0.0
     dotenv: ^16.0.3
     eslint: ^8.30.0
     eslint-config-custom: "workspace:*"
