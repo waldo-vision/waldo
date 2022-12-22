@@ -8,4 +8,5 @@ export const users = z.object({
   image: z.string(),
   blacklisted: z.boolean().nullable(),
   role: z.string(),
-});
+  userCount: z.number().optional()
+})

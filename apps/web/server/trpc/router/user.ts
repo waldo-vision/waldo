@@ -3,7 +3,7 @@ import ytdl from 'ytdl-core';
 import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
-import { users } from '../../../utils/zod/dash';
+import { users, userCount } from '../../../utils/zod/dash';
 enum Roles {
   USER,
   MOD,
@@ -137,7 +137,7 @@ export const userRouter = router({
     .input(
       z.object({
         page: z.number(),
-        filterRoles: z.string().nullable()
+        filterRoles: z.string().nullable().optional()
       }),
     )
     .output(z.array(users))
@@ -145,12 +145,15 @@ export const userRouter = router({
       const takeValue = 10;
       var skipValue = input.page * 10 - 10;
       if (input.filterRoles == null) {
-      console.log(skipValue);
+        const userCount: number = await ctx.prisma.user.count()
       try {
         const users = await ctx.prisma.user.findMany({
           take: takeValue,
           skip: skipValue,
         });
+        users.forEach((user,index) => {
+          Object.assign(users[index], { userCount: userCount})
+        })
         return users;
       } catch (error) {
         throw new TRPCError({
@@ -159,8 +162,12 @@ export const userRouter = router({
         });
       }
     } else {
-      console.log(skipValue);
       try {
+        const userCount = await ctx.prisma.user.count({
+          where: {
+            role: input.filterRoles
+          }
+        })
         const users = await ctx.prisma.user.findMany({
           where: {
             role: input.filterRoles
@@ -168,6 +175,9 @@ export const userRouter = router({
           take: takeValue,
           skip: skipValue,
         });
+        users.forEach((user,index) => {
+          Object.assign(users[index], { userCount: userCount})
+        })
         return users;
       } catch (error) {
         throw new TRPCError({
