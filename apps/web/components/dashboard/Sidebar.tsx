@@ -15,7 +15,7 @@ import { FiMenu, FiGlobe } from 'react-icons/fi';
 import { FaGamepad, FaUserAlt } from 'react-icons/fa';
 import WaldoLogo from '../../public/android-chrome-256x256.png';
 import Image from 'next/image';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 type Tab = {
@@ -65,6 +65,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const router = useRouter()
   return (
     <Box
       bgColor={'white'}

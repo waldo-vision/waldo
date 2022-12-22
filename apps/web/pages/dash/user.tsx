@@ -19,9 +19,10 @@ import {
   Tr,
   Flex,
   Tfoot,
+  useToast,
 } from '@chakra-ui/react';
 import Sidebar from '@components/dashboard/Sidebar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronDownIcon, SearchIcon } from '@chakra-ui/icons';
 import { trpc } from '@utils/trpc';
 import Loading from '@components/Loading';
@@ -33,6 +34,8 @@ import {
   BsChevronLeft,
   BsChevronRight,
 } from 'react-icons/bs';
+import { getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 export default function User() {
   // Searching states
@@ -187,7 +190,7 @@ export default function User() {
                         </Td>
                         <Td>
                           <Text casing={'capitalize'} fontSize={15}>
-                            {result.role.toLowerCase()}
+                            {result.blacklisted ? "Blacklisted" : result.role.toLowerCase()}
                           </Text>
                         </Td>
                         <Td>
@@ -204,7 +207,7 @@ export default function User() {
                           </Text>
                         </Td>
                         <Td borderRightRadius={16}>
-                          <MenuAction />
+                          <MenuAction userId={result.id} isBlacklisted={result.blacklisted}/>
                         </Td>
                       </Tr>
                     );
@@ -218,19 +221,73 @@ export default function User() {
     );
   }
 }
+interface MenuActionProps {
+  userId: string
+  isBlacklisted: boolean | null
+}
+const MenuAction = (props:MenuActionProps) => {
+  const userId = props.userId;
+  const blacklisted = props.isBlacklisted
+  const utils = trpc.useContext()
+  const toast = useToast()
+  const changeRole = trpc.user.updateUser.useMutation({
+    async onSuccess() {
+      await utils.user.invalidate()
+    }
+  })
+  const suspendUser = trpc.user.blackListUser.useMutation({
+    async onSuccess() {
+      await utils.user.invalidate()
+    }
+  })
+  const handleRoleChange = async (roleToChange: string) => {
+    await changeRole.mutateAsync({ role: roleToChange, userId: userId})
+    toast({
+      position: 'bottom-right',
+      title: 'Role Change',
+      description: `Successfully changed the selected user's role to ${roleToChange}`,
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    });
+  }
 
-const MenuAction = () => (
+  const handleSuspendUser = async () => {
+    await suspendUser.mutateAsync({ userId: userId, blacklisted: !blacklisted })
+    if (blacklisted) {
+    toast({
+      position: 'bottom-right',
+      title: 'Un-Suspend User',
+      description: `Successfully un-suspeneded the user.`,
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    });
+  } else {
+    toast({
+      position: 'bottom-right',
+      title: 'Suspend User',
+      description: `Successfully suspeneded the user.`,
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    });
+  }
+  }
+  return (
   <Menu>
     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
       Actions
     </MenuButton>
     <MenuList p={0} borderBottomRadius={12}>
-      <MenuItem height={'35px'} icon={<FiUser size={16} />}>
+      <MenuItem height={'35px'} icon={<FiUser size={16} />} onClick={() => handleRoleChange("USER")}
+>
         Grant User
       </MenuItem>
       <MenuItem
         height={'35px'}
         icon={<CiWarning size={16} style={{ strokeWidth: '1px' }} />}
+        onClick={() => handleRoleChange("MOD")}
       >
         Grant Mod
       </MenuItem>
@@ -238,6 +295,7 @@ const MenuAction = () => (
         color={'red.300'}
         height={'35px'}
         _hover={{ bgColor: 'red.200', color: 'white' }}
+        onClick={() => handleRoleChange("ADMIN")}
         icon={<BsFillExclamationOctagonFill size={16} />}
       >
         Grant Admin
@@ -252,9 +310,10 @@ const MenuAction = () => (
         borderTopRadius={0}
         borderBottomRadius={12}
         _hover={{ bgColor: 'red.400' }}
+        onClick={() => handleSuspendUser()}
       >
-        Suspend User
+        {blacklisted ? "Un-Suspend User" : "Suspend User"}
       </MenuItem>
     </MenuList>
   </Menu>
-);
+)}

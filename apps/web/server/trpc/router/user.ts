@@ -195,18 +195,9 @@ export const userRouter = router({
         userId: z.string().cuid(),
       }),
     )
-    .output(z.array(users))
-    .query(async ({ input, ctx }) => {
-      if (
-        input.role == 'USER' ||
-        input.role == 'MOD' ||
-        input.role == 'ADMIN'
-      ) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Role has to be either USER, MOD, or ADMIN',
-        });
-      }
+    .output(users)
+    .mutation(async ({ input, ctx }) => {
+      
       try {
         const users = await ctx.prisma.user.update({
           where: {
