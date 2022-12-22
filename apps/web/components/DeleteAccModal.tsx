@@ -32,7 +32,7 @@ const DeleteAccModal = (props: Props) => {
     setShowModal(props.show);
     getCurrentSession();
   }, [props.show]);
-  const deleteUser = trpc.user.deleteUser.useMutation({
+  const deleteUser = trpc.user.delete.useMutation({
     async onSuccess() {
       await utils.user.invalidate();
     },
