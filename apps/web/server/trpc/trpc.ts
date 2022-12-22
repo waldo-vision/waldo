@@ -26,53 +26,24 @@ export const publicProcedure = t.procedure;
  * users are logged in
  * rate limit middleware
  */
-const isAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
+const isAuthed = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user)
     throw new TRPCError({ code: 'UNAUTHORIZED' });
-  }
-  return next({
-    ctx: {
-      // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
-    },
-  });
-});
 
-const isBlacklisted = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
-    throw new TRPCError({ code: 'UNAUTHORIZED' });
-  }
-  if (ctx.session.user.blacklisted) {
-    throw new TRPCError({ code: 'FORBIDDEN' });
-  }
+  if (ctx.session.user.blacklisted) throw new TRPCError({ code: 'FORBIDDEN' });
 
-  return next({
-    ctx: {
-      // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
-    },
-  });
-});
+  const rateLimitResult = await ratelimit.limit(ctx.session.user.id);
 
-const rateLimit = t.middleware(async ({ ctx, next }) => {
-  const identity = ctx.session?.user?.id;
-  if (!identity)
-    throw new TRPCError({
-      code: 'NOT_FOUND',
-      message: 'No user with the current session found.',
-    });
-  const result = await ratelimit.limit(identity);
-  if (!result.success) {
+  if (!rateLimitResult.success)
     throw new TRPCError({
       code: 'TOO_MANY_REQUESTS',
       message: 'Too many requests.',
     });
-  }
 
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session?.user },
+      session: { ...ctx.session, user: ctx.session.user },
     },
   });
 });
@@ -80,7 +51,4 @@ const rateLimit = t.middleware(async ({ ctx, next }) => {
 /**
  * Protected procedure
  **/
-export const protectedProcedure = t.procedure
-  .use(isAuthed)
-  .use(isBlacklisted)
-  .use(rateLimit);
+export const protectedProcedure = t.procedure.use(isAuthed);
