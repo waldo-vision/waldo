@@ -37,14 +37,21 @@ import {
 export default function User() {
   // Searching states
   const [searchUser, setSearchUser] = useState<string>();
-  const [searchRole, setSearchRole] = useState<string>('All');
+  const [searchRole, setSearchRole] = useState<string | null>(null);
 
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [rows, setRows] = useState({});
 
-  const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
+  const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1, filterRoles: searchRole });
+  const handleFilter = async (role: string | null) => {
+    if (role == null) {
+      setSearchRole(null)
+      return;
+    }
+    setSearchRole(role.toUpperCase())
+  }
   if (isLoading) {
     return (
       <Box>
@@ -81,10 +88,10 @@ export default function User() {
                 Roles: {searchRole}
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={() => setSearchRole('All')}>All</MenuItem>
-                <MenuItem onClick={() => setSearchRole('User')}>User</MenuItem>
-                <MenuItem onClick={() => setSearchRole('Mod')}>Mod</MenuItem>
-                <MenuItem onClick={() => setSearchRole('Admin')}>
+                <MenuItem onClick={() => handleFilter(null)}>All</MenuItem>
+                <MenuItem onClick={() => handleFilter('User')}>User</MenuItem>
+                <MenuItem onClick={() => handleFilter('Mod')}>Mod</MenuItem>
+                <MenuItem onClick={() => handleFilter('Admin')}>
                   Admin
                 </MenuItem>
               </MenuList>
