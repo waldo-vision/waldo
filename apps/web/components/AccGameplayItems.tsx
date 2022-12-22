@@ -49,71 +49,102 @@ export default function AccGameplayItems() {
     getNecessaryData();
   }, [data, getNecessaryData]);
   return (
-    <Flex>
+    <>
       {componentLoading || isLoading ? (
         <Center>
           <Spinner color={'default'} size={'sm'} mt={2} />
         </Center>
       ) : (
         <>
-          <Box
-            width={'100%'}
-            maxW={900}
-            p={5}
+          <Flex
+            direction={'column'}
+            gap={10}
+            maxW={'100%'}
             minHeight={'100%'}
-            maxHeight={'80vh'}
+            maxHeight={'2xl'}
             overflowY={'scroll'}
           >
             {gameplayItems &&
               gameplayItems?.map((item, index) => (
-                <Center>
-                  <Flex
-                    direction={'row'}
-                    mt={2}
-                    width={'100%'}
-                    boxShadow={'md'}
-                    borderRadius={14}
-                    px={10}
-                    py={5}
-                    key={index}
-                    justify={'space-between'}
-                  >
-                    <Flex>
-                      <Image
-                        src={getThumbnail(item.youtubeUrl)}
-                        alt={'Profile Icon'}
-                        height={{
-                          base: '40px',
-                          sm: '40px',
-                          md: '40px',
-                          lg: '80px',
-                        }}
-                        width={{
-                          base: '60px',
-                          sm: '60px',
-                          md: '60px',
-                          lg: '120px',
-                        }}
-                        borderRadius={14}
-                        onClick={() => {
-                          console.log(gameplayItems);
-                        }}
-                      />
-                      <Box>
-                        <Flex direction={'column'}>
-                          <Box ml={2} mr={2}>
-                            <AccGameplayItemExtended
-                              item={item}
-                              id={getVideoId(item.youtubeUrl)}
-                            />
-                          </Box>
-                        </Flex>
-                      </Box>
-                    </Flex>
+                <Box
+                  key={index}
+                  bgColor={'white'}
+                  boxShadow={'md'}
+                  borderRadius={14}
+                  p={2}
+                >
+                  <Flex direction={'column'} gap={5}>
+                    <Image
+                      src={getThumbnail(item.youtubeUrl)}
+                      alt={'Profile Icon'}
+                      height={'full'}
+                      width={'100%'}
+                      borderRadius={14}
+                      onClick={() => {
+                        console.log(gameplayItems);
+                      }}
+                    />
+                    <Box>
+                      <Flex direction={'column'}>
+                        <Box ml={2} mr={2} p={{ base: 0, lg: 5 }}>
+                          <AccGameplayItemExtended
+                            item={item}
+                            id={getVideoId(item.youtubeUrl)}
+                          />
+                        </Box>
+                      </Flex>
+                    </Box>
                   </Flex>
-                </Center>
+                </Box>
+
+                // <Center>
+                //   <Flex
+                //     direction={'row'}
+                //     mt={2}
+                //     width={'100%'}
+                //     boxShadow={'md'}
+                //     borderRadius={14}
+                //     px={10}
+                //     py={5}
+                //     key={index}
+                //     justify={'space-between'}
+                //   >
+                //     <Flex>
+                //       <Image
+                //         src={getThumbnail(item.youtubeUrl)}
+                //         alt={'Profile Icon'}
+                //         height={{
+                //           base: '40px',
+                //           sm: '40px',
+                //           md: '40px',
+                //           lg: '80px',
+                //         }}
+                //         width={{
+                //           base: '60px',
+                //           sm: '60px',
+                //           md: '60px',
+                //           lg: '120px',
+                //         }}
+                //         borderRadius={14}
+                //         onClick={() => {
+                //           console.log(gameplayItems);
+                //         }}
+                //       />
+                //       <Box>
+                //         <Flex direction={'column'}>
+                //           <Box ml={2} mr={2}>
+                //             <AccGameplayItemExtended
+                //               item={item}
+                //               id={getVideoId(item.youtubeUrl)}
+                //             />
+                //           </Box>
+                //         </Flex>
+                //       </Box>
+                //     </Flex>
+                //   </Flex>
+                // </Center>
               ))}
-          </Box>
+          </Flex>
           {gameplayItems && gameplayItems.length < 1 && (
             <Box>
               <Tag size={'md'} variant={'solid'} colorScheme={'purple'} mt={2}>
@@ -123,6 +154,6 @@ export default function AccGameplayItems() {
           )}
         </>
       )}
-    </Flex>
+    </>
   );
 }
