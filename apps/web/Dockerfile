@@ -8,7 +8,7 @@ WORKDIR /app
 # copy over entire project
 COPY . .
 # remove everything not needed for web
-RUN pnpm --package=turbo dlx turbo prune --scope=web --docker
+RUN yarn dlx -p turbo turbo prune --scope=web --docker
 # See https://github.com/vercel/turborepo/issues/1997#issuecomment-1271372326
 RUN rm -rf /app/out/full/*/*/node_modules
 
@@ -20,16 +20,20 @@ RUN corepack enable
 # set workdir
 WORKDIR /app
 
+ENV NODE_ENV production
+
 # First install the dependencies (as they change less often)
 COPY .gitignore .gitignore
+COPY .yarn .yarn
+COPY .yarnrc.yml .yarnrc.yml
 COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install
+COPY --from=builder /app/out/yarn.lock ./yarn.lock
+RUN yarn install --immutable
 
 # Build the project
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
-RUN pnpm turbo run build --filter=web...
+RUN yarn turbo run build --filter=web...
 
 FROM node:18-alpine AS runner
 
