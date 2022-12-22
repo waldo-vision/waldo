@@ -3,7 +3,7 @@ import ytdl from 'ytdl-core';
 import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
-import { users } from '../../../utils/zod/dash';
+import { UserSchema } from '../../../utils/zod/dash';
 enum Roles {
   USER,
   MOD,
@@ -126,6 +126,7 @@ export const userRouter = router({
       } catch (error) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
+          // eslint-disable-next-line max-len
           message: `An error occured while attempting to delete the account with id: ${input.accountId}.`,
           // not sure if its safe to give this to the user
           cause: error,
@@ -139,10 +140,10 @@ export const userRouter = router({
         page: z.number(),
       }),
     )
-    .output(z.array(users))
+    .output(z.array(UserSchema))
     .query(async ({ input, ctx }) => {
       const takeValue = 10;
-      var skipValue = input.page * 10 - 10;
+      const skipValue = input.page * 10 - 10;
       console.log(skipValue);
       try {
         const users = await ctx.prisma.user.findMany({
@@ -165,7 +166,7 @@ export const userRouter = router({
         userId: z.string().cuid(),
       }),
     )
-    .output(z.array(users))
+    .output(UserSchema)
     .query(async ({ input, ctx }) => {
       if (
         input.role == 'USER' ||
@@ -186,7 +187,6 @@ export const userRouter = router({
             role: input.role,
           },
         });
-        console.log(users);
         return users;
       } catch (error) {
         throw new TRPCError({
