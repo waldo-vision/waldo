@@ -1,3 +1,4 @@
+import { hasPerms, Roles, Perms } from '@server/utils/hasPerms';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
@@ -36,6 +37,18 @@ export const siteRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.roleMod,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       const updatePage = await ctx.prisma.waldoPage.update({
         where: {
           name: input.pageName,
