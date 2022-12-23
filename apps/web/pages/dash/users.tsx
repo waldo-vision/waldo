@@ -76,7 +76,6 @@ export default function User() {
     }
     setLoading(false);
   };
-  console.log(data);
   if (isLoading) {
     return (
       <Box>
@@ -84,6 +83,13 @@ export default function User() {
       </Box>
     );
   } else {
+    const handleC = () => {
+      if (pageNumber == Math.ceil(data[0].userCount / Math.round(10))) {
+        return;
+      } else {
+        setPageNumber(pageNumber + 1);
+      }
+    };
     return (
       <Sidebar>
         <Center width={'100%'} flexDirection={'column'} gap={5}>
@@ -274,7 +280,13 @@ export default function User() {
                           h={6}
                           w={6}
                           _hover={{ color: 'gray.400' }}
-                          onClick={() => handlePageChange(true)}
+                          color={
+                            pageNumber ==
+                            Math.ceil(data[0].userCount / Math.round(10))
+                              ? 'gray.300'
+                              : ''
+                          }
+                          onClick={() => handleC()}
                         />
                       </Flex>
                     </Td>
