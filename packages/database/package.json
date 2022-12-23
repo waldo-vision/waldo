@@ -4,13 +4,19 @@
   "version": "0.0.0",
   "main": "./index.ts",
   "types": "./index.ts",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
-    "@prisma/client": "^4.7.1"
+    "@prisma/client": "^4.8.0"
   },
   "devDependencies": {
-    "prisma": "4.7.1"
+    "prisma": "^4.8.0",
+    "ts-node": "^10.9.1"
   },
   "scripts": {
+    "db:init": "yarn db:push:fdl && yarn db:seed",
+    "db:seed": "ts-node prisma/seed.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
     "db:push:fdl": "prisma db push --force-reset"

@@ -52,13 +52,15 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, user }: SessionCallback) {
+    async session(sessionCallback: SessionCallback) {
+      const session = sessionCallback.session;
+      const user = sessionCallback.user;
       if (session.user) {
         session.user.id = user.id;
         if (user) {
-          const userAccount = await prisma.account.findUniqueOrThrow({
+          const userAccount = await prisma.account.findFirst({
             where: {
-              id: user.id,
+              userId: user.id,
             },
             include: {
               user: true,

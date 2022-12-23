@@ -2792,7 +2792,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:^4.7.1":
+"@prisma/client@npm:^4.8.0":
   version: 4.8.0
   resolution: "@prisma/client@npm:4.8.0"
   dependencies:
@@ -2813,10 +2813,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/engines@npm:4.7.1":
-  version: 4.7.1
-  resolution: "@prisma/engines@npm:4.7.1"
-  checksum: 1660f1d5a6188a9cb9aa5186111910f37b1bc02f09be10336a41e0ec61a18a4193e0ff424077dafb1bf1392a435fc89cec47526a58784a7bdc6c8278adf147a4
+"@prisma/engines@npm:4.8.0":
+  version: 4.8.0
+  resolution: "@prisma/engines@npm:4.8.0"
+  checksum: 5c1198905d7bf850c02cd59f244055003fc2a03ce99e715a0a872f568fb024aa4b347804829c8630964ff41b64cf8fa3e08c8cd2a444ad29c215c4b1dd9701b0
   languageName: node
   linkType: hard
 
@@ -4410,8 +4410,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "database@workspace:packages/database"
   dependencies:
-    "@prisma/client": ^4.7.1
-    prisma: 4.7.1
+    "@prisma/client": ^4.8.0
+    prisma: ^4.8.0
+    ts-node: ^10.9.1
   languageName: unknown
   linkType: soft
 
@@ -7724,15 +7725,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prisma@npm:4.7.1":
-  version: 4.7.1
-  resolution: "prisma@npm:4.7.1"
+"prisma@npm:^4.8.0":
+  version: 4.8.0
+  resolution: "prisma@npm:4.8.0"
   dependencies:
-    "@prisma/engines": 4.7.1
+    "@prisma/engines": 4.8.0
   bin:
     prisma: build/index.js
     prisma2: build/index.js
-  checksum: eb7046a5928f33e484bb2a100f49b613a37bdd83d72aa7e87a4edb38a235b7c44bb9c89bc9116af60950554da06d6ef7c581dd0c637ba2798810485d04da29d4
+  checksum: 22ebaa32c51fb2938626d742d9ae68be5ad49a44dad2046bfe40439a64d06e8f84d4915f66100554d7840c3c5228c6b5c4216d9f5a698d5dd11a46ab528654cf
   languageName: node
   linkType: hard
 
@@ -8880,7 +8881,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.4.0":
+"ts-node@npm:^10.4.0, ts-node@npm:^10.9.1":
   version: 10.9.1
   resolution: "ts-node@npm:10.9.1"
   dependencies:
