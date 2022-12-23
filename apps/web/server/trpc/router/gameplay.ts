@@ -4,6 +4,7 @@ import {
   GameplayPlusUserSchema,
   GameplaySchema,
   GameplayTypes,
+  GameplaysDashSchema,
 } from '@utils/zod/gameplay';
 import { input, z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
@@ -44,6 +45,62 @@ export const gameplayRouter = router({
 
       return gameplay;
     }),
+  getMany: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/gameplay/dash' } })
+    .input(
+      z.object({
+        page: z.number(),
+        filterGames: GameplayTypes,
+      }),
+    )
+    .output(z.array(GameplaysDashSchema))
+    .query(async ({ input, ctx }) => {
+      const takeValue = 10;
+      const skipValue = input.page * 10 - 10;
+      if (input.filterGames == null) {
+        const gameplayCount: number = await ctx.prisma.footage.count();
+        try {
+          const gameplays = await ctx.prisma.footage.findMany({
+            take: takeValue,
+            skip: skipValue,
+          });
+          gameplays.forEach((gameplay, index) => {
+            Object.assign(gameplays[index], { gameplayCount: gameplayCount });
+          });
+          return gameplays;
+        } catch (error) {
+          throw new TRPCError({
+            message: 'No footage with the inputs provided could be found.',
+            code: 'NOT_FOUND',
+          });
+        }
+      } else {
+        try {
+          const gameplayCount = await ctx.prisma.footage.count({
+            where: {
+              footageType: input.filterGames,
+            },
+          });
+          const gameplays = await ctx.prisma.footage.findMany({
+            where: {
+              footageType: input.filterGames,
+            },
+            take: takeValue,
+            skip: skipValue,
+          });
+          gameplays.forEach((gameplay, index) => {
+            Object.assign(gameplays[index], { gameplayCount: gameplayCount });
+          });
+          return gameplays;
+        } catch (error) {
+          throw new TRPCError({
+            message: 'No footage with the inputs provided could be found.',
+            code: 'NOT_FOUND',
+          });
+        }
+      }
+    }),
+
   create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/gameplay' } })
     .input(

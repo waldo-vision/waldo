@@ -166,7 +166,7 @@ export const userRouter = router({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           // eslint-disable-next-line max-len
-          message: `An error occured while attempting to delete the account with id: ${input.accountId}.`,
+          message: `An error occurred while attempting to delete the account with id: ${input.accountId}.`,
           // not sure if its safe to give this to the user
           cause: error,
         });
@@ -177,7 +177,7 @@ export const userRouter = router({
     .input(
       z.object({
         page: z.number(),
-        filterRoles: z.string().nullable().optional()
+        filterRoles: z.string().nullable().optional(),
       }),
     )
     .output(z.array(UserSchema))
@@ -197,47 +197,47 @@ export const userRouter = router({
       const takeValue = 10;
       const skipValue = input.page * 10 - 10;
       if (input.filterRoles == null) {
-        const userCount: number = await ctx.prisma.user.count()
-      try {
-        const users = await ctx.prisma.user.findMany({
-          take: takeValue,
-          skip: skipValue,
-        });
-        users.forEach((user,index) => {
-          Object.assign(users[index], { userCount: userCount})
-        })
-        return users;
-      } catch (error) {
-        throw new TRPCError({
-          message: 'No clip document with the UUID provided could be found.',
-          code: 'NOT_FOUND',
-        });
+        const userCount: number = await ctx.prisma.user.count();
+        try {
+          const users = await ctx.prisma.user.findMany({
+            take: takeValue,
+            skip: skipValue,
+          });
+          users.forEach((user, index) => {
+            Object.assign(users[index], { userCount: userCount });
+          });
+          return users;
+        } catch (error) {
+          throw new TRPCError({
+            message: 'No clip document with the UUID provided could be found.',
+            code: 'NOT_FOUND',
+          });
+        }
+      } else {
+        try {
+          const userCount = await ctx.prisma.user.count({
+            where: {
+              role: input.filterRoles,
+            },
+          });
+          const users = await ctx.prisma.user.findMany({
+            where: {
+              role: input.filterRoles,
+            },
+            take: takeValue,
+            skip: skipValue,
+          });
+          users.forEach((user, index) => {
+            Object.assign(users[index], { userCount: userCount });
+          });
+          return users;
+        } catch (error) {
+          throw new TRPCError({
+            message: 'No clip document with the UUID provided could be found.',
+            code: 'NOT_FOUND',
+          });
+        }
       }
-    } else {
-      try {
-        const userCount = await ctx.prisma.user.count({
-          where: {
-            role: input.filterRoles
-          }
-        })
-        const users = await ctx.prisma.user.findMany({
-          where: {
-            role: input.filterRoles
-          },
-          take: takeValue,
-          skip: skipValue,
-        });
-        users.forEach((user,index) => {
-          Object.assign(users[index], { userCount: userCount})
-        })
-        return users;
-      } catch (error) {
-        throw new TRPCError({
-          message: 'No clip document with the UUID provided could be found.',
-          code: 'NOT_FOUND',
-        });
-      }
-    }
     }),
   updateRole: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/user/dash' } })
@@ -260,17 +260,6 @@ export const userRouter = router({
         throw new TRPCError({
           code: 'UNAUTHORIZED',
         });
-
-      if (
-        input.role == 'USER' ||
-        input.role == 'MOD' ||
-        input.role == 'ADMIN'
-      ) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Role has to be either USER, MOD, or ADMIN',
-        });
-      }
       try {
         const users = await ctx.prisma.user.update({
           where: {

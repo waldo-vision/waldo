@@ -47,86 +47,109 @@ export default function Review() {
       });
     }
   };
+
+  const handleReset = () => {
+    updatePage.mutateAsync({
+      pageName: 'upload',
+      isDisabled: uploadPageQData?.disabled,
+      isCustomReason: uploadPageQData?.isCustomReason as boolean,
+      customReason: nullCode,
+    });
+  };
   return (
     <Flex direction={'column'} gap={5} mb={5}>
-      <Flex direction={'column'}>
-        <Text>Configure Service</Text>
-        <Text fontSize={'medium'} fontWeight={'medium'}>
-          By disabling this service you are preventing users from uploading new
-          gameplay or footage to the database. This includes all users
-          regardless of privileges.
-        </Text>
-      </Flex>
-      <Flex
-        direction={'row'}
-        alignItems={'center'}
-        gap={2}
-        justify={'space-between'}
-      >
-        <Text fontWeight={'normal'} fontSize={'lg'}>
-          Enable service
-        </Text>
-        <Switch
-          size={'md'}
-          defaultChecked={!uploadPageQData?.disabled}
-          onChange={() => handleApply(0)}
-        />
-      </Flex>
-      <Flex
-        direction={'row'}
-        alignItems={'center'}
-        gap={2}
-        justify={'space-between'}
-      >
-        <Text
-          fontWeight={'normal'}
-          fontSize={'lg'}
-          opacity={!uploadPageQData?.disabled ? '0.4' : '1'}
-          _hover={!uploadPageQData?.disabled ? { cursor: 'not-allowed' } : {}}
-        >
-          Use custom message
-        </Text>
-        <Switch
-          size={'md'}
-          onChange={() => {
-            handleApply(1);
-          }}
-          defaultChecked={uploadPageQData?.isCustomReason}
-          disabled={!uploadPageQData?.disabled}
-        />
-      </Flex>
-      <Collapse in={uploadPageQData?.isCustomReason} animateOpacity>
-        <InputGroup size="md">
-          <Input
-            pr="4.5rem"
-            borderRadius={10}
-            _focus={{ boxShadow: 'none' }}
-            type={'text'}
-            placeholder={'Uploading footage is under maintenance...'}
-            onChange={event => setCustomReason(event.target.value)}
-            disabled={!uploadPageQData?.disabled}
-          />
-          <InputRightElement width="4.5rem">
-            {customReason ? (
-              <Button
-                h="1.75rem"
-                size="sm"
+      {uploadPageQLoading ? (
+        <Text>Dfsdfsdf</Text>
+      ) : (
+        <>
+          <Flex direction={'column'}>
+            <Text>Configure Service</Text>
+            <Text fontSize={'medium'} fontWeight={'medium'}>
+              By disabling this service you are preventing users from uploading
+              new gameplay or footage to the database. This includes all users
+              regardless of privileges.
+            </Text>
+          </Flex>
+          <Flex
+            direction={'row'}
+            alignItems={'center'}
+            gap={2}
+            justify={'space-between'}
+          >
+            <Text fontWeight={'normal'} fontSize={'lg'}>
+              Enable service
+            </Text>
+            <Switch
+              size={'md'}
+              defaultChecked={!uploadPageQData?.disabled}
+              onChange={() => handleApply(0)}
+            />
+          </Flex>
+          <Flex
+            direction={'row'}
+            alignItems={'center'}
+            gap={2}
+            justify={'space-between'}
+          >
+            <Text
+              fontWeight={'normal'}
+              fontSize={'lg'}
+              opacity={!uploadPageQData?.disabled ? '0.4' : '1'}
+              _hover={
+                !uploadPageQData?.disabled ? { cursor: 'not-allowed' } : {}
+              }
+            >
+              Use custom message
+            </Text>
+            <Switch
+              size={'md'}
+              onChange={() => {
+                handleApply(1);
+              }}
+              defaultChecked={uploadPageQData?.isCustomReason}
+              disabled={!uploadPageQData?.disabled}
+            />
+          </Flex>
+          <Collapse in={uploadPageQData?.isCustomReason} animateOpacity>
+            <InputGroup size="md">
+              <Input
+                pr="4.5rem"
+                borderRadius={10}
+                _focus={{ boxShadow: 'none' }}
+                type={'text'}
+                placeholder={
+                  uploadPageQData?.customReason == nullCode
+                    ? 'Uploading footage is under maintenance...'
+                    : uploadPageQData?.customReason
+                }
+                onChange={event => setCustomReason(event.target.value)}
                 disabled={!uploadPageQData?.disabled}
-              >
-                Apply
-              </Button>
-            ) : (
-              <Button
-                h="1.75rem"
-                size="sm"
-                disabled={!uploadPageQData?.disabled}
-              >
-                Reset
-              </Button>
-            )}
-          </InputRightElement>
-        </InputGroup>
-      </Collapse>
+              />
+              <InputRightElement width="4.5rem">
+                {uploadPageQData?.customReason == nullCode ? (
+                  <Button
+                    h="1.75rem"
+                    size="sm"
+                    disabled={!uploadPageQData?.disabled}
+                    onClick={() => handleApply(2)}
+                  >
+                    Apply
+                  </Button>
+                ) : (
+                  <Button
+                    h="1.75rem"
+                    size="sm"
+                    disabled={!uploadPageQData?.disabled}
+                    onClick={() => handleReset()}
+                  >
+                    Reset
+                  </Button>
+                )}
+              </InputRightElement>
+            </InputGroup>
+          </Collapse>
+        </>
+      )}
     </Flex>
   );
 }
