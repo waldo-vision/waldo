@@ -1,57 +1,55 @@
 export const SITE = {
-	title: 'Documentation',
-	description: 'Your website description.',
-	defaultLanguage: 'en_US',
+  title: 'Waldo Documentation',
+  description: 'Documentation for the Waldo project.',
+  defaultLanguage: 'en_US',
 };
 
 export const OPEN_GRAPH = {
-	image: {
-		src: 'https://github.com/withastro/astro/blob/main/assets/social/banner-minimal.png?raw=true',
-		alt:
-			'astro logo on a starry expanse of space,' +
-			' with a purple saturn-like planet floating in the right foreground',
-	},
-	twitter: 'astrodotbuild',
+  image: {
+    src: 'https://raw.githubusercontent.com/waldo-vision/waldo/master/apps/web/public/android-chrome-256x256.png',
+    alt: 'the waldo logo on a plain background',
+  },
+  twitter: 'waldovision',
 };
 
 // This is the type of the frontmatter you put in the docs markdown files.
 export type Frontmatter = {
-	title: string;
-	description: string;
-	layout: string;
-	image?: { src: string; alt: string };
-	dir?: 'ltr' | 'rtl';
-	ogLocale?: string;
-	lang?: string;
+  title: string;
+  description: string;
+  layout: string;
+  image?: { src: string; alt: string };
+  dir?: 'ltr' | 'rtl';
+  ogLocale?: string;
+  lang?: string;
 };
 
 export const KNOWN_LANGUAGES = {
-	English: 'en',
+  English: 'en',
 } as const;
 export const KNOWN_LANGUAGE_CODES = Object.values(KNOWN_LANGUAGES);
 
-export const GITHUB_EDIT_URL = `https://github.com/withastro/astro/tree/main/examples/docs`;
+export const GITHUB_EDIT_URL = `https://github.com/waldo-vision/waldo/tree/main/apps/docs`;
 
-export const COMMUNITY_INVITE_URL = `https://astro.build/chat`;
+export const COMMUNITY_INVITE_URL = `https://waldo.vision/chat`;
 
 // See "Algolia" section of the README for more information.
 export const ALGOLIA = {
-	indexName: 'XXXXXXXXXX',
-	appId: 'XXXXXXXXXX',
-	apiKey: 'XXXXXXXXXX',
+  indexName: 'XXXXXXXXXX',
+  appId: 'XXXXXXXXXX',
+  apiKey: 'XXXXXXXXXX',
 };
 
 export type Sidebar = Record<
-	typeof KNOWN_LANGUAGE_CODES[number],
-	Record<string, { text: string; link: string }[]>
+  typeof KNOWN_LANGUAGE_CODES[number],
+  Record<string, { text: string; link: string }[]>
 >;
 export const SIDEBAR: Sidebar = {
-	en: {
-		'Section Header': [
-			{ text: 'Introduction', link: 'en/introduction' },
-			{ text: 'Page 2', link: 'en/page-2' },
-			{ text: 'Page 3', link: 'en/page-3' },
-		],
-		'Another Section': [{ text: 'Page 4', link: 'en/page-4' }],
-	},
+  en: {
+    'Section Header': [
+      { text: 'Introduction', link: 'en/introduction' },
+      { text: 'Page 2', link: 'en/page-2' },
+      { text: 'Page 3', link: 'en/page-3' },
+    ],
+    'Another Section': [{ text: 'Page 4', link: 'en/page-4' }],
+  },
 };
