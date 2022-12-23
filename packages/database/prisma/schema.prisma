@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model WaldoPage {
+  name String @id
+  waldosite WaldoSite @relation(fields: [siteName], references: [siteName], onDelete: Cascade)
+  siteName String
+  disabled Boolean @default(false)
+  customReason String
+  isCustomReason Boolean @default(false)
+}
+
+model WaldoSite {
+  siteName String @id @default("waldo")
+  pages WaldoPage[]
+  maintenance Boolean @default(false)
+  showLpAlert Boolean @default(false)
+  lpAlertTitle String
+  lpAlertDescription String
+}
+
+model Footage {
+  id           String         @id @default(cuid())
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  footageVotes FootageVotes[] @relation("footage")
+  youtubeUrl   String         @unique
+  footageType  FootageType    @default(CSG)
+  upVotes      Int            @default(0)
+  downVotes    Int            @default(0)
+  isAnalyzed   Boolean        @default(false)
+  clips        Clip[]
+}
+
+model FootageVotes {
+  id         String      @id @default(cuid())
+  footage    Footage     @relation("footage", fields: [footageId], references: [id], onDelete: Cascade)
+  footageId  String
+  user       User        @relation("user", fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  isGame     Boolean     @default(false)
+  actualGame FootageType
+}
+
+model Clip {
+  id        String  @id @default(cuid())
+  footage   Footage @relation(fields: [footageId], references: [id])
+  footageId String
+}
+
+enum FootageType {
+  VAL
+  CSG
+  TF2
+  APE
+  COD
+}
+
+// NEXT-AUTH
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Roles {
+  USER
+  MOD
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  // our items
+  blacklisted  Boolean? @default(false)
+  footage      Footage[]
+  role         Roles @default(USER)
+  footageVotes FootageVotes[] @relation("user")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
+}
