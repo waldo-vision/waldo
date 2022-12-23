@@ -92,9 +92,27 @@ To start the services locally, simply run `docker compose up -d`.
 
 ## Before you commit
 
-We ask that you:
+When contributing to this repository, please first discuss the change you wish to make via issue,
+email, Discord, or any other method with the owners of this repository before making a change.
 
-- Test all changes
-- Don't commit any secrets
-- Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for your commit messages
-- Follow our [Code of Conduct](https://github.com/waldo-vision/waldo/blob/master/CODE_OF_CONDUCT.md)
+We also ask that you test all your changes, never commit a secret, and follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for your commit messages.
+
+Please note we have a [code of conduct](code-of-conduct), please follow it in all your interactions with the project.
+
+## Pull Request Process
+
+1. Included your pull request with details of changes to the interface, this includes new environment
+   variables, exposed ports, useful file locations and container parameters.
+2. You may not merge the any pull requests unless a code review has been completed by the owners of
+   this repository.
+3. Double check that IDE specific settings don't make it into the Git
+
+### Picking work
+
+> Please follow the GitHub Projects, Milestones, and Issues
+
+- The Projects detail current side projects or larger systems
+- The Milestones detail current priority goals
+- The Issues detail individual features, bugs, tweaks to work on
+- Please assign yourself to work you plan to do, or leave a comment
+  _Please keep in touch with everyone, so we know who’s working on what_
