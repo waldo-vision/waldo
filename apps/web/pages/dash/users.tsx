@@ -18,28 +18,64 @@ import {
   Thead,
   Tr,
   Flex,
+  Tfoot,
+  useToast,
 } from '@chakra-ui/react';
 import Sidebar from '@components/dashboard/Sidebar';
-import { useState } from 'react';
-import { ChevronDownIcon, SearchIcon } from '@chakra-ui/icons';
+import { useEffect, useState } from 'react';
+import {
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  SearchIcon,
+} from '@chakra-ui/icons';
 import { trpc } from '@utils/trpc';
 import Loading from '@components/Loading';
 import { FiUser } from 'react-icons/fi';
 import { CiWarning } from 'react-icons/ci';
 import { BiBlock } from 'react-icons/bi';
-import { BsFillExclamationOctagonFill } from 'react-icons/bs';
+import {
+  BsFillExclamationOctagonFill,
+  BsChevronLeft,
+  BsChevronRight,
+} from 'react-icons/bs';
+import { getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 export default function User() {
   // Searching states
   const [searchUser, setSearchUser] = useState<string>();
-  const [searchRole, setSearchRole] = useState<string>('All');
-
+  const [searchRole, setSearchRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [rows, setRows] = useState({});
 
-  const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
+  const { data, isLoading, refetch } = trpc.user.getUsers.useQuery({
+    page: pageNumber,
+    filterRoles: searchRole,
+  });
+  const handleFilter = async (role: string | null) => {
+    if (role == null) {
+      setSearchRole(null);
+      return;
+    }
+    setSearchRole(role.toUpperCase());
+  };
+  const handlePageChange = async (add: boolean) => {
+    setLoading(true);
+    if (add) {
+      setPageNumber(pageNumber + 1);
+      await refetch();
+      setLoading(false);
+    } else {
+      setPageNumber(1);
+      await refetch();
+    }
+    setLoading(false);
+  };
+
   if (isLoading) {
     return (
       <Box>
@@ -76,12 +112,10 @@ export default function User() {
                 Roles: {searchRole}
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={() => setSearchRole('All')}>All</MenuItem>
-                <MenuItem onClick={() => setSearchRole('User')}>User</MenuItem>
-                <MenuItem onClick={() => setSearchRole('Mod')}>Mod</MenuItem>
-                <MenuItem onClick={() => setSearchRole('Admin')}>
-                  Admin
-                </MenuItem>
+                <MenuItem onClick={() => handleFilter(null)}>All</MenuItem>
+                <MenuItem onClick={() => handleFilter('User')}>User</MenuItem>
+                <MenuItem onClick={() => handleFilter('Mod')}>Mod</MenuItem>
+                <MenuItem onClick={() => handleFilter('Admin')}>Admin</MenuItem>
               </MenuList>
             </Menu>
             <Box overflowX="auto">
@@ -175,7 +209,9 @@ export default function User() {
                         </Td>
                         <Td>
                           <Text casing={'capitalize'} fontSize={15}>
-                            {result.role.toLowerCase()}
+                            {result.blacklisted
+                              ? 'Blacklisted'
+                              : result.role.toLowerCase()}
                           </Text>
                         </Td>
                         <Td>
@@ -192,12 +228,53 @@ export default function User() {
                           </Text>
                         </Td>
                         <Td borderRightRadius={16}>
-                          <MenuAction />
+                          <MenuAction
+                            userId={result.id}
+                            isBlacklisted={result.blacklisted}
+                          />
                         </Td>
                       </Tr>
                     );
                   })}
                 </Tbody>
+                {!loading && (
+                  <Tfoot>
+                    <Td />
+                    <Td />
+                    <Td />
+                    <Td />
+                    <Td />
+                    <Td
+                      onClick={() => setPageNumber(pageNumber + 1)}
+                      bgColor={'white'}
+                      borderRadius={14}
+                    >
+                      <Flex direction={'row'}>
+                        <Text fontWeight={'semibold'}>Page</Text>{' '}
+                        <Text ml={2}>
+                          {pageNumber} of{' '}
+                          {Math.ceil(data[0].userCount / Math.round(10))}
+                        </Text>
+                      </Flex>
+                      <Box mt={1}>
+                        <ChevronLeftIcon
+                          cursor={'pointer'}
+                          h={6}
+                          w={6}
+                          _hover={{ color: 'gray.400' }}
+                          onClick={() => handlePageChange(false)}
+                        />
+                        <ChevronRightIcon
+                          cursor={'pointer'}
+                          h={6}
+                          w={6}
+                          _hover={{ color: 'gray.400' }}
+                          onClick={() => handlePageChange(true)}
+                        />
+                      </Box>
+                    </Td>
+                  </Tfoot>
+                )}
               </Table>
             </Box>
           </Box>
@@ -206,43 +283,106 @@ export default function User() {
     );
   }
 }
+interface MenuActionProps {
+  userId: string;
+  isBlacklisted: boolean | null;
+}
+const MenuAction = (props: MenuActionProps) => {
+  const userId = props.userId;
+  const blacklisted = props.isBlacklisted;
+  const utils = trpc.useContext();
+  const toast = useToast();
+  const changeRole = trpc.user.updateUser.useMutation({
+    async onSuccess() {
+      await utils.user.invalidate();
+    },
+  });
+  const suspendUser = trpc.user.blackListUser.useMutation({
+    async onSuccess() {
+      await utils.user.invalidate();
+    },
+  });
+  const handleRoleChange = async (roleToChange: string) => {
+    await changeRole.mutateAsync({ role: roleToChange, userId: userId });
+    toast({
+      position: 'bottom-right',
+      title: 'Role Change',
+      description: `Successfully changed the selected user's role to ${roleToChange}`,
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    });
+  };
 
-const MenuAction = () => (
-  <Menu>
-    <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-      Actions
-    </MenuButton>
-    <MenuList p={0} borderBottomRadius={12}>
-      <MenuItem height={'35px'} icon={<FiUser size={16} />}>
-        Grant User
-      </MenuItem>
-      <MenuItem
-        height={'35px'}
-        icon={<CiWarning size={16} style={{ strokeWidth: '1px' }} />}
-      >
-        Grant Mod
-      </MenuItem>
-      <MenuItem
-        color={'red.300'}
-        height={'35px'}
-        _hover={{ bgColor: 'red.200', color: 'white' }}
-        icon={<BsFillExclamationOctagonFill size={16} />}
-      >
-        Grant Admin
-      </MenuItem>
-      <MenuItem
-        icon={
-          <BiBlock color={'white'} size={16} style={{ strokeWidth: '1px' }} />
-        }
-        bgColor={'red.300'}
-        color={'white'}
-        height={'45px'}
-        borderTopRadius={0}
-        borderBottomRadius={12}
-        _hover={{ bgColor: 'red.400' }}
-      >
-        Suspend User
-      </MenuItem>
-    </MenuList>
-  </Menu>
-);
+  const handleSuspendUser = async () => {
+    await suspendUser.mutateAsync({
+      userId: userId,
+      blacklisted: !blacklisted,
+    });
+    if (blacklisted) {
+      toast({
+        position: 'bottom-right',
+        title: 'Un-Suspend User',
+        description: `Successfully un-suspeneded the user.`,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        position: 'bottom-right',
+        title: 'Suspend User',
+        description: `Successfully suspeneded the user.`,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+  return (
+    <Menu>
+      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+        Actions
+      </MenuButton>
+      <MenuList p={0} borderBottomRadius={12}>
+        <MenuItem
+          height={'35px'}
+          icon={<FiUser size={16} />}
+          onClick={() => handleRoleChange('USER')}
+        >
+          Grant User
+        </MenuItem>
+        <MenuItem
+          height={'35px'}
+          icon={<CiWarning size={16} style={{ strokeWidth: '1px' }} />}
+          onClick={() => handleRoleChange('MOD')}
+        >
+          Grant Mod
+        </MenuItem>
+        <MenuItem
+          color={'red.300'}
+          height={'35px'}
+          _hover={{ bgColor: 'red.200', color: 'white' }}
+          onClick={() => handleRoleChange('ADMIN')}
+          icon={<BsFillExclamationOctagonFill size={16} />}
+        >
+          Grant Admin
+        </MenuItem>
+        <MenuItem
+          icon={
+            <BiBlock color={'white'} size={16} style={{ strokeWidth: '1px' }} />
+          }
+          bgColor={'red.300'}
+          color={'white'}
+          height={'45px'}
+          borderTopRadius={0}
+          borderBottomRadius={12}
+          _hover={{ bgColor: 'red.400' }}
+          onClick={() => handleSuspendUser()}
+        >
+          {blacklisted ? 'Un-Suspend User' : 'Suspend User'}
+        </MenuItem>
+      </MenuList>
+    </Menu>
+  );
+};
