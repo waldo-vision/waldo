@@ -2913,27 +2913,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@example/docs@workspace:apps/docs":
-  version: 0.0.0-use.local
-  resolution: "@example/docs@workspace:apps/docs"
-  dependencies:
-    "@algolia/client-search": ^4.13.1
-    "@astrojs/preact": ^1.2.0
-    "@astrojs/react": ^1.2.2
-    "@docsearch/css": ^3.1.0
-    "@docsearch/react": ^3.1.0
-    "@types/html-escaper": ^3.0.0
-    "@types/node": ^18.0.0
-    "@types/react": ^17.0.45
-    "@types/react-dom": ^18.0.0
-    astro: ^1.6.10
-    html-escaper: ^3.0.3
-    preact: ^10.7.3
-    react: ^18.1.0
-    react-dom: ^18.1.0
-  languageName: unknown
-  linkType: soft
-
 "@express-zod-api/zod-to-ts@npm:1.1.6":
   version: 1.1.6
   resolution: "@express-zod-api/zod-to-ts@npm:1.1.6"
@@ -5858,6 +5837,27 @@ __metadata:
   checksum: d7381bca22ed11933a1ccf376db7a94bee2c57aa61e490f680124fa2d1cd27e94eba641d9f45be57caab4f9a6579de0983466f620a2cd6230d7ec93312105ae7
   languageName: node
   linkType: hard
+
+"docs@workspace:apps/docs":
+  version: 0.0.0-use.local
+  resolution: "docs@workspace:apps/docs"
+  dependencies:
+    "@algolia/client-search": ^4.13.1
+    "@astrojs/preact": ^1.2.0
+    "@astrojs/react": ^1.2.2
+    "@docsearch/css": ^3.1.0
+    "@docsearch/react": ^3.1.0
+    "@types/html-escaper": ^3.0.0
+    "@types/node": ^18.0.0
+    "@types/react": ^17.0.45
+    "@types/react-dom": ^18.0.0
+    astro: ^1.6.10
+    html-escaper: ^3.0.3
+    preact: ^10.7.3
+    react: ^18.1.0
+    react-dom: ^18.1.0
+  languageName: unknown
+  linkType: soft
 
 "doctrine@npm:^2.1.0":
   version: 2.1.0
