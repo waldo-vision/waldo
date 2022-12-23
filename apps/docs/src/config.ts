@@ -1,6 +1,6 @@
 export const SITE = {
-  title: 'Waldo Documentation',
-  description: 'Documentation for the Waldo project.',
+  title: 'Waldo Docs',
+  description: 'Docs for the Waldo project.',
   defaultLanguage: 'en_US',
 };
 
@@ -45,11 +45,9 @@ export type Sidebar = Record<
 >;
 export const SIDEBAR: Sidebar = {
   en: {
-    'Section Header': [
+    'Start Here': [
       { text: 'Introduction', link: 'en/introduction' },
-      { text: 'Page 2', link: 'en/page-2' },
-      { text: 'Page 3', link: 'en/page-3' },
+      { text: 'Getting Started', link: 'en/getting-started' },
     ],
-    'Another Section': [{ text: 'Page 4', link: 'en/page-4' }],
   },
 };
