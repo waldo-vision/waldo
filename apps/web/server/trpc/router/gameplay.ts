@@ -9,10 +9,10 @@ import {
 import { input, z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
-import { users } from '../../../utils/zod/dash';
+import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
 
 export const gameplayRouter = router({
-  getGameplay: protectedProcedure
+  get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay' } })
     .input(
       z.object({
@@ -28,10 +28,15 @@ export const gameplayRouter = router({
       });
 
       // if gameplay not found, or not the user who made it
-      // TODO: need to do role checking
       if (
         gameplay === null ||
-        (gameplay !== null && gameplay.userId !== ctx.session.user.id)
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          itemOwnerId: gameplay.userId,
+          requiredPerms: Perms.isOwner,
+          blacklisted: ctx.session.user.blacklisted,
+        })
       )
         throw new TRPCError({
           code: 'NOT_FOUND',
@@ -40,7 +45,7 @@ export const gameplayRouter = router({
 
       return gameplay;
     }),
-  getGameplays: protectedProcedure
+  getMany: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/dash' } })
     .input(
       z.object({
@@ -96,7 +101,7 @@ export const gameplayRouter = router({
       }
     }),
 
-  createGameplay: protectedProcedure
+  create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/gameplay' } })
     .input(
       z.object({
@@ -106,6 +111,19 @@ export const gameplayRouter = router({
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
+      // will mostly get thrown if
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.isOwner,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       const existingGameplay = await ctx.prisma.footage.findUnique({
         where: {
           youtubeUrl: input.youtubeUrl,
@@ -156,7 +174,7 @@ export const gameplayRouter = router({
         });
       }
     }),
-  getUserGameplay: protectedProcedure
+  getUsers: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/user' } })
     .input(
       z.object({
@@ -167,10 +185,21 @@ export const gameplayRouter = router({
     .query(async ({ input, ctx }) => {
       // if no user id provided, use user id from session
       // userId should only be passed by system admins, not avg users
-      // TODO: check roles and prevent users from getting other users
-      const userId =
-        input.userId === null ? ctx.session.user?.id : input.userId;
-      console.log(userId);
+      const userId = input.userId === null ? ctx.session.user.id : input.userId;
+
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          itemOwnerId: userId,
+          requiredPerms: Perms.isOwner,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       const user = await ctx.prisma.user.findUnique({
         where: {
           id: userId,
@@ -189,7 +218,7 @@ export const gameplayRouter = router({
 
       return user.footage;
     }),
-  getGameplayClips: protectedProcedure
+  getClips: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/clips' } })
     .input(
       z.object({
@@ -208,16 +237,28 @@ export const gameplayRouter = router({
       });
 
       // if gameplay not found, or not the user who made it
-      // TODO: need to do role checking
-      if (gameplay === null || gameplay.userId !== ctx.session.user.id)
+      if (gameplay === null)
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Could not find that requested gameplay',
         });
 
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          itemOwnerId: gameplay.userId,
+          requiredPerms: Perms.roleMod,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       return gameplay.clips;
     }),
-  updateGameplay: protectedProcedure
+  update: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay' } })
     .input(
       z.object({
@@ -228,14 +269,33 @@ export const gameplayRouter = router({
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
-      // TODO: need check if user making request is the
-      // user who owns the gameplay
-
-      // TODO: need to prevent users from modifying isAnalyzed
-      // need to do a role check here
-
       try {
-        const gameplay = await ctx.prisma.footage.update({
+        const gameplay = await ctx.prisma.footage.findUniqueOrThrow({
+          where: {
+            id: input.gameplayId,
+          },
+        });
+
+        // if modifying isAnalyzed, require mod role
+        const requiredPerms =
+          gameplay.isAnalyzed === input.isAnalyzed
+            ? Perms.isOwner
+            : Perms.roleMod;
+
+        if (
+          !hasPerms({
+            userId: ctx.session.user.id,
+            userRole: Roles.User,
+            itemOwnerId: gameplay.userId,
+            requiredPerms,
+            blacklisted: ctx.session.user.blacklisted,
+          })
+        )
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+          });
+
+        const updatedGameplay = await ctx.prisma.footage.update({
           where: {
             id: input.gameplayId,
           },
@@ -245,7 +305,7 @@ export const gameplayRouter = router({
           },
         });
 
-        return gameplay;
+        return updatedGameplay;
       } catch (error) {
         // throws RecordNotFound if record not found to update
         // but can't import for some reason
@@ -258,7 +318,7 @@ export const gameplayRouter = router({
         });
       }
     }),
-  deleteGameplay: protectedProcedure
+  delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/gameplay' } })
     .input(
       z.object({
@@ -266,10 +326,26 @@ export const gameplayRouter = router({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      // TODO: need check if user making request is the
-      // user who owns the gameplay
-
       try {
+        const gameplay = await ctx.prisma.footage.findUniqueOrThrow({
+          where: {
+            id: input.gameplayId,
+          },
+        });
+
+        if (
+          !hasPerms({
+            userId: ctx.session.user.id,
+            userRole: Roles.User,
+            itemOwnerId: gameplay.userId,
+            requiredPerms: Perms.isOwner,
+            blacklisted: ctx.session.user.blacklisted,
+          })
+        )
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+          });
+
         await ctx.prisma.footage.delete({
           where: {
             id: input.gameplayId,
@@ -313,11 +389,11 @@ export const gameplayRouter = router({
       if (reviewItems === null)
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: `Could not query ${min} gameplay documents`,
+          message: `Could not query gameplay documents`,
         });
       return reviewItems[0];
     }),
-  reviewGameplay: protectedProcedure
+  review: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })
     .input(
       z.object({

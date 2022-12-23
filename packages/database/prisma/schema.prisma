@@ -11,8 +11,13 @@ datasource db {
 }
 
 model WaldoPage {
-  name String @id
+  name      String    @id
   waldosite WaldoSite @relation(fields: [siteName], references: [siteName], onDelete: Cascade)
+  siteName  String
+  disabled  Boolean   @default(false)
+}
+
+model WaldoSite {
   siteName String
   disabled Boolean @default(false)
   customReason String
@@ -109,7 +114,7 @@ model User {
   sessions      Session[]
 
   // our items
-  blacklisted  Boolean? @default(false)
+  blacklisted  Boolean        @default(false)
   footage      Footage[]
   role         Roles @default(USER)
   footageVotes FootageVotes[] @relation("user")

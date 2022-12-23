@@ -151,13 +151,12 @@ export default function Home() {
             </Flex>
           </Center>
         </Container>
-        <Features />
         <Container maxW={'7xl'}>
           <Stack
             ref={helpRef}
             align={'center'}
             spacing={{ base: 8, md: 10 }}
-            py={{ base: 20, md: 28 }}
+            paddingBottom={{base: 20, md: 28}}
             direction={{ base: 'column', md: 'row' }}
           >
             <Stack flex={1} spacing={{ base: 5, md: 10 }}>
@@ -224,7 +223,8 @@ export default function Home() {
             </Flex>
           </Stack>
         </Container>
-        <Container maxW={'7xl'}>
+        <Features />
+        <Container maxW={'7xl'} paddingTop={{base: 20, md: 28}}>
           <Center>
             <Flex
               direction={'column'}

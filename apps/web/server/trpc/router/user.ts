@@ -3,14 +3,10 @@ import ytdl from 'ytdl-core';
 import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
-import { users, userCount } from '../../../utils/zod/dash';
-enum Roles {
-  USER,
-  MOD,
-  ADMIN,
-}
+import { UserSchema } from '@utils/zod/dash';
+import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
 export const userRouter = router({
-  blackListUser: protectedProcedure
+  blackList: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/user' } })
     .input(
       z.object({
@@ -20,6 +16,18 @@ export const userRouter = router({
     )
     .output(z.object({ message: z.string(), blacklisted: z.boolean() }))
     .mutation(async ({ input, ctx }) => {
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.roleAdmin,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       try {
         const userDocument = await ctx.prisma.user.update({
           where: {
@@ -42,7 +50,7 @@ export const userRouter = router({
         });
       }
     }),
-  deleteUser: protectedProcedure
+  delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/user' } })
     .input(
       z.object({
@@ -51,7 +59,19 @@ export const userRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      console.log(input.userId);
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          itemOwnerId: input.userId,
+          requiredPerms: Perms.isOwner,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       try {
         const deletUser = await ctx.prisma.user.delete({
           where: {
@@ -114,6 +134,25 @@ export const userRouter = router({
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      const account = await ctx.prisma.account.findUnique({
+        where: {
+          id: input.accountId,
+        },
+      });
+
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          itemOwnerId: account?.userId,
+          requiredPerms: Perms.isOwner,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       try {
         const deleteAccount = await ctx.prisma.account.delete({
           where: {
@@ -126,6 +165,7 @@ export const userRouter = router({
       } catch (error) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
+          // eslint-disable-next-line max-len
           message: `An error occurred while attempting to delete the account with id: ${input.accountId}.`,
           // not sure if its safe to give this to the user
           cause: error,
@@ -140,8 +180,20 @@ export const userRouter = router({
         filterRoles: z.string().nullable().optional(),
       }),
     )
-    .output(z.array(users))
+    .output(z.array(UserSchema))
     .query(async ({ input, ctx }) => {
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.roleMod,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       const takeValue = 10;
       const skipValue = input.page * 10 - 10;
       if (input.filterRoles == null) {
@@ -187,7 +239,7 @@ export const userRouter = router({
         }
       }
     }),
-  updateUser: protectedProcedure
+  updateRole: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/user/dash' } })
     .input(
       z.object({
@@ -195,8 +247,19 @@ export const userRouter = router({
         userId: z.string().cuid(),
       }),
     )
-    .output(users)
+    .output(UserSchema)
     .mutation(async ({ input, ctx }) => {
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.roleAdmin,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
       try {
         const users = await ctx.prisma.user.update({
           where: {
@@ -206,7 +269,6 @@ export const userRouter = router({
             role: input.role,
           },
         });
-        console.log(users);
         return users;
       } catch (error) {
         throw new TRPCError({

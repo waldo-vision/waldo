@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: web
+    build:
+      # set to root of monorepo
+      context: .
+      # use dockerfile for web
+      dockerfile: ./apps/web/Dockerfile
+    ports:
+      - 3000:3000
+    env_file:
+      - ./apps/web/.env
