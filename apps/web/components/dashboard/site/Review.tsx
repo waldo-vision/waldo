@@ -24,35 +24,39 @@ export default function Review() {
   });
 
   const handleApply = (change: number) => {
+    if (!reviewPageQData) return;
+
     if (change == 0) {
       updatePage.mutateAsync({
         pageName: 'review',
-        isDisabled: !reviewPageQData?.disabled,
-        isCustomReason: reviewPageQData?.isCustomReason as boolean,
-        customReason: reviewPageQData?.customReason as string,
+        isDisabled: !reviewPageQData.disabled,
+        isCustomReason: reviewPageQData.isCustomReason,
+        customReason: reviewPageQData.customReason,
       });
     } else if (change == 1) {
       updatePage.mutateAsync({
         pageName: 'review',
-        isDisabled: reviewPageQData?.disabled,
-        isCustomReason: !reviewPageQData?.isCustomReason as boolean,
-        customReason: reviewPageQData?.customReason as string,
+        isDisabled: reviewPageQData.disabled,
+        isCustomReason: !reviewPageQData.isCustomReason,
+        customReason: reviewPageQData.customReason,
       });
     } else if (change == 2) {
       updatePage.mutateAsync({
         pageName: 'review',
-        isDisabled: reviewPageQData?.disabled,
-        isCustomReason: reviewPageQData?.isCustomReason as boolean,
-        customReason: customReason as string,
+        isDisabled: reviewPageQData.disabled,
+        isCustomReason: reviewPageQData.isCustomReason,
+        customReason: customReason,
       });
     }
   };
 
   const handleReset = () => {
+    if (!reviewPageQData) return;
+
     updatePage.mutateAsync({
       pageName: 'review',
       isDisabled: reviewPageQData?.disabled,
-      isCustomReason: reviewPageQData?.isCustomReason as boolean,
+      isCustomReason: reviewPageQData?.isCustomReason,
       customReason: nullCode,
     });
   };

@@ -24,35 +24,39 @@ export default function Review() {
   });
 
   const handleApply = (change: number) => {
+    if (!uploadPageQData) return;
+
     if (change == 0) {
       updatePage.mutateAsync({
         pageName: 'upload',
-        isDisabled: !uploadPageQData?.disabled,
-        isCustomReason: uploadPageQData?.isCustomReason as boolean,
-        customReason: uploadPageQData?.customReason as string,
+        isDisabled: !uploadPageQData.disabled,
+        isCustomReason: uploadPageQData.isCustomReason,
+        customReason: uploadPageQData.customReason,
       });
     } else if (change == 1) {
       updatePage.mutateAsync({
         pageName: 'upload',
-        isDisabled: uploadPageQData?.disabled,
-        isCustomReason: !uploadPageQData?.isCustomReason as boolean,
-        customReason: uploadPageQData?.customReason as string,
+        isDisabled: uploadPageQData.disabled,
+        isCustomReason: !uploadPageQData.isCustomReason,
+        customReason: uploadPageQData.customReason,
       });
     } else if (change == 2) {
       updatePage.mutateAsync({
         pageName: 'upload',
-        isDisabled: uploadPageQData?.disabled,
-        isCustomReason: uploadPageQData?.isCustomReason as boolean,
-        customReason: customReason as string,
+        isDisabled: uploadPageQData.disabled,
+        isCustomReason: uploadPageQData.isCustomReason,
+        customReason: customReason,
       });
     }
   };
 
   const handleReset = () => {
+    if (!uploadPageQData) return;
+
     updatePage.mutateAsync({
       pageName: 'upload',
-      isDisabled: uploadPageQData?.disabled,
-      isCustomReason: uploadPageQData?.isCustomReason as boolean,
+      isDisabled: uploadPageQData.disabled,
+      isCustomReason: uploadPageQData?.isCustomReason,
       customReason: nullCode,
     });
   };
