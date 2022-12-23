@@ -60,6 +60,8 @@ To start the services locally, simply run `docker compose up -d`.
 
    (This is if your self hosting, if your using CockroachDB cloud, copy the connection URL from the dashboard.)
 
+1. Run `yarn turbo run db:push` to setup the database for the website
+
 1. To connect to the http redis proxy, in the `.env` file set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` like below:
 
    ```.env
@@ -97,7 +99,7 @@ email, Discord, or any other method with the owners of this repository before ma
 
 We also ask that you test all your changes, never commit a secret, and follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for your commit messages.
 
-Please note we have a [code of conduct](code-of-conduct), please follow it in all your interactions with the project.
+Please note we have a [code of conduct](/legal/code-of-conduct), please follow it in all your interactions with the project.
 
 ## Pull Request Process
 
