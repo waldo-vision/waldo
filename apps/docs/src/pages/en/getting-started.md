@@ -89,3 +89,12 @@ To start the services locally, simply run `docker compose up -d`.
 
     # plus some other stuff if you set it
    ```
+
+## Before you commit
+
+We ask that you:
+
+- Test all changes
+- Don't commit any secrets
+- Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for your commit messages
+- Follow our [Code of Conduct](https://github.com/waldo-vision/waldo/blob/master/CODE_OF_CONDUCT.md)
