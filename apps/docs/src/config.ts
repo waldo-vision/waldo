@@ -51,6 +51,9 @@ export const SIDEBAR: Sidebar = {
       { text: 'Introduction', link: 'en/introduction' },
       { text: 'Getting Started', link: 'en/getting-started' },
     ],
+    Referance: [
+      { text: 'Working in the Monorepo', link: 'en/working-in-monorepo' },
+    ],
     Legal: [
       { text: 'Code of Conduct', link: 'legal/code-of-conduct' },
       { text: 'Cookie Policy', link: 'legal/cookie-policy' },
