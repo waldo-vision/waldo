@@ -30,7 +30,7 @@ const SideBarTabs: Tab[] = [
   { tabName: 'Status', path: '/status', icon: <FiGlobe /> },
 ];
 
-export default function SimpleSidebar({ children }: { children?: ReactNode }) {
+export default function Sidebar({ children }: { children?: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh">

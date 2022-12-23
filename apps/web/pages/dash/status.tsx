@@ -1,22 +1,12 @@
 import {
-  Button,
   Flex,
   Heading,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
   Stat,
   StatGroup,
   StatHelpText,
   StatLabel,
   StatNumber,
-  Tooltip,
 } from '@chakra-ui/react';
-import { BsInfoCircle } from 'react-icons/bs';
 import Sidebar from '@components/dashboard/Sidebar';
 import Review from '@components/dashboard/site/Review';
 import Upload from '@components/dashboard/site/Upload';
@@ -24,6 +14,7 @@ import Account from '@components/dashboard/site/Account';
 import Stats from '@components/dashboard/site/Stats';
 import Maintenance from '@components/dashboard/site/Maintenance';
 import { ReactElement } from 'react';
+import Layout from '@components/dashboard/Layout';
 
 type ServicesListType = {
   label: string;
@@ -49,9 +40,9 @@ const ServicesList: ServicesListType[] = [
   },
 ];
 
-export default function Site() {
+export default function Status() {
   return (
-    <Sidebar>
+    <Flex direction={'column'}>
       <Stats />
       <Heading mx={5} mt={2} fontSize={'2xl'}>
         Manage Service
@@ -78,6 +69,10 @@ export default function Site() {
           ))}
         </StatGroup>
       </Flex>
-    </Sidebar>
+    </Flex>
   );
 }
+
+Status.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
