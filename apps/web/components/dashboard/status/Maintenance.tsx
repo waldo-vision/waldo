@@ -26,7 +26,7 @@ export default function Maintenance() {
     },
     {
       // every 15 seconds
-      refetchInterval: 15000,
+      enabled: true,
     },
   );
   const [alertDescription, setAlertDescription] = useState<string | null>(null);
@@ -35,17 +35,17 @@ export default function Maintenance() {
   const handleSwitchChanges = async (change: number) => {
     if (change == 0) {
       await updateSite.mutateAsync({
-        showLpAlert: data?.showLpAlert as boolean,
-        lpAlertDescription: data?.lpAlertDescription as string,
-        lpAlertTitle: data?.lpAlertTitle as string,
-        isMaintenance: !data?.maintenance,
+        isCustomAlert: data?.isCustomAlert as boolean,
+        alertDescription: data?.alertDescription as string,
+        alertTitle: data?.alertTitle as string,
+        maintenance: !data?.maintenance,
       });
     } else if (change == 1) {
       await updateSite.mutateAsync({
-        showLpAlert: !data?.showLpAlert,
-        lpAlertDescription: data?.lpAlertDescription as string,
-        lpAlertTitle: data?.lpAlertTitle as string,
-        isMaintenance: data?.maintenance as boolean,
+        isCustomAlert: !data?.isCustomAlert,
+        alertDescription: data?.alertDescription as string,
+        alertTitle: data?.alertTitle as string,
+        maintenance: data?.maintenance as boolean,
       });
     }
   };
@@ -65,24 +65,24 @@ export default function Maintenance() {
     }
     if (alertDescription == null) {
       await updateSite.mutateAsync({
-        showLpAlert: data?.showLpAlert as boolean,
-        lpAlertDescription: data?.lpAlertDescription as string,
-        lpAlertTitle: alertTitle as string,
-        isMaintenance: !data?.maintenance,
+        isCustomAlert: data?.isCustomAlert as boolean,
+        alertDescription: data?.alertDescription as string,
+        alertTitle: alertTitle as string,
+        maintenance: !data?.maintenance,
       });
     } else if (alertTitle == null) {
       await updateSite.mutateAsync({
-        showLpAlert: data?.showLpAlert as boolean,
-        lpAlertDescription: alertDescription as string,
-        lpAlertTitle: data?.lpAlertTitle as string,
-        isMaintenance: data?.maintenance as boolean,
+        isCustomAlert: data?.isCustomAlert as boolean,
+        alertDescription: alertDescription as string,
+        alertTitle: data?.alertTitle as string,
+        maintenance: data?.maintenance as boolean,
       });
     } else {
       await updateSite.mutateAsync({
-        showLpAlert: data?.showLpAlert as boolean,
-        lpAlertDescription: alertDescription as string,
-        lpAlertTitle: alertTitle as string,
-        isMaintenance: data?.maintenance as boolean,
+        isCustomAlert: data?.isCustomAlert as boolean,
+        alertDescription: alertDescription as string,
+        alertTitle: alertTitle as string,
+        maintenance: data?.maintenance as boolean,
       });
     }
     window.location.reload();
@@ -137,14 +137,14 @@ export default function Maintenance() {
             </Flex>
             <Switch
               size={'md'}
-              defaultChecked={data?.showLpAlert}
+              defaultChecked={data?.isCustomAlert}
               onChange={() => handleSwitchChanges(1)}
             />
           </Flex>
-          <Collapse in={data?.showLpAlert} animateOpacity>
+          <Collapse in={data?.isCustomAlert} animateOpacity>
             <Flex direction={'column'} gap={2}>
               <Input
-                placeholder={data?.lpAlertTitle ? 'Title' : data?.lpAlertTitle}
+                placeholder={data?.alertTitle ? 'Title' : data?.alertTitle}
                 pr="4.5rem"
                 borderRadius={10}
                 _focus={{ boxShadow: 'none' }}
@@ -156,9 +156,9 @@ export default function Maintenance() {
               />
               <Input
                 placeholder={
-                  data?.lpAlertDescription == ''
+                  data?.alertDescription == ''
                     ? 'Enter a Description'
-                    : data?.lpAlertDescription
+                    : data?.alertDescription
                 }
                 pr="4.5rem"
                 borderRadius={10}

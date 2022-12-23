@@ -14,7 +14,7 @@ export default function Review() {
   const nullCode = '--+|[]';
   // UPLOAD VARS AND LOGIC
   const { isLoading: accountPageQLoading, data: accountPageQData } =
-    trpc.site.getPageData.useQuery({ pageName: 'account' });
+    trpc.site.getPageData.useQuery({ name: 'account' });
   const utils = trpc.useContext();
   const [customReason, setCustomReason] = useState<string>(nullCode);
   const updatePage = trpc.site.updatePage.useMutation({
@@ -28,24 +28,27 @@ export default function Review() {
 
     if (change == 0) {
       updatePage.mutateAsync({
-        pageName: 'account',
-        isDisabled: !accountPageQData.disabled,
-        isCustomReason: accountPageQData.isCustomReason,
-        customReason: accountPageQData.customReason,
+        name: 'account',
+        maintenance: !accountPageQData.maintenance,
+        isCustomAlert: accountPageQData.isCustomAlert,
+        alertTitle: accountPageQData.alertTitle,
+        alertDescription: accountPageQData.alertDescription,
       });
     } else if (change == 1) {
       updatePage.mutateAsync({
-        pageName: 'account',
-        isDisabled: accountPageQData.disabled,
-        isCustomReason: !accountPageQData.isCustomReason,
-        customReason: accountPageQData.customReason,
+        name: 'account',
+        maintenance: accountPageQData.maintenance,
+        isCustomAlert: !accountPageQData.isCustomAlert,
+        alertTitle: accountPageQData.alertTitle,
+        alertDescription: accountPageQData.alertDescription,
       });
     } else if (change == 2) {
       updatePage.mutateAsync({
-        pageName: 'account',
-        isDisabled: accountPageQData.disabled,
-        isCustomReason: accountPageQData.isCustomReason,
-        customReason: customReason,
+        name: 'account',
+        maintenance: accountPageQData.maintenance,
+        isCustomAlert: accountPageQData.isCustomAlert,
+        alertTitle: customReason,
+        alertDescription: accountPageQData.alertDescription,
       });
     }
   };
@@ -53,10 +56,11 @@ export default function Review() {
     if (!accountPageQData) return;
 
     updatePage.mutateAsync({
-      pageName: 'account',
-      isDisabled: accountPageQData.disabled,
-      isCustomReason: accountPageQData.isCustomReason,
-      customReason: nullCode,
+      name: 'account',
+      maintenance: accountPageQData.maintenance,
+      isCustomAlert: accountPageQData.isCustomAlert,
+      alertTitle: nullCode,
+      alertDescription: accountPageQData.alertDescription,
     });
   };
   return (
@@ -84,7 +88,7 @@ export default function Review() {
             </Text>
             <Switch
               size={'md'}
-              defaultChecked={!accountPageQData?.disabled}
+              defaultChecked={!accountPageQData?.maintenance}
               onChange={() => handleApply(0)}
             />
           </Flex>
@@ -97,9 +101,9 @@ export default function Review() {
             <Text
               fontWeight={'normal'}
               fontSize={'lg'}
-              opacity={!accountPageQData?.disabled ? '0.4' : '1'}
+              opacity={!accountPageQData?.maintenance ? '0.4' : '1'}
               _hover={
-                !accountPageQData?.disabled ? { cursor: 'not-allowed' } : {}
+                !accountPageQData?.maintenance ? { cursor: 'not-allowed' } : {}
               }
             >
               Use custom message
@@ -109,11 +113,11 @@ export default function Review() {
               onChange={() => {
                 handleApply(1);
               }}
-              defaultChecked={accountPageQData?.isCustomReason}
-              disabled={!accountPageQData?.disabled}
+              defaultChecked={accountPageQData?.isCustomAlert}
+              disabled={!accountPageQData?.maintenance}
             />
           </Flex>
-          <Collapse in={accountPageQData?.isCustomReason} animateOpacity>
+          <Collapse in={accountPageQData?.isCustomAlert} animateOpacity>
             <InputGroup size="md">
               <Input
                 pr="4.5rem"
@@ -121,19 +125,19 @@ export default function Review() {
                 _focus={{ boxShadow: 'none' }}
                 type={'text'}
                 placeholder={
-                  accountPageQData?.customReason == nullCode
+                  accountPageQData?.alertTitle == nullCode
                     ? 'Creating new accounts is under maintenance...'
-                    : accountPageQData?.customReason
+                    : accountPageQData?.alertTitle
                 }
                 onChange={event => setCustomReason(event.target.value)}
-                disabled={!accountPageQData?.disabled}
+                disabled={!accountPageQData?.maintenance}
               />
               <InputRightElement width="4.5rem">
-                {customReason ? (
+                {accountPageQData?.alertTitle == nullCode ? (
                   <Button
                     h="1.75rem"
                     size="sm"
-                    disabled={!accountPageQData?.disabled}
+                    disabled={!accountPageQData?.maintenance}
                     onClick={() => handleApply(2)}
                   >
                     Apply
@@ -142,7 +146,7 @@ export default function Review() {
                   <Button
                     h="1.75rem"
                     size="sm"
-                    disabled={!accountPageQData?.disabled}
+                    disabled={!accountPageQData?.maintenance}
                     onClick={() => handleReset()}
                   >
                     Reset

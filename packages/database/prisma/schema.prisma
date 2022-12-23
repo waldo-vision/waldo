@@ -12,20 +12,21 @@ datasource db {
 
 model WaldoPage {
   name String @id
-  waldosite WaldoSite @relation(fields: [siteName], references: [siteName], onDelete: Cascade)
-  siteName String
-  disabled Boolean @default(false)
-  customReason String
-  isCustomReason Boolean @default(false)
+  maintenance Boolean @default(false)
+  isCustomAlert Boolean @default(false)
+  alertTitle String?
+  alertDescription String?
+  parentName String
+  site WaldoSite @relation(fields: [parentName], references: [name], onDelete: Cascade)
 }
 
 model WaldoSite {
-  siteName String @id @default("waldo")
-  pages WaldoPage[]
+  name String @id
   maintenance Boolean @default(false)
-  showLpAlert Boolean @default(false)
-  lpAlertTitle String
-  lpAlertDescription String
+  isCustomAlert Boolean
+  alertTitle String?
+  alertDescription String?
+  pages WaldoPage[]
 }
 
 model Footage {
