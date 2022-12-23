@@ -41,21 +41,45 @@ import {
 } from 'react-icons/bs';
 import { getSession } from 'next-auth/react';
 import { Session } from 'next-auth';
-
+type Query =
+  | {
+      userCount?: number | undefined;
+      id: string;
+      name: string | null;
+      blacklisted: boolean;
+      email: string | null;
+      emailVerified: Date | null;
+      image: string | null;
+      role: string;
+    }[]
+  | undefined;
 export default function User() {
   // Searching states
-  const [searchUser, setSearchUser] = useState<string>();
+  const [searchUser, setSearchUser] = useState<string>('');
+  const [searchUserValue, setSearchUserValue] = useState<string>('');
+
   const [searchRole, setSearchRole] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [rows, setRows] = useState({});
-
-  const { data, isLoading, refetch } = trpc.user.getUsers.useQuery({
-    page: pageNumber,
-    filterRoles: searchRole,
-  });
+  const [data, setData] = useState<Query>();
+  const {
+    data: userQueryData,
+    isLoading: userQueryLoading,
+    refetch: userQueryRefetch,
+  } = trpc.user.getUsers.useQuery(
+    {
+      page: pageNumber,
+      filterRoles: searchRole,
+    },
+    { enabled: false },
+  );
+  const {
+    data: searchFilterData,
+    isLoading: searchFilterLoading,
+    refetch: searchFilterRefetch,
+  } = trpc.user.search.useQuery({ name: searchUser }, { enabled: true });
   const handleFilter = async (role: string | null) => {
     if (role == null) {
       setSearchRole(null);
@@ -63,27 +87,40 @@ export default function User() {
     }
     setSearchRole(role.toUpperCase());
   };
+  const search = async () => {
+    setSearchUser(searchUserValue);
+
+    setData([searchFilterData]);
+  };
   const handlePageChange = async (add: boolean) => {
     setLoading(true);
-    await refetch();
+    await userQueryRefetch();
     if (add) {
       setPageNumber(pageNumber + 1);
-      await refetch();
+      await userQueryRefetch();
       setLoading(false);
     } else {
       setPageNumber(1);
-      await refetch();
+      await userQueryRefetch();
     }
     setLoading(false);
   };
-  if (isLoading) {
+  useEffect(() => {
+    const doLoadThings = async () => {
+      await userQueryRefetch();
+      await searchFilterRefetch();
+      setData(userQueryData);
+    };
+    doLoadThings();
+  }, [userQueryData]);
+  if (userQueryLoading || searchFilterLoading) {
     return (
       <Box>
         <Loading color={'blue.500'} />
       </Box>
     );
   } else {
-    const handleC = () => {
+    const handlePage = () => {
       if (pageNumber == Math.ceil(data[0].userCount / Math.round(10))) {
         return;
       } else {
@@ -101,9 +138,9 @@ export default function User() {
               height={'50px'}
               fontWeight={'medium'}
               placeholder={'Search Users'}
-              onChange={e => setSearchUser(e.target.value)}
+              onChange={e => setSearchUserValue(e.target.value)}
             />
-            <InputRightElement mt={1}>
+            <InputRightElement mt={1} onClick={() => search()}>
               <SearchIcon />
             </InputRightElement>
           </InputGroup>
@@ -290,7 +327,7 @@ export default function User() {
                               ? 'gray.300'
                               : ''
                           }
-                          onClick={() => handleC()}
+                          onClick={() => handlePage()}
                         />
                       </Flex>
                     </Td>
@@ -313,12 +350,12 @@ const MenuAction = (props: MenuActionProps) => {
   const blacklisted = props.isBlacklisted;
   const utils = trpc.useContext();
   const toast = useToast();
-  const changeRole = trpc.user.updateRole.useMutation({
+  const changeRole = trpc.user.updateUser.useMutation({
     async onSuccess() {
       await utils.user.invalidate();
     },
   });
-  const suspendUser = trpc.user.blackList.useMutation({
+  const suspendUser = trpc.user.blackListUser.useMutation({
     async onSuccess() {
       await utils.user.invalidate();
     },
