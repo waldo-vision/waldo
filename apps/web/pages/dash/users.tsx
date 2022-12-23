@@ -200,7 +200,7 @@ export default function User() {
                               height={7}
                             />
                             <Text fontWeight={'bold'}>
-                              {result.name.length > 20
+                              {result.name && result.name.length > 20
                                 ? result.name.substring(0, 10) +
                                   '\u2026' +
                                   result.name.slice(-10)
@@ -266,7 +266,9 @@ export default function User() {
                           <Text fontWeight={'semibold'}>Page</Text>{' '}
                           <Text ml={2}>
                             {pageNumber} of{' '}
-                            {Math.ceil(data[0].userCount / Math.round(10))}
+                            {data &&
+                              data[0].userCount &&
+                              Math.ceil(data[0].userCount / Math.round(10))}
                           </Text>
                         </Flex>
                         <ChevronRightIcon
