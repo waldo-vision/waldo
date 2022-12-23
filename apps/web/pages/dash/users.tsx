@@ -283,8 +283,10 @@ export default function User() {
                           w={6}
                           _hover={{ color: 'gray.400' }}
                           color={
+                            data &&
+                            data[0].userCount &&
                             pageNumber ==
-                            Math.ceil(data[0].userCount / Math.round(10))
+                              Math.ceil(data[0].userCount / Math.round(10))
                               ? 'gray.300'
                               : ''
                           }
