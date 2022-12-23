@@ -1,9 +1,6 @@
 import { z } from 'zod';
 
-export const ClipZodSchema = z.object({
-  uuid: z.string().uuid(),
-  footage: z.string().uuid(),
-});
-export const ClipRetrieveSchema = z.object({
-  clips: z.array(ClipZodSchema),
+export const ClipSchema = z.object({
+  id: z.string().uuid(),
+  footageId: z.string().uuid(),
 });

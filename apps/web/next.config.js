@@ -1,3 +1,5 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const securityHeaders = [
   { key: 'Strict-Transport-Security', value: 'max-age=63072000' },
@@ -11,8 +13,19 @@ const securityHeaders = [
 
 const nextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
   swcMinify: true,
+  experimental: {
+    outputFileTracingRoot: path.join(__dirname, '../../'),
+    transpilePackages: ['ui'],
+  },
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
   images: {
+    domains: ['cdn.discordapp.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -20,9 +33,6 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-  },
-  images: {
-    domains: ['cdn.discordapp.com'],
   },
   i18n: {
     locales: ['en-US'],

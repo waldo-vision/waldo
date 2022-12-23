@@ -79,9 +79,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   @@unique([provider, providerAccountId])
 }
 
@@ -107,7 +105,6 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-
   // our items
   blacklisted  Boolean? @default(false)
   footage      Footage[]
@@ -119,6 +116,5 @@ model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
-
   @@unique([identifier, token])
 }

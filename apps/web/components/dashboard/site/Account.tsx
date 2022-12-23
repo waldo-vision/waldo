@@ -1,22 +1,15 @@
 import {
   Flex,
-  Box,
   Input,
   InputGroup,
-  InputLeftAddon,
   Switch,
   Text,
-  Stack,
-  Center,
-  Spinner,
   Button,
   Collapse,
   InputRightElement,
 } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
-import { BsCheckCircle } from 'react-icons/bs';
+import { useState } from 'react';
 import { trpc } from '@utils/trpc';
-import Loading from '@components/Loading';
 export default function Review() {
   const nullCode = '--+|[]';
   // UPLOAD VARS AND LOGIC
@@ -31,34 +24,38 @@ export default function Review() {
   });
 
   const handleApply = (change: number) => {
+    if (!accountPageQData) return;
+
     if (change == 0) {
       updatePage.mutateAsync({
         pageName: 'account',
-        isDisabled: !accountPageQData?.disabled,
-        isCustomReason: accountPageQData?.isCustomReason as boolean,
-        customReason: accountPageQData?.customReason as string,
+        isDisabled: !accountPageQData.disabled,
+        isCustomReason: accountPageQData.isCustomReason,
+        customReason: accountPageQData.customReason,
       });
     } else if (change == 1) {
       updatePage.mutateAsync({
         pageName: 'account',
-        isDisabled: accountPageQData?.disabled as boolean,
-        isCustomReason: !accountPageQData?.isCustomReason as boolean,
-        customReason: accountPageQData?.customReason as string,
+        isDisabled: accountPageQData.disabled,
+        isCustomReason: !accountPageQData.isCustomReason,
+        customReason: accountPageQData.customReason,
       });
     } else if (change == 2) {
       updatePage.mutateAsync({
         pageName: 'account',
-        isDisabled: accountPageQData?.disabled as boolean,
-        isCustomReason: accountPageQData?.isCustomReason as boolean,
-        customReason: customReason as string,
+        isDisabled: accountPageQData.disabled,
+        isCustomReason: accountPageQData.isCustomReason,
+        customReason: customReason,
       });
     }
   };
   const handleReset = () => {
+    if (!accountPageQData) return;
+
     updatePage.mutateAsync({
       pageName: 'account',
-      isDisabled: accountPageQData?.disabled,
-      isCustomReason: accountPageQData?.isCustomReason as boolean,
+      isDisabled: accountPageQData.disabled,
+      isCustomReason: accountPageQData.isCustomReason,
       customReason: nullCode,
     });
   };

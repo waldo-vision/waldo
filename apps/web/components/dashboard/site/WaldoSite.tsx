@@ -34,24 +34,28 @@ const WaldoSite = () => {
   const [alertTitle, setAlertTitle] = useState<string | null>(null);
 
   const handleSwitchChanges = async (change: number) => {
+    if (!data) return;
+
     if (change == 0) {
       await updateSite.mutateAsync({
-        showLpAlert: data?.showLpAlert as boolean,
-        lpAlertDescription: data?.lpAlertDescription as string,
-        lpAlertTitle: data?.lpAlertTitle as string,
-        isMaintenance: !data?.maintenance,
+        showLpAlert: data.showLpAlert,
+        lpAlertDescription: data.lpAlertDescription,
+        lpAlertTitle: data.lpAlertTitle,
+        isMaintenance: !data.maintenance,
       });
     } else if (change == 1) {
       await updateSite.mutateAsync({
-        showLpAlert: !data?.showLpAlert,
-        lpAlertDescription: data?.lpAlertDescription as string,
-        lpAlertTitle: data?.lpAlertTitle as string,
-        isMaintenance: data?.maintenance as boolean,
+        showLpAlert: !data.showLpAlert,
+        lpAlertDescription: data.lpAlertDescription,
+        lpAlertTitle: data.lpAlertTitle,
+        isMaintenance: data.maintenance,
       });
     }
   };
 
   const applyChanges = async () => {
+    if (!data) return;
+
     if (alertDescription == null || alertTitle == null) {
       toast({
         position: 'bottom-right',
@@ -66,24 +70,24 @@ const WaldoSite = () => {
     }
     if (alertDescription == null) {
       await updateSite.mutateAsync({
-        showLpAlert: data?.showLpAlert as boolean,
-        lpAlertDescription: data?.lpAlertDescription as string,
-        lpAlertTitle: alertTitle as string,
-        isMaintenance: !data?.maintenance,
+        showLpAlert: data.showLpAlert,
+        lpAlertDescription: data.lpAlertDescription,
+        lpAlertTitle: alertTitle,
+        isMaintenance: !data.maintenance,
       });
     } else if (alertTitle == null) {
       await updateSite.mutateAsync({
-        showLpAlert: data?.showLpAlert as boolean,
-        lpAlertDescription: alertDescription as string,
-        lpAlertTitle: data?.lpAlertTitle as string,
-        isMaintenance: data?.maintenance as boolean,
+        showLpAlert: data.showLpAlert,
+        lpAlertDescription: alertDescription,
+        lpAlertTitle: data.lpAlertTitle,
+        isMaintenance: data.maintenance,
       });
     } else {
       await updateSite.mutateAsync({
-        showLpAlert: data?.showLpAlert as boolean,
-        lpAlertDescription: alertDescription as string,
-        lpAlertTitle: alertTitle as string,
-        isMaintenance: data?.maintenance as boolean,
+        showLpAlert: data.showLpAlert,
+        lpAlertDescription: alertDescription,
+        lpAlertTitle: alertTitle,
+        isMaintenance: data.maintenance,
       });
     }
     window.location.reload();

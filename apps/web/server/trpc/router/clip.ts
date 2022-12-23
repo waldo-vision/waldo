@@ -1,82 +1,125 @@
-import { Request, Response } from 'express';
-import { v4 as uuidv4, validate } from 'uuid';
 import { z } from 'zod';
-import { ClipZodSchema, ClipRetrieveSchema } from '@utils/zod/clip';
+import { ClipSchema } from '@utils/zod/clip';
 
 import { protectedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
+import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
 
 export const clipRouter = router({
-  getClip: protectedProcedure
+  get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/clip' } })
     .input(
       z.object({
-        uuid: z.string().uuid().optional(),
+        clipId: z.string().uuid().optional(),
       }),
     )
-    .output(ClipRetrieveSchema)
+    .output(ClipSchema)
     .query(async ({ input, ctx }) => {
-      const uuid = input.uuid;
-      const clipResult: any[] = [];
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.roleMod,
+          // when this api is used check for owner
+          // itemOwnerId: clip.footage.userId,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       try {
         const clip = await ctx.prisma.clip.findUnique({
           where: {
-            id: uuid,
+            id: input.clipId,
+          },
+          include: {
+            footage: true,
           },
         });
-        return { clips: clipResult };
+
+        // so the trpc error is thrown
+        if (clip === null) throw new Error('no clip');
+
+        return clip;
       } catch (error) {
         throw new TRPCError({
-          message: 'No clip document with the UUID provided could be found.',
+          message: 'No clip with the provided id could be found.',
           code: 'NOT_FOUND',
         });
       }
     }),
-  deleteClip: protectedProcedure
+  delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/clip' } })
     .input(
       z.object({
-        uuid: z.string().uuid().optional(),
+        clipId: z.string().uuid().optional(),
       }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      const uuid = input.uuid;
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.roleMod,
+          // when this api is used check for owner
+          // itemOwnerId: clip.footage.userId,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       try {
-        const deleteResult = await ctx.prisma.clip.delete({
+        const result = await ctx.prisma.clip.delete({
           where: {
-            id: uuid,
+            id: input.clipId,
           },
         });
-        return { message: `Clip with uuid: ${uuid} was deleted successfully.` };
+        return {
+          message: `Clip with uuid: ${result.id} was deleted successfully.`,
+        };
       } catch (error) {
         throw new TRPCError({
-          message: `Couldn't find the clip associated with uuid ${uuid}.`,
+          message: 'No clip with the provided id could be found.',
           code: 'NOT_FOUND',
         });
       }
     }),
-  createClip: protectedProcedure
+  create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/clip' } })
     .input(
       z.object({
-        uuid: z.string().uuid(),
+        footageId: z.string().uuid(),
       }),
     )
-    .output(z.object({ uuid: z.string().uuid() }))
+    .output(ClipSchema)
     .mutation(async ({ input, ctx }) => {
-      const uniqueId = uuidv4();
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: Roles.User,
+          requiredPerms: Perms.roleMod,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       try {
-        const createClip = await ctx.prisma.clip.create({
+        const clip = await ctx.prisma.clip.create({
           data: {
-            id: uniqueId,
-            footageId: input.uuid,
+            footageId: input.footageId,
           },
         });
-        return { uuid: uniqueId };
+        return clip;
       } catch (error) {
         throw new TRPCError({
-          message: `Unable to create a clip document.`,
+          message: `Unable to create a clip.`,
           code: 'INTERNAL_SERVER_ERROR',
         });
       }
