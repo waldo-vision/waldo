@@ -22,5 +22,15 @@ export const GameplayPlusUserSchema = z.object({
     image: z.string().url().optional(),
   }),
 });
+export const GameplaysDashSchema = z.object({
+  id: z.string().cuid(),
+  userId: z.string(),
+  youtubeUrl: z.string().url(),
+  footageType: z.string(),
+  upVotes: z.number().optional(),
+  downVotes: z.number().optional(),
+  isAnalyzed: z.boolean(),
+  gameplayCount: z.number().optional(),
+});
 
 export const GameplayTypes = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD']);
