@@ -1,53 +1,39 @@
-/* eslint-disable arrow-parens */
-import { ReactElement, useEffect, useState, useRef } from 'react';
 import {
   Button,
   Center,
-  Heading,
-  Text,
-  Flex,
   Container,
-  Stack,
+  Flex,
   Grid,
   GridItem,
+  Heading,
+  Stack,
+  Text,
 } from '@chakra-ui/react';
+import BlacklistedModal from '@components/BlacklistedModal';
 import Layout from '@components/Layout';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ReactElement, useEffect, useRef, useState } from 'react';
+import { FaCodeBranch, FaRocket } from 'react-icons/fa';
+import { HiUpload } from 'react-icons/hi';
+import { MdAllInclusive, MdInfoOutline, MdMoneyOff } from 'react-icons/md';
+import { TbEyeCheck } from 'react-icons/tb';
 import DashboardImage from '../public/Dashboard.png';
 import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
-import Image from 'next/image';
-import Head from 'next/head';
-import Link from 'next/link';
-import { FaCodeBranch, FaRocket } from 'react-icons/fa';
-import { MdAllInclusive, MdMoneyOff, MdInfoOutline } from 'react-icons/md';
-import { HiUpload } from 'react-icons/hi';
-import { TbEyeCheck } from 'react-icons/tb';
-import { Session } from 'next-auth';
-import { getSession } from 'next-auth/react';
-import BlacklistedModal from '@components/BlacklistedModal';
+import useSite from '@site';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
-  const [userSession, setUserSession] = useState<Session | undefined>();
   const [y, setY] = useState(0);
-
   const updateScrollPosition = () => {
     setY(window.scrollY);
   };
+  const { session } = useSite();
 
   useEffect(() => {
     updateScrollPosition();
-    const getUserSession = async () => {
-      const session = await getSession();
-      if (session) {
-        setUserSession(session);
-        console.log(session);
-      } else {
-        setUserSession(undefined);
-      }
-    };
-    getUserSession();
-    // adding the event when scroll change background
     window.addEventListener('scroll', updateScrollPosition);
   }, []);
   return (
@@ -115,7 +101,7 @@ export default function Home() {
               alignItems={'center'}
               gap={3}
             >
-              {userSession && userSession.user?.blacklisted && (
+              {session && session.user?.blacklisted && (
                 <BlacklistedModal show={true} />
               )}
               <Heading fontSize={'57px'} py={2} textAlign={'center'}>

@@ -13,7 +13,8 @@
     "paths": {
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
-      "@context/*": ["context/*"],
+      "@contexts/*": ["contexts/*"],
+      "@site": ["contexts/SiteContext.tsx"],
       "@server/*": ["server/*"]
     }
   },

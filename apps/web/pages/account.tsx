@@ -1,18 +1,9 @@
-import {
-  Box,
-  Text,
-  Button,
-  Flex,
-  useToast,
-  Divider,
-  Center,
-} from '@chakra-ui/react';
+import { Box, Text, Button, Flex, useToast, Divider } from '@chakra-ui/react';
 import Layout from '@components/Layout';
 import React, { useState, useEffect } from 'react';
-import { signOut, getSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { ReactElement } from 'react';
 import { trpc } from '@utils/trpc';
-import { Session } from 'next-auth';
 import { useRouter } from 'next/router';
 import { TiTick } from 'react-icons/ti';
 import { RxCross2 } from 'react-icons/rx';
@@ -24,6 +15,7 @@ import { FaDiscord, FaBattleNet, FaTwitch } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { BsGithub, BsFacebook } from 'react-icons/bs';
 import { MdOutlineRemove } from 'react-icons/md';
+import useSite from '@site';
 
 type ProvidersListType = {
   name: string;
@@ -57,29 +49,25 @@ const ProvidersList: Array<ProvidersListType> = [
 ];
 
 export default function Account() {
-  const [userSession, setUserSession] = useState<Session | undefined>();
+  const { session, isLoading, setLoading } = useSite();
   const utils = trpc.useContext();
+  const router = useRouter();
   const toast = useToast();
+
   const { isLoading: laLoading, data: laData } =
     trpc.user.getLinkedAccounts.useQuery();
+
+  const [linkedAccounts, setLinkedAccounts] = useState(laData);
+  const [showModal, setShowModel] = useState(false);
+
   const unlinkAccount = trpc.user.unlinkAccount.useMutation({
     async onSuccess() {
       await utils.user.invalidate();
     },
   });
-  const [linkedAccounts, setLinkedAccounts] = useState(laData);
-  const [showM, setShowM] = useState(false);
-  const [siteLoading, setSiteLoading] = useState<boolean>(true);
-  const router = useRouter();
-
   const handleAccountDeletion = async () => {
-    if (showM) {
-      setShowM(false);
-    } else {
-      setShowM(true);
-    }
+    setShowModel(!showModal);
   };
-
   const unlinkProvider = async (account: {
     id: string;
     userId: string;
@@ -107,26 +95,24 @@ export default function Account() {
       });
     }
   };
+
   useEffect(() => {
-    const getCurrentSession = async () => {
-      const session = await getSession();
-      if (session) {
-        setUserSession(session);
-      } else {
-        router.push('/auth/login');
-      }
-      setSiteLoading(false);
-    };
     const getNecessaryData = () => {
-      if (!laLoading) setLinkedAccounts(laData);
+      if (!laLoading) {
+        setLoading(false);
+        setLinkedAccounts(laData);
+      }
       // in the future perhaps we add getting names for linked accounts, so we make a query here to get the user model
       // associated with the linked account.
     };
-    getCurrentSession();
-    getNecessaryData();
-  }, [laData, laLoading, router]);
 
-  if (laLoading || siteLoading) {
+    // if (session === null) router.push('/auth/login');
+    setLoading(true);
+    console.log(session);
+    getNecessaryData();
+  }, [isLoading, laData, laLoading, router, session, setLoading]);
+
+  if (isLoading) {
     return (
       <Box>
         <Loading color={'blue.500'} />
@@ -143,6 +129,7 @@ export default function Account() {
           />
         </Head>
         <Box minHeight={'100vh'} mt={{ base: '60px' }} mb={20}>
+          <DeleteAccModal show={false} />
           <Flex direction={'column'} gap={3}>
             <Flex direction={'column'}>
               <Text fontWeight={'bold'} fontSize={30}>
@@ -163,7 +150,6 @@ export default function Account() {
               minHeight={'60vh'}
               width={{ base: '90vw', md: '80vw' }}
             >
-              <DeleteAccModal show={showM} />
               <Flex direction={'column'} gap={20}>
                 <Flex
                   direction={{ base: 'column', md: 'row' }}
@@ -197,7 +183,7 @@ export default function Account() {
                                 ) ? (
                                   <>
                                     {name.toUpperCase() ==
-                                    userSession?.user?.provider.toUpperCase() ? (
+                                    session?.user?.provider.toUpperCase() ? (
                                       <Flex
                                         direction={'row'}
                                         align={'center'}
@@ -230,7 +216,7 @@ export default function Account() {
                                       </Text>
                                     </Flex>
                                     {name.toUpperCase() !=
-                                    userSession?.user?.provider.toUpperCase() ? (
+                                    session?.user?.provider.toUpperCase() ? (
                                       <Button
                                         leftIcon={<MdOutlineRemove />}
                                         colorScheme={'red'}
