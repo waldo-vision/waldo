@@ -1,3 +1,5 @@
+import { link } from 'fs';
+
 export const SITE = {
   title: 'Waldo Docs',
   description: 'Docs for the Waldo project.',
@@ -51,8 +53,9 @@ export const SIDEBAR: Sidebar = {
     ],
     Legal: [
       { text: 'Code of Conduct', link: 'legal/code-of-conduct' },
-      { text: 'Terms of Service', link: 'legal/terms-of-service' },
       { text: 'Cookie Policy', link: 'legal/cookie-policy' },
+      { text: 'Privacy Policy', link: 'legal/privacy-policy' },
+      { text: 'Terms of Service', link: 'legal/terms-of-service' },
     ],
   },
 };
