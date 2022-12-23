@@ -25,9 +25,9 @@ type Tab = {
 };
 
 const SideBarTabs: Tab[] = [
-  { tabName: 'Users', path: '/user', icon: <FaUserAlt /> },
+  { tabName: 'Users', path: '/users', icon: <FaUserAlt /> },
   { tabName: 'Gameplay', path: '/gameplay', icon: <FaGamepad /> },
-  { tabName: 'Site', path: '/site', icon: <FiGlobe /> },
+  { tabName: 'Status', path: '/status', icon: <FiGlobe /> },
 ];
 
 export default function SimpleSidebar({ children }: { children: ReactNode }) {
@@ -65,7 +65,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <Box
       bgColor={'white'}
@@ -154,44 +154,3 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     </Flex>
   );
 };
-
-// import React, { useEffect, useState } from 'react';
-// import { Box, Flex, Center, Text, Image } from '@chakra-ui/react';
-// import { FaUserAlt, FaGamepad } from 'react-icons/fa';
-// import { FiGlobe } from 'react-icons/fi';
-// import { useRouter } from 'next/router';
-// import Link from 'next/link';
-
-// export default function Sidebar() {
-//   const [tabs, setTabs] = useState<Array<Tab>>(sidebarTabs);
-//   const router = useRouter();
-//   useEffect(() => {
-//     setTabs(sidebarTabs);
-//   }, []);
-//   return (
-//     <Box height={'100vh'} minWidth={60} bgColor={'white'} py={3} px={5}>
-//       <Flex direction={'column'} height={'100%'} gap={'24px'}>
-//         <Link href={'/'}>
-//           <Flex direction={'row'}>
-//             <Center h={'100%'}>
-//               <Image
-//                 src={'../android-chrome-192x192.png'}
-//                 w={12}
-//                 h={12}
-//                 alt={'Logo'}
-//               />
-//               <Text ml={2} fontWeight={'bold'} fontSize={20}>
-//                 Waldo
-//               </Text>
-//             </Center>
-//           </Flex>
-//         </Link>
-//         {tabs && (
-//           <Flex direction={'column'} gap={2}>
-
-//           </Flex>
-//         )}
-//       </Flex>
-//     </Box>
-//   );
-// }
