@@ -52,6 +52,7 @@ export const SIDEBAR: Sidebar = {
     Legal: [
       { text: 'Code of Conduct', link: 'legal/code-of-conduct' },
       { text: 'Terms of Service', link: 'legal/terms-of-service' },
+      { text: 'Cookie Policy', link: 'legal/cookie-policy' },
     ],
   },
 };
