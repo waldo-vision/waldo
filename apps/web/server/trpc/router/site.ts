@@ -20,7 +20,7 @@ export const siteRouter = router({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const pageData = await ctx.prisma.waldoPage.findUnique({
+      const pageData = await ctx.prisma.waldoPage.findFirst({
         where: {
           name: input.pageName,
         },
@@ -31,7 +31,6 @@ export const siteRouter = router({
           message: 'Waldo Page not found in the database.',
         });
       }
-      console.log(pageData);
       // no error checking because the docs will never be deleted.
       return pageData;
     }),
@@ -93,6 +92,7 @@ export const siteRouter = router({
           message: 'Waldo Page not found in the database.',
         });
       }
+      console.log(updatePage, '!*&!&*!&*!*&!&*&*!&*!&*!&*!&*!&*!&*');
       // no error checking because the docs will never be deleted.
       return {
         message: `Updated page ${input.pageName}'s isDisabled value to ${input.isDisabled}`,
