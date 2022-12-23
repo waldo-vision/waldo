@@ -47,9 +47,10 @@ export default function Review() {
       });
     }
   };
+
   const handleReset = () => {
     updatePage.mutateAsync({
-      pageName: 'account',
+      pageName: 'review',
       isDisabled: reviewPageQData?.disabled,
       isCustomReason: reviewPageQData?.isCustomReason as boolean,
       customReason: nullCode,
@@ -109,28 +110,27 @@ export default function Review() {
               disabled={!reviewPageQData?.disabled}
             />
           </Flex>
-          <Collapse in={!reviewPageQData?.isCustomReason} animateOpacity>
+          <Collapse in={reviewPageQData?.isCustomReason} animateOpacity>
             <InputGroup size="md">
               <Input
                 pr="4.5rem"
                 borderRadius={10}
                 _focus={{ boxShadow: 'none' }}
                 type={'text'}
-                placeholder={'Reviewing gameplay is under maintenance...'}
-                onChange={event => setCustomReason(event.target.value)}
-                disabled={
-                  !reviewPageQData?.disabled || !reviewPageQData?.isCustomReason
+                placeholder={
+                  reviewPageQData?.customReason == nullCode
+                    ? 'Reviewing footage is under maintenance...'
+                    : reviewPageQData?.customReason
                 }
+                onChange={event => setCustomReason(event.target.value)}
+                disabled={!reviewPageQData?.disabled}
               />
               <InputRightElement width="4.5rem">
-                {customReason ? (
+                {reviewPageQData?.customReason == nullCode ? (
                   <Button
                     h="1.75rem"
                     size="sm"
-                    disabled={
-                      !reviewPageQData?.disabled ||
-                      !reviewPageQData?.isCustomReason
-                    }
+                    disabled={!reviewPageQData?.disabled}
                     onClick={() => handleApply(2)}
                   >
                     Apply
@@ -139,10 +139,7 @@ export default function Review() {
                   <Button
                     h="1.75rem"
                     size="sm"
-                    disabled={
-                      !reviewPageQData?.disabled ||
-                      !reviewPageQData?.isCustomReason
-                    }
+                    disabled={!reviewPageQData?.disabled}
                     onClick={() => handleReset()}
                   >
                     Reset

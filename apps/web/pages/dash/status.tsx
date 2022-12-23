@@ -21,8 +21,8 @@ import Sidebar from '@components/dashboard/Sidebar';
 import Review from '@components/dashboard/site/Review';
 import Upload from '@components/dashboard/site/Upload';
 import Account from '@components/dashboard/site/Account';
-import WaldoSite from '@components/dashboard/site/WaldoSite';
 import Stats from '@components/dashboard/site/Stats';
+import Maintenance from '@components/dashboard/site/Maintenance';
 import { ReactElement } from 'react';
 
 type ServicesListType = {
@@ -31,6 +31,10 @@ type ServicesListType = {
 };
 
 const ServicesList: ServicesListType[] = [
+  {
+    label: 'Maintenance Mode',
+    component: <Maintenance />,
+  },
   {
     label: 'Security & Authentication',
     component: <Account />,
@@ -41,7 +45,7 @@ const ServicesList: ServicesListType[] = [
   },
   {
     label: 'Gameplay Reviewing',
-    component: <Upload />,
+    component: <Review />,
   },
 ];
 
@@ -58,7 +62,7 @@ export default function Site() {
         width={'100%'}
       >
         <StatGroup>
-          {ServicesList.map(({ label, component, popover }, index) => (
+          {ServicesList.map(({ label, component }, index) => (
             <Stat
               minW={{ base: '80%', md: '40%' }}
               key={index}

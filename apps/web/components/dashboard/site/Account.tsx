@@ -123,7 +123,11 @@ export default function Review() {
                 borderRadius={10}
                 _focus={{ boxShadow: 'none' }}
                 type={'text'}
-                placeholder={'Creating new accounts is under maintenance...'}
+                placeholder={
+                  accountPageQData?.customReason == nullCode
+                    ? 'Creating new accounts is under maintenance...'
+                    : accountPageQData?.customReason
+                }
                 onChange={event => setCustomReason(event.target.value)}
                 disabled={!accountPageQData?.disabled}
               />
