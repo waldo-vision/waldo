@@ -50,8 +50,8 @@ export default function Review() {
   const handleReset = () => {
     updatePage.mutateAsync({
       pageName: 'account',
-      isDisabled: accountPageQData?.disabled,
-      isCustomReason: accountPageQData?.isCustomReason as boolean,
+      isDisabled: reviewPageQData?.disabled,
+      isCustomReason: reviewPageQData?.isCustomReason as boolean,
       customReason: nullCode,
     });
   };
