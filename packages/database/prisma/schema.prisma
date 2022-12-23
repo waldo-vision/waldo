@@ -11,13 +11,8 @@ datasource db {
 }
 
 model WaldoPage {
-  name      String    @id
+  name String @id
   waldosite WaldoSite @relation(fields: [siteName], references: [siteName], onDelete: Cascade)
-  siteName  String
-  disabled  Boolean   @default(false)
-}
-
-model WaldoSite {
   siteName String
   disabled Boolean @default(false)
   customReason String
@@ -84,9 +79,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   @@unique([provider, providerAccountId])
 }
 
@@ -112,9 +105,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-
   // our items
-  blacklisted  Boolean        @default(false)
+  blacklisted  Boolean? @default(false)
   footage      Footage[]
   role         Roles @default(USER)
   footageVotes FootageVotes[] @relation("user")
@@ -124,6 +116,5 @@ model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
-
   @@unique([identifier, token])
 }
