@@ -65,6 +65,7 @@ export default function User() {
   };
   const handlePageChange = async (add: boolean) => {
     setLoading(true);
+    await refetch();
     if (add) {
       setPageNumber(pageNumber + 1);
       await refetch();
@@ -75,7 +76,7 @@ export default function User() {
     }
     setLoading(false);
   };
-
+  console.log(data);
   if (isLoading) {
     return (
       <Box>
@@ -186,9 +187,9 @@ export default function User() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data?.map(result => {
+                  {data?.map((result, index) => {
                     return (
-                      <Tr bgColor={'white'} height={'70px'}>
+                      <Tr bgColor={'white'} height={'70px'} key={index}>
                         <Td borderLeftRadius={16}>
                           <Flex direction={'row'} align={'center'} gap={2}>
                             <Image
@@ -237,33 +238,37 @@ export default function User() {
                     );
                   })}
                 </Tbody>
-                {!loading && (
-                  <Tfoot>
+                <Tfoot bgColor={'white'} height={'50px'}>
+                  <Tr>
+                    <Td borderLeftRadius={16} />
                     <Td />
                     <Td />
                     <Td />
                     <Td />
-                    <Td />
-                    <Td
-                      onClick={() => setPageNumber(pageNumber + 1)}
-                      bgColor={'white'}
-                      borderRadius={14}
-                    >
-                      <Flex direction={'row'}>
-                        <Text fontWeight={'semibold'}>Page</Text>{' '}
-                        <Text ml={2}>
-                          {pageNumber} of{' '}
-                          {Math.ceil(data[0].userCount / Math.round(10))}
-                        </Text>
-                      </Flex>
-                      <Box mt={1}>
+                    <Td bgColor={'white'} borderRadius={16} isTruncated>
+                      <Flex
+                        direction={'row'}
+                        align={'center'}
+                        textAlign={'center'}
+                        gap={2}
+                      >
                         <ChevronLeftIcon
                           cursor={'pointer'}
                           h={6}
                           w={6}
                           _hover={{ color: 'gray.400' }}
-                          onClick={() => handlePageChange(false)}
+                          color={pageNumber === 1 ? 'gray.300' : ''}
+                          onClick={() =>
+                            pageNumber === 1 ? null : handlePageChange(false)
+                          }
                         />
+                        <Flex>
+                          <Text fontWeight={'semibold'}>Page</Text>{' '}
+                          <Text ml={2}>
+                            {pageNumber} of{' '}
+                            {Math.ceil(data[0].userCount / Math.round(10))}
+                          </Text>
+                        </Flex>
                         <ChevronRightIcon
                           cursor={'pointer'}
                           h={6}
@@ -271,10 +276,10 @@ export default function User() {
                           _hover={{ color: 'gray.400' }}
                           onClick={() => handlePageChange(true)}
                         />
-                      </Box>
+                      </Flex>
                     </Td>
-                  </Tfoot>
-                )}
+                  </Tr>
+                </Tfoot>
               </Table>
             </Box>
           </Box>
