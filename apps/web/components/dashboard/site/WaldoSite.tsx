@@ -21,9 +21,15 @@ const WaldoSite = () => {
       await utils.site.invalidate();
     },
   });
-  const { data, isLoading } = trpc.site.getSiteData.useQuery({
-    siteName: 'waldo',
-  });
+  const { data, isLoading } = trpc.site.getSiteData.useQuery(
+    {
+      siteName: 'waldo',
+    },
+    {
+      // every 15 seconds
+      refetchInterval: 15000,
+    },
+  );
   const [alertDescription, setAlertDescription] = useState<string | null>(null);
   const [alertTitle, setAlertTitle] = useState<string | null>(null);
 
