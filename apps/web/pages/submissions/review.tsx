@@ -7,7 +7,6 @@ import Loading from '@components/Loading';
 import Layout from '@components/Layout';
 import { trpc } from '@utils/trpc';
 import Head from 'next/head';
-require('default-passive-events');
 interface ReviewItem {
   user?:
     | {

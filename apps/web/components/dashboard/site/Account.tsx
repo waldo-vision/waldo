@@ -9,6 +9,9 @@ import {
   Stack,
   Center,
   Spinner,
+  Button,
+  Collapse,
+  InputRightElement,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { BsCheckCircle } from 'react-icons/bs';
@@ -52,93 +55,85 @@ export default function Review() {
     }
   };
   return (
-    <div>
-      <Flex direction={'row'}>
-        {accountPageQLoading ? (
-          <Center w={'150vh'} h={'100vh'}>
-            <Spinner size={'lg'} color={'blue.500'} />
-          </Center>
-        ) : (
-          <Flex w={'inherit'} p={12} direction={'column'}>
-            <Flex bgColor={'white'} borderRadius={14} direction={'column'}>
-              <Box
-                py={2}
-                borderTopRadius={14}
-                bgColor={accountPageQData?.disabled ? 'red.400' : 'green.400'}
-              ></Box>
-              <Box p={4}>
-                <Text fontWeight={'semibold'} fontSize={'3xl'}>
-                  {accountPageQData?.name.charAt(0).toUpperCase() +
-                    accountPageQData?.name.slice(1)}
-                </Text>
-                <Flex mt={2} direction={'row'} alignItems={'center'} gap={2}>
-                  <Text fontWeight={'normal'} fontSize={'lg'}>
-                    Disabled
-                  </Text>
-                  <Switch
-                    size={'md'}
-                    defaultChecked={accountPageQData?.disabled}
-                    onChange={() => handleApply(0)}
-                  />
-                </Flex>
-                <Flex mt={2} direction={'row'} alignItems={'center'} gap={2}>
-                  <Text fontWeight={'normal'} fontSize={'lg'}>
-                    Custom Reason
-                  </Text>
-                  <Switch
-                    size={'md'}
-                    onChange={() => {
-                      handleApply(1);
-                    }}
-                    defaultChecked={accountPageQData?.isCustomReason}
-                  />
-                </Flex>
-                {accountPageQData?.isCustomReason && (
-                  <>
-                    <Text
-                      onClick={() => {
-                        setCustomReason(nullCode);
-                        handleApply(2);
-                      }}
-                      mt={4}
-                      mb={1}
-                      fontStyle={'italic'}
-                      cursor={'pointer'}
-                      _hover={{ textColor: 'gray.600' }}
-                    >
-                      Unset Reason
-                    </Text>
-                    <Stack spacing={4}>
-                      <InputGroup>
-                        <InputLeftAddon
-                          children={
-                            <Box
-                              _hover={{ bgColor: 'gray.300', borderRadius: 12 }}
-                              onClick={() => handleApply(2)}
-                            >
-                              <BsCheckCircle size={26} cursor={'pointer'} />
-                            </Box>
-                          }
-                        />
-                        <Input
-                          placeholder={
-                            accountPageQData?.customReason == nullCode
-                              ? 'Custom Reason'
-                              : accountPageQData?.customReason
-                          }
-                          onChange={event =>
-                            setCustomReason(event.target.value)
-                          }
-                        />
-                      </InputGroup>
-                    </Stack>
-                  </>
-                )}
-              </Box>
-            </Flex>
-          </Flex>
-        )}
+    <Flex direction={'column'} gap={5} mb={5}>
+      <Flex direction={'column'}>
+        <Text>Configure Service</Text>
+        <Text fontSize={'medium'} fontWeight={'medium'}>
+          By disabling this service you are preventing users from creating new
+          accounts or logging in. However already logged in accounts will still
+          be able to log in and access other services as usual.
+        </Text>
       </Flex>
-    </div>
+      <Flex
+        direction={'row'}
+        alignItems={'center'}
+        gap={2}
+        justify={'space-between'}
+      >
+        <Text fontWeight={'normal'} fontSize={'lg'}>
+          Enable service
+        </Text>
+        <Switch
+          size={'md'}
+          defaultChecked={!accountPageQData?.disabled}
+          onChange={() => handleApply(0)}
+        />
+      </Flex>
+      <Flex
+        direction={'row'}
+        alignItems={'center'}
+        gap={2}
+        justify={'space-between'}
+      >
+        <Text
+          fontWeight={'normal'}
+          fontSize={'lg'}
+          opacity={!accountPageQData?.disabled ? '0.4' : '1'}
+          _hover={!accountPageQData?.disabled ? { cursor: 'not-allowed' } : {}}
+        >
+          Use custom message
+        </Text>
+        <Switch
+          size={'md'}
+          onChange={() => {
+            handleApply(1);
+          }}
+          defaultChecked={accountPageQData?.isCustomReason}
+          disabled={!accountPageQData?.disabled}
+        />
+      </Flex>
+      <Collapse in={accountPageQData?.isCustomReason} animateOpacity>
+        <InputGroup size="md">
+          <Input
+            pr="4.5rem"
+            borderRadius={10}
+            _focus={{ boxShadow: 'none' }}
+            type={'text'}
+            placeholder={'Creating new accounts is under maintenance...'}
+            onChange={event => setCustomReason(event.target.value)}
+            disabled={!accountPageQData?.disabled}
+          />
+          <InputRightElement width="4.5rem">
+            {customReason ? (
+              <Button
+                h="1.75rem"
+                size="sm"
+                disabled={!accountPageQData?.disabled}
+              >
+                Apply
+              </Button>
+            ) : (
+              <Button
+                h="1.75rem"
+                size="sm"
+                disabled={!accountPageQData?.disabled}
+              >
+                Reset
+              </Button>
+            )}
+          </InputRightElement>
+        </InputGroup>
+      </Collapse>
+    </Flex>
   );
 }

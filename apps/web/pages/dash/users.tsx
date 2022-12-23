@@ -18,43 +18,28 @@ import {
   Thead,
   Tr,
   Flex,
-  Tfoot,
-  useToast,
 } from '@chakra-ui/react';
 import Sidebar from '@components/dashboard/Sidebar';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ChevronDownIcon, SearchIcon } from '@chakra-ui/icons';
 import { trpc } from '@utils/trpc';
 import Loading from '@components/Loading';
 import { FiUser } from 'react-icons/fi';
 import { CiWarning } from 'react-icons/ci';
 import { BiBlock } from 'react-icons/bi';
-import {
-  BsFillExclamationOctagonFill,
-  BsChevronLeft,
-  BsChevronRight,
-} from 'react-icons/bs';
-import { getSession } from 'next-auth/react';
-import { Session } from 'next-auth';
+import { BsFillExclamationOctagonFill } from 'react-icons/bs';
 
 export default function User() {
   // Searching states
   const [searchUser, setSearchUser] = useState<string>();
-  const [searchRole, setSearchRole] = useState<string | null>(null);
+  const [searchRole, setSearchRole] = useState<string>('All');
 
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [rows, setRows] = useState({});
 
-  const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1, filterRoles: searchRole });
-  const handleFilter = async (role: string | null) => {
-    if (role == null) {
-      setSearchRole(null)
-      return;
-    }
-    setSearchRole(role.toUpperCase())
-  }
+  const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   if (isLoading) {
     return (
       <Box>
@@ -91,10 +76,10 @@ export default function User() {
                 Roles: {searchRole}
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={() => handleFilter(null)}>All</MenuItem>
-                <MenuItem onClick={() => handleFilter('User')}>User</MenuItem>
-                <MenuItem onClick={() => handleFilter('Mod')}>Mod</MenuItem>
-                <MenuItem onClick={() => handleFilter('Admin')}>
+                <MenuItem onClick={() => setSearchRole('All')}>All</MenuItem>
+                <MenuItem onClick={() => setSearchRole('User')}>User</MenuItem>
+                <MenuItem onClick={() => setSearchRole('Mod')}>Mod</MenuItem>
+                <MenuItem onClick={() => setSearchRole('Admin')}>
                   Admin
                 </MenuItem>
               </MenuList>
@@ -190,7 +175,7 @@ export default function User() {
                         </Td>
                         <Td>
                           <Text casing={'capitalize'} fontSize={15}>
-                            {result.blacklisted ? "Blacklisted" : result.role.toLowerCase()}
+                            {result.role.toLowerCase()}
                           </Text>
                         </Td>
                         <Td>
@@ -207,7 +192,7 @@ export default function User() {
                           </Text>
                         </Td>
                         <Td borderRightRadius={16}>
-                          <MenuAction userId={result.id} isBlacklisted={result.blacklisted}/>
+                          <MenuAction />
                         </Td>
                       </Tr>
                     );
@@ -221,73 +206,19 @@ export default function User() {
     );
   }
 }
-interface MenuActionProps {
-  userId: string
-  isBlacklisted: boolean | null
-}
-const MenuAction = (props:MenuActionProps) => {
-  const userId = props.userId;
-  const blacklisted = props.isBlacklisted
-  const utils = trpc.useContext()
-  const toast = useToast()
-  const changeRole = trpc.user.updateUser.useMutation({
-    async onSuccess() {
-      await utils.user.invalidate()
-    }
-  })
-  const suspendUser = trpc.user.blackListUser.useMutation({
-    async onSuccess() {
-      await utils.user.invalidate()
-    }
-  })
-  const handleRoleChange = async (roleToChange: string) => {
-    await changeRole.mutateAsync({ role: roleToChange, userId: userId})
-    toast({
-      position: 'bottom-right',
-      title: 'Role Change',
-      description: `Successfully changed the selected user's role to ${roleToChange}`,
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
-  }
 
-  const handleSuspendUser = async () => {
-    await suspendUser.mutateAsync({ userId: userId, blacklisted: !blacklisted })
-    if (blacklisted) {
-    toast({
-      position: 'bottom-right',
-      title: 'Un-Suspend User',
-      description: `Successfully un-suspeneded the user.`,
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
-  } else {
-    toast({
-      position: 'bottom-right',
-      title: 'Suspend User',
-      description: `Successfully suspeneded the user.`,
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
-  }
-  }
-  return (
+const MenuAction = () => (
   <Menu>
     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
       Actions
     </MenuButton>
     <MenuList p={0} borderBottomRadius={12}>
-      <MenuItem height={'35px'} icon={<FiUser size={16} />} onClick={() => handleRoleChange("USER")}
->
+      <MenuItem height={'35px'} icon={<FiUser size={16} />}>
         Grant User
       </MenuItem>
       <MenuItem
         height={'35px'}
         icon={<CiWarning size={16} style={{ strokeWidth: '1px' }} />}
-        onClick={() => handleRoleChange("MOD")}
       >
         Grant Mod
       </MenuItem>
@@ -295,7 +226,6 @@ const MenuAction = (props:MenuActionProps) => {
         color={'red.300'}
         height={'35px'}
         _hover={{ bgColor: 'red.200', color: 'white' }}
-        onClick={() => handleRoleChange("ADMIN")}
         icon={<BsFillExclamationOctagonFill size={16} />}
       >
         Grant Admin
@@ -310,10 +240,9 @@ const MenuAction = (props:MenuActionProps) => {
         borderTopRadius={0}
         borderBottomRadius={12}
         _hover={{ bgColor: 'red.400' }}
-        onClick={() => handleSuspendUser()}
       >
-        {blacklisted ? "Un-Suspend User" : "Suspend User"}
+        Suspend User
       </MenuItem>
     </MenuList>
   </Menu>
-)}
+);
