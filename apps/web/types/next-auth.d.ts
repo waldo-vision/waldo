@@ -1,5 +1,9 @@
 import { type DefaultSession } from 'next-auth';
-
+enum Roles {
+  USER = 0,
+  MOD = 1,
+  ADMIN = 2,
+}
 declare module 'next-auth' {
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
@@ -8,7 +12,7 @@ declare module 'next-auth' {
     user?: {
       id: string;
       provider: string;
-      role: string;
+      role: Roles;
       blacklisted: boolean;
     } & DefaultSession['user'];
   }

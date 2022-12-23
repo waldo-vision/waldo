@@ -18,7 +18,7 @@ export const clipRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           // when this api is used check for owner
           // itemOwnerId: clip.footage.userId,
@@ -62,7 +62,7 @@ export const clipRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           // when this api is used check for owner
           // itemOwnerId: clip.footage.userId,
@@ -101,7 +101,7 @@ export const clipRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })

@@ -8,11 +8,11 @@ import {
   StatNumber,
 } from '@chakra-ui/react';
 import Sidebar from '@components/dashboard/Sidebar';
-import Review from '@components/dashboard/site/Review';
-import Upload from '@components/dashboard/site/Upload';
-import Account from '@components/dashboard/site/Account';
-import Stats from '@components/dashboard/site/Stats';
-import Maintenance from '@components/dashboard/site/Maintenance';
+import Review from '@components/dashboard/status/Review';
+import Upload from '@components/dashboard/status/Upload';
+import Account from '@components/dashboard/status/Account';
+import Stats from '@components/dashboard/status/Stats';
+import Maintenance from '@components/dashboard/status/Maintenance';
 import { ReactElement } from 'react';
 import Layout from '@components/dashboard/Layout';
 

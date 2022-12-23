@@ -32,7 +32,7 @@ export const gameplayRouter = router({
         gameplay === null ||
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           itemOwnerId: gameplay.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -115,7 +115,7 @@ export const gameplayRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -190,7 +190,7 @@ export const gameplayRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           itemOwnerId: userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -246,7 +246,7 @@ export const gameplayRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           itemOwnerId: gameplay.userId,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
@@ -285,7 +285,7 @@ export const gameplayRouter = router({
         if (
           !hasPerms({
             userId: ctx.session.user.id,
-            userRole: Roles.User,
+            userRole: ctx.session.user.role,
             itemOwnerId: gameplay.userId,
             requiredPerms,
             blacklisted: ctx.session.user.blacklisted,
@@ -336,7 +336,7 @@ export const gameplayRouter = router({
         if (
           !hasPerms({
             userId: ctx.session.user.id,
-            userRole: Roles.User,
+            userRole: ctx.session.user.role,
             itemOwnerId: gameplay.userId,
             requiredPerms: Perms.isOwner,
             blacklisted: ctx.session.user.blacklisted,

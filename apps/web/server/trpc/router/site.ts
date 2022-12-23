@@ -80,7 +80,7 @@ export const siteRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })

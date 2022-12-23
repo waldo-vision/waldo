@@ -19,7 +19,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: 2,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleAdmin,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -62,7 +62,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: 2,
+          userRole: ctx.session.user.role,
           itemOwnerId: input.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -143,7 +143,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: 2,
+          userRole: ctx.session.user.role,
           itemOwnerId: account?.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -185,7 +185,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: 2,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -252,7 +252,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: 2,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleAdmin,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -281,11 +281,23 @@ export const userRouter = router({
     .meta({ openapi: { method: 'GET', path: '/user/search' } })
     .input(
       z.object({
-        name: z.string(),
+        name: z.string().nullable(),
       }),
     )
     .output(UserSchema)
     .query(async ({ input, ctx }) => {
+      console.log(ctx.session);
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: ctx.session.user.role,
+          requiredPerms: Perms.roleAdmin,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
       try {
         const user = await ctx.prisma.user.findFirst({
           where: {

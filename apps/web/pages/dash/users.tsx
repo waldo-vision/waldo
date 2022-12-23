@@ -50,8 +50,7 @@ type Query =
   | undefined;
 export default function User() {
   // Searching states
-  const [searchUser, setSearchUser] = useState<string>('');
-  const [searchUserValue, setSearchUserValue] = useState<string>('');
+  const [searchUserValue, setSearchUserValue] = useState<string | null>(null);
 
   const [searchRole, setSearchRole] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -74,7 +73,8 @@ export default function User() {
     data: searchFilterData,
     isLoading: searchFilterLoading,
     refetch: searchFilterRefetch,
-  } = trpc.user.search.useQuery({ name: searchUser }, { enabled: true });
+    isError,
+  } = trpc.user.search.useQuery({ name: searchUserValue }, { enabled: true });
   const handleFilter = async (role: string | null) => {
     if (role == null) {
       setSearchRole(null);
@@ -82,11 +82,7 @@ export default function User() {
     }
     setSearchRole(role.toUpperCase());
   };
-  const search = async () => {
-    setSearchUser(searchUserValue);
 
-    setData([searchFilterData]);
-  };
   const handlePageChange = async (add: boolean) => {
     setLoading(true);
     await userQueryRefetch();
@@ -102,13 +98,19 @@ export default function User() {
   };
   useEffect(() => {
     const doLoadThings = async () => {
-      await userQueryRefetch();
-      await searchFilterRefetch();
-      setData(userQueryData);
+      if (searchUserValue == '') {
+        setSearchUserValue(null);
+      }
+      if (!isError && searchFilterData) {
+        setData([searchFilterData]);
+      } else {
+        await userQueryRefetch();
+        setData(userQueryData);
+      }
     };
     doLoadThings();
-  }, [userQueryData]);
-  if (userQueryLoading || searchFilterLoading) {
+  }, [userQueryData, searchFilterData]);
+  if (userQueryLoading) {
     return (
       <Box>
         <Loading color={'blue.500'} />
@@ -134,7 +136,7 @@ export default function User() {
             placeholder={'Search Users'}
             onChange={e => setSearchUserValue(e.target.value)}
           />
-          <InputRightElement mt={1} onClick={() => search()}>
+          <InputRightElement mt={1}>
             <SearchIcon />
           </InputRightElement>
         </InputGroup>
