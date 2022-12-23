@@ -156,7 +156,7 @@ export default function Home() {
             ref={helpRef}
             align={'center'}
             spacing={{ base: 8, md: 10 }}
-            paddingBottom={{base: 20, md: 28}}
+            paddingBottom={{ base: 20, md: 28 }}
             direction={{ base: 'column', md: 'row' }}
           >
             <Stack flex={1} spacing={{ base: 5, md: 10 }}>
@@ -196,7 +196,7 @@ export default function Home() {
                 spacing={{ base: 4, sm: 6 }}
                 direction={{ base: 'column', sm: 'row' }}
               >
-                <Link href={'https://discord.gg/MPAV4qP8Hx'}>
+                <Link href={'/chat'}>
                   <Button variant={'solid'} colorScheme={'purple'}>
                     Join the Discord
                   </Button>
@@ -224,7 +224,7 @@ export default function Home() {
           </Stack>
         </Container>
         <Features />
-        <Container maxW={'7xl'} paddingTop={{base: 20, md: 28}}>
+        <Container maxW={'7xl'} paddingTop={{ base: 20, md: 28 }}>
           <Center>
             <Flex
               direction={'column'}
@@ -317,7 +317,7 @@ const Features = () => {
                   Bring back the fun in your games with Waldo.
                 </Text>
               </Flex>
-              <Link href={'https://discord.gg/MPAV4qP8Hx'}>
+              <Link href={'/chat'}>
                 <Button variant={'solid'} colorScheme={'purple'}>
                   Join the Discord
                 </Button>
@@ -504,7 +504,7 @@ Home.getLayout = function getLayout(page: ReactElement) {
 //           spacing={{ base: 4, sm: 6 }}
 //           direction={{ base: 'column', sm: 'row' }}
 //         >
-//           <Link href={'https://discord.gg/MPAV4qP8Hx'}>
+//           <Link href={'/chat'}>
 //             <Button variant={'solid'} colorScheme={'purple'}>
 //               Join the Discord
 //             </Button>
