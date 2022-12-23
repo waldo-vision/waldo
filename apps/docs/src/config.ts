@@ -49,5 +49,6 @@ export const SIDEBAR: Sidebar = {
       { text: 'Introduction', link: 'en/introduction' },
       { text: 'Getting Started', link: 'en/getting-started' },
     ],
+    Legal: [{ text: 'Code of Conduct', link: 'legal/code-of-conduct' }],
   },
 };
