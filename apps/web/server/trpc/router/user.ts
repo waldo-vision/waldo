@@ -19,7 +19,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleAdmin,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -62,7 +62,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           itemOwnerId: input.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -143,7 +143,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           itemOwnerId: account?.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -185,7 +185,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -252,7 +252,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleAdmin,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -273,6 +273,43 @@ export const userRouter = router({
       } catch (error) {
         throw new TRPCError({
           message: 'No clip document with the UUID provided could be found.',
+          code: 'NOT_FOUND',
+        });
+      }
+    }),
+  search: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/user/search' } })
+    .input(
+      z.object({
+        name: z.string().nullable(),
+      }),
+    )
+    .output(UserSchema)
+    .query(async ({ input, ctx }) => {
+      console.log(ctx.session);
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: ctx.session.user.role,
+          requiredPerms: Perms.roleAdmin,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+      try {
+        const user = await ctx.prisma.user.findFirst({
+          where: {
+            name: {
+              contains: input.name,
+            },
+          },
+        });
+        return user;
+      } catch (error) {
+        throw new TRPCError({
+          message: 'No user document with the name provided could be found.',
           code: 'NOT_FOUND',
         });
       }

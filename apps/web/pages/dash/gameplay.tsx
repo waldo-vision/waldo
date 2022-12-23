@@ -1,5 +1,7 @@
 import { Flex } from '@chakra-ui/layout';
+import Layout from '@components/dashboard/Layout';
 import Sidebar from '@components/dashboard/Sidebar';
+import { ReactElement } from 'react';
 
 export default function Gameplay() {
   return (
@@ -10,3 +12,7 @@ export default function Gameplay() {
     </div>
   );
 }
+
+Gameplay.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};

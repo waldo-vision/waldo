@@ -8,22 +8,23 @@ export const siteRouter = router({
     .meta({ openapi: { method: 'GET', path: '/site/page' } })
     .input(
       z.object({
-        pageName: z.string(),
+        name: z.string(),
       }),
     )
     .output(
       z.object({
-        disabled: z.boolean(),
+        maintenance: z.boolean(),
         name: z.string(),
-        siteName: z.string(),
-        customReason: z.string(),
-        isCustomReason: z.boolean(),
+        parentName: z.string(),
+        alertDescription: z.string().nullable(),
+        alertTitle: z.string().nullable(),
+        isCustomAlert: z.boolean(),
       }),
     )
     .query(async ({ input, ctx }) => {
       const pageData = await ctx.prisma.waldoPage.findFirst({
         where: {
-          name: input.pageName,
+          name: input.name,
         },
       });
       if (pageData == null) {
@@ -44,17 +45,17 @@ export const siteRouter = router({
     )
     .output(
       z.object({
-        siteName: z.string(),
+        name: z.string(),
         maintenance: z.boolean(),
-        showLpAlert: z.boolean(),
-        lpAlertTitle: z.string(),
-        lpAlertDescription: z.string(),
+        isCustomAlert: z.boolean(),
+        alertTitle: z.string().nullable(),
+        alertDescription: z.string().nullable(),
       }),
     )
     .query(async ({ input, ctx }) => {
       const siteData = await ctx.prisma.waldoSite.findUnique({
         where: {
-          siteName: input.siteName,
+          name: input.siteName,
         },
       });
       if (siteData == null) {
@@ -69,10 +70,11 @@ export const siteRouter = router({
     .meta({ openapi: { method: 'POST', path: '/site/page' } })
     .input(
       z.object({
-        pageName: z.string(),
-        isDisabled: z.boolean(),
-        isCustomReason: z.boolean(),
-        customReason: z.string(),
+        name: z.string(),
+        maintenance: z.boolean(),
+        isCustomAlert: z.boolean(),
+        alertTitle: z.string().nullable(),
+        alertDescription: z.string().nullable(),
       }),
     )
     .output(z.object({ message: z.string() }))
@@ -80,7 +82,7 @@ export const siteRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -91,12 +93,13 @@ export const siteRouter = router({
 
       const updatePage = await ctx.prisma.waldoPage.update({
         where: {
-          name: input.pageName,
+          name: input.name,
         },
         data: {
-          disabled: input.isDisabled,
-          isCustomReason: input.isCustomReason,
-          customReason: input.customReason,
+          maintenance: input.maintenance,
+          isCustomAlert: input.isCustomAlert,
+          alertTitle: input.alertTitle,
+          alertDescription: input.alertDescription,
         },
       });
       if (updatePage == null) {
@@ -105,33 +108,32 @@ export const siteRouter = router({
           message: 'Waldo Page not found in the database.',
         });
       }
-      console.log(updatePage, '!*&!&*!&*!*&!&*&*!&*!&*!&*!&*!&*!&*');
       // no error checking because the docs will never be deleted.
       return {
-        message: `Updated page ${input.pageName}'s isDisabled value to ${input.isDisabled}`,
+        message: `Updated page ${input.name}'s maintenance value to ${input.maintenance}`,
       };
     }),
   updateSite: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/site/site' } })
     .input(
       z.object({
-        isMaintenance: z.boolean(),
-        showLpAlert: z.boolean(),
-        lpAlertTitle: z.string(),
-        lpAlertDescription: z.string(),
+        maintenance: z.boolean(),
+        isCustomAlert: z.boolean(),
+        alertTitle: z.string().nullable(),
+        alertDescription: z.string().nullable(),
       }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
       const updateSite = await ctx.prisma.waldoSite.update({
         where: {
-          siteName: 'waldo',
+          name: 'waldo',
         },
         data: {
-          maintenance: input.isMaintenance,
-          showLpAlert: input.showLpAlert,
-          lpAlertDescription: input.lpAlertDescription,
-          lpAlertTitle: input.lpAlertTitle,
+          maintenance: input.maintenance,
+          isCustomAlert: input.isCustomAlert,
+          alertDescription: input.alertDescription,
+          alertTitle: input.alertTitle,
         },
       });
       if (updateSite == null) {
