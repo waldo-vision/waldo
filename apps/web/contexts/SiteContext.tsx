@@ -1,5 +1,5 @@
 import { Session } from 'next-auth';
-import { getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import {
   createContext,
   Dispatch,
@@ -23,8 +23,8 @@ type Props = {
 };
 
 export interface ISiteContext {
-  session: Session | null;
-  setSession: Dispatch<SetStateAction<Session | null>>;
+  session: Session | undefined | null;
+  setSession: Dispatch<SetStateAction<Session | undefined | null>>;
   isLoading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setSiteConfig: Dispatch<SetStateAction<ServiceConfig>>;
@@ -40,11 +40,11 @@ export interface ISiteContext {
 }
 
 const SiteContext = createContext<ISiteContext>({
-  session: null,
-  setSession: (value: SetStateAction<Session | null>): void => {
+  session: undefined,
+  setSession: (value: SetStateAction<Session | undefined | null>): void => {
     value;
   },
-  isLoading: false,
+  isLoading: true,
   setLoading: (value: SetStateAction<boolean>): void => {
     value;
   },
@@ -93,8 +93,8 @@ const useSite = (): ISiteContext => {
 };
 
 export const SiteProvider = ({ children }: Props): ReactElement => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [session, setSession] = useState<Session | null | undefined>(undefined);
+  const [isLoading, setLoading] = useState<boolean>(true);
   const [siteConfig, setSiteConfig] = useState<ServiceConfig>({
     maintenance: false,
     isCustomAlert: false,
@@ -136,16 +136,17 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
       account: accountConfig,
     },
   };
-
+  const { data, status } = useSession();
+  console.log(status);
   useEffect(() => {
-    const fetchSession = async () => {
-      const fetchedSession = await getSession();
-      if (fetchSession === null) {
-        setSession(fetchedSession);
-      }
-    };
-    fetchSession();
-  }, []);
+    status === 'loading'
+      ? setSession(undefined)
+      : status === 'authenticated'
+      ? setSession(data)
+      : status === 'unauthenticated'
+      ? setSession(data)
+      : setSession(undefined);
+  }, [data, status]);
 
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>;
 };

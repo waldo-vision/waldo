@@ -96,53 +96,6 @@ export default function AccGameplayItems() {
                     </Box>
                   </Flex>
                 </Box>
-
-                // <Center>
-                //   <Flex
-                //     direction={'row'}
-                //     mt={2}
-                //     width={'100%'}
-                //     boxShadow={'md'}
-                //     borderRadius={14}
-                //     px={10}
-                //     py={5}
-                //     key={index}
-                //     justify={'space-between'}
-                //   >
-                //     <Flex>
-                //       <Image
-                //         src={getThumbnail(item.youtubeUrl)}
-                //         alt={'Profile Icon'}
-                //         height={{
-                //           base: '40px',
-                //           sm: '40px',
-                //           md: '40px',
-                //           lg: '80px',
-                //         }}
-                //         width={{
-                //           base: '60px',
-                //           sm: '60px',
-                //           md: '60px',
-                //           lg: '120px',
-                //         }}
-                //         borderRadius={14}
-                //         onClick={() => {
-                //           console.log(gameplayItems);
-                //         }}
-                //       />
-                //       <Box>
-                //         <Flex direction={'column'}>
-                //           <Box ml={2} mr={2}>
-                //             <AccGameplayItemExtended
-                //               item={item}
-                //               id={getVideoId(item.youtubeUrl)}
-                //             />
-                //           </Box>
-                //         </Flex>
-                //       </Box>
-                //     </Flex>
-                //   </Flex>
-                // </Center>
               ))}
           </Flex>
           {gameplayItems && gameplayItems.length < 1 && (
