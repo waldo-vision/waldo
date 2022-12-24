@@ -51,7 +51,7 @@ export default function Footer() {
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Follow Us</ListHeader>
-            <Link href={'https://discord.gg/MPAV4qP8Hx'}>Discord</Link>
+            <Link href={'/chat'}>Discord</Link>
             <Link href={'https://github.com/waldo-vision'}>Github</Link>
             <Link href={'https://twitter.com/waldovision'}>Twitter</Link>
           </Stack>

@@ -175,7 +175,7 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: 'Community',
-    href: 'https://discord.gg/qJWcsS9TyT',
+    href: '/chat',
     pathName: null,
   },
   {
