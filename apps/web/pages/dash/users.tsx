@@ -109,7 +109,7 @@ export default function User() {
       }
     };
     doLoadThings();
-  }, [userQueryData, searchFilterData]);
+  }, [userQueryData, searchFilterData, isError]);
   if (userQueryLoading) {
     return (
       <Box>
@@ -345,12 +345,12 @@ const MenuAction = (props: MenuActionProps) => {
   const blacklisted = props.isBlacklisted;
   const utils = trpc.useContext();
   const toast = useToast();
-  const changeRole = trpc.user.updateUser.useMutation({
+  const changeRole = trpc.user.updateRole.useMutation({
     async onSuccess() {
       await utils.user.invalidate();
     },
   });
-  const suspendUser = trpc.user.blackListUser.useMutation({
+  const suspendUser = trpc.user.blackList.useMutation({
     async onSuccess() {
       await utils.user.invalidate();
     },
