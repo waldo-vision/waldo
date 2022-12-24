@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import WaldoLogo from '../public/android-chrome-256x256.png';
 import GithubLogo from '../public/navbar_github.png';
+import { discord, docs, githubrepo } from '@utils/links';
 
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -155,7 +156,7 @@ const MobileNavItem = ({ label, href }: NavItem) => {
   );
 };
 
-const githubIconHref = 'https://github.com/waldo-vision';
+const githubIconHref = githubrepo;
 interface NavItem {
   label: string;
   href: string;
@@ -175,12 +176,12 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: 'Community',
-    href: '/chat',
+    href: discord,
     pathName: null,
   },
   {
     label: 'Docs',
-    href: 'https://docs.waldo.vision',
+    href: docs,
     pathName: null,
   },
 ];

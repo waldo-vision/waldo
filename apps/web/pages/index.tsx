@@ -23,6 +23,7 @@ import DashboardImage from '../public/Dashboard.png';
 import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
 import useSite from '@site';
+import { githubrepo, githubrepoIssues } from '@utils/links';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
@@ -325,7 +326,7 @@ const Features = () => {
             text={
               <Text>
                 You can view the source code on our{' '}
-                <Link href={'https://github.com/waldo-vision'}>
+                <Link href={githubrepo}>
                   <Text as={'span'} fontWeight={'bold'}>
                     github
                   </Text>
@@ -384,7 +385,7 @@ const Features = () => {
               <Text>
                 Issues and fixes are much quicker through the community. Check
                 the{' '}
-                <Link href={'https://github.com/waldo-vision'}>
+                <Link href={githubrepoIssues}>
                   <Text as={'span'} fontWeight={'bold'}>
                     issues
                   </Text>

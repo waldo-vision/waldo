@@ -10,7 +10,14 @@ import {
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import Image from 'next/image';
-import React from 'react';
+import {
+  docs,
+  github,
+  githubrepo,
+  mailto,
+  twitter,
+  discord,
+} from '@utils/links';
 import WaldoLogo from '../public/android-chrome-256x256.png';
 
 const Logo = () => {
@@ -31,10 +38,10 @@ export default function Footer() {
       <Container as={Stack} maxW={'6xl'} py={10}>
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
           <Stack align={'flex-start'}>
-            <ListHeader>Products</ListHeader>
+            <ListHeader>Services</ListHeader>
             <Link href={'/'}>Waldo</Link>
             <Stack direction={'row'} align={'center'} spacing={2}>
-              <Link href={'https://docs.waldo.vision'}>Docs</Link>
+              <Link href={docs}>Docs</Link>
               <Tag size={'sm'} bg={'purple.300'} ml={2} color={'white'}>
                 New
               </Tag>
@@ -42,8 +49,8 @@ export default function Footer() {
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Company</ListHeader>
-            <Link href={'https://github.com/waldo-vision'}>Github</Link>
-            <Link href={'mailto:support@waldo.vision'}>Contact Us</Link>
+            <Link href={github}>Github</Link>
+            <Link href={mailto}>Contact Us</Link>
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Legal</ListHeader>
@@ -51,9 +58,9 @@ export default function Footer() {
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Follow Us</ListHeader>
-            <Link href={'/chat'}>Discord</Link>
-            <Link href={'https://github.com/waldo-vision'}>Github</Link>
-            <Link href={'https://twitter.com/waldovision'}>Twitter</Link>
+            <Link href={discord}>Discord</Link>
+            <Link href={twitter}>Twitter</Link>
+            <Link href={githubrepo}>Github Repo</Link>
           </Stack>
         </SimpleGrid>
       </Container>

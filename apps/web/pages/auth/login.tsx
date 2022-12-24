@@ -90,36 +90,36 @@ export default function Login() {
     const providers = [
       {
         provider: 'Discord',
-        docs: 'https://example.com',
+        docs: 'https://discord.com/developers/docs/topics/oauth2',
         hex: '#5865F2',
         selected: false,
       },
       {
         provider: 'Google',
-        docs: 'https://example.com',
+        docs: 'https://developers.google.com/identity/protocols/oauth2',
         selected: false,
       },
       {
         provider: 'Github',
-        docs: 'https://example.com',
+        docs: 'https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps',
         hex: '#000000',
         selected: false,
       },
       {
         provider: 'BattleNET',
-        docs: 'https://example.com',
+        docs: 'https://develop.battle.net/documentation/guides/using-oauth',
         hex: '#009AE4',
         selected: false,
       },
       {
         provider: 'FaceBook',
-        docs: 'https://example.com',
+        docs: 'https://developers.facebook.com/docs/facebook-login/web/',
         hex: ' #0165E1',
         selected: false,
       },
       {
         provider: 'Twitch',
-        docs: 'https://example.com',
+        docs: 'https://dev.twitch.tv/docs/authentication/getting-tokens-oauth',
         hex: '#9146FF',
         selected: false,
       },

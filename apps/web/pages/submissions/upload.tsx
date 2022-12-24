@@ -60,7 +60,7 @@ export default function Upload() {
   });
 
   const { isLoading, data: isDisabled } = trpc.site.getPageData.useQuery({
-    pageName: 'upload',
+    name: 'upload',
   });
 
   const handleRequestError = async (error: TRPCError | string) => {
@@ -179,7 +179,7 @@ export default function Upload() {
 
   useEffect(() => {
     const doPageLoadThings = async () => {
-      if (isDisabled?.disabled) {
+      if (isDisabled?.maintenance) {
         router.push('/');
       }
       const session = await getSession();
@@ -242,7 +242,7 @@ export default function Upload() {
                     Before you submit a video make sure you have read the rules
                     regarding the submission and reviewing of gameplay. You can
                     read our terms of service{' '}
-                    <Link href={'https://www.example.com'}>
+                    <Link href={'/tos'}>
                       <Text as={'span'} fontWeight={'bold'}>
                         here.
                       </Text>
