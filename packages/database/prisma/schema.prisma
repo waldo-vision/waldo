@@ -108,7 +108,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   // our items
-  blacklisted   Boolean?       @default(false)
+  blacklisted   Boolean        @default(false)
   footage       Footage[]
   role          Roles          @default(USER)
   footageVotes  FootageVotes[] @relation("user")
