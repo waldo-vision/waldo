@@ -18,7 +18,7 @@ interface Props {
   show: boolean;
 }
 const DeleteAccModal = (props: Props) => {
-  const [showModal, setShowModal] = useState<boolean | null>(true);
+  const [showModal, setShowModal] = useState<boolean | null>(false);
   const [userId, setUserId] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
   const utils = trpc.useContext();
