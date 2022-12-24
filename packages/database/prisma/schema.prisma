@@ -64,6 +64,7 @@ enum FootageType {
   TF2
   APE
   COD
+  R6S
 }
 
 // NEXT-AUTH
