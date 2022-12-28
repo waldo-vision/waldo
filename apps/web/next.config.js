@@ -2,17 +2,24 @@
 const path = require('path');
 
 const securityHeaders = [
-  { key: 'Strict-Transport-Security', value: 'max-age=63072000' },
+  // force https
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload',
+  },
+  // don't run style sheets are scripts
   {
     key: 'X-Content-Type-Options',
     value: 'nosniff',
   },
+  // if browser suspects xss, don't access the page
   { key: 'X-XSS-Protection', value: '1; mode=block' },
+  // disallow iframes
   { key: 'X-Frame-Options', value: 'deny' },
   {
     key: 'Content-Security-Policy',
     value:
-      "default-src 'self'; img-src *; script-src 'self' 'unsafe-eval' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; frame-src https://challenges.cloudflare.com;",
+      "default-src 'self'; img-src *; script-src 'self' 'unsafe-eval' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; frame-src https://challenges.cloudflare.com; upgrade-insecure-requests;",
   },
 ];
 
@@ -44,7 +51,19 @@ const nextConfig = {
       {
         // Apply these headers to all routes in your application.
         source: '/:path*',
-        headers: securityHeaders,
+        headers: [
+          ...securityHeaders,
+          // prefetch dns, increases performance
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on',
+          },
+          // increase user privacy by only sending origin to us
+          {
+            key: 'Referrer-Policy',
+            value: 'same-origin',
+          },
+        ],
       },
     ];
   },
