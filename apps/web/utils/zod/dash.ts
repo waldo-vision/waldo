@@ -11,6 +11,12 @@ export const UserSchema = z.object({
   role: z.string(),
   userCount: z.number().optional(),
 });
+
+export const PublicUserSchema = z.object({
+  name: z.string().nullable().optional(),
+  image: z.string().nullable().optional(),
+});
+
 export const GPSchema = z.object({
   id: z.string().cuid(),
   userId: z.string(),
