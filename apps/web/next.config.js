@@ -9,6 +9,11 @@ const securityHeaders = [
   },
   { key: 'X-XSS-Protection', value: '1; mode=block' },
   { key: 'X-Frame-Options', value: 'deny' },
+  {
+    key: 'Content-Security-Policy',
+    value:
+      "default-src 'self'; img-src *; script-src 'self' 'unsafe-eval' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; frame-src https://challenges.cloudflare.com;",
+  },
 ];
 
 /** @type {import('next').NextConfig} */

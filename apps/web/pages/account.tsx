@@ -1,3 +1,4 @@
+'use client';
 import {
   Box,
   Text,
@@ -72,7 +73,6 @@ export default function Account() {
   const utils = trpc.useContext();
   const router = useRouter();
   const toast = useToast();
-
   // Account Providers logic
   const { isLoading: isProvidersDataStillFetching, data: providersData } =
     trpc.user.getLinkedAccounts.useQuery();
