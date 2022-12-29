@@ -9,7 +9,6 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import BlacklistedModal from '@components/BlacklistedModal';
 import Layout from '@components/Layout';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -22,7 +21,6 @@ import { TbEyeCheck } from 'react-icons/tb';
 import DashboardImage from '../public/Dashboard.png';
 import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
-import useSite from '@site';
 import { githubrepo, githubrepoIssues } from '@utils/links';
 
 export default function Home() {
@@ -31,7 +29,6 @@ export default function Home() {
   const updateScrollPosition = () => {
     setY(window.scrollY);
   };
-  const { session } = useSite();
 
   useEffect(() => {
     updateScrollPosition();
@@ -102,9 +99,6 @@ export default function Home() {
               alignItems={'center'}
               gap={3}
             >
-              {session && session.user?.blacklisted && (
-                <BlacklistedModal show={true} />
-              )}
               <Heading fontSize={'57px'} py={2} textAlign={'center'}>
                 Waldo
               </Heading>
@@ -403,151 +397,3 @@ const Features = () => {
 Home.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
-
-// <Flex direction={'column'} gap={25} mb={150}>
-//   <Container display={{ base: 'none', lg: 'fixed' }}>
-//     <Image
-//       style={{
-//         position: 'fixed',
-//         zIndex: -10,
-//         borderRadius: '16px',
-//         left: `${y + 1160.18}px`,
-//         top: `${y / 2 + 88}px`,
-//         boxShadow: '0px 0px 32px 5px rgba(0, 0, 0, 0.25)',
-//         transform: 'rotate(25deg)',
-//       }}
-//       src={DashboardImage}
-//       alt={'Dashboard homepage'}
-//       width={720}
-//       height={450}
-//       priority
-//       // quality={1}
-//       placeholder={'blur'}
-//     />
-
-//     <Image
-//       style={{
-//         position: 'fixed',
-//         zIndex: -10,
-//         borderRadius: '16px',
-//         left: `${-221.82 - y}px`,
-//         top: `${210 - y / 2}px`,
-//         boxShadow: '0px 0px 32px 5px rgba(0, 0, 0, 0.25)',
-//         transform: 'rotate(25deg)',
-//       }}
-//       src={InScansImage}
-//       alt={'Dashboard in scans page'}
-//       width={720}
-//       height={450}
-//       priority
-//       placeholder={'blur'}
-//     />
-//   </Container>
-//   <Box>
-//   </Box>
-//   <Features />
-//   <Container>
-//     <Stack
-//       ref={helpRef}
-//       align={'center'}
-//       spacing={{ base: 8, md: 10 }}
-//       py={{ base: 20, md: 28 }}
-//       direction={{ base: 'column', md: 'row' }}
-//     >
-//       <Stack flex={1} spacing={{ base: 5, md: 10 }}>
-//         <Heading
-//           lineHeight={1.1}
-//           fontWeight={600}
-//           fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
-//         >
-//           <Text
-//             as={'span'}
-//             position={'relative'}
-//             _after={{
-//               content: "''",
-//               width: 'full',
-//               height: '30%',
-//               position: 'absolute',
-//               bottom: 1,
-//               left: 0,
-//               bg: 'purple.400',
-//               zIndex: -1,
-//             }}
-//           >
-//             What is
-//           </Text>
-//           <br />
-//           <Text as={'span'} color={'purple.400'}>
-//             Waldo?
-//           </Text>
-//         </Heading>
-//         <Text>
-//           Waldo analyses POV clips and returns a probability that the user is
-//           cheating. How? Waldo is trained to detect the human behavioral
-//           characteristics of moving a mouse, of which the program contrasts the
-//           model to the footage.
-//         </Text>
-//         <Stack
-//           spacing={{ base: 4, sm: 6 }}
-//           direction={{ base: 'column', sm: 'row' }}
-//         >
-//           <Link href={'/chat'}>
-//             <Button variant={'solid'} colorScheme={'purple'}>
-//               Join the Discord
-//             </Button>
-//           </Link>
-//         </Stack>
-//       </Stack>
-//       <Flex flex={1} justify={'center'} align={'center'} position={'relative'}>
-//         <Image
-//           alt={'Dashboard scans page'}
-//           width={1000}
-//           height={600}
-//           style={{
-//             borderRadius: '16px',
-//             boxShadow: '0px 0px 32px 5px rgba(0, 0, 0, 0.25)',
-//           }}
-//           src={ScansImage}
-//           placeholder={'blur'}
-//         />
-//       </Flex>
-//     </Stack>
-//   </Container>
-//   <Container>
-//     <Center>
-//       <Flex
-//         direction={'column'}
-//         textAlign={'center'}
-//         alignItems={'center'}
-//         gap={'5px'}
-//       >
-//         <Heading
-//           fontWeight={600}
-//           fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
-//         >
-//           <Text>Waldo needs your help!</Text>
-//         </Heading>
-//         <Text maxW={'3xl'}>
-//           However, Waldo is not ready yet. In order to have a model as accurate
-//           as possible We need thousands of hours of footage, which we do not
-//           currently have. We are asking the community to link their own clips
-//           from Youtube and upload the videos to Waldo.
-//         </Text>
-//         <ButtonGroup gap={'4'} m={3}>
-//           <Link href={'/submissions/upload'}>
-//             <Button variant={'solid'} colorScheme={'purple'}>
-//               <HiUpload height={16} width={16} />
-//               <Text marginLeft={2}>Upload your footage</Text>
-//             </Button>
-//           </Link>
-//           <Link href={'/submissions/review'}>
-//             <Button variant={'outline'} colorScheme={'purple'}>
-//               <TbEyeCheck height={16} width={16} />
-//               <Text marginLeft={2}>Review Submissions</Text>
-//             </Button>
-//           </Link>
-//         </ButtonGroup>
-//       </Flex>
-//     </Center>
-//   </Container>
-// </Flex>;

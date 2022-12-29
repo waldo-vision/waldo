@@ -9,6 +9,10 @@ import {
   Collapse,
   useDisclosure,
   Heading,
+  AlertIcon,
+  Alert,
+  AlertTitle,
+  AlertDescription,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -16,10 +20,14 @@ import { useRouter } from 'next/router';
 import WaldoLogo from '../public/android-chrome-256x256.png';
 import GithubLogo from '../public/navbar_github.png';
 import { discord, docs, githubrepo } from '@utils/links';
+import useSite from '@site';
+import BlacklistedModal from './BlacklistedModal';
 
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
   const [y, setY] = useState(0);
+
+  const { session, services } = useSite();
 
   const changeBackground = () => {
     setY(window.scrollY);
@@ -31,71 +39,107 @@ export default function Navigation() {
   }, []);
 
   return (
-    <Box
-      minWidth={'max-content'}
-      alignItems={'center'}
-      gap={2}
-      position={'fixed'}
-      w={'100%'}
-      zIndex={100}
-    >
-      <Flex
-        bg={y > 25 || isOpen ? 'white' : 'transparent'}
-        sx={{
-          transition: 'all .25s ease-in-out',
-          WebkitTransition: 'all .25s ease-in-out',
-          MozTransition: 'all .25s ease-in-out',
-        }}
-        minH={'60px'}
-        py={{ base: 2 }}
-        align={'center'}
-        gap={5}
-        px={{ base: 2, sm: 4, md: 50 }}
+    <>
+      <Box
+        minWidth={'max-content'}
+        alignItems={'center'}
+        gap={2}
+        position={'fixed'}
+        w={'100%'}
+        zIndex={100}
       >
         <Flex
-          flex={{ base: 1, md: 'auto' }}
-          display={{ base: 'flex', md: 'none' }}
+          bg={y > 25 || isOpen ? 'white' : 'transparent'}
+          sx={{
+            transition: 'all .25s ease-in-out',
+            WebkitTransition: 'all .25s ease-in-out',
+            MozTransition: 'all .25s ease-in-out',
+          }}
+          minH={'60px'}
+          py={{ base: 2 }}
           align={'center'}
+          gap={5}
+          px={{ base: 2, sm: 4, md: 50 }}
         >
-          <IconButton
-            onClick={onToggle}
-            icon={
-              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-            }
-            variant={'ghost'}
-            aria-label={'Toggle Navigation'}
-          />
-          <Heading size={'md'} pb={1} pl={3}>
-            <Link href={'/'}>Waldo</Link>
-          </Heading>
-        </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'left' }}>
-          <Link href={'/'}>
-            <Flex
-              flexDirection={'row'}
-              alignItems={'center'}
-              display={{ base: 'none', md: 'flex' }}
-            >
-              <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
-              <Heading size={'md'} pl={3}>
-                Waldo
-              </Heading>
+          <Flex
+            flex={{ base: 1, md: 'auto' }}
+            display={{ base: 'flex', md: 'none' }}
+            align={'center'}
+          >
+            <IconButton
+              onClick={onToggle}
+              icon={
+                isOpen ? (
+                  <CloseIcon w={3} h={3} />
+                ) : (
+                  <HamburgerIcon w={5} h={5} />
+                )
+              }
+              variant={'ghost'}
+              aria-label={'Toggle Navigation'}
+            />
+            <Heading size={'md'} pb={1} pl={3}>
+              <Link href={'/'}>Waldo</Link>
+            </Heading>
+          </Flex>
+          <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'left' }}>
+            <Link href={'/'}>
+              <Flex
+                flexDirection={'row'}
+                alignItems={'center'}
+                display={{ base: 'none', md: 'flex' }}
+              >
+                <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
+                <Heading size={'md'} pl={3}>
+                  Waldo
+                </Heading>
+              </Flex>
+            </Link>
+          </Flex>
+          <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'end' }}>
+            <Flex display={{ base: 'none', md: 'flex' }}>
+              <DesktopNav />
             </Flex>
+          </Flex>
+          <Link href={githubIconHref}>
+            <Image alt="Github" src={GithubLogo} width={35} height={35} />
           </Link>
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'end' }}>
-          <Flex display={{ base: 'none', md: 'flex' }}>
-            <DesktopNav />
-          </Flex>
-        </Flex>
-        <Link href={githubIconHref}>
-          <Image alt="Github" src={GithubLogo} width={35} height={35} />
-        </Link>
-      </Flex>
-      <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
-      </Collapse>
-    </Box>
+        <Collapse in={isOpen} animateOpacity>
+          <MobileNav />
+        </Collapse>
+        <Box overflow={'auto'} width={'100%'}>
+          {session?.user?.blacklisted ? (
+            <Alert status={'warning'}>
+              <AlertIcon />
+              <Box>
+                <AlertTitle>Your account has been suspended</AlertTitle>
+                <AlertDescription>
+                  Certain features will no longer be available.
+                </AlertDescription>
+              </Box>
+            </Alert>
+          ) : services.site.maintenance ||
+            services.upload.maintenance ||
+            services.site.maintenance ||
+            services.account.maintenance ||
+            services.review.maintenance ? (
+            <Alert status={'error'}>
+              <AlertIcon />
+              <Box>
+                <AlertTitle>Some services currently down</AlertTitle>
+                <AlertDescription>
+                  Certain features will no longer be available.
+                </AlertDescription>
+              </Box>
+            </Alert>
+          ) : (
+            <></>
+          )}
+        </Box>
+      </Box>
+      {session && session.user?.blacklisted && <BlacklistedModal show={true} />}
+    </>
   );
 }
 

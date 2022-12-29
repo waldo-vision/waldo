@@ -24,6 +24,7 @@ import { BsGithub, BsFacebook } from 'react-icons/bs';
 import { MdOutlineRemove } from 'react-icons/md';
 import useSite from '@site';
 import AccGameplayItemExtended from '@components/AccGameplayItemExtended';
+import { prisma } from '@server/db/client';
 
 type ProvidersListType = {
   name: string;
@@ -414,6 +415,17 @@ const getThumbnail = (urlInput: string) => {
   const videoId = getVideoId(urlInput);
   const url = `${youtubeThumbnailRetrievalUrl}${videoId}/${0}.jpg`;
   return url;
+};
+
+export const getServerSideProps = async () => {
+  const config = await prisma.waldoPage.findUnique({
+    where: {
+      name: 'account',
+    },
+  });
+  if (config && config?.maintenance) {
+    return { redirect: { destination: '/', permanent: false } };
+  } else return { props: {} };
 };
 
 Account.getLayout = function getLayout(page: ReactElement) {

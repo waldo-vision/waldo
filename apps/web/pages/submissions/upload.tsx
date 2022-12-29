@@ -38,6 +38,8 @@ import { AppRouter } from '@server/trpc/router/_app';
 import { TRPCError } from '@trpc/server';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { prisma } from '@server/db/client';
+
 export default function Upload() {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -431,6 +433,17 @@ export default function Upload() {
     );
   }
 }
+
+export const getServerSideProps = async () => {
+  const config = await prisma.waldoPage.findUnique({
+    where: {
+      name: 'upload',
+    },
+  });
+  if (config && config?.maintenance) {
+    return { redirect: { destination: '/', permanent: false } };
+  } else return { props: {} };
+};
 
 Upload.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;

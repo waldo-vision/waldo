@@ -8,6 +8,7 @@ import Layout from '@components/Layout';
 import { trpc } from '@utils/trpc';
 import Head from 'next/head';
 import type { Footage, User } from 'database';
+import { prisma } from '@server/db/client';
 
 type ReviewItem = Footage & {
   user: User;
@@ -210,6 +211,17 @@ export default function Review() {
     </>
   );
 }
+
+export const getServerSideProps = async () => {
+  const config = await prisma.waldoPage.findUnique({
+    where: {
+      name: 'review',
+    },
+  });
+  if (config && config?.maintenance) {
+    return { redirect: { destination: '/', permanent: false } };
+  } else return { props: {} };
+};
 
 Review.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;

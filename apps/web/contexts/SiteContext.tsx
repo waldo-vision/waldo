@@ -114,7 +114,7 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
     alertDescription: '',
   });
   const [accountConfig, setAccountConfig] = useState<ServiceConfig>({
-    maintenance: false,
+    maintenance: true,
     isCustomAlert: false,
     alertTitle: '',
     alertDescription: '',
@@ -137,7 +137,6 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
     },
   };
   const { data, status } = useSession();
-  console.log(status);
   useEffect(() => {
     status === 'loading'
       ? setSession(undefined)
