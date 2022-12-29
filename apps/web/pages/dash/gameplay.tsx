@@ -37,6 +37,8 @@ import { CiWarning } from 'react-icons/ci';
 import { BiBlock } from 'react-icons/bi';
 import { BsFillExclamationOctagonFill } from 'react-icons/bs';
 import { ReactElement } from 'react';
+import { authOptions } from '../api/auth/[...nextauth]';
+import { unstable_getServerSession } from 'next-auth/next';
 type Query =
   | {
       gameplayCount?: number | undefined;
@@ -383,6 +385,16 @@ const MenuAction = (props: MenuActionProps) => {
     </Menu>
   );
 };
+
+export async function getServerSideProps(context) {
+  const user = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions,
+  );
+  if (user?.user.role != 'ADMIN') return { redirect: { destination: '/404' } };
+  else return { props: {} };
+}
 
 Gameplay.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;

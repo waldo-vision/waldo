@@ -12,6 +12,8 @@ import {
 import Layout from '@components/Layout';
 import React, { useState, useEffect } from 'react';
 import { signOut } from 'next-auth/react';
+import { unstable_getServerSession } from 'next-auth/next';
+import { authOptions } from './api/auth/[...nextauth]';
 import { ReactElement } from 'react';
 import { trpc } from '@utils/trpc';
 import { useRouter } from 'next/router';
@@ -142,7 +144,6 @@ export default function Account() {
       setGameplayItems(gamplayData);
       setLoading(false);
     }
-    if (session === null) router.push('/auth/login');
   }, [
     isLoading,
     providersData,
@@ -417,7 +418,12 @@ const getThumbnail = (urlInput: string) => {
   return url;
 };
 
-export const getServerSideProps = async () => {
+export async function getServerSideProps(context) {
+  const user = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions,
+  );
   const config = await prisma.waldoPage.findUnique({
     where: {
       name: 'account',
@@ -425,8 +431,9 @@ export const getServerSideProps = async () => {
   });
   if (config && config?.maintenance) {
     return { redirect: { destination: '/', permanent: false } };
-  } else return { props: {} };
-};
+  } else if (!user) return { redirect: { destination: '/auth/login' } };
+  else return { props: {} };
+}
 
 Account.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;

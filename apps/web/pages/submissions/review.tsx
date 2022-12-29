@@ -37,7 +37,7 @@ export default function Review() {
   const [reviewItem, setReviewItem] = useState<ReviewItem | undefined>(
     reviewItemData,
   );
-  const [, setUserSession] = useState<Session | undefined>();
+  const [setUserSession] = useState<Session | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
   const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
   const router = useRouter();

@@ -35,6 +35,8 @@ import { FiUser } from 'react-icons/fi';
 import { CiWarning } from 'react-icons/ci';
 import { BiBlock } from 'react-icons/bi';
 import { BsFillExclamationOctagonFill } from 'react-icons/bs';
+import { unstable_getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]';
 import { ReactElement } from 'react';
 type Query =
   | {
@@ -443,3 +445,13 @@ const MenuAction = (props: MenuActionProps) => {
 User.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
+
+export async function getServerSideProps(context) {
+  const user = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions,
+  );
+  if (user?.user.role != 'ADMIN') return { redirect: { destination: '/404' } };
+  else return { props: {} };
+}

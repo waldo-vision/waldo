@@ -15,6 +15,8 @@ import Stats from '@components/dashboard/status/Stats';
 import Maintenance from '@components/dashboard/status/Maintenance';
 import { ReactElement } from 'react';
 import Layout from '@components/dashboard/Layout';
+import { authOptions } from '../api/auth/[...nextauth]';
+import { unstable_getServerSession } from 'next-auth/next';
 
 type ServicesListType = {
   label: string;
@@ -71,6 +73,15 @@ export default function Status() {
       </Flex>
     </Flex>
   );
+}
+export async function getServerSideProps(context) {
+  const user = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions,
+  );
+  if (user?.user.role != 'ADMIN') return { redirect: { destination: '/404' } };
+  else return { props: {} };
 }
 
 Status.getLayout = function getLayout(page: ReactElement) {
