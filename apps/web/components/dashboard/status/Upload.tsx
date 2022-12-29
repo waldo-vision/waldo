@@ -67,7 +67,7 @@ export default function Review() {
   return (
     <Flex direction={'column'} gap={5} mb={5}>
       {uploadPageQLoading ? (
-        <Text>Dfsdfsdf</Text>
+        <Text>Loading...</Text>
       ) : (
         <>
           <Flex direction={'column'}>
@@ -125,7 +125,7 @@ export default function Review() {
                 borderRadius={10}
                 _focus={{ boxShadow: 'none' }}
                 type={'text'}
-                placeholder={
+                _placeholder={
                   uploadPageQData?.alertTitle == nullCode
                     ? 'Uploading footage is under maintenance...'
                     : uploadPageQData?.alertTitle

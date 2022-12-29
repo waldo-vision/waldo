@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { UserSchema } from './dash';
+import { PublicUserSchema } from './dash';
 
 export const GameplayTypes = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD', 'R6S']);
 
@@ -29,6 +29,6 @@ export const GameplaysDashSchema = z.object({
 
 export const GameplayPlusUserSchema = GameplaySchema.merge(
   z.object({
-    user: UserSchema,
+    user: PublicUserSchema,
   }),
 );

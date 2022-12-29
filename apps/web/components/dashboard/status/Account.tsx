@@ -128,6 +128,8 @@ export default function Review() {
                   accountPageQData?.alertTitle == nullCode
                     ? 'Creating new accounts is under maintenance...'
                     : accountPageQData?.alertTitle
+                    ? accountPageQData.alertTitle
+                    : ''
                 }
                 onChange={event => setCustomReason(event.target.value)}
                 disabled={!accountPageQData?.maintenance}

@@ -91,7 +91,7 @@ export default function Maintenance() {
   return (
     <Flex direction={'column'} gap={5} mb={5}>
       {isLoading ? (
-        <Text>dfsdfsdf</Text>
+        <Text>Loading...</Text>
       ) : (
         <>
           <Flex direction={'column'}>
@@ -144,7 +144,13 @@ export default function Maintenance() {
           <Collapse in={data?.isCustomAlert} animateOpacity>
             <Flex direction={'column'} gap={2}>
               <Input
-                placeholder={data?.alertTitle ? 'Title' : data?.alertTitle}
+                placeholder={
+                  data?.alertTitle
+                    ? 'Title'
+                    : data?.alertTitle
+                    ? data.alertTitle
+                    : ''
+                }
                 pr="4.5rem"
                 borderRadius={10}
                 _focus={{ boxShadow: 'none' }}
@@ -159,6 +165,8 @@ export default function Maintenance() {
                   data?.alertDescription == ''
                     ? 'Enter a Description'
                     : data?.alertDescription
+                    ? data.alertDescription
+                    : ''
                 }
                 pr="4.5rem"
                 borderRadius={10}

@@ -1,4 +1,12 @@
-import { Box, Center, Text, Flex, Button, Image } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Text,
+  Flex,
+  Button,
+  Image,
+  useToast,
+} from '@chakra-ui/react';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import { useState, useEffect, ReactElement } from 'react';
@@ -9,6 +17,7 @@ import { trpc } from '@utils/trpc';
 import Head from 'next/head';
 import type { Footage, User } from 'database';
 import { prisma } from '@server/db/client';
+import TurnstileWidget from '@components/TurnstileWidget';
 
 type ReviewItem = Footage & {
   user: User;
@@ -16,11 +25,8 @@ type ReviewItem = Footage & {
 
 export default function Review() {
   const utils = trpc.useContext();
-  const {
-    isLoading: reviewItemLoading,
-    data: reviewItemData,
-    refetch,
-  } = trpc.gameplay.getReviewItems.useQuery();
+  const { data: reviewItemData, refetch } =
+    trpc.gameplay.getReviewItems.useQuery();
 
   const reviewGameplay = trpc.gameplay.review.useMutation({
     async onSuccess() {
@@ -33,7 +39,9 @@ export default function Review() {
   );
   const [, setUserSession] = useState<Session | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
   const router = useRouter();
+  const toast = useToast();
   const videoIdFromUrlRegex =
     // eslint-disable-next-line no-useless-escape
     /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -47,6 +55,18 @@ export default function Review() {
   };
 
   const doClickLogic = async (action: 'yes' | 'no') => {
+    if (!isRequestValid) {
+      toast({
+        position: 'bottom-right',
+        title: 'Invalid Request',
+        description:
+          'Your request was deemed invalid. Please reload the page or try again.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
     if (reviewItem === undefined) return;
 
     setLoading(true);
@@ -90,7 +110,7 @@ export default function Review() {
     };
     getCurrentSession();
     getNecessaryData();
-  }, [router, reviewItemData]);
+  }, [router, reviewItemData, refetch]);
   return (
     <>
       <Head>
@@ -105,7 +125,10 @@ export default function Review() {
           {loading || !reviewItemData ? (
             <Loading color={'default'} />
           ) : (
-            <>
+            <Flex direction={'column'}>
+              <Center mb={4}>
+                <TurnstileWidget valid={result => setIsRequestValid(result)} />
+              </Center>
               <Box bgColor={'white'} p={6} borderRadius={12}>
                 <Flex direction={'row'}>
                   {/* User Icon */}
@@ -204,7 +227,7 @@ export default function Review() {
                   </Box>
                 </Flex>
               </Box>
-            </>
+            </Flex>
           )}
         </Center>
       </div>

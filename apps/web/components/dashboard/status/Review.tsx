@@ -67,7 +67,7 @@ export default function Review() {
   return (
     <Flex direction={'column'} gap={5} mb={5}>
       {reviewPageQLoading ? (
-        <Text>dfsdfsdf</Text>
+        <Text>Loading...</Text>
       ) : (
         <>
           <Flex direction={'column'}>
@@ -129,6 +129,8 @@ export default function Review() {
                   reviewPageQData?.alertTitle == nullCode
                     ? 'Reviewing footage is under maintenance...'
                     : reviewPageQData?.alertTitle
+                    ? reviewPageQData.alertTitle
+                    : ''
                 }
                 onChange={event => setCustomReason(event.target.value)}
                 disabled={!reviewPageQData?.maintenance}

@@ -1,3 +1,4 @@
+import { trpc } from '@utils/trpc';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import {
@@ -11,12 +12,14 @@ import {
   useState,
 } from 'react';
 
-type ServiceConfig = {
-  maintenance: boolean;
-  isCustomAlert: boolean;
-  alertTitle: string;
-  alertDescription: string;
-};
+type ServiceConfig =
+  | {
+      maintenance: boolean;
+      isCustomAlert: boolean;
+      alertTitle: string | null;
+      alertDescription: string | null;
+    }
+  | undefined;
 
 type Props = {
   children: ReactElement | ReactElement[] | ReactNode;
@@ -114,7 +117,7 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
     alertDescription: '',
   });
   const [accountConfig, setAccountConfig] = useState<ServiceConfig>({
-    maintenance: true,
+    maintenance: false,
     isCustomAlert: false,
     alertTitle: '',
     alertDescription: '',
@@ -137,6 +140,15 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
     },
   };
   const { data, status } = useSession();
+  const { data: aData } = trpc.site.getPageData.useQuery({
+    name: 'account',
+  });
+  const { data: rData } = trpc.site.getPageData.useQuery({
+    name: 'review',
+  });
+  const { data: uData } = trpc.site.getPageData.useQuery({
+    name: 'upload',
+  });
   useEffect(() => {
     status === 'loading'
       ? setSession(undefined)
@@ -145,7 +157,27 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
       : status === 'unauthenticated'
       ? setSession(data)
       : setSession(undefined);
-  }, [data, status]);
+    if (aData && rData && uData) {
+      setAccountConfig({
+        maintenance: aData.maintenance,
+        isCustomAlert: aData.isCustomAlert,
+        alertDescription: aData.alertDescription,
+        alertTitle: aData.alertTitle,
+      });
+      setReviewConfig({
+        maintenance: rData.maintenance,
+        isCustomAlert: rData.isCustomAlert,
+        alertDescription: rData.alertDescription,
+        alertTitle: rData.alertTitle,
+      });
+      setUploadConfig({
+        maintenance: uData.maintenance,
+        isCustomAlert: uData.isCustomAlert,
+        alertDescription: uData.alertDescription,
+        alertTitle: uData.alertTitle,
+      });
+    }
+  }, [aData, data, rData, status, uData]);
 
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>;
 };
