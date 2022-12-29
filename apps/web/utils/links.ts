@@ -1,4 +1,4 @@
-export const discord = 'https://discord.gg/qJWcsS9TyT';
+export const discord = '/chat';
 export const docs = 'https://docs.waldo.vision';
 export const github = 'https://github.com/waldo-vision';
 export const githubrepo = 'https://github.com/waldo-vision/waldo';
