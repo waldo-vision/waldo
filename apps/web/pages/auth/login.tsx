@@ -112,7 +112,7 @@ export default function Login() {
         selected: false,
       },
       {
-        provider: 'FaceBook',
+        provider: 'Facebook',
         docs: 'https://developers.facebook.com/docs/facebook-login/web/',
         hex: ' #0165E1',
         selected: false,
