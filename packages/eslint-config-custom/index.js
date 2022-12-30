@@ -9,7 +9,7 @@ module.exports = {
   ],
   plugins: ['prettier'],
   env: {
-    es6: true,
+    es2017: true,
     node: true,
   },
   parser: '@typescript-eslint/parser',
