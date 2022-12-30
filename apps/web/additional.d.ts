@@ -6,9 +6,6 @@ declare namespace NodeJS {
     BTLNET_CLIENT_SECRET: string;
     FB_CLIENT_SECRET: string;
     TWITCH_CLIENT_SECRET: string;
-    REDIS_PORT: number;
-    RATELIMIT_MAX_REQUESTS: number;
-    RATELIMIT_DURATION: number;
     YOUTUBE_API_KEY: string;
     CLOUDFLARE_TURNSTILE_SECRET: string;
     CLOUDFLARE_TURNSTILE_SITE_KEY: string;
