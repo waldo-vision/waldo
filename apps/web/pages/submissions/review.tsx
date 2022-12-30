@@ -15,14 +15,21 @@ import Loading from '@components/Loading';
 import Layout from '@components/Layout';
 import { trpc } from '@utils/trpc';
 import Head from 'next/head';
-import type { Footage, User } from 'database';
 import { prisma } from '@server/db/client';
 import TurnstileWidget from '@components/TurnstileWidget';
-
-type ReviewItem = Footage & {
-  user: User;
-};
-
+interface ReviewItem {
+  id: string;
+  user: {
+    image?: string | null | undefined;
+    name?: string | null | undefined;
+  };
+  userId: string;
+  youtubeUrl: string;
+  footageType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S';
+  upVotes: number;
+  downVotes: number;
+  isAnalyzed: boolean;
+}
 export default function Review() {
   const utils = trpc.useContext();
   const { data: reviewItemData, refetch } =
@@ -37,7 +44,6 @@ export default function Review() {
   const [reviewItem, setReviewItem] = useState<ReviewItem | undefined>(
     reviewItemData,
   );
-  const [setUserSession] = useState<Session | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
   const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
   const router = useRouter();
@@ -104,8 +110,6 @@ export default function Review() {
       }
       if (session === null) {
         router.push('/auth/login');
-      } else {
-        setUserSession(session);
       }
     };
     getCurrentSession();

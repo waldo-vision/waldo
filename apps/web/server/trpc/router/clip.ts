@@ -3,8 +3,7 @@ import { ClipSchema } from '@utils/zod/clip';
 
 import { protectedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
-
+import { hasPerms, Perms } from '@server/utils/hasPerms';
 export const clipRouter = router({
   get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/clip' } })

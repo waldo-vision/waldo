@@ -120,6 +120,7 @@ export default function User() {
     );
   } else {
     const handlePage = () => {
+      if (!data || !data[0].userCount) return;
       if (pageNumber == Math.ceil(data[0].userCount / Math.round(10))) {
         return;
       } else {
@@ -445,13 +446,14 @@ const MenuAction = (props: MenuActionProps) => {
 User.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export async function getServerSideProps(context) {
   const user = await unstable_getServerSession(
     context.req,
     context.res,
     authOptions,
   );
-  if (user?.user.role != 'ADMIN') return { redirect: { destination: '/404' } };
+  if (user?.user?.role != 'ADMIN') return { redirect: { destination: '/404' } };
   else return { props: {} };
 }

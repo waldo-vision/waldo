@@ -7,6 +7,7 @@ import {
   Button,
   Collapse,
   InputRightElement,
+  SystemStyleObject,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { trpc } from '@utils/trpc';
@@ -125,10 +126,10 @@ export default function Review() {
                 borderRadius={10}
                 _focus={{ boxShadow: 'none' }}
                 type={'text'}
-                _placeholder={
+                placeholder={
                   uploadPageQData?.alertTitle == nullCode
                     ? 'Uploading footage is under maintenance...'
-                    : uploadPageQData?.alertTitle
+                    : (uploadPageQData?.alertTitle as string)
                 }
                 onChange={event => setCustomReason(event.target.value)}
                 disabled={!uploadPageQData?.maintenance}

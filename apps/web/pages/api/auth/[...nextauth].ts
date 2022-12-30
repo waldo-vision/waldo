@@ -8,12 +8,7 @@ import TwitchProvider from 'next-auth/providers/twitch';
 import { prisma } from '@server/db/client';
 import NextAuth from 'next-auth/next';
 import { Session, User } from 'next-auth';
-type BattleNetIssuer =
-  | 'https://www.battlenet.com.cn/oauth'
-  | 'https://us.battle.net/oauth'
-  | 'https://eu.battle.net/oauth'
-  | 'https://kr.battle.net/oauth'
-  | 'https://tw.battle.net/oauth';
+import { type Roles } from 'database';
 interface SessionCallback {
   session: Session;
   user: User;
@@ -67,9 +62,9 @@ export const authOptions = {
             },
           });
 
-          session.user.provider = userAccount.provider;
-          session.user.role = userAccount.user.role;
-          session.user.blacklisted = userAccount.user.blacklisted;
+          session.user.provider = userAccount?.provider as string;
+          session.user.role = userAccount?.user.role as Roles;
+          session.user.blacklisted = userAccount?.user.blacklisted as boolean;
         }
       }
       return session;

@@ -417,7 +417,8 @@ const getThumbnail = (urlInput: string) => {
   const url = `${youtubeThumbnailRetrievalUrl}${videoId}/${0}.jpg`;
   return url;
 };
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export async function getServerSideProps(context) {
   const user = await unstable_getServerSession(
     context.req,

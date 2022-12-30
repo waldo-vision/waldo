@@ -119,11 +119,11 @@ export default function Navigation() {
                 </AlertDescription>
               </Box>
             </Alert>
-          ) : services.site.maintenance ||
-            services.upload.maintenance ||
-            services.site.maintenance ||
-            services.account.maintenance ||
-            services.review.maintenance ? (
+          ) : services.site?.maintenance ||
+            services.upload?.maintenance ||
+            services.site?.maintenance ||
+            services.account?.maintenance ||
+            services.review?.maintenance ? (
             <Alert status={'error'}>
               <AlertIcon />
               <Box>

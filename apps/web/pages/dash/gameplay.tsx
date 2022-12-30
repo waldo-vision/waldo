@@ -13,17 +13,15 @@ import {
   Table,
   Tbody,
   Td,
-  Image,
   Th,
   Thead,
   Tr,
   Flex,
   Tfoot,
   useToast,
-  MenuDivider,
 } from '@chakra-ui/react';
 import Layout from '@components/dashboard/Layout';
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
@@ -32,39 +30,30 @@ import {
 } from '@chakra-ui/icons';
 import { trpc } from '@utils/trpc';
 import Loading from '@components/Loading';
-import { FiUser } from 'react-icons/fi';
-import { CiWarning } from 'react-icons/ci';
-import { BiBlock } from 'react-icons/bi';
-import { BsFillExclamationOctagonFill } from 'react-icons/bs';
-import { ReactElement } from 'react';
-import { authOptions } from '../api/auth/[...nextauth]';
 import { unstable_getServerSession } from 'next-auth/next';
+import { BiBlock } from 'react-icons/bi';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 type Query =
   | {
       gameplayCount?: number | undefined;
       id: string;
       userId: string;
       youtubeUrl: string;
-      footageType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD';
+      footageType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S';
       upVotes: number;
       downVotes: number;
       isAnalyzed: boolean;
       user?: {
-        id: string;
-        name: string | null;
-        email: string | null;
-        emailVerified: Date | null;
-        image: string | null;
-        blacklisted: boolean;
-        role: string;
+        name?: string | null;
+        image?: string | null;
       };
     }[]
   | undefined;
+type possibleGames = 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S' | null;
 export default function Gameplay() {
   // Searching states
 
-  const [searchRole, setSearchRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [searchRole, setSearchRole] = useState<possibleGames>(null);
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -81,26 +70,23 @@ export default function Gameplay() {
     { enabled: false },
   );
 
-  const handleFilter = async (role: string | null) => {
+  const handleFilter = async (role: possibleGames) => {
     if (role == null) {
       setSearchRole(null);
       return;
     }
-    setSearchRole(role.toUpperCase());
+    setSearchRole(role);
   };
 
   const handlePageChange = async (add: boolean) => {
-    setLoading(true);
     await userQueryRefetch();
     if (add) {
       setPageNumber(pageNumber + 1);
       await userQueryRefetch();
-      setLoading(false);
     } else {
       setPageNumber(1);
       await userQueryRefetch();
     }
-    setLoading(false);
   };
   useEffect(() => {
     const doLoadThings = async () => {
@@ -109,7 +95,7 @@ export default function Gameplay() {
       console.log(userQueryData);
     };
     doLoadThings();
-  }, [userQueryData]);
+  }, [userQueryData, userQueryRefetch]);
   if (userQueryLoading) {
     return (
       <Box>
@@ -118,7 +104,7 @@ export default function Gameplay() {
     );
   } else {
     const handlePage = () => {
-      if (!data[0]) return;
+      if (!data || !data[0].gameplayCount) return;
       if (pageNumber == Math.ceil(data[0].gameplayCount / Math.round(10))) {
         return;
       } else {
@@ -158,13 +144,6 @@ export default function Gameplay() {
               <MenuItem onClick={() => handleFilter('TF2')}>TF2</MenuItem>
               <MenuItem onClick={() => handleFilter('COD')}>COD</MenuItem>
               <MenuItem onClick={() => handleFilter('R6S')}>R6S</MenuItem>
-              <MenuDivider />
-              <MenuItem onClick={() => handleFilter('RE0T10')}>
-                {'0-10 Reviews'}
-              </MenuItem>
-              <MenuItem onClick={() => handleFilter('RE10T40')}>
-                {'10-40 Reviews'}
-              </MenuItem>
             </MenuList>
           </Menu>
           <Box overflowX="auto">
@@ -385,14 +364,15 @@ const MenuAction = (props: MenuActionProps) => {
     </Menu>
   );
 };
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export async function getServerSideProps(context) {
   const user = await unstable_getServerSession(
     context.req,
     context.res,
     authOptions,
   );
-  if (user?.user.role != 'ADMIN') return { redirect: { destination: '/404' } };
+  if (user?.user?.role != 'ADMIN') return { redirect: { destination: '/404' } };
   else return { props: {} };
 }
 

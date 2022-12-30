@@ -7,7 +7,6 @@ import {
   StatLabel,
   StatNumber,
 } from '@chakra-ui/react';
-import Sidebar from '@components/dashboard/Sidebar';
 import Review from '@components/dashboard/status/Review';
 import Upload from '@components/dashboard/status/Upload';
 import Account from '@components/dashboard/status/Account';
@@ -74,13 +73,15 @@ export default function Status() {
     </Flex>
   );
 }
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export async function getServerSideProps(context) {
   const user = await unstable_getServerSession(
     context.req,
     context.res,
     authOptions,
   );
-  if (user?.user.role != 'ADMIN') return { redirect: { destination: '/404' } };
+  if (user?.user?.role != 'ADMIN') return { redirect: { destination: '/404' } };
   else return { props: {} };
 }
 
