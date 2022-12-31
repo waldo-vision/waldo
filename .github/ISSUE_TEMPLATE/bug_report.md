@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: 'PLACEHOLDER_TITLE'
-labels: 'PLACEHOLDER_LABEL_1, PLACEHOLDER_LABEL2'
+labels: 'bug'
 assignees: ''
 
 ---
