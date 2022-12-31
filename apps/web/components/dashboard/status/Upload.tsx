@@ -26,7 +26,7 @@ export default function Review() {
 
   const handleApply = (change: number) => {
     if (!uploadPageQData) return;
-
+    // change "0" changes the upload page's maintenance value to on or off depending on the current value
     if (change == 0) {
       updatePage.mutateAsync({
         name: 'upload',
@@ -35,6 +35,7 @@ export default function Review() {
         alertTitle: uploadPageQData.alertTitle,
         alertDescription: uploadPageQData.alertDescription,
       });
+      // change "1" changes the upload page's isCustomAlert value to toggled or not toggled depending on the current value
     } else if (change == 1) {
       updatePage.mutateAsync({
         name: 'upload',
@@ -43,6 +44,7 @@ export default function Review() {
         alertTitle: uploadPageQData.alertTitle,
         alertDescription: uploadPageQData.alertDescription,
       });
+      // change "2" sets the upload page's custom maintenance reason (alertTitle) to a certain string value
     } else if (change == 2) {
       updatePage.mutateAsync({
         name: 'upload',

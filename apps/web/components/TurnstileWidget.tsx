@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { trpc } from '@utils/trpc';
@@ -39,7 +38,7 @@ const TurnstileWidget = (props: WidgetProps) => {
     <div>
       <Box>
         <Turnstile
-          siteKey={'1x00000000000000000000AA'}
+          siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY}
           options={{
             theme: 'light',
             size: 'normal',

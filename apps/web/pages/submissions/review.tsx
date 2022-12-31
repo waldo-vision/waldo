@@ -25,9 +25,7 @@ interface ReviewItem {
   };
   userId: string;
   youtubeUrl: string;
-  footageType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S';
-  upVotes: number;
-  downVotes: number;
+  gameplayType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S';
   isAnalyzed: boolean;
 }
 export default function Review() {
@@ -79,7 +77,7 @@ export default function Review() {
     const review = action === 'yes';
     await reviewGameplay.mutateAsync({
       gameplayId: reviewItem.id,
-      actualGame: reviewItem.footageType,
+      actualGame: reviewItem.gameplayType,
       isGame: review,
     });
     await refetch();
@@ -163,15 +161,15 @@ export default function Review() {
                       <Text fontWeight={'normal'}>
                         Does this clip match gameplay from{' '}
                         <Text fontWeight={'bold'} as={'span'}>
-                          {reviewItem?.footageType === 'CSG'
+                          {reviewItem?.gameplayType === 'CSG'
                             ? 'Counter Strike: Global Offensive'
-                            : reviewItem?.footageType === 'VAL'
+                            : reviewItem?.gameplayType === 'VAL'
                             ? 'Valorant'
-                            : reviewItem?.footageType === 'APE'
+                            : reviewItem?.gameplayType === 'APE'
                             ? 'Apex Legends'
-                            : reviewItem?.footageType === 'TF2'
+                            : reviewItem?.gameplayType === 'TF2'
                             ? 'Team Fortress 2'
-                            : reviewItem?.footageType === 'COD'
+                            : reviewItem?.gameplayType === 'COD'
                             ? 'Call of Duty'
                             : 'a relevant First Person Shooter game?'}
                         </Text>
