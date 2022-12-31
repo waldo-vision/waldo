@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest an idea for this project
 title: 'PLACEHOLDER_TITLE'
-labels: 'PLACEHOLDER_LABEL_1, PLACEHOLDER_LABEL_2'
+labels: 'enhancement'
 assignees: ''
 
 ---
