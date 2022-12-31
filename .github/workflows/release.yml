@@ -11,6 +11,9 @@ jobs:
     permissions:
       packages: write
       contents: read
+    strategy:
+      matrix:
+        image: ['web', 'docs']
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -36,7 +39,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/${{ github.repository }}
+            ghcr.io/waldo-vision/${{ matrix.image }}
           tags: |
             type=schedule,pattern=nightly
             type=semver,pattern={{version}}
@@ -48,15 +51,28 @@ jobs:
             # set latest tag for stable releases
             type=raw,value=latest,enable=${{ github.event.release.prerelease == false }}
 
-      - name: Website - Build and push images
+      - name: Build and push image
         id: build-and-push
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./apps/web/Dockerfile
+          file: ./apps/${{ matrix.image }}/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # - name: Docs - Build and push images
+      #   id: build-and-push
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: .
+      #     file: ./apps/web/Dockerfile
+      #     push: true
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     labels: ${{ steps.meta.outputs.labels }}
+      #     platforms: linux/amd64
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
