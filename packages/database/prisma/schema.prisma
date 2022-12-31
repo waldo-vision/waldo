@@ -3,8 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  // see index.ts
-  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -12,9 +10,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model WaldoPage {
+  name             String    @id
+  maintenance      Boolean   @default(false)
+  isCustomAlert    Boolean   @default(false)
+  alertTitle       String?
+  alertDescription String?
+  parentName       String
+  site             WaldoSite @relation(fields: [parentName], references: [name], onDelete: Cascade)
+}
+
+model WaldoSite {
+  name             String      @id
+  maintenance      Boolean     @default(false)
+  isCustomAlert    Boolean
+  alertTitle       String?
+  alertDescription String?
+  pages            WaldoPage[]
+}
+
 model Footage {
   id           String         @id @default(cuid())
-  user         User           @relation(fields: [userId], references: [id])
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
   footageVotes FootageVotes[] @relation("footage")
   youtubeUrl   String         @unique
@@ -27,11 +44,10 @@ model Footage {
 
 model FootageVotes {
   id         String      @id @default(cuid())
-  footage    Footage     @relation("footage", fields: [footageId], references: [id])
+  footage    Footage     @relation("footage", fields: [footageId], references: [id], onDelete: Cascade)
   footageId  String
-  user       User        @relation("user", fields: [userId], references: [id])
+  user       User        @relation("user", fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  discordId  Int
   isGame     Boolean     @default(false)
   actualGame FootageType
 }
@@ -48,6 +64,7 @@ enum FootageType {
   TF2
   APE
   COD
+  R6S
 }
 
 // NEXT-AUTH
@@ -64,8 +81,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -78,19 +94,25 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum Roles {
+  USER
+  MOD
+  ADMIN
+}
+
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-
   // our items
-  blacklisted  Boolean?
-  footage      Footage[]
-  footageVotes FootageVotes[] @relation("user")
+  blacklisted   Boolean        @default(false)
+  footage       Footage[]
+  role          Roles          @default(USER)
+  footageVotes  FootageVotes[] @relation("user")
 }
 
 model VerificationToken {

@@ -5,9 +5,9 @@ export enum Perms {
 }
 
 export enum Roles {
-  User = 0,
-  Mod = 1,
-  Admin = 2,
+  USER = 0,
+  MOD = 1,
+  ADMIN = 2,
 }
 
 /**
@@ -45,13 +45,13 @@ export function hasPerms({
    */
   blacklisted: boolean;
 }): boolean {
+  const roleIndex: number = Object.keys(Roles).indexOf(userRole.toString()); // 1
   // if blacklisted immediately deny
   if (blacklisted) return false;
   // if user owns the item
   else if (userId === itemOwnerId) return true;
   // if userRole is greater than or equal to the required perms
-  else if (requiredPerms && userRole >= requiredPerms) return true;
-
+  else if (requiredPerms && roleIndex - 3 >= requiredPerms) return true;
   // TODO: blacklist check
 
   return false;

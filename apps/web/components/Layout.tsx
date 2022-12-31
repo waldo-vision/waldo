@@ -1,6 +1,11 @@
-import { Box, Center } from '@chakra-ui/react';
-import Navigation from '@components/Navbar';
-import Footer from '@components/Footer';
+import dynamic from 'next/dynamic';
+import React, { Suspense } from 'react';
+
+import { Center, Box } from '@chakra-ui/react';
+import Navigation from './Navbar';
+const Footer = dynamic(() => import('./Footer'), {
+  suspense: true,
+});
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -12,7 +17,9 @@ export default function Layout({ children }: LayoutProps) {
       <Box>
         <Navigation />
         <Center>{children}</Center>
-        <Footer />
+        <Suspense fallback={`Loading...`}>
+          <Footer />
+        </Suspense>
       </Box>
     </>
   );

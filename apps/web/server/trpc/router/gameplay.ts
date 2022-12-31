@@ -1,10 +1,16 @@
 import { TRPCError } from '@trpc/server';
 import ytdl from 'ytdl-core';
-import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
-import { z } from 'zod';
+import {
+  GameplayPlusUserSchema,
+  GameplaySchema,
+  GameplayTypes,
+  GameplaysDashSchema,
+} from '@utils/zod/gameplay';
+import { input, z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
+import { GPSchema } from '@utils/zod/dash';
 
 export const gameplayRouter = router({
   get: protectedProcedure
@@ -27,7 +33,7 @@ export const gameplayRouter = router({
         gameplay === null ||
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           itemOwnerId: gameplay.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -40,6 +46,69 @@ export const gameplayRouter = router({
 
       return gameplay;
     }),
+  getMany: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/gameplay/dash' } })
+    .input(
+      z.object({
+        page: z.number(),
+        filterGames: GameplayTypes.nullable(),
+      }),
+    )
+    .output(z.array(GameplaysDashSchema))
+    .query(async ({ input, ctx }) => {
+      const takeValue = 10;
+      const skipValue = input.page * 10 - 10;
+      if (input.filterGames == null) {
+        const gameplayCount: number = await ctx.prisma.footage.count();
+        try {
+          const gameplays = await ctx.prisma.footage.findMany({
+            take: takeValue,
+            skip: skipValue,
+            include: {
+              user: true,
+            },
+          });
+          gameplays.forEach((gameplay, index) => {
+            Object.assign(gameplays[index], { gameplayCount: gameplayCount });
+          });
+          return gameplays;
+        } catch (error) {
+          throw new TRPCError({
+            message: 'No footage with the inputs provided could be found.',
+            code: 'NOT_FOUND',
+          });
+        }
+      } else {
+        try {
+          const gameplayCount = await ctx.prisma.footage.count({
+            where: {
+              footageType: input.filterGames,
+            },
+          });
+          const gameplays = await ctx.prisma.footage.findMany({
+            where: {
+              footageType: input.filterGames,
+            },
+            include: {
+              user: true,
+            },
+            take: takeValue,
+            skip: skipValue,
+          });
+          gameplays.forEach((gameplay, index) => {
+            Object.assign(gameplays[index], { gameplayCount: gameplayCount });
+          });
+          console.log(gameplays);
+          return gameplays;
+        } catch (error) {
+          throw new TRPCError({
+            message: 'No footage with the inputs provided could be found.',
+            code: 'NOT_FOUND',
+          });
+        }
+      }
+    }),
+
   create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/gameplay' } })
     .input(
@@ -50,19 +119,6 @@ export const gameplayRouter = router({
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
-      // will mostly get thrown if
-      if (
-        !hasPerms({
-          userId: ctx.session.user.id,
-          userRole: Roles.User,
-          requiredPerms: Perms.isOwner,
-          blacklisted: ctx.session.user.blacklisted,
-        })
-      )
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-        });
-
       const existingGameplay = await ctx.prisma.footage.findUnique({
         where: {
           youtubeUrl: input.youtubeUrl,
@@ -117,7 +173,7 @@ export const gameplayRouter = router({
     .meta({ openapi: { method: 'GET', path: '/gameplay/user' } })
     .input(
       z.object({
-        userId: z.string().cuid().nullish(),
+        userId: z.string().cuid().nullish().optional(),
       }),
     )
     .output(GameplaySchema.array())
@@ -129,7 +185,7 @@ export const gameplayRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           itemOwnerId: userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -185,9 +241,9 @@ export const gameplayRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: Roles.User,
+          userRole: ctx.session.user.role,
           itemOwnerId: gameplay.userId,
-          requiredPerms: Perms.isOwner,
+          requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })
       )
@@ -224,7 +280,7 @@ export const gameplayRouter = router({
         if (
           !hasPerms({
             userId: ctx.session.user.id,
-            userRole: Roles.User,
+            userRole: ctx.session.user.role,
             itemOwnerId: gameplay.userId,
             requiredPerms,
             blacklisted: ctx.session.user.blacklisted,
@@ -275,7 +331,7 @@ export const gameplayRouter = router({
         if (
           !hasPerms({
             userId: ctx.session.user.id,
-            userRole: Roles.User,
+            userRole: ctx.session.user.role,
             itemOwnerId: gameplay.userId,
             requiredPerms: Perms.isOwner,
             blacklisted: ctx.session.user.blacklisted,
@@ -299,6 +355,104 @@ export const gameplayRouter = router({
           message: 'An error occurred in the server',
           // not sure if this is secure
           cause: error,
+        });
+      }
+    }),
+  getReviewItems: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/gameplay/review' } })
+    .output(GameplayPlusUserSchema)
+    .query(async ({ input, ctx }) => {
+      const randomPick = (values: string[]) => {
+        const index = Math.floor(Math.random() * values.length);
+        return values[index];
+      };
+      const itemCount = await ctx.prisma.footage.count();
+      const tenDocs = () => {
+        return Math.floor(Math.random() * (itemCount - 1 + 1)) + 0;
+      };
+
+      const orderBy = randomPick(['userId', 'id', 'youtubeUrl']);
+      const orderDir = randomPick([`desc`, 'asc']);
+      const reviewItems = await ctx.prisma.footage.findMany({
+        take: 1,
+        skip: tenDocs(),
+        orderBy: { [orderBy]: orderDir },
+        include: {
+          user: true,
+        },
+      });
+      if (reviewItems === null)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `Could not query gameplay documents`,
+        });
+      return reviewItems[0];
+    }),
+  review: protectedProcedure
+    .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })
+    .input(
+      z.object({
+        gameplayId: z.string().cuid(),
+        isGame: z.boolean(),
+        actualGame: GameplayTypes,
+      }),
+    )
+    .output(z.object({ message: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      console.log(input.gameplayId);
+      if (!ctx.session.user?.id) {
+        return { message: 'No user' };
+      }
+      const footageVote = await ctx.prisma.footageVotes.create({
+        data: {
+          footageId: input.gameplayId,
+          isGame: input.isGame,
+          actualGame: input.actualGame,
+          userId: ctx.session.user?.id,
+        },
+      });
+      if (!footageVote)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `Could not find a gameplay document with id:${input.gameplayId}.`,
+        });
+
+      return { message: 'Updated the gameplay document successfully.' };
+    }),
+  search: protectedProcedure
+    .meta({ openapi: { method: 'GET', path: '/user/search' } })
+    .input(
+      z.object({
+        name: z.string().nullable(),
+      }),
+    )
+    .output(GPSchema)
+    .query(async ({ input, ctx }) => {
+      console.log(ctx.session);
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: ctx.session.user.role,
+          requiredPerms: Perms.roleAdmin,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+      try {
+        const user = await ctx.prisma.user.findFirst({
+          where: {
+            name: {
+              contains: input.name,
+            },
+          },
+        });
+        return user;
+      } catch (error) {
+        throw new TRPCError({
+          message: 'No user document with the name provided could be found.',
+          code: 'NOT_FOUND',
         });
       }
     }),
