@@ -5,6 +5,7 @@ async function main() {
     where: { name: 'waldo' },
     update: {},
     create: {
+      name: 'waldo',
       isCustomAlert: false,
       alertTitle: 'Under Maintenance',
       alertDescription: 'Currently under maintenance. Please come back later.',
