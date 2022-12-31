@@ -38,18 +38,16 @@ import { BsFillExclamationOctagonFill } from 'react-icons/bs';
 import { unstable_getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { ReactElement } from 'react';
-type Query =
-  | {
-      userCount?: number | undefined;
-      id: string;
-      name: string | null;
-      blacklisted: boolean;
-      email: string | null;
-      emailVerified: Date | null;
-      image: string | null;
-      role: string;
-    }[]
-  | undefined;
+type Query = {
+  userCount?: number | undefined;
+  id: string;
+  name?: string | null;
+  blacklisted: boolean;
+  email?: string | null;
+  emailVerified?: Date | null;
+  image?: string | null;
+  role: string;
+};
 export default function User() {
   // Searching states
   const [searchUserValue, setSearchUserValue] = useState<string | null>(null);
@@ -59,7 +57,7 @@ export default function User() {
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [data, setData] = useState<Query>();
+  const [data, setData] = useState<Array<Query>>();
   const {
     data: userQueryData,
     isLoading: userQueryLoading,
@@ -111,7 +109,13 @@ export default function User() {
       }
     };
     doLoadThings();
-  }, [userQueryData, searchFilterData, isError]);
+  }, [
+    userQueryData,
+    searchFilterData,
+    isError,
+    userQueryRefetch,
+    searchUserValue,
+  ]);
   if (userQueryLoading) {
     return (
       <Box>
