@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { UserSchema } from '@utils/zod/dash';
 import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
+import { type Roles as RolesD } from 'database';
 export const userRouter = router({
   blackList: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/user' } })
@@ -19,7 +20,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           requiredPerms: Perms.roleAdmin,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -62,7 +63,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           itemOwnerId: input.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -143,7 +144,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           itemOwnerId: account?.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -185,7 +186,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -217,12 +218,12 @@ export const userRouter = router({
         try {
           const userCount = await ctx.prisma.user.count({
             where: {
-              role: input.filterRoles,
+              role: input.filterRoles as RolesD,
             },
           });
           const users = await ctx.prisma.user.findMany({
             where: {
-              role: input.filterRoles,
+              role: input.filterRoles as RolesD,
             },
             take: takeValue,
             skip: skipValue,
@@ -247,12 +248,12 @@ export const userRouter = router({
         userId: z.string().cuid(),
       }),
     )
-    .output(UserSchema)
+    .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           requiredPerms: Perms.roleAdmin,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -266,10 +267,10 @@ export const userRouter = router({
             id: input.userId,
           },
           data: {
-            role: input.role,
+            role: input.role as RolesD,
           },
         });
-        return users;
+        return { message: 'success' };
       } catch (error) {
         throw new TRPCError({
           message: 'No clip document with the UUID provided could be found.',
@@ -290,7 +291,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           requiredPerms: Perms.roleAdmin,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -298,6 +299,7 @@ export const userRouter = router({
         throw new TRPCError({
           code: 'UNAUTHORIZED',
         });
+      if (input.name == undefined) throw new TRPCError({ code: 'BAD_REQUEST' });
       try {
         const user = await ctx.prisma.user.findFirst({
           where: {

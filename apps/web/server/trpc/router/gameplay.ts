@@ -6,11 +6,11 @@ import {
   GameplayTypes,
   GameplaysDashSchema,
 } from '@utils/zod/gameplay';
-import { input, z } from 'zod';
+import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
-import { GPSchema } from '@utils/zod/dash';
+import { UserSchema } from '@utils/zod/dash';
 
 export const gameplayRouter = router({
   get: protectedProcedure
@@ -22,7 +22,7 @@ export const gameplayRouter = router({
     )
     .output(GameplaySchema)
     .query(async ({ input, ctx }) => {
-      const gameplay = await ctx.prisma.footage.findUnique({
+      const gameplay = await ctx.prisma.gameplay.findUnique({
         where: {
           id: input.gameplayId,
         },
@@ -33,7 +33,7 @@ export const gameplayRouter = router({
         gameplay === null ||
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           itemOwnerId: gameplay.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -59,9 +59,9 @@ export const gameplayRouter = router({
       const takeValue = 10;
       const skipValue = input.page * 10 - 10;
       if (input.filterGames == null) {
-        const gameplayCount: number = await ctx.prisma.footage.count();
+        const gameplayCount: number = await ctx.prisma.gameplay.count();
         try {
-          const gameplays = await ctx.prisma.footage.findMany({
+          const gameplays = await ctx.prisma.gameplay.findMany({
             take: takeValue,
             skip: skipValue,
             include: {
@@ -80,14 +80,14 @@ export const gameplayRouter = router({
         }
       } else {
         try {
-          const gameplayCount = await ctx.prisma.footage.count({
+          const gameplayCount = await ctx.prisma.gameplay.count({
             where: {
-              footageType: input.filterGames,
+              gameplayType: input.filterGames,
             },
           });
-          const gameplays = await ctx.prisma.footage.findMany({
+          const gameplays = await ctx.prisma.gameplay.findMany({
             where: {
-              footageType: input.filterGames,
+              gameplayType: input.filterGames,
             },
             include: {
               user: true,
@@ -119,7 +119,7 @@ export const gameplayRouter = router({
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
-      const existingGameplay = await ctx.prisma.footage.findUnique({
+      const existingGameplay = await ctx.prisma.gameplay.findUnique({
         where: {
           youtubeUrl: input.youtubeUrl,
         },
@@ -133,11 +133,11 @@ export const gameplayRouter = router({
         });
 
       try {
-        const data = await ctx.prisma.footage.create({
+        const data = await ctx.prisma.gameplay.create({
           data: {
             userId: ctx.session.user.id,
             youtubeUrl: input.youtubeUrl,
-            footageType: input.gameplayType,
+            gameplayType: input.gameplayType,
           },
         });
 
@@ -185,7 +185,7 @@ export const gameplayRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           itemOwnerId: userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -200,7 +200,7 @@ export const gameplayRouter = router({
           id: userId,
         },
         include: {
-          footage: true,
+          gameplay: true,
         },
       });
 
@@ -211,7 +211,7 @@ export const gameplayRouter = router({
           message: 'No user found with the provided ID.',
         });
 
-      return user.footage;
+      return user.gameplay;
     }),
   getClips: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/clips' } })
@@ -222,7 +222,7 @@ export const gameplayRouter = router({
     )
     .output(SegmentSchema.array())
     .query(async ({ input, ctx }) => {
-      const gameplay = await ctx.prisma.footage.findUnique({
+      const gameplay = await ctx.prisma.gameplay.findUnique({
         where: {
           id: input.gameplayId,
         },
@@ -241,7 +241,7 @@ export const gameplayRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           itemOwnerId: gameplay.userId,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
@@ -258,14 +258,14 @@ export const gameplayRouter = router({
     .input(
       z.object({
         gameplayId: z.string().cuid(),
-        footageType: GameplayTypes,
+        gameplayType: GameplayTypes,
         isAnalyzed: z.boolean(),
       }),
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
       try {
-        const gameplay = await ctx.prisma.footage.findUniqueOrThrow({
+        const gameplay = await ctx.prisma.gameplay.findUniqueOrThrow({
           where: {
             id: input.gameplayId,
           },
@@ -280,7 +280,7 @@ export const gameplayRouter = router({
         if (
           !hasPerms({
             userId: ctx.session.user.id,
-            userRole: ctx.session.user.role,
+            userRole: ctx.session.user.role as unknown as Roles,
             itemOwnerId: gameplay.userId,
             requiredPerms,
             blacklisted: ctx.session.user.blacklisted,
@@ -290,13 +290,13 @@ export const gameplayRouter = router({
             code: 'UNAUTHORIZED',
           });
 
-        const updatedGameplay = await ctx.prisma.footage.update({
+        const updatedGameplay = await ctx.prisma.gameplay.update({
           where: {
             id: input.gameplayId,
           },
           data: {
             isAnalyzed: input.isAnalyzed,
-            footageType: input.footageType,
+            gameplayType: input.gameplayType,
           },
         });
 
@@ -322,7 +322,7 @@ export const gameplayRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       try {
-        const gameplay = await ctx.prisma.footage.findUniqueOrThrow({
+        const gameplay = await ctx.prisma.gameplay.findUniqueOrThrow({
           where: {
             id: input.gameplayId,
           },
@@ -331,7 +331,7 @@ export const gameplayRouter = router({
         if (
           !hasPerms({
             userId: ctx.session.user.id,
-            userRole: ctx.session.user.role,
+            userRole: ctx.session.user.role as unknown as Roles,
             itemOwnerId: gameplay.userId,
             requiredPerms: Perms.isOwner,
             blacklisted: ctx.session.user.blacklisted,
@@ -341,7 +341,7 @@ export const gameplayRouter = router({
             code: 'UNAUTHORIZED',
           });
 
-        await ctx.prisma.footage.delete({
+        await ctx.prisma.gameplay.delete({
           where: {
             id: input.gameplayId,
           },
@@ -366,14 +366,14 @@ export const gameplayRouter = router({
         const index = Math.floor(Math.random() * values.length);
         return values[index];
       };
-      const itemCount = await ctx.prisma.footage.count();
+      const itemCount = await ctx.prisma.gameplay.count();
       const tenDocs = () => {
         return Math.floor(Math.random() * (itemCount - 1 + 1)) + 0;
       };
 
       const orderBy = randomPick(['userId', 'id', 'youtubeUrl']);
       const orderDir = randomPick([`desc`, 'asc']);
-      const reviewItems = await ctx.prisma.footage.findMany({
+      const reviewItems = await ctx.prisma.gameplay.findMany({
         take: 1,
         skip: tenDocs(),
         orderBy: { [orderBy]: orderDir },
@@ -403,9 +403,9 @@ export const gameplayRouter = router({
       if (!ctx.session.user?.id) {
         return { message: 'No user' };
       }
-      const footageVote = await ctx.prisma.footageVotes.create({
+      const footageVote = await ctx.prisma.gameplayVotes.create({
         data: {
-          footageId: input.gameplayId,
+          gameplayId: input.gameplayId,
           isGame: input.isGame,
           actualGame: input.actualGame,
           userId: ctx.session.user?.id,
@@ -418,42 +418,5 @@ export const gameplayRouter = router({
         });
 
       return { message: 'Updated the gameplay document successfully.' };
-    }),
-  search: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/user/search' } })
-    .input(
-      z.object({
-        name: z.string().nullable(),
-      }),
-    )
-    .output(GPSchema)
-    .query(async ({ input, ctx }) => {
-      console.log(ctx.session);
-      if (
-        !hasPerms({
-          userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
-          requiredPerms: Perms.roleAdmin,
-          blacklisted: ctx.session.user.blacklisted,
-        })
-      )
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-        });
-      try {
-        const user = await ctx.prisma.user.findFirst({
-          where: {
-            name: {
-              contains: input.name,
-            },
-          },
-        });
-        return user;
-      } catch (error) {
-        throw new TRPCError({
-          message: 'No user document with the name provided could be found.',
-          code: 'NOT_FOUND',
-        });
-      }
     }),
 });

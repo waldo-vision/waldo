@@ -39,9 +39,7 @@ type Query =
       id: string;
       userId: string;
       youtubeUrl: string;
-      footageType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S';
-      upVotes: number;
-      downVotes: number;
+      gameplayType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S';
       isAnalyzed: boolean;
       user?: {
         name?: string | null;
@@ -221,7 +219,7 @@ export default function Gameplay() {
                         <Td borderLeftRadius={16}>
                           <Flex direction={'row'} align={'center'} gap={2}>
                             <Text fontWeight={'bold'}>
-                              {result && result.footageType}
+                              {result && result.gameplayType}
                             </Text>
                           </Flex>
                         </Td>

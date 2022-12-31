@@ -7,9 +7,7 @@ export const GameplaySchema = z.object({
   id: z.string().cuid(),
   userId: z.string(),
   youtubeUrl: z.string().url(),
-  footageType: GameplayTypes,
-  upVotes: z.number(),
-  downVotes: z.number(),
+  gameplayType: GameplayTypes,
   isAnalyzed: z.boolean(),
 });
 
@@ -17,9 +15,7 @@ export const GameplaysDashSchema = z.object({
   id: z.string().cuid(),
   userId: z.string().cuid(),
   youtubeUrl: z.string().url(),
-  footageType: GameplayTypes,
-  upVotes: z.number(),
-  downVotes: z.number(),
+  gameplayType: GameplayTypes,
   isAnalyzed: z.boolean(),
   user: z.object({
     name: z.string().nullable(),

@@ -167,7 +167,8 @@ export default function Upload() {
         | 'VAL'
         | 'TF2'
         | 'COD'
-        | 'APE',
+        | 'APE'
+        | 'R6S',
       youtubeUrl: currentUrl as string,
     };
     try {

@@ -3,7 +3,7 @@ import { ClipSchema } from '@utils/zod/clip';
 
 import { protectedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { hasPerms, Perms } from '@server/utils/hasPerms';
+import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
 export const clipRouter = router({
   get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/clip' } })
@@ -17,7 +17,7 @@ export const clipRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           requiredPerms: Perms.roleMod,
           // when this api is used check for owner
           // itemOwnerId: clip.footage.userId,
@@ -34,7 +34,7 @@ export const clipRouter = router({
             id: input.clipId,
           },
           include: {
-            footage: true,
+            gameplay: true,
           },
         });
 
@@ -61,7 +61,7 @@ export const clipRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           requiredPerms: Perms.roleMod,
           // when this api is used check for owner
           // itemOwnerId: clip.footage.userId,
@@ -92,7 +92,7 @@ export const clipRouter = router({
     .meta({ openapi: { method: 'POST', path: '/clip' } })
     .input(
       z.object({
-        footageId: z.string().uuid(),
+        gameplayId: z.string().uuid(),
       }),
     )
     .output(ClipSchema)
@@ -100,7 +100,7 @@ export const clipRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role,
+          userRole: ctx.session.user.role as unknown as Roles,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -112,7 +112,7 @@ export const clipRouter = router({
       try {
         const clip = await ctx.prisma.clip.create({
           data: {
-            footageId: input.footageId,
+            gameplayId: input.gameplayId,
           },
         });
         return clip;
