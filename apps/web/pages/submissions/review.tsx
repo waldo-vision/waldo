@@ -17,6 +17,7 @@ import { trpc } from '@utils/trpc';
 import Head from 'next/head';
 import { prisma } from '@server/db/client';
 import TurnstileWidget from '@components/TurnstileWidget';
+import Finished from '@components/Finished';
 interface ReviewItem {
   id: string;
   user: {
@@ -30,8 +31,12 @@ interface ReviewItem {
 }
 export default function Review() {
   const utils = trpc.useContext();
-  const { data: reviewItemData, refetch } =
-    trpc.gameplay.getReviewItems.useQuery();
+  const {
+    data: reviewItemData,
+    refetch,
+    error,
+    isError,
+  } = trpc.gameplay.getReviewItems.useQuery();
 
   const reviewGameplay = trpc.gameplay.review.useMutation({
     async onSuccess() {
@@ -42,6 +47,7 @@ export default function Review() {
   const [reviewItem, setReviewItem] = useState<ReviewItem | undefined>(
     reviewItemData,
   );
+  const [finished, setFinished] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
   const router = useRouter();
@@ -95,8 +101,12 @@ export default function Review() {
 
   useEffect(() => {
     const getNecessaryData = async () => {
+      console.log('ok');
       await refetch();
       setReviewItem(reviewItemData);
+      if (error?.data?.code == 'NOT_FOUND') {
+        setFinished(true);
+      }
       setLoading(false);
     };
     const getCurrentSession = async () => {
@@ -124,111 +134,119 @@ export default function Review() {
       </Head>
       <div>
         <Center h={'100vh'}>
-          {loading || !reviewItemData ? (
+          {loading && !reviewItemData ? (
             <Loading color={'default'} />
           ) : (
             <Flex direction={'column'}>
-              <Center mb={4}>
-                <TurnstileWidget valid={result => setIsRequestValid(result)} />
-              </Center>
-              <Box bgColor={'white'} p={6} borderRadius={12}>
-                <Flex direction={'row'}>
-                  {/* User Icon */}
-                  <Box>
-                    <Image
-                      src={reviewItem?.user?.image as string}
-                      alt={'User Icon'}
-                      w={54}
-                      h={54}
-                      borderRadius={28}
+              {finished ? (
+                <Finished />
+              ) : (
+                <>
+                  <Center mb={4}>
+                    <TurnstileWidget
+                      valid={result => setIsRequestValid(result)}
                     />
-                  </Box>
-                  {/* Top titles */}
-                  {reviewItem && (
-                    <Flex
-                      direction={'column'}
-                      justifyContent={'center'}
-                      fontSize={18}
-                      ml={2}
-                    >
-                      <Text>
-                        Submitted by&nbsp;
-                        <Text as={'span'} fontWeight={'bold'}>
-                          {reviewItem?.user?.name}
-                        </Text>
-                      </Text>
+                  </Center>
+                  <Box bgColor={'white'} p={6} borderRadius={12}>
+                    <Flex direction={'row'}>
+                      {/* User Icon */}
+                      <Box>
+                        <Image
+                          src={reviewItem?.user?.image as string}
+                          alt={'User Icon'}
+                          w={54}
+                          h={54}
+                          borderRadius={28}
+                        />
+                      </Box>
+                      {/* Top titles */}
+                      {reviewItem && (
+                        <Flex
+                          direction={'column'}
+                          justifyContent={'center'}
+                          fontSize={18}
+                          ml={2}
+                        >
+                          <Text>
+                            Submitted by&nbsp;
+                            <Text as={'span'} fontWeight={'bold'}>
+                              {reviewItem?.user?.name}
+                            </Text>
+                          </Text>
 
-                      <Text fontWeight={'normal'}>
-                        Does this clip match gameplay from{' '}
-                        <Text fontWeight={'bold'} as={'span'}>
-                          {reviewItem?.gameplayType === 'CSG'
-                            ? 'Counter Strike: Global Offensive'
-                            : reviewItem?.gameplayType === 'VAL'
-                            ? 'Valorant'
-                            : reviewItem?.gameplayType === 'APE'
-                            ? 'Apex Legends'
-                            : reviewItem?.gameplayType === 'TF2'
-                            ? 'Team Fortress 2'
-                            : reviewItem?.gameplayType === 'COD'
-                            ? 'Call of Duty'
-                            : 'a relevant First Person Shooter game?'}
+                          <Text fontWeight={'normal'}>
+                            Does this clip match gameplay from{' '}
+                            <Text fontWeight={'bold'} as={'span'}>
+                              {reviewItem?.gameplayType === 'CSG'
+                                ? 'Counter Strike: Global Offensive'
+                                : reviewItem?.gameplayType === 'VAL'
+                                ? 'Valorant'
+                                : reviewItem?.gameplayType === 'APE'
+                                ? 'Apex Legends'
+                                : reviewItem?.gameplayType === 'TF2'
+                                ? 'Team Fortress 2'
+                                : reviewItem?.gameplayType === 'COD'
+                                ? 'Call of Duty'
+                                : 'a relevant First Person Shooter game?'}
+                            </Text>
+                          </Text>
+                        </Flex>
+                      )}
+                    </Flex>
+                    {/* Iframe */}
+                    <Box mt={6}>
+                      {/* we might want to find a alternative to iframe as it doesn't inherit styles from parent w chakra -ceri */}
+                      {reviewItem && (
+                        <iframe
+                          src={getYtEmbedLink(reviewItem.youtubeUrl)}
+                          style={{
+                            borderRadius: 12,
+                            width: '100%',
+                            height: '42vh',
+                          }}
+                        />
+                      )}
+                    </Box>
+                    {/* Footer */}
+                    <Flex mt={4} alignItems={'center'}>
+                      <Text>
+                        By answering you accept the{' '}
+                        <Text
+                          as={'span'}
+                          fontWeight={'semibold'}
+                          textDecoration={'underline'}
+                        >
+                          Terms of Service
                         </Text>
                       </Text>
+                      {/* Button */}
+                      <Box ml={'auto'} right={0}>
+                        <Button
+                          color={'white'}
+                          bgColor={'#373737'}
+                          px={4}
+                          _hover={{ bgColor: '#474747' }}
+                          mr={3}
+                          ml={3}
+                          onClick={() => handleYesClick()}
+                        >
+                          Yes
+                        </Button>
+                        <Button
+                          variant="outline"
+                          color={'#373737'}
+                          borderColor={'#373737'}
+                          px={4}
+                          _hover={{ bgColor: 'gray.300' }}
+                          onClick={() => handleNoClick()}
+                        >
+                          No
+                        </Button>
+                      </Box>
                     </Flex>
-                  )}
-                </Flex>
-                {/* Iframe */}
-                <Box mt={6}>
-                  {/* we might want to find a alternative to iframe as it doesn't inherit styles from parent w chakra -ceri */}
-                  {reviewItem && (
-                    <iframe
-                      src={getYtEmbedLink(reviewItem.youtubeUrl)}
-                      style={{
-                        borderRadius: 12,
-                        width: '100%',
-                        height: '42vh',
-                      }}
-                    />
-                  )}
-                </Box>
-                {/* Footer */}
-                <Flex mt={4} alignItems={'center'}>
-                  <Text>
-                    By answering you accept the{' '}
-                    <Text
-                      as={'span'}
-                      fontWeight={'semibold'}
-                      textDecoration={'underline'}
-                    >
-                      Terms of Service
-                    </Text>
-                  </Text>
-                  {/* Button */}
-                  <Box ml={'auto'} right={0}>
-                    <Button
-                      color={'white'}
-                      bgColor={'#373737'}
-                      px={4}
-                      _hover={{ bgColor: '#474747' }}
-                      mr={3}
-                      ml={3}
-                      onClick={() => handleYesClick()}
-                    >
-                      Yes
-                    </Button>
-                    <Button
-                      variant="outline"
-                      color={'#373737'}
-                      borderColor={'#373737'}
-                      px={4}
-                      _hover={{ bgColor: 'gray.300' }}
-                      onClick={() => handleNoClick()}
-                    >
-                      No
-                    </Button>
                   </Box>
-                </Flex>
-              </Box>
+                </>
+              )}
             </Flex>
           )}
         </Center>

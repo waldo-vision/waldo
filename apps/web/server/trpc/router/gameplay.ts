@@ -1,16 +1,15 @@
 import { TRPCError } from '@trpc/server';
 import ytdl from 'ytdl-core';
 import {
-  GameplayPlusUserSchema,
   GameplaySchema,
   GameplayTypes,
   GameplaysDashSchema,
+  ReviewItemsGameplaySchema,
 } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
-
 export const gameplayRouter = router({
   get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay' } })
@@ -359,7 +358,7 @@ export const gameplayRouter = router({
     }),
   getReviewItems: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/review' } })
-    .output(GameplayPlusUserSchema)
+    .output(ReviewItemsGameplaySchema)
     .query(async ({ input, ctx }) => {
       const randomPick = (values: string[]) => {
         const index = Math.floor(Math.random() * values.length);
@@ -369,23 +368,24 @@ export const gameplayRouter = router({
       const tenDocs = () => {
         return Math.floor(Math.random() * (itemCount - 1 + 1)) + 0;
       };
-
       const orderBy = randomPick(['userId', 'id', 'youtubeUrl']);
       const orderDir = randomPick([`desc`, 'asc']);
-      const reviewItems = await ctx.prisma.gameplay.findMany({
+      const reviewItem = await ctx.prisma.gameplay.findMany({
+        where: {
+          gameplayVotes: { none: { userId: ctx.session.user.id } },
+        },
         take: 1,
         skip: tenDocs(),
         orderBy: { [orderBy]: orderDir },
         include: {
           user: true,
+          gameplayVotes: true,
         },
       });
-      if (reviewItems === null)
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: `Could not query gameplay documents`,
-        });
-      return reviewItems[0];
+      if (reviewItem[0] == null || reviewItem[0] == undefined) {
+        throw new TRPCError({ code: 'NOT_FOUND' });
+      }
+      return reviewItem[0];
     }),
   review: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })
