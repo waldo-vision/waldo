@@ -3,7 +3,7 @@ name: Deploy docs site to Pages 🚀
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: 
+    branches:
       - master
     paths:
       - apps/docs/**
@@ -19,13 +19,13 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 env:
   BUILD_PATH: out/apps/docs/dist
   DOCS_PATH: out/apps/docs
-  
+
 jobs:
   build:
     name: Build
@@ -33,17 +33,18 @@ jobs:
     steps:
       - name: Checkout 🛫
         uses: actions/checkout@v3
-      - name: Detect package manager 📦
-        id: detect-package-manager
-        run: |
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=yarn" >> $GITHUB_OUTPUT
+      # - name: Detect package manager 📦
+      #   id: detect-package-manager
+      #   run: |
+      #       echo "manager=yarn" >> $GITHUB_OUTPUT
+      #       echo "command=install" >> $GITHUB_OUTPUT
+      #       echo "runner=yarn" >> $GITHUB_OUTPUT
       - name: Setup Node 📐
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
+          node-version: '18'
+          # cache: ${{ steps.detect-package-manager.outputs.manager }}
+          cache: 'yarn'
       - name: Setup Pages 📄
         id: pages
         uses: actions/configure-pages@v2
