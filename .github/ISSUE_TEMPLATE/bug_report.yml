@@ -23,6 +23,17 @@ body:
       value: 'A bug happened!'
     validations:
       required: true
+  - type: textarea
+    attributes:
+      label: Steps To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. In this environment...
+        2. With this config...
+        3. Run '...'
+        4. See error...
+    validations:
+      required: true
   - type: dropdown
     id: project
     attributes:
