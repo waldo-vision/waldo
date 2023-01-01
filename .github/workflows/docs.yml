@@ -33,6 +33,9 @@ jobs:
     steps:
       - name: Checkout 🛫
         uses: actions/checkout@v3
+      - name: Create Cache 📃
+        run: mkdir -p /home/runner/work/waldo/waldo/.yarn/cache
+        continue-on-error: true 
       - name: Setup Node 📐
         uses: actions/setup-node@v3
         with:
