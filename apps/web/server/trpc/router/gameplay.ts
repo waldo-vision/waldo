@@ -9,8 +9,7 @@ import {
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
-import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
-import { UserSchema } from '@utils/zod/dash';
+import { hasPerms, Perms } from '@server/utils/hasPerms';
 
 export const gameplayRouter = router({
   get: protectedProcedure
@@ -33,7 +32,7 @@ export const gameplayRouter = router({
         gameplay === null ||
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           itemOwnerId: gameplay.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -185,7 +184,7 @@ export const gameplayRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           itemOwnerId: userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -241,7 +240,7 @@ export const gameplayRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           itemOwnerId: gameplay.userId,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
@@ -280,7 +279,7 @@ export const gameplayRouter = router({
         if (
           !hasPerms({
             userId: ctx.session.user.id,
-            userRole: ctx.session.user.role as unknown as Roles,
+            userRole: ctx.session.user.role,
             itemOwnerId: gameplay.userId,
             requiredPerms,
             blacklisted: ctx.session.user.blacklisted,
@@ -331,7 +330,7 @@ export const gameplayRouter = router({
         if (
           !hasPerms({
             userId: ctx.session.user.id,
-            userRole: ctx.session.user.role as unknown as Roles,
+            userRole: ctx.session.user.role,
             itemOwnerId: gameplay.userId,
             requiredPerms: Perms.isOwner,
             blacklisted: ctx.session.user.blacklisted,

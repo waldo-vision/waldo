@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { GameplayTypes } from './gameplay';
-
 export const UserSchema = z.object({
   id: z.string(),
   name: z.string().nullable().optional(),

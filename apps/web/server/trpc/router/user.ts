@@ -1,11 +1,9 @@
 import { TRPCError } from '@trpc/server';
-import ytdl from 'ytdl-core';
-import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { UserSchema } from '@utils/zod/dash';
-import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
-import { type Roles as RolesD } from 'database';
+import { hasPerms, Perms } from '@server/utils/hasPerms';
+import type { Roles } from 'database';
 export const userRouter = router({
   blackList: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/user' } })
@@ -20,7 +18,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleAdmin,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -63,7 +61,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           itemOwnerId: input.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -144,7 +142,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           itemOwnerId: account?.userId,
           requiredPerms: Perms.isOwner,
           blacklisted: ctx.session.user.blacklisted,
@@ -186,7 +184,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -218,12 +216,12 @@ export const userRouter = router({
         try {
           const userCount = await ctx.prisma.user.count({
             where: {
-              role: input.filterRoles as RolesD,
+              role: input.filterRoles as Roles,
             },
           });
           const users = await ctx.prisma.user.findMany({
             where: {
-              role: input.filterRoles as RolesD,
+              role: input.filterRoles as Roles,
             },
             take: takeValue,
             skip: skipValue,
@@ -253,7 +251,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleAdmin,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -267,7 +265,7 @@ export const userRouter = router({
             id: input.userId,
           },
           data: {
-            role: input.role as RolesD,
+            role: input.role as Roles,
           },
         });
         return { message: 'success' };
@@ -291,7 +289,7 @@ export const userRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleAdmin,
           blacklisted: ctx.session.user.blacklisted,
         })
@@ -308,6 +306,9 @@ export const userRouter = router({
             },
           },
         });
+        if (user == null) {
+          throw new TRPCError({ code: 'NOT_FOUND' });
+        }
         return user;
       } catch (error) {
         throw new TRPCError({

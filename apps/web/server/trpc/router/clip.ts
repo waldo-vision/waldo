@@ -3,7 +3,7 @@ import { ClipSchema } from '@utils/zod/clip';
 
 import { protectedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
+import { hasPerms, Perms } from '@server/utils/hasPerms';
 export const clipRouter = router({
   get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/clip' } })
@@ -17,7 +17,7 @@ export const clipRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           // when this api is used check for owner
           // itemOwnerId: clip.footage.userId,
@@ -61,7 +61,7 @@ export const clipRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           // when this api is used check for owner
           // itemOwnerId: clip.footage.userId,
@@ -100,7 +100,7 @@ export const clipRouter = router({
       if (
         !hasPerms({
           userId: ctx.session.user.id,
-          userRole: ctx.session.user.role as unknown as Roles,
+          userRole: ctx.session.user.role,
           requiredPerms: Perms.roleMod,
           blacklisted: ctx.session.user.blacklisted,
         })
