@@ -65,6 +65,8 @@ export default function Review() {
   };
 
   const doClickLogic = async (action: 'yes' | 'no') => {
+    setLoading(true);
+
     if (!isRequestValid) {
       toast({
         position: 'bottom-right',
@@ -77,9 +79,7 @@ export default function Review() {
       });
       return;
     }
-    if (reviewItem === undefined) return;
 
-    setLoading(true);
     const review = action === 'yes';
     await reviewGameplay.mutateAsync({
       gameplayId: reviewItem.id,
@@ -101,7 +101,6 @@ export default function Review() {
 
   useEffect(() => {
     const getNecessaryData = async () => {
-      console.log('ok');
       await refetch();
       setReviewItem(reviewItemData);
       if (error?.data?.code == 'NOT_FOUND') {
@@ -134,11 +133,11 @@ export default function Review() {
       </Head>
       <div>
         <Center h={'100vh'}>
-          {loading && !reviewItemData ? (
+          {loading || !reviewItemData ? (
             <Loading color={'default'} />
           ) : (
             <Flex direction={'column'}>
-              {finished ? (
+              {finished || error ? (
                 <Finished />
               ) : (
                 <>
