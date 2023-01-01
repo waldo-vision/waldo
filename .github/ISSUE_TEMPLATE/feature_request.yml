@@ -33,13 +33,6 @@ body:
     validations:
       required: true
   - type: textarea
-    id: full-desc
-    attributes:
-      label: Proper Description
-      description: Give us a full explination of what you want.
-    validations:
-      required: true
-  - type: textarea
     id: alternatives
     attributes:
       label: Any Alternatives?
