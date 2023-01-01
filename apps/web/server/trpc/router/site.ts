@@ -1,4 +1,4 @@
-import { hasPerms, Roles, Perms } from '@server/utils/hasPerms';
+import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
