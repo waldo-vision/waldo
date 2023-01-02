@@ -30,6 +30,7 @@ import { MdOutlineRemove } from 'react-icons/md';
 import useSite from '@site';
 import AccGameplayItemExtended from '@components/AccGameplayItemExtended';
 import { prisma } from '@server/db/client';
+import Loading from '@components/Loading';
 
 type ProvidersListType = {
   name: string;
@@ -100,7 +101,6 @@ export default function Account() {
     userId: string;
     provider: string;
   }) => {
-    console.log(account);
     try {
       await unlinkAccount.mutateAsync({ accountId: account.id });
       toast({
@@ -155,7 +155,9 @@ export default function Account() {
     gamplayData,
   ]);
 
-  return (
+  return isLoading ? (
+    <Loading color={'blue.500'} />
+  ) : (
     <>
       <Head>
         <title>Waldo | Account</title>
