@@ -109,6 +109,7 @@ export default function Navigation() {
           <MobileNav />
         </Collapse>
         <Box overflow={'auto'} width={'100%'}>
+          {/* imp trpc query to retrieve data from waldosite if maintenance mode is enabled */}
           {session?.user?.blacklisted ? (
             <Alert status={'warning'}>
               <AlertIcon />

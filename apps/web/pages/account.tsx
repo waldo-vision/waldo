@@ -163,7 +163,7 @@ export default function Account() {
         />
       </Head>
       <Box minHeight={'100vh'} mt={{ base: '60px' }} mb={20}>
-        <DeleteAccModal show={false} />
+        <DeleteAccModal show={showModal} />
         <Flex direction={'column'} gap={3}>
           <Flex direction={'column'}>
             <Text fontWeight={'bold'} fontSize={30}>
