@@ -8,7 +8,6 @@ import {
   Divider,
   Image,
   Center,
-  Tag,
   chakra,
 } from '@chakra-ui/react';
 import Layout from '@components/Layout';
@@ -160,10 +159,10 @@ export default function Account() {
   ) : (
     <>
       <Head>
-        <title>Waldo | Account</title>
+        <title>WALDO | Account</title>
         <meta
           name="description"
-          content="Waldo is an Open-source visual cheat detection, powered by A.I"
+          content="WALDO is an Open-source visual cheat detection, powered by A.I"
         />
       </Head>
       <Box minHeight={'100vh'} mt={{ base: '60px' }} mb={20}>

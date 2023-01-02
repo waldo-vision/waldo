@@ -80,7 +80,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           <Flex align={'center'}>
             <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
             <Heading size={'md'} pl={3}>
-              Waldo
+              WALDO
             </Heading>
           </Flex>
         </Link>
@@ -141,7 +141,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         <Flex align={'center'}>
           <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
           <Heading size={'md'} pl={3}>
-            Waldo
+            WALDO
           </Heading>
         </Flex>
       </Link>

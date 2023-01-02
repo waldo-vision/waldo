@@ -73,7 +73,7 @@ export default function Navigation() {
               aria-label={'Toggle Navigation'}
             />
             <Heading size={'md'} pb={1} pl={3}>
-              <Link href={'/'}>Waldo</Link>
+              <Link href={'/'}>WALDO</Link>
             </Heading>
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'left' }}>
@@ -85,7 +85,7 @@ export default function Navigation() {
               >
                 <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
                 <Heading size={'md'} pl={3}>
-                  Waldo
+                  WALDO
                 </Heading>
               </Flex>
             </Link>

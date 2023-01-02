@@ -29,7 +29,7 @@ export function hasPerms({
    */
   userId: string;
   /**
-   * The user's role within Waldo, most people will be a 'User'
+   * The user's role within WALDO, most people will be a 'User'
    * Only staff with have something else
    */
   userRole: Roles;

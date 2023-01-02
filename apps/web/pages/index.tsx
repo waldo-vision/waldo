@@ -26,7 +26,7 @@ import { TbEyeCheck } from 'react-icons/tb';
 import DashboardImage from '../public/Dashboard.png';
 import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
-import { githubrepo, githubrepoIssues } from '@utils/links';
+import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
 
 export default function Home() {
@@ -45,11 +45,11 @@ export default function Home() {
     <>
       <Head>
         <title>
-          Waldo | Open-source visual cheat detection, powered by A.I
+          WALDO | Open-source visual cheat detection, powered by A.I
         </title>
         <meta
           name="description"
-          content="Waldo is an Open-source visual cheat detection, powered by A.I"
+          content="WALDO is an Open-source visual cheat detection, powered by A.I"
         />
       </Head>
 
@@ -79,8 +79,8 @@ export default function Home() {
               position: 'fixed',
               zIndex: -10,
               borderRadius: '16px',
-              left: `${-221.82 - y}px`,
-              top: `${210 - y / 2}px`,
+              left: `${-141.82 - y}px`,
+              top: `${380 - y / 2}px`,
               boxShadow: '0px 0px 32px 5px rgba(0, 0, 0, 0.25)',
               transform: 'rotate(25deg)',
             }}
@@ -107,7 +107,7 @@ export default function Home() {
               gap={3}
             >
               <Heading fontSize={'57px'} py={2} textAlign={'center'}>
-                Waldo
+                WALDO
               </Heading>
               <Text fontSize={'27px'} textAlign={'center'}>
                 <b>Open-source </b>
@@ -130,7 +130,10 @@ export default function Home() {
                   colorScheme={'purple'}
                   leftIcon={<MdInfoOutline />}
                   onClick={() =>
-                    helpRef.current?.scrollIntoView({ behavior: 'smooth' })
+                    helpRef.current?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'center',
+                    })
                   }
                 >
                   Learn More
@@ -139,9 +142,9 @@ export default function Home() {
             </Flex>
           </Center>
         </Container>
-        <Container maxW={'7xl'}>
+        <Features />
+        <Container paddingTop={{ base: 20, md: 28 }} maxW={'7xl'} ref={helpRef}>
           <Stack
-            ref={helpRef}
             align={'center'}
             spacing={{ base: 8, md: 10 }}
             paddingBottom={{ base: 20, md: 28 }}
@@ -171,25 +174,21 @@ export default function Home() {
                 </Text>
                 <br />
                 <Text as={'span'} color={'purple.400'}>
-                  Waldo?
+                  WALDO?
                 </Text>
               </Heading>
-              <Text>
-                Waldo analyses POV clips and returns a probability that the user
-                is cheating. How? Waldo is trained to detect the human
-                behavioral characteristics of moving a mouse, of which the
-                program contrasts the model to the footage.
-              </Text>
-              <Stack
-                spacing={{ base: 4, sm: 6 }}
-                direction={{ base: 'column', sm: 'row' }}
-              >
-                <Link href={'/chat'}>
-                  <Button variant={'solid'} colorScheme={'purple'}>
-                    Join the Discord
-                  </Button>
-                </Link>
-              </Stack>
+              <Flex direction={'column'} gap={3}>
+                <Text>
+                  WALDO Vision is a machine learning system that will analyze
+                  FPS gameplay clips, and return a probability that the player
+                  is using aimbot cheats.
+                </Text>
+                <Text>
+                  <b>How?</b> WALDO Vision will train on hundreds of hours of
+                  gameplay to learn what characteristics distinguish human aim
+                  from computer aim
+                </Text>
+              </Flex>
             </Stack>
             <Flex
               flex={1}
@@ -211,44 +210,54 @@ export default function Home() {
             </Flex>
           </Stack>
         </Container>
-        <Features />
-        <Container maxW={'7xl'} paddingTop={{ base: 20, md: 28 }}>
-          <Center>
-            <Flex
-              direction={'column'}
-              textAlign={'center'}
-              alignItems={'center'}
-              gap={'5px'}
+        <Container maxW={'7xl'}>
+          <Flex
+            direction={'column'}
+            textAlign={'left'}
+            alignItems={'center'}
+            gap={'5px'}
+          >
+            <Heading
+              fontWeight={600}
+              fontSize={{ base: '3xl', sm: '4xl', lg: '5xl' }}
             >
-              <Heading
-                fontWeight={600}
-                fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
-              >
-                <Text>Waldo needs your help!</Text>
-              </Heading>
-              <Text maxW={'3xl'}>
-                However, Waldo is not ready yet. In order to have a model as
-                accurate as possible We need thousands of hours of footage,
-                which we do not currently have. We are asking the community to
-                link their own clips from Youtube and upload the videos to
-                Waldo.
-              </Text>
-              <Flex direction={{ base: 'column', md: 'row' }} gap={'4'} m={3}>
-                <Link href={'/submissions/upload'}>
-                  <Button variant={'solid'} colorScheme={'purple'}>
-                    <HiUpload height={16} width={16} />
-                    <Text marginLeft={2}>Upload your footage</Text>
-                  </Button>
-                </Link>
-                <Link href={'/submissions/review'}>
-                  <Button variant={'outline'} colorScheme={'purple'}>
-                    <TbEyeCheck height={16} width={16} />
-                    <Text marginLeft={2}>Review Submissions</Text>
-                  </Button>
-                </Link>
-              </Flex>
+              <Text>WALDO needs your help!</Text>
+            </Heading>
+            <Text maxW={'4xl'}>
+              The WALDO system isn&apos;t ready for showtime yet. In order to
+              get good results, our machine learning model needs to train on
+              hundreds of hours of gameplay videos.{' '}
+              <b>This is where you come in. </b> Help train WALDO by submitting
+              links to your gameplay videos, or by reviewing clips that others
+              have submitted for relevance.
+              <br />
+              <br />
+              <br />
+            </Text>
+            <Heading fontWeight={600} fontSize={'lg'}>
+              Want to help build WALDO?
+            </Heading>
+            <Text maxW={'4xl'}>
+              We need volunteers with a wide variety of skill-sets: Machine
+              Learning / Computer Vision, DevOps & Infrastructure, Web Design,
+              Programming, Testing, Data Collection, and more. Join our to start
+              helping us make WALDO Vision a reality.
+            </Text>
+            <Flex direction={{ base: 'column', md: 'row' }} gap={'4'} my={5}>
+              <Link href={'/submissions/upload'}>
+                <Button variant={'solid'} colorScheme={'purple'}>
+                  <HiUpload height={16} width={16} />
+                  <Text marginLeft={2}>Upload your footage</Text>
+                </Button>
+              </Link>
+              <Link href={'/submissions/review'}>
+                <Button variant={'outline'} colorScheme={'purple'}>
+                  <TbEyeCheck height={16} width={16} />
+                  <Text marginLeft={2}>Review Submissions</Text>
+                </Button>
+              </Link>
             </Flex>
-          </Center>
+          </Flex>
         </Container>
         <Box
           width={'100%'}
@@ -349,7 +358,7 @@ const Feature = ({ title, text, image }: FeatureProps) => {
 
 const Features = () => {
   return (
-    <Container maxW={'7xl'}>
+    <Container maxW={'7xl'} textAlign={'center'}>
       <Grid
         height={'100%'}
         templateRows={{ sm: 'repeat(6, 1fr)', md: 'repeat(5, 1fr)' }}
@@ -373,13 +382,13 @@ const Features = () => {
             >
               <Flex direction={'column'}>
                 <Text fontSize={'2rem'} fontWeight={'bold'}>
-                  Waldo
+                  WALDO
                 </Text>
                 <Text fontWeight={450}>
-                  Bring back the fun in your games with Waldo.
+                  Bring back the fun in your games with WALDO.
                 </Text>
               </Flex>
-              <Link href={'/chat'}>
+              <Link href={discord}>
                 <Button variant={'solid'} colorScheme={'purple'}>
                   Join the Discord
                 </Button>
@@ -400,7 +409,7 @@ const Features = () => {
             title={'Open Source'}
             text={
               <Text>
-                You can view the source code on our{' '}
+                View WALDO source code on our{' '}
                 <Link href={githubrepo}>
                   <Text as={'span'} fontWeight={'bold'}>
                     github
@@ -419,12 +428,17 @@ const Features = () => {
           p={3}
         >
           <Feature
-            image={<MdMoneyOff size={45} />}
-            title={'Free to use'}
+            image={<MdAllInclusive size={45} />}
+            title={'Community'}
             text={
               <Text>
-                Waldo uses a community driven model to learn, you are the one
-                who supports us.
+                We have a passionate{' '}
+                <Link href={discord}>
+                  <Text as={'span'} fontWeight={'bold'}>
+                    community
+                  </Text>
+                </Link>{' '}
+                of developers and contributors making WALDO Vision a reality.
               </Text>
             }
           />
@@ -437,11 +451,12 @@ const Features = () => {
           p={3}
         >
           <Feature
-            image={<MdAllInclusive size={60} />}
-            title={'Inclusive'}
+            image={<MdMoneyOff size={60} />}
+            title={'Free'}
             text={
               <Text>
-                Anybody can use Waldo, we pride ourselves for the ease of use.
+                WALDO Vision is community supported, and will be a free service
+                at launch
               </Text>
             }
           />
@@ -455,17 +470,12 @@ const Features = () => {
         >
           <Feature
             image={<FaRocket size={35} />}
-            title={'Stability'}
+            title={'Growing'}
             text={
               <Text>
-                Issues and fixes are much quicker through the community. Check
-                the{' '}
-                <Link href={githubrepoIssues}>
-                  <Text as={'span'} fontWeight={'bold'}>
-                    issues
-                  </Text>
-                </Link>{' '}
-                tab.
+                We're starting small, and will only support a few games at
+                launch. As we develop WALDO Vision, we hope to add support for a
+                lot more games.
               </Text>
             }
           />

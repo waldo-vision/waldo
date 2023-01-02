@@ -121,7 +121,7 @@ export default function Review() {
     };
     getCurrentSession();
     getNecessaryData();
-  }, [router, reviewItemData, refetch]);
+  }, [router, reviewItemData, refetch, error?.data?.code]);
   return (
     <>
       <Head>
