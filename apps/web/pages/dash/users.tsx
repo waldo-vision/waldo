@@ -20,6 +20,7 @@ import {
   Flex,
   Tfoot,
   useToast,
+  Spinner,
 } from '@chakra-ui/react';
 import Layout from '@components/dashboard/Layout';
 import { useEffect, useState } from 'react';
@@ -30,7 +31,6 @@ import {
   SearchIcon,
 } from '@chakra-ui/icons';
 import { trpc } from '@utils/trpc';
-import Loading from '@components/Loading';
 import { FiUser } from 'react-icons/fi';
 import { CiWarning } from 'react-icons/ci';
 import { BiBlock } from 'react-icons/bi';
@@ -51,9 +51,8 @@ type Query = {
 export default function User() {
   // Searching states
   const [searchUserValue, setSearchUserValue] = useState<string | null>(null);
-
   const [searchRole, setSearchRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -72,7 +71,6 @@ export default function User() {
   const {
     data: searchFilterData,
     isLoading: searchFilterLoading,
-    refetch: searchFilterRefetch,
     isError,
   } = trpc.user.search.useQuery({ name: searchUserValue }, { enabled: true });
   const handleFilter = async (role: string | null) => {
@@ -84,18 +82,16 @@ export default function User() {
   };
 
   const handlePageChange = async (add: boolean) => {
-    setLoading(true);
     await userQueryRefetch();
     if (add) {
       setPageNumber(pageNumber + 1);
       await userQueryRefetch();
-      setLoading(false);
     } else {
       setPageNumber(1);
       await userQueryRefetch();
     }
-    setLoading(false);
   };
+
   useEffect(() => {
     const doLoadThings = async () => {
       if (searchUserValue == '') {
@@ -116,124 +112,110 @@ export default function User() {
     userQueryRefetch,
     searchUserValue,
   ]);
-  if (userQueryLoading) {
-    return (
-      <Box>
-        <Loading color={'blue.500'} />
-      </Box>
-    );
-  } else {
-    const handlePage = () => {
-      if (!data || !data[0].userCount) return;
-      if (pageNumber == Math.ceil(data[0].userCount / Math.round(10))) {
-        return;
-      } else {
-        setPageNumber(pageNumber + 1);
-      }
-    };
-    return (
-      <Center width={'100%'} flexDirection={'column'} gap={5}>
-        <InputGroup width={{ base: '100%', md: '60%' }}>
-          <Input
+
+  const handlePage = () => {
+    if (!data || !data[0].userCount) return;
+    if (pageNumber == Math.ceil(data[0].userCount / Math.round(10))) {
+      return;
+    } else {
+      setPageNumber(pageNumber + 1);
+    }
+  };
+
+  return (
+    <Center width={'100%'} flexDirection={'column'} gap={5}>
+      <InputGroup width={{ base: '100%', md: '60%' }}>
+        <Input
+          bgColor={'white'}
+          borderRadius={16}
+          border={'none'}
+          height={'50px'}
+          fontWeight={'medium'}
+          placeholder={'Search Users'}
+          onChange={e => {
+            setSearchUserValue(e.target.value);
+          }}
+        />
+        <InputRightElement mt={1}>
+          <SearchIcon />
+        </InputRightElement>
+      </InputGroup>
+      <Box width={{ base: '100%', md: '70%' }}>
+        <Menu>
+          <MenuButton
+            as={Button}
             bgColor={'white'}
-            borderRadius={16}
-            border={'none'}
-            height={'50px'}
-            fontWeight={'medium'}
-            placeholder={'Search Users'}
-            onChange={e => setSearchUserValue(e.target.value)}
-          />
-          <InputRightElement mt={1}>
-            <SearchIcon />
-          </InputRightElement>
-        </InputGroup>
-        <Box width={{ base: '100%', md: '70%' }}>
-          <Menu>
-            <MenuButton
-              as={Button}
-              bgColor={'white'}
-              _hover={{ bgColor: 'white' }}
-              _active={{ bgColor: 'white' }}
-              rightIcon={<ChevronDownIcon />}
-            >
-              Roles: {searchRole}
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={() => handleFilter(null)}>All</MenuItem>
-              <MenuItem onClick={() => handleFilter('User')}>User</MenuItem>
-              <MenuItem onClick={() => handleFilter('Mod')}>Mod</MenuItem>
-              <MenuItem onClick={() => handleFilter('Admin')}>Admin</MenuItem>
-            </MenuList>
-          </Menu>
-          <Box overflowX="auto">
-            <Table
-              width={'100%'}
-              variant={'simple'}
-              sx={{
-                borderCollapse: 'separate',
-                borderSpacing: '0 1rem',
-              }}
-            >
-              <Thead>
-                <Tr bgColor={'white'} height={'50px'}>
-                  <Th borderLeftRadius={16}>
-                    <Text
-                      casing={'capitalize'}
-                      fontWeight={'bold'}
-                      fontSize={15}
-                    >
-                      User
-                    </Text>
-                  </Th>
-                  <Th>
-                    <Text
-                      casing={'capitalize'}
-                      fontWeight={'bold'}
-                      fontSize={15}
-                    >
-                      Role
-                    </Text>
-                  </Th>
-                  <Th>
-                    <Text
-                      casing={'capitalize'}
-                      fontWeight={'bold'}
-                      fontSize={15}
-                    >
-                      Email
-                    </Text>
-                  </Th>
-                  <Th>
-                    <Text
-                      casing={'capitalize'}
-                      fontWeight={'bold'}
-                      fontSize={15}
-                    >
-                      Verified
-                    </Text>
-                  </Th>
-                  <Th>
-                    <Text
-                      casing={'capitalize'}
-                      fontWeight={'bold'}
-                      fontSize={15}
-                    >
-                      ID
-                    </Text>
-                  </Th>
-                  <Th borderRightRadius={16}>
-                    <Text
-                      casing={'capitalize'}
-                      fontWeight={'bold'}
-                      fontSize={15}
-                    >
-                      Actions
-                    </Text>
-                  </Th>
+            _hover={{ bgColor: 'white' }}
+            _active={{ bgColor: 'white' }}
+            rightIcon={<ChevronDownIcon />}
+          >
+            Roles: {searchRole}
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={() => handleFilter(null)}>All</MenuItem>
+            <MenuItem onClick={() => handleFilter('User')}>User</MenuItem>
+            <MenuItem onClick={() => handleFilter('Mod')}>Mod</MenuItem>
+            <MenuItem onClick={() => handleFilter('Admin')}>Admin</MenuItem>
+          </MenuList>
+        </Menu>
+        <Box overflowX="auto">
+          <Table
+            width={'100%'}
+            variant={'simple'}
+            sx={{
+              borderCollapse: 'separate',
+              borderSpacing: '0 1rem',
+            }}
+          >
+            <Thead>
+              <Tr bgColor={'white'} height={'50px'}>
+                <Th borderLeftRadius={16}>
+                  <Text casing={'capitalize'} fontWeight={'bold'} fontSize={15}>
+                    User
+                  </Text>
+                </Th>
+                <Th>
+                  <Text casing={'capitalize'} fontWeight={'bold'} fontSize={15}>
+                    Role
+                  </Text>
+                </Th>
+                <Th>
+                  <Text casing={'capitalize'} fontWeight={'bold'} fontSize={15}>
+                    Email
+                  </Text>
+                </Th>
+                <Th>
+                  <Text casing={'capitalize'} fontWeight={'bold'} fontSize={15}>
+                    Verified
+                  </Text>
+                </Th>
+                <Th>
+                  <Text casing={'capitalize'} fontWeight={'bold'} fontSize={15}>
+                    ID
+                  </Text>
+                </Th>
+                <Th borderRightRadius={16}>
+                  <Text casing={'capitalize'} fontWeight={'bold'} fontSize={15}>
+                    Actions
+                  </Text>
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {searchFilterLoading || userQueryLoading ? (
+                <Tr>
+                  <Td></Td>
+                  <Td></Td>
+                  <Td></Td>
+                  <Td>
+                    <Center h={600}>
+                      <Spinner color={'purple.500'} size={'xl'} />
+                    </Center>
+                  </Td>
+                  <Td></Td>
                 </Tr>
-              </Thead>
-              <Tbody>
-                {data?.map((result, index) => {
+              ) : (
+                data?.map((result, index) => {
                   return (
                     <Tr bgColor={'white'} height={'70px'} key={index}>
                       <Td borderLeftRadius={16}>
@@ -282,66 +264,66 @@ export default function User() {
                       </Td>
                     </Tr>
                   );
-                })}
-              </Tbody>
-              <Tfoot bgColor={'white'} height={'50px'}>
-                <Tr>
-                  <Td borderLeftRadius={16} />
-                  <Td />
-                  <Td />
-                  <Td />
-                  <Td />
-                  <Td bgColor={'white'} borderRadius={16} isTruncated>
-                    <Flex
-                      direction={'row'}
-                      align={'center'}
-                      textAlign={'center'}
-                      gap={2}
-                    >
-                      <ChevronLeftIcon
-                        cursor={'pointer'}
-                        h={6}
-                        w={6}
-                        _hover={{ color: 'gray.400' }}
-                        color={pageNumber === 1 ? 'gray.300' : ''}
-                        onClick={() =>
-                          pageNumber === 1 ? null : handlePageChange(false)
-                        }
-                      />
-                      <Flex>
-                        <Text fontWeight={'semibold'}>Page</Text>{' '}
-                        <Text ml={2}>
-                          {pageNumber} of{' '}
-                          {data &&
-                            data[0].userCount &&
-                            Math.ceil(data[0].userCount / Math.round(10))}
-                        </Text>
-                      </Flex>
-                      <ChevronRightIcon
-                        cursor={'pointer'}
-                        h={6}
-                        w={6}
-                        _hover={{ color: 'gray.400' }}
-                        color={
-                          data &&
+                })
+              )}
+            </Tbody>
+            <Tfoot bgColor={'white'} height={'50px'}>
+              <Tr>
+                <Td borderLeftRadius={16} />
+                <Td />
+                <Td />
+                <Td />
+                <Td />
+                <Td bgColor={'white'} borderRadius={16} isTruncated>
+                  <Flex
+                    direction={'row'}
+                    align={'center'}
+                    textAlign={'center'}
+                    gap={2}
+                  >
+                    <ChevronLeftIcon
+                      cursor={'pointer'}
+                      h={6}
+                      w={6}
+                      _hover={{ color: 'gray.400' }}
+                      color={pageNumber === 1 ? 'gray.300' : ''}
+                      onClick={() =>
+                        pageNumber === 1 ? null : handlePageChange(false)
+                      }
+                    />
+                    <Flex>
+                      <Text fontWeight={'semibold'}>Page</Text>{' '}
+                      <Text ml={2}>
+                        {pageNumber} of{' '}
+                        {data &&
                           data[0].userCount &&
-                          pageNumber ==
-                            Math.ceil(data[0].userCount / Math.round(10))
-                            ? 'gray.300'
-                            : ''
-                        }
-                        onClick={() => handlePage()}
-                      />
+                          Math.ceil(data[0].userCount / Math.round(10))}
+                      </Text>
                     </Flex>
-                  </Td>
-                </Tr>
-              </Tfoot>
-            </Table>
-          </Box>
+                    <ChevronRightIcon
+                      cursor={'pointer'}
+                      h={6}
+                      w={6}
+                      _hover={{ color: 'gray.400' }}
+                      color={
+                        data &&
+                        data[0].userCount &&
+                        pageNumber ==
+                          Math.ceil(data[0].userCount / Math.round(10))
+                          ? 'gray.300'
+                          : ''
+                      }
+                      onClick={() => handlePage()}
+                    />
+                  </Flex>
+                </Td>
+              </Tr>
+            </Tfoot>
+          </Table>
         </Box>
-      </Center>
-    );
-  }
+      </Box>
+    </Center>
+  );
 }
 interface MenuActionProps {
   userId: string;
@@ -458,6 +440,6 @@ export async function getServerSideProps(context) {
     context.res,
     authOptions,
   );
-  if (user?.user?.role != 'ADMIN') return { redirect: { destination: '/404' } };
+  if (user?.user?.role == 'USER') return { redirect: { destination: '/404' } };
   else return { props: {} };
 }

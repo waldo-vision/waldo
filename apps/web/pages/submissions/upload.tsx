@@ -200,7 +200,7 @@ export default function Upload() {
   if (loading) {
     return (
       <Box>
-        <Loading color={'blue.500'} />
+        <Loading color={'purple.500'} />
       </Box>
     );
   } else {

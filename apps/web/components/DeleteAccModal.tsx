@@ -47,7 +47,7 @@ const DeleteAccModal = (props: Props) => {
     <div>
       <Box>
         {loading && props.show ? (
-          <Loading color={'default'} />
+          <Loading color={'purple.500'} />
         ) : (
           <Modal
             isOpen={showModal as boolean}

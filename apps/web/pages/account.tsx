@@ -156,7 +156,7 @@ export default function Account() {
   ]);
 
   return isLoading ? (
-    <Loading color={'blue.500'} />
+    <Loading color={'purple.500'} />
   ) : (
     <>
       <Head>
@@ -196,17 +196,14 @@ export default function Account() {
               >
                 {/* Linked Account */}
                 <Box width={{ md: '100%', lg: '50%' }}>
-                  <Text
-                    fontWeight={'normal'}
-                    mb={5}
-                    fontSize={{ base: 15, sm: 18 }}
-                  >
-                    You have linked <b>all</b> of the following accounts:
-                  </Text>
-                  <Flex>
-                    <Tag colorScheme={'purple'} size={'md'} mr={2}>
-                      {session?.user?.role}
-                    </Tag>
+                  <Flex gap={2} direction={'column'}>
+                    <Text
+                      fontWeight={'normal'}
+                      mb={5}
+                      fontSize={{ base: 15, sm: 18 }}
+                    >
+                      You have linked <b>all</b> of the following accounts:
+                    </Text>
                     {session?.user?.role == 'ADMIN' && (
                       <Text>
                         Redirect me to the{' '}

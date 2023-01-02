@@ -134,7 +134,7 @@ export default function Review() {
       <div>
         <Center h={'100vh'}>
           {loading || !reviewItemData ? (
-            <Loading color={'default'} />
+            <Loading color={'purple.500'} />
           ) : (
             <Flex direction={'column'}>
               {finished || error ? (

@@ -19,6 +19,7 @@ import {
   Flex,
   Tfoot,
   useToast,
+  Spinner,
 } from '@chakra-ui/react';
 import Layout from '@components/dashboard/Layout';
 import { ReactElement, useEffect, useState } from 'react';
@@ -97,7 +98,7 @@ export default function Gameplay() {
   if (userQueryLoading) {
     return (
       <Box>
-        <Loading color={'blue.500'} />
+        <Loading color={'purple.500'} />
       </Box>
     );
   } else {
@@ -213,40 +214,54 @@ export default function Gameplay() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data?.map((result, index) => {
-                    return (
-                      <Tr bgColor={'white'} height={'70px'} key={index}>
-                        <Td borderLeftRadius={16}>
-                          <Flex direction={'row'} align={'center'} gap={2}>
-                            <Text fontWeight={'bold'}>
-                              {result && result.gameplayType}
+                  {userQueryLoading ? (
+                    <Tr>
+                      <Td></Td>
+                      <Td></Td>
+                      <Td></Td>
+                      <Td>
+                        <Center h={600}>
+                          <Spinner color={'purple.500'} size={'xl'} />
+                        </Center>
+                      </Td>
+                      <Td></Td>
+                    </Tr>
+                  ) : (
+                    data?.map((result, index) => {
+                      return (
+                        <Tr bgColor={'white'} height={'70px'} key={index}>
+                          <Td borderLeftRadius={16}>
+                            <Flex direction={'row'} align={'center'} gap={2}>
+                              <Text fontWeight={'bold'}>
+                                {result && result.gameplayType}
+                              </Text>
+                            </Flex>
+                          </Td>
+                          <Td>
+                            <Text fontSize={15}>
+                              {result.id && result.id.toLowerCase()}
                             </Text>
-                          </Flex>
-                        </Td>
-                        <Td>
-                          <Text fontSize={15}>
-                            {result.id && result.id.toLowerCase()}
-                          </Text>
-                        </Td>
-                        <Td>
-                          <Text fontSize={15}>{result.youtubeUrl}</Text>
-                        </Td>
-                        <Td>
-                          <Text fontSize={15}>
-                            {result.isAnalyzed.toString().toUpperCase()}
-                          </Text>
-                        </Td>
-                        <Td>
-                          <Text fontSize={15} isTruncated>
-                            {result.user && result.user.name}
-                          </Text>
-                        </Td>
-                        <Td borderRightRadius={16}>
-                          <MenuAction gameplayId={result.id} />
-                        </Td>
-                      </Tr>
-                    );
-                  })}
+                          </Td>
+                          <Td>
+                            <Text fontSize={15}>{result.youtubeUrl}</Text>
+                          </Td>
+                          <Td>
+                            <Text fontSize={15}>
+                              {result.isAnalyzed.toString().toUpperCase()}
+                            </Text>
+                          </Td>
+                          <Td>
+                            <Text fontSize={15} isTruncated>
+                              {result.user && result.user.name}
+                            </Text>
+                          </Td>
+                          <Td borderRightRadius={16}>
+                            <MenuAction gameplayId={result.id} />
+                          </Td>
+                        </Tr>
+                      );
+                    })
+                  )}
                 </Tbody>
                 {data && (
                   <Tfoot bgColor={'white'} height={'50px'}>
@@ -370,7 +385,7 @@ export async function getServerSideProps(context) {
     context.res,
     authOptions,
   );
-  if (user?.user?.role != 'ADMIN') return { redirect: { destination: '/404' } };
+  if (user?.user?.role == 'USER') return { redirect: { destination: '/404' } };
   else return { props: {} };
 }
 
