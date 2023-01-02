@@ -112,12 +112,6 @@ export default function Login() {
         selected: false,
       },
       {
-        provider: 'Facebook',
-        docs: 'https://developers.facebook.com/docs/facebook-login/web/',
-        hex: ' #0165E1',
-        selected: false,
-      },
-      {
         provider: 'Twitch',
         docs: 'https://dev.twitch.tv/docs/authentication/getting-tokens-oauth',
         hex: '#9146FF',
