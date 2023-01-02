@@ -8,6 +8,8 @@ import {
   Divider,
   Image,
   Center,
+  Tag,
+  chakra,
 } from '@chakra-ui/react';
 import Layout from '@components/Layout';
 import React, { useState, useEffect } from 'react';
@@ -199,6 +201,37 @@ export default function Account() {
                   >
                     You have linked <b>all</b> of the following accounts:
                   </Text>
+                  <Flex>
+                    <Tag colorScheme={'purple'} size={'md'} mr={2}>
+                      {session?.user?.role}
+                    </Tag>
+                    {session?.user?.role == 'ADMIN' && (
+                      <Text>
+                        Redirect me to the{' '}
+                        <chakra.span
+                          fontWeight={'bold'}
+                          textDecor={'underline'}
+                          cursor={'pointer'}
+                          onClick={() => router.push('/dash/users')}
+                        >
+                          Admin Dashboard
+                        </chakra.span>
+                      </Text>
+                    )}
+                    {session?.user?.role == 'MOD' && (
+                      <Text>
+                        Redirect me to the{' '}
+                        <chakra.span
+                          fontWeight={'bold'}
+                          textDecor={'underline'}
+                          cursor={'pointer'}
+                          onClick={() => router.push('/dash/user')}
+                        >
+                          Admin Dashboard
+                        </chakra.span>
+                      </Text>
+                    )}
+                  </Flex>
                   <Flex direction={'column'}>
                     {linkedAccounts &&
                       ProvidersList.map(({ name, icon }, index) => (
