@@ -1,4 +1,9 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Box,
   Button,
   Center,
   Container,
@@ -22,10 +27,12 @@ import DashboardImage from '../public/Dashboard.png';
 import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
 import { githubrepo, githubrepoIssues } from '@utils/links';
+import useSite from '@site';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
   const [y, setY] = useState(0);
+  const { session, services } = useSite();
   const updateScrollPosition = () => {
     setY(window.scrollY);
   };
@@ -243,6 +250,80 @@ export default function Home() {
             </Flex>
           </Center>
         </Container>
+        <Box
+          width={'100%'}
+          position={'absolute'}
+          left={0}
+          top={'60px'}
+          zIndex={5}
+        >
+          {/* imp trpc query to retrieve data from waldosite if maintenance mode is enabled */}
+          {session?.user?.blacklisted ? (
+            <Alert status={'warning'}>
+              <AlertIcon />
+              <Box>
+                <AlertTitle>Your account has been suspended</AlertTitle>
+                <AlertDescription>
+                  Certain features will no longer be available.
+                </AlertDescription>
+              </Box>
+            </Alert>
+          ) : services.site?.maintenance ||
+            services.upload?.maintenance ||
+            services.account?.maintenance ||
+            services.review?.maintenance ? (
+            <Alert status={'error'}>
+              <AlertIcon />
+              <Box>
+                <AlertTitle fontSize={'lg'} mb={1}>
+                  Platform Outage
+                </AlertTitle>
+                <AlertDescription>
+                  <Flex direction={'column'}>
+                    <Box>
+                      {services.upload?.maintenance && (
+                        <Flex gap={3}>
+                          <Text>
+                            <b>Upload Service</b>
+                          </Text>
+                          <Text>
+                            <i>Reason:</i> {services.upload.alertTitle}
+                          </Text>
+                        </Flex>
+                      )}
+                    </Box>
+                    <Box>
+                      {services.account?.maintenance && (
+                        <Flex gap={3}>
+                          <Text>
+                            <b>Account and Authentication Services</b>
+                          </Text>
+                          <Text>
+                            <i>Reason:</i> {services.account.alertTitle}
+                          </Text>
+                        </Flex>
+                      )}
+                    </Box>
+                    <Box>
+                      {services.review?.maintenance && (
+                        <Flex gap={3}>
+                          <Text>
+                            <b>Review Service</b>
+                          </Text>
+                          <Text>
+                            <i>Reason:</i> {services.review.alertTitle}
+                          </Text>
+                        </Flex>
+                      )}
+                    </Box>
+                  </Flex>
+                </AlertDescription>
+              </Box>
+            </Alert>
+          ) : (
+            <></>
+          )}
+        </Box>
       </Flex>
     </>
   );

@@ -9,11 +9,6 @@ import {
   Collapse,
   useDisclosure,
   Heading,
-  AlertIcon,
-  Alert,
-  AlertTitle,
-  AlertDescription,
-  Divider,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -23,12 +18,11 @@ import GithubLogo from '../public/navbar_github.png';
 import { discord, docs, githubrepo } from '@utils/links';
 import useSite from '@site';
 import BlacklistedModal from './BlacklistedModal';
-import { trpc } from '@utils/trpc';
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
   const [y, setY] = useState(0);
 
-  const { session, services } = useSite();
+  const { session } = useSite();
   const changeBackground = () => {
     setY(window.scrollY);
   };
@@ -108,67 +102,6 @@ export default function Navigation() {
         <Collapse in={isOpen} animateOpacity>
           <MobileNav />
         </Collapse>
-        <Box overflow={'auto'} width={'100%'}>
-          {/* imp trpc query to retrieve data from waldosite if maintenance mode is enabled */}
-          {session?.user?.blacklisted ? (
-            <Alert status={'warning'}>
-              <AlertIcon />
-              <Box>
-                <AlertTitle>Your account has been suspended</AlertTitle>
-                <AlertDescription>
-                  Certain features will no longer be available.
-                </AlertDescription>
-              </Box>
-            </Alert>
-          ) : services.site?.maintenance ||
-            services.upload?.maintenance ||
-            services.account?.maintenance ||
-            services.review?.maintenance ? (
-            <Alert status={'error'}>
-              <AlertIcon />
-              <Box>
-                <AlertTitle fontSize={'2xl'} mb={1}>
-                  Platform Outage
-                </AlertTitle>
-                <Text fontSize={'lg'} mb={2} fontWeight={'bold'}>
-                  Affected Services
-                </Text>
-                <AlertDescription>
-                  <Flex direction={'column'}>
-                    <Box>
-                      {services.upload?.maintenance && (
-                        <Flex>
-                          <Text fontWeight={'semibold'}>Upload Service: </Text>
-                          <Text>&nbsp;{services.upload.alertTitle}</Text>
-                        </Flex>
-                      )}
-                    </Box>
-                    <Box>
-                      {services.account?.maintenance && (
-                        <Flex>
-                          <Text fontWeight={'semibold'}>
-                            Account and Authentication Services:
-                          </Text>
-                          <Text>&nbsp;{services.account.alertTitle}</Text>
-                        </Flex>
-                      )}
-                    </Box>
-                    <Box>
-                      {services.review?.maintenance && (
-                        <Flex>
-                          <Text fontWeight={'semibold'}>Review Service: </Text>
-                          <Text>&nbsp;{services.review.alertTitle}</Text>
-                        </Flex>
-                      )}
-                    </Box>
-                  </Flex>
-                </AlertDescription>
-              </Box>
-            </Alert>
-          ) : (
-            <></>
-          )}
-        </Box>
       </Box>
       {session && session.user?.blacklisted && <BlacklistedModal show={true} />}
     </>
