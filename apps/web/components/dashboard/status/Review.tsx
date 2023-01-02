@@ -73,7 +73,7 @@ export default function Review() {
       ) : (
         <>
           <Flex direction={'column'}>
-            <Text>Configure Service</Text>
+            <Text>Gameplay Reviewing</Text>
             <Text fontSize={'medium'} fontWeight={'medium'}>
               By disabling this service you are preventing users from creating
               voting on gameplay in the database. This includes all users

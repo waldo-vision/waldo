@@ -68,11 +68,11 @@ export default function Review() {
   return (
     <Flex direction={'column'} gap={5} mb={5}>
       {accountPageQLoading ? (
-        <Text>dfsdfds</Text>
+        <Text>Loading...</Text>
       ) : (
         <>
           <Flex direction={'column'}>
-            <Text>Configure Service</Text>
+            <Text>Security & Authentication</Text>
             <Text fontSize={'medium'} fontWeight={'medium'}>
               By disabling this service you are preventing users from creating
               new accounts or logging in. However already logged in accounts

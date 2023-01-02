@@ -63,7 +63,6 @@ export default function Status() {
               p={5}
               m={5}
             >
-              <StatLabel>{label}</StatLabel>
               <StatNumber>{component}</StatNumber>
               <StatHelpText>Manage {label} service.</StatHelpText>
             </Stat>

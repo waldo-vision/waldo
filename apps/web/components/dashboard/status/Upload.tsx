@@ -74,7 +74,7 @@ export default function Review() {
       ) : (
         <>
           <Flex direction={'column'}>
-            <Text>Configure Service</Text>
+            <Text>Data Collection & Uploading</Text>
             <Text fontSize={'medium'} fontWeight={'medium'}>
               By disabling this service you are preventing users from uploading
               new gameplay or footage to the database. This includes all users

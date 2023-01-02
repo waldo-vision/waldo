@@ -97,7 +97,7 @@ export default function Maintenance() {
       ) : (
         <>
           <Flex direction={'column'}>
-            <Text>Configure Service</Text>
+            <Text>Maintenance Mode</Text>
             <Text fontSize={'medium'} fontWeight={'medium'}>
               By enabling this service you are preventing users from entering
               the site.
