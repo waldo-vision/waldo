@@ -13,6 +13,7 @@ import {
   Alert,
   AlertTitle,
   AlertDescription,
+  Divider,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -22,13 +23,12 @@ import GithubLogo from '../public/navbar_github.png';
 import { discord, docs, githubrepo } from '@utils/links';
 import useSite from '@site';
 import BlacklistedModal from './BlacklistedModal';
-
+import { trpc } from '@utils/trpc';
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
   const [y, setY] = useState(0);
 
   const { session, services } = useSite();
-
   const changeBackground = () => {
     setY(window.scrollY);
   };
@@ -122,15 +122,46 @@ export default function Navigation() {
             </Alert>
           ) : services.site?.maintenance ||
             services.upload?.maintenance ||
-            services.site?.maintenance ||
             services.account?.maintenance ||
             services.review?.maintenance ? (
             <Alert status={'error'}>
               <AlertIcon />
               <Box>
-                <AlertTitle>Some services currently down</AlertTitle>
+                <AlertTitle fontSize={'2xl'} mb={1}>
+                  Platform Outage
+                </AlertTitle>
+                <Text fontSize={'lg'} mb={2} fontWeight={'bold'}>
+                  Affected Services
+                </Text>
                 <AlertDescription>
-                  Certain features will no longer be available.
+                  <Flex direction={'column'}>
+                    <Box>
+                      {services.upload?.maintenance && (
+                        <Flex>
+                          <Text fontWeight={'semibold'}>Upload Service: </Text>
+                          <Text>&nbsp;{services.upload.alertTitle}</Text>
+                        </Flex>
+                      )}
+                    </Box>
+                    <Box>
+                      {services.account?.maintenance && (
+                        <Flex>
+                          <Text fontWeight={'semibold'}>
+                            Account and Authentication Services:
+                          </Text>
+                          <Text>&nbsp;{services.account.alertTitle}</Text>
+                        </Flex>
+                      )}
+                    </Box>
+                    <Box>
+                      {services.review?.maintenance && (
+                        <Flex>
+                          <Text fontWeight={'semibold'}>Review Service: </Text>
+                          <Text>&nbsp;{services.review.alertTitle}</Text>
+                        </Flex>
+                      )}
+                    </Box>
+                  </Flex>
                 </AlertDescription>
               </Box>
             </Alert>
