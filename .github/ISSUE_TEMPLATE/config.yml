@@ -3,6 +3,3 @@ contact_links:
   - name: Waldo Community Support
     url: https://waldo.vision/chat
     about: Please ask and answer questions here.
-  - name: Waldo Security Reporting
-    url: https://github.com/waldo-vision/waldo/security/advisories
-    about: Please report security vulnerabilities here.
