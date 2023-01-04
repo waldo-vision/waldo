@@ -5839,9 +5839,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docs@workspace:apps/docs":
+"docs@workspace:docs":
   version: 0.0.0-use.local
-  resolution: "docs@workspace:apps/docs"
+  resolution: "docs@workspace:docs"
   dependencies:
     "@algolia/client-search": ^4.13.1
     "@astrojs/preact": ^1.2.0

@@ -10,7 +10,7 @@ services:
       # ui
       - 8081:8080
     volumes:
-      - './dev/artifacts/database:/cockroach/cockroach-data'
+      - './docker/cochroach/data:/cockroach/cockroach-data'
 
   redis:
     image: redis
@@ -22,4 +22,4 @@ services:
       - '8079:80'
     image: hiett/serverless-redis-http:latest
     volumes:
-      - ./dev/serverless-redis/tokens.json:/app/srh-config/tokens.json
+      - ./docker/http-redis/conf:/app/srh-config/tokens.json
