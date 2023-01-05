@@ -62,7 +62,7 @@ export default function Upload() {
     },
   });
 
-  const { isLoading, data: isDisabled } = trpc.site.getPageData.useQuery({
+  const { data: isDisabled } = trpc.site.getPageData.useQuery({
     name: 'upload',
   });
 

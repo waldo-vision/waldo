@@ -63,6 +63,8 @@ export default function Review() {
   };
 
   const doClickLogic = async (action: 'yes' | 'no') => {
+    if (!reviewItem) return;
+
     setLoading(true);
 
     if (!isRequestValid) {
