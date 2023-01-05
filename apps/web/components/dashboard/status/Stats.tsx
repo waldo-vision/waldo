@@ -7,7 +7,7 @@ import {
   Text,
   Flex,
 } from '@chakra-ui/react';
-import { FaCircle, FaExclamationCircle } from 'react-icons/fa';
+import { FaCircle } from 'react-icons/fa';
 import { trpc } from '@utils/trpc';
 export default function Stats() {
   const { data: aData, isLoading: aLoading } = trpc.site.getPageData.useQuery({

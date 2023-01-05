@@ -10,15 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import Image from 'next/image';
-import {
-  docs,
-  github,
-  githubrepo,
-  mailto,
-  twitter,
-  discord,
-  legal,
-} from '@utils/links';
+import { docs, github, mailto, twitter, discord, legal } from '@utils/links';
 import WaldoLogo from '../public/android-chrome-256x256.png';
 
 const Logo = () => {

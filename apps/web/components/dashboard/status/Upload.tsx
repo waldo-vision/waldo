@@ -7,7 +7,6 @@ import {
   Button,
   Collapse,
   InputRightElement,
-  SystemStyleObject,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { trpc } from '@utils/trpc';

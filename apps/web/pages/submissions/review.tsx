@@ -7,8 +7,6 @@ import {
   Image,
   useToast,
 } from '@chakra-ui/react';
-import { Session } from 'next-auth';
-import { getSession } from 'next-auth/react';
 import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import Loading from '@components/Loading';
@@ -18,6 +16,7 @@ import Head from 'next/head';
 import { prisma } from '@server/db/client';
 import TurnstileWidget from '@components/TurnstileWidget';
 import Finished from '@components/Finished';
+import { getSession } from 'next-auth/react';
 interface ReviewItem {
   id: string;
   user: {
@@ -35,7 +34,6 @@ export default function Review() {
     data: reviewItemData,
     refetch,
     error,
-    isError,
   } = trpc.gameplay.getReviewItems.useQuery();
 
   const reviewGameplay = trpc.gameplay.review.useMutation({

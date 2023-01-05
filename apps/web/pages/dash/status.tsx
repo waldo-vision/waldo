@@ -4,7 +4,6 @@ import {
   Stat,
   StatGroup,
   StatHelpText,
-  StatLabel,
   StatNumber,
 } from '@chakra-ui/react';
 import Review from '@components/dashboard/status/Review';

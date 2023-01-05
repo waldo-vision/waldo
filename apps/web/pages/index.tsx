@@ -473,7 +473,7 @@ const Features = () => {
             title={'Growing'}
             text={
               <Text>
-                We're starting small, and will only support a few games at
+                We&apos;re starting small, and will only support a few games at
                 launch. As we develop WALDO Vision, we hope to add support for a
                 lot more games.
               </Text>
