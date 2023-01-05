@@ -20,6 +20,6 @@ declare namespace NodeJS {
     CLOUDFLARE_TURNSTILE_SECRET: string;
     CLOUDFLARE_TURNSTILE_SITE_KEY: string;
     UPSTASH_REDIS_REST_URL: string;
-    NEXT_PUBLIC_NODE_ENV: string;
+    NODE_ENV: string;
   }
 }
