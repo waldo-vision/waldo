@@ -28,11 +28,13 @@ COPY .yarn .yarn
 COPY .yarnrc.yml .yarnrc.yml
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/yarn.lock ./yarn.lock
-RUN yarn install --immutable
+RUN yarn install
 
 # Build the project
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
+COPY .eslintrc.js .eslintrc.js
+COPY .prettierrc.js .prettierrc.js
 RUN yarn turbo run build --filter=web...
 
 FROM node:18-alpine AS runner
