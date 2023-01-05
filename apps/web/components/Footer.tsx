@@ -17,6 +17,7 @@ import {
   mailto,
   twitter,
   discord,
+  legal,
 } from '@utils/links';
 import WaldoLogo from '../public/android-chrome-256x256.png';
 
@@ -54,13 +55,16 @@ export default function Footer() {
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Legal</ListHeader>
-            <Link href={'/tos'}>Terms of Service</Link>
+            <Link href={legal.TOS}>Terms of Service</Link>
+            <Link href={legal.TOS}>Privacy Policy</Link>
+            <Link href={legal.TOS}>Cookie Policy</Link>
+            <Link href={legal.TOS}>Code of Conduct</Link>
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Follow Us</ListHeader>
             <Link href={discord}>Discord</Link>
             <Link href={twitter}>Twitter</Link>
-            <Link href={githubrepo}>Github Repo</Link>
+            <Link href={github}>Github</Link>
           </Stack>
         </SimpleGrid>
       </Container>

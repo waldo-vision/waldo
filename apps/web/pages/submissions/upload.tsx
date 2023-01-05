@@ -39,6 +39,7 @@ import { TRPCError } from '@trpc/server';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { prisma } from '@server/db/client';
+import { legal } from '@utils/links';
 
 export default function Upload() {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
@@ -244,12 +245,13 @@ export default function Upload() {
                     <br />
                     Before you submit a video make sure you have read the rules
                     regarding the submission and reviewing of gameplay. You can
-                    read our terms of service{' '}
-                    <Link href={'/tos'}>
+                    read our{' '}
+                    <Link href={legal.TOS}>
                       <Text as={'span'} fontWeight={'bold'}>
-                        here.
+                        Terms of Service
                       </Text>
                     </Link>
+                    .
                   </Text>
                   <TurnstileWidget
                     valid={result => setIsRequestValid(result)}
@@ -367,22 +369,18 @@ export default function Upload() {
                     <Flex direction={{ base: 'column', md: 'row' }} gap={5}>
                       <Box mt={6} maxW={'400px'}>
                         <Text>
-                          By submitting, you are agreeing to the&nbsp;
-                          <Text
-                            as={'span'}
-                            fontWeight={'bold'}
-                            textDecoration={'underline'}
-                          >
-                            Terms of Service
-                          </Text>
-                          &nbsp;and the&nbsp;
-                          <Text
-                            as={'span'}
-                            fontWeight={'bold'}
-                            textDecoration={'underline'}
-                          >
-                            Privacy Policy
-                          </Text>
+                          By submitting, you are agreeing to our&nbsp;
+                          <Link href={legal.TOS}>
+                            <Text as={'span'} fontWeight={'bold'}>
+                              Terms of Service
+                            </Text>
+                          </Link>
+                          &nbsp;and &nbsp;
+                          <Link href={legal.privacy}>
+                            <Text as={'span'} fontWeight={'bold'}>
+                              Privacy Policy
+                            </Text>
+                          </Link>
                           .
                         </Text>
                       </Box>

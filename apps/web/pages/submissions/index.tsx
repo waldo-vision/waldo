@@ -7,6 +7,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
+import { legal } from '@utils/links';
 export default function Index() {
   const [, setUserSession] = useState<Session | null>();
 
@@ -92,7 +93,15 @@ export default function Index() {
                 </Link>
               </Box>
             </Flex>
-            <Text>Please make sure you have read and understood the TOS.</Text>
+            <Text>
+              Please make sure you have read and understood the{' '}
+              <Link href={legal.TOS}>
+                <Text as={'span'} fontWeight={'bold'}>
+                  Terms of Service
+                </Text>
+              </Link>
+              .
+            </Text>
           </Flex>
         </Center>
       </Container>
