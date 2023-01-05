@@ -1,0 +1,9 @@
+{
+  "extends": "tsconfig/nextServer.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "dist"
+  },
+  "include": ["server/metrics/**/*.ts"],
+  "exclude": ["node_modules"]
+}
