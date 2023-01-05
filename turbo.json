@@ -22,7 +22,8 @@
         "TWITCH_CLIENT_SECRET",
         "UPSTASH_REDIS_REST_URL",
         "UPSTASH_REDIS_REST_TOKEN",
-        "NEXT_PUBLIC_NODE_ENV"
+        "NEXT_PUBLIC_NODE_ENV",
+        "OTLP_COLLECTOR_BASE"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },

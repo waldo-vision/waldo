@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build  && tsc --project tsconfig.server.json",
     "start": "next start",
     "lint": "next lint"
   },
@@ -19,6 +19,10 @@
     "@heroicons/react": "^2.0.13",
     "@marsidev/react-turnstile": "^0.0.5",
     "@next-auth/prisma-adapter": "^1.0.5",
+    "@opentelemetry/auto-instrumentations-node": "^0.36.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.34.0",
+    "@opentelemetry/sdk-node": "^0.34.0",
+    "@prisma/instrumentation": "^4.8.1",
     "@tanstack/query-core": "^4.20.4",
     "@tanstack/react-query": "^4.18.0",
     "@trpc/client": "^10.4.2",
