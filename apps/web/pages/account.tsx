@@ -8,6 +8,7 @@ import {
   Divider,
   Image,
   Center,
+  chakra,
 } from '@chakra-ui/react';
 import Layout from '@components/Layout';
 import React, { useState, useEffect } from 'react';
@@ -28,6 +29,7 @@ import { MdOutlineRemove } from 'react-icons/md';
 import useSite from '@site';
 import AccGameplayItemExtended from '@components/AccGameplayItemExtended';
 import { prisma } from '@server/db/client';
+import Loading from '@components/Loading';
 
 type ProvidersListType = {
   name: string;
@@ -65,9 +67,7 @@ interface Gameplay {
   id: string;
   userId: string;
   youtubeUrl: string;
-  footageType: string;
-  upVotes?: number;
-  downVotes?: number;
+  gameplayType: string;
   isAnalyzed: boolean;
 }
 
@@ -100,7 +100,6 @@ export default function Account() {
     userId: string;
     provider: string;
   }) => {
-    console.log(account);
     try {
       await unlinkAccount.mutateAsync({ accountId: account.id });
       toast({
@@ -155,17 +154,19 @@ export default function Account() {
     gamplayData,
   ]);
 
-  return (
+  return isLoading ? (
+    <Loading color={'purple.500'} />
+  ) : (
     <>
       <Head>
-        <title>Waldo | Account</title>
+        <title>WALDO | Account</title>
         <meta
           name="description"
-          content="Waldo is an Open-source visual cheat detection, powered by A.I"
+          content="WALDO is an Open-source visual cheat detection, powered by A.I"
         />
       </Head>
       <Box minHeight={'100vh'} mt={{ base: '60px' }} mb={20}>
-        <DeleteAccModal show={false} />
+        <DeleteAccModal show={showModal} />
         <Flex direction={'column'} gap={3}>
           <Flex direction={'column'}>
             <Text fontWeight={'bold'} fontSize={30}>
@@ -194,13 +195,41 @@ export default function Account() {
               >
                 {/* Linked Account */}
                 <Box width={{ md: '100%', lg: '50%' }}>
-                  <Text
-                    fontWeight={'normal'}
-                    mb={5}
-                    fontSize={{ base: 15, sm: 18 }}
-                  >
-                    You have linked <b>all</b> of the following accounts:
-                  </Text>
+                  <Flex gap={2} direction={'column'}>
+                    <Text
+                      fontWeight={'normal'}
+                      mb={5}
+                      fontSize={{ base: 15, sm: 18 }}
+                    >
+                      You have linked <b>all</b> of the following accounts:
+                    </Text>
+                    {session?.user?.role == 'ADMIN' && (
+                      <Text>
+                        Redirect me to the{' '}
+                        <chakra.span
+                          fontWeight={'bold'}
+                          textDecor={'underline'}
+                          cursor={'pointer'}
+                          onClick={() => router.push('/dash/users')}
+                        >
+                          Admin Dashboard
+                        </chakra.span>
+                      </Text>
+                    )}
+                    {session?.user?.role == 'MOD' && (
+                      <Text>
+                        Redirect me to the{' '}
+                        <chakra.span
+                          fontWeight={'bold'}
+                          textDecor={'underline'}
+                          cursor={'pointer'}
+                          onClick={() => router.push('/dash/user')}
+                        >
+                          Admin Dashboard
+                        </chakra.span>
+                      </Text>
+                    )}
+                  </Flex>
                   <Flex direction={'column'}>
                     {linkedAccounts &&
                       ProvidersList.map(({ name, icon }, index) => (

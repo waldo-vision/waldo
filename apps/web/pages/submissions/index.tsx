@@ -7,6 +7,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
+import { legal } from '@utils/links';
 export default function Index() {
   const [, setUserSession] = useState<Session | null>();
 
@@ -22,10 +23,10 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>Waldo | Submissions </title>
+        <title>WALDO | Submissions </title>
         <meta
           name="description"
-          content="Submit your gameplay to the Waldo AI. Check out our discord for more information "
+          content="Submit your gameplay to the WALDO AI. Check out our discord for more information "
         />
       </Head>
       <Container
@@ -53,12 +54,10 @@ export default function Index() {
                   </Text>
                 </Heading>
                 <Text maxW={'4xl'} fontSize={{ base: 13, md: 16, lg: 16 }}>
-                  To aid Waldo&apos;s progress, we need the community to post
-                  and submit their own gameplay video! We now accept a broad
-                  variety of first-person shooter games which can be found on
-                  the upload page. To help the project forward, we are seeking
-                  for manual reviewers to ensure the game uploaded is under the
-                  right title.
+                  Help us curate a dataset to train WALDO on. Submit links to
+                  first-person shooter gameplay videos and clips on YouTube, or
+                  review others&apos; submissions to ensure they&apos;re
+                  labelled properly.
                 </Text>
               </Flex>
             </Box>
@@ -76,7 +75,7 @@ export default function Index() {
                 <Link href={'/submissions/upload'}>
                   <Center h={'100%'} w={'full'} flexDirection={'column'}>
                     <AiOutlineCloudUpload size={150} />
-                    <Text fontSize={'2xl'}>Upload Gameplay</Text>
+                    <Text fontSize={'2xl'}>Submit Gameplay</Text>
                   </Center>
                 </Link>
               </Box>
@@ -94,7 +93,15 @@ export default function Index() {
                 </Link>
               </Box>
             </Flex>
-            <Text>Please make sure you have read and understood the TOS.</Text>
+            <Text>
+              Please make sure you have read and understood the{' '}
+              <Link href={legal.TOS}>
+                <Text as={'span'} fontWeight={'bold'}>
+                  Terms of Service
+                </Text>
+              </Link>
+              .
+            </Text>
           </Flex>
         </Center>
       </Container>

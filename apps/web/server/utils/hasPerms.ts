@@ -1,14 +1,16 @@
+import { Roles } from 'database';
+
 export enum Perms {
   isOwner = 0,
   roleMod = 1,
   roleAdmin = 2,
 }
 
-export enum Roles {
-  USER = 0,
-  MOD = 1,
-  ADMIN = 2,
-}
+// export enum Roles {
+//   USER = 0,
+//   MOD = 1,
+//   ADMIN = 2,
+// }
 
 /**
  * Checks if a user has the proper perms to access the resources of an endpoint
@@ -27,7 +29,7 @@ export function hasPerms({
    */
   userId: string;
   /**
-   * The user's role within Waldo, most people will be a 'User'
+   * The user's role within WALDO, most people will be a 'User'
    * Only staff with have something else
    */
   userRole: Roles;
@@ -51,7 +53,7 @@ export function hasPerms({
   // if user owns the item
   else if (userId === itemOwnerId) return true;
   // if userRole is greater than or equal to the required perms
-  else if (requiredPerms && roleIndex - 3 >= requiredPerms) return true;
+  else if (requiredPerms && roleIndex >= requiredPerms) return true;
   // TODO: blacklist check
 
   return false;

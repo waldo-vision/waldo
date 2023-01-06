@@ -25,7 +25,7 @@ export default function Review() {
 
   const handleApply = (change: number) => {
     if (!reviewPageQData) return;
-
+    // change "0" changes the review page's maintenance value to on or off depending on the current value
     if (change == 0) {
       updatePage.mutateAsync({
         name: 'review',
@@ -34,6 +34,7 @@ export default function Review() {
         alertTitle: reviewPageQData.alertTitle,
         alertDescription: reviewPageQData.alertDescription,
       });
+      // change "1" changes the review page's isCustomAlert value to toggled or not toggled depending on the current value
     } else if (change == 1) {
       updatePage.mutateAsync({
         name: 'review',
@@ -42,6 +43,7 @@ export default function Review() {
         alertTitle: reviewPageQData.alertTitle,
         alertDescription: reviewPageQData.alertDescription,
       });
+      // change "2" sets the review page's custom maintenance reason (alertTitle) to a certain string value
     } else if (change == 2) {
       updatePage.mutateAsync({
         name: 'review',
@@ -71,7 +73,7 @@ export default function Review() {
       ) : (
         <>
           <Flex direction={'column'}>
-            <Text>Configure Service</Text>
+            <Text>Gameplay Reviewing</Text>
             <Text fontSize={'medium'} fontWeight={'medium'}>
               By disabling this service you are preventing users from creating
               voting on gameplay in the database. This includes all users

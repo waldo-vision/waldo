@@ -9,10 +9,6 @@ import {
   Collapse,
   useDisclosure,
   Heading,
-  AlertIcon,
-  Alert,
-  AlertTitle,
-  AlertDescription,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -22,13 +18,11 @@ import GithubLogo from '../public/navbar_github.png';
 import { discord, docs, githubrepo } from '@utils/links';
 import useSite from '@site';
 import BlacklistedModal from './BlacklistedModal';
-
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
   const [y, setY] = useState(0);
 
-  const { session, services } = useSite();
-
+  const { session } = useSite();
   const changeBackground = () => {
     setY(window.scrollY);
   };
@@ -79,7 +73,7 @@ export default function Navigation() {
               aria-label={'Toggle Navigation'}
             />
             <Heading size={'md'} pb={1} pl={3}>
-              <Link href={'/'}>Waldo</Link>
+              <Link href={'/'}>WALDO</Link>
             </Heading>
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'left' }}>
@@ -91,7 +85,7 @@ export default function Navigation() {
               >
                 <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
                 <Heading size={'md'} pl={3}>
-                  Waldo
+                  WALDO
                 </Heading>
               </Flex>
             </Link>
@@ -108,35 +102,6 @@ export default function Navigation() {
         <Collapse in={isOpen} animateOpacity>
           <MobileNav />
         </Collapse>
-        <Box overflow={'auto'} width={'100%'}>
-          {session?.user?.blacklisted ? (
-            <Alert status={'warning'}>
-              <AlertIcon />
-              <Box>
-                <AlertTitle>Your account has been suspended</AlertTitle>
-                <AlertDescription>
-                  Certain features will no longer be available.
-                </AlertDescription>
-              </Box>
-            </Alert>
-          ) : services.site?.maintenance ||
-            services.upload?.maintenance ||
-            services.site?.maintenance ||
-            services.account?.maintenance ||
-            services.review?.maintenance ? (
-            <Alert status={'error'}>
-              <AlertIcon />
-              <Box>
-                <AlertTitle>Some services currently down</AlertTitle>
-                <AlertDescription>
-                  Certain features will no longer be available.
-                </AlertDescription>
-              </Box>
-            </Alert>
-          ) : (
-            <></>
-          )}
-        </Box>
       </Box>
       {session && session.user?.blacklisted && <BlacklistedModal show={true} />}
     </>

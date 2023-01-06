@@ -28,7 +28,7 @@ If you don't wish to self host a redis http proxy, we recommend you use [Upstash
 
 ### Self Hosting
 
-If you are feel comfortable self hosting, for our use case, you we require that you additionally install [Docker](https://www.docker.com/) and [Docker compose](https://docs.docker.com/compose/). Docker is used to help ensure that the services are setup consistantly setup accross all our contributors' machines. (If you want to use podman instead of docker, you can, but we will not provide assistance with it.)
+If you feel comfortable self hosting, for our use case, you we require that you additionally install [Docker](https://www.docker.com/) and [Docker compose](https://docs.docker.com/compose/). Docker is used to help ensure that the services are setup consistantly setup accross all our contributors' machines. (If you want to use podman instead of docker, you can, but we will not provide assistance with it.)
 
 To start the services locally, simply run `docker compose up -d`. Or shut them off with `docker compose down`. (Run these in the repo after you have cloned it.)
 
@@ -73,7 +73,8 @@ To start the services locally, simply run `docker compose up -d`. Or shut them o
 
 1. You may also want to additionally set the `Cloudflare Turnstile` keys for submissions to work, or the `Youtube API Key` for the review site to work properly.
 
-   - Currently there is no guide for this items, but there isn't much to setting them up. The only item of note is that the YT API Key needs to be `version 3` of the api.
+   - Currently there is no guide for these items, but there isn't much to setting them up. The only item of note is that the YT API Key needs to be `version 3` of the api.
+   - If you do not wish to setup a cloudflare site to be able to generate turnstile keys, you can use the demo site and secret keys which you can find here:   https://developers.cloudflare.com/turnstile/frequently-asked-questions/#are-there-sitekeys-and-secret-keys-that-can-be-used-for-testing.
 
 1. The finale `.env` file _might_ look a little something like this after everything is filled in:
 
@@ -103,9 +104,9 @@ Please note we have a [code of conduct](/legal/code-of-conduct), please follow i
 
 ## Pull Request Process
 
-1. Included your pull request with details of changes to the interface, this includes new environment
+1. Include your pull request with details of changes to the interface, this includes new environment
    variables, exposed ports, useful file locations and container parameters.
-2. You may not merge the any pull requests unless a code review has been completed by the owners of
+2. You may not merge any pull requests unless a code review has been completed by the owners of
    this repository.
 3. Double check that IDE specific settings don't make it into the Git
 

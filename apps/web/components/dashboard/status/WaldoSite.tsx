@@ -34,8 +34,10 @@ const WaldoSite = () => {
   const [alertTitle, setAlertTitle] = useState<string | null>(null);
 
   const handleSwitchChanges = async (change: number) => {
+    // if no data, then return (should never happen)
     if (!data) return;
 
+    // change "0" changes the maintenance value for the site to on or off, depending on the current value
     if (change == 0) {
       await updateSite.mutateAsync({
         isCustomAlert: data.isCustomAlert,
@@ -43,6 +45,7 @@ const WaldoSite = () => {
         alertTitle: data.alertTitle,
         maintenance: !data.maintenance,
       });
+      // change "1" changes the isCustomAlert value to on or off depending on the current value (either shows an alert on the main page or doesn't)
     } else if (change == 1) {
       await updateSite.mutateAsync({
         isCustomAlert: !data.isCustomAlert,

@@ -39,6 +39,7 @@ import { TRPCError } from '@trpc/server';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { prisma } from '@server/db/client';
+import { legal } from '@utils/links';
 
 export default function Upload() {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
@@ -61,7 +62,7 @@ export default function Upload() {
     },
   });
 
-  const { isLoading, data: isDisabled } = trpc.site.getPageData.useQuery({
+  const { data: isDisabled } = trpc.site.getPageData.useQuery({
     name: 'upload',
   });
 
@@ -167,7 +168,8 @@ export default function Upload() {
         | 'VAL'
         | 'TF2'
         | 'COD'
-        | 'APE',
+        | 'APE'
+        | 'R6S',
       youtubeUrl: currentUrl as string,
     };
     try {
@@ -199,7 +201,7 @@ export default function Upload() {
   if (loading) {
     return (
       <Box>
-        <Loading color={'blue.500'} />
+        <Loading color={'purple.500'} />
       </Box>
     );
   } else {
@@ -209,7 +211,7 @@ export default function Upload() {
           <title>Submissions | Upload</title>
           <meta
             name="description"
-            content="Waldo is an Open-source visual cheat detection, powered by A.I"
+            content="WALDO is an Open-source visual cheat detection, powered by A.I"
           />
         </Head>
         <Container
@@ -243,12 +245,13 @@ export default function Upload() {
                     <br />
                     Before you submit a video make sure you have read the rules
                     regarding the submission and reviewing of gameplay. You can
-                    read our terms of service{' '}
-                    <Link href={'/tos'}>
+                    read our{' '}
+                    <Link href={legal.TOS}>
                       <Text as={'span'} fontWeight={'bold'}>
-                        here.
+                        Terms of Service
                       </Text>
                     </Link>
+                    .
                   </Text>
                   <TurnstileWidget
                     valid={result => setIsRequestValid(result)}
@@ -366,22 +369,18 @@ export default function Upload() {
                     <Flex direction={{ base: 'column', md: 'row' }} gap={5}>
                       <Box mt={6} maxW={'400px'}>
                         <Text>
-                          By submitting, you are agreeing to the&nbsp;
-                          <Text
-                            as={'span'}
-                            fontWeight={'bold'}
-                            textDecoration={'underline'}
-                          >
-                            Terms of Service
-                          </Text>
-                          &nbsp;and the&nbsp;
-                          <Text
-                            as={'span'}
-                            fontWeight={'bold'}
-                            textDecoration={'underline'}
-                          >
-                            Privacy Policy
-                          </Text>
+                          By submitting, you are agreeing to our&nbsp;
+                          <Link href={legal.TOS}>
+                            <Text as={'span'} fontWeight={'bold'}>
+                              Terms of Service
+                            </Text>
+                          </Link>
+                          &nbsp;and &nbsp;
+                          <Link href={legal.privacy}>
+                            <Text as={'span'} fontWeight={'bold'}>
+                              Privacy Policy
+                            </Text>
+                          </Link>
                           .
                         </Text>
                       </Box>

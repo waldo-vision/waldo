@@ -1,4 +1,4 @@
-import { hasPerms, Roles, Perms } from '@server/utils/hasPerms';
+import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
@@ -30,7 +30,7 @@ export const siteRouter = router({
       if (pageData == null) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Waldo Page not found in the database.',
+          message: 'WALDO Page not found in the database.',
         });
       }
       // no error checking because the docs will never be deleted.
@@ -61,7 +61,7 @@ export const siteRouter = router({
       if (siteData == null) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Waldo Page not found in the database.',
+          message: 'WALDO Page not found in the database.',
         });
       }
       return siteData;
@@ -105,7 +105,7 @@ export const siteRouter = router({
       if (updatePage == null) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Waldo Page not found in the database.',
+          message: 'WALDO Page not found in the database.',
         });
       }
       // no error checking because the docs will never be deleted.

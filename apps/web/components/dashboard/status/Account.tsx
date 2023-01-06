@@ -25,7 +25,7 @@ export default function Review() {
 
   const handleApply = (change: number) => {
     if (!accountPageQData) return;
-
+    // change "0" changes the account page's maintenance value to on or off depending on the current value
     if (change == 0) {
       updatePage.mutateAsync({
         name: 'account',
@@ -34,6 +34,7 @@ export default function Review() {
         alertTitle: accountPageQData.alertTitle,
         alertDescription: accountPageQData.alertDescription,
       });
+      // change "1" changes the account page's isCustomAlert value to toggled or not toggled depending on the current value
     } else if (change == 1) {
       updatePage.mutateAsync({
         name: 'account',
@@ -42,6 +43,7 @@ export default function Review() {
         alertTitle: accountPageQData.alertTitle,
         alertDescription: accountPageQData.alertDescription,
       });
+      // change "2" sets the account page's custom maintenance reason (alertTitle) to a certain string value
     } else if (change == 2) {
       updatePage.mutateAsync({
         name: 'account',
@@ -66,11 +68,11 @@ export default function Review() {
   return (
     <Flex direction={'column'} gap={5} mb={5}>
       {accountPageQLoading ? (
-        <Text>dfsdfds</Text>
+        <Text>Loading...</Text>
       ) : (
         <>
           <Flex direction={'column'}>
-            <Text>Configure Service</Text>
+            <Text>Security & Authentication</Text>
             <Text fontSize={'medium'} fontWeight={'medium'}>
               By disabling this service you are preventing users from creating
               new accounts or logging in. However already logged in accounts

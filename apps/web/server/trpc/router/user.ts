@@ -1,10 +1,9 @@
 import { TRPCError } from '@trpc/server';
-import ytdl from 'ytdl-core';
-import { GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { UserSchema } from '@utils/zod/dash';
-import { hasPerms, Perms, Roles } from '@server/utils/hasPerms';
+import { hasPerms, Perms } from '@server/utils/hasPerms';
+import type { Roles } from 'database';
 export const userRouter = router({
   blackList: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/user' } })
@@ -217,12 +216,12 @@ export const userRouter = router({
         try {
           const userCount = await ctx.prisma.user.count({
             where: {
-              role: input.filterRoles,
+              role: input.filterRoles as Roles,
             },
           });
           const users = await ctx.prisma.user.findMany({
             where: {
-              role: input.filterRoles,
+              role: input.filterRoles as Roles,
             },
             take: takeValue,
             skip: skipValue,
@@ -247,7 +246,7 @@ export const userRouter = router({
         userId: z.string().cuid(),
       }),
     )
-    .output(UserSchema)
+    .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
       if (
         !hasPerms({
@@ -266,10 +265,10 @@ export const userRouter = router({
             id: input.userId,
           },
           data: {
-            role: input.role,
+            role: input.role as Roles,
           },
         });
-        return users;
+        return { message: 'success' };
       } catch (error) {
         throw new TRPCError({
           message: 'No clip document with the UUID provided could be found.',
@@ -298,6 +297,7 @@ export const userRouter = router({
         throw new TRPCError({
           code: 'UNAUTHORIZED',
         });
+      if (input.name == undefined) throw new TRPCError({ code: 'BAD_REQUEST' });
       try {
         const user = await ctx.prisma.user.findFirst({
           where: {
@@ -306,6 +306,9 @@ export const userRouter = router({
             },
           },
         });
+        if (user == null) {
+          throw new TRPCError({ code: 'NOT_FOUND' });
+        }
         return user;
       } catch (error) {
         throw new TRPCError({

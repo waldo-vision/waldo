@@ -1,5 +1,3 @@
-import { link } from 'fs';
-
 export const SITE = {
   title: 'Waldo Docs',
   description: 'Docs for the Waldo project.',
@@ -8,7 +6,7 @@ export const SITE = {
 
 export const OPEN_GRAPH = {
   image: {
-    src: 'https://raw.githubusercontent.com/waldo-vision/waldo/master/apps/web/public/android-chrome-256x256.png',
+    src: '../public/android-chrome-256x256.png',
     alt: 'the waldo logo on a plain background',
   },
   twitter: 'waldovision',
@@ -30,7 +28,7 @@ export const KNOWN_LANGUAGES = {
 } as const;
 export const KNOWN_LANGUAGE_CODES = Object.values(KNOWN_LANGUAGES);
 
-export const GITHUB_EDIT_URL = `https://github.com/waldo-vision/waldo/tree/main/apps/docs`;
+export const GITHUB_EDIT_URL = `https://github.com/waldo-vision/waldo/tree/master/docs`;
 
 export const COMMUNITY_INVITE_URL = `https://waldo.vision/chat`;
 

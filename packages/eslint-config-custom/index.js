@@ -18,7 +18,6 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    '@next/next/no-html-link-for-pages': 'off',
     'react/jsx-key': 'off',
     'arrow-parens': ['error', 'as-needed'],
     'prettier/prettier': 'error',

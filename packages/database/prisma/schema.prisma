@@ -29,36 +29,34 @@ model WaldoSite {
   pages            WaldoPage[]
 }
 
-model Footage {
+model Gameplay {
   id           String         @id @default(cuid())
   user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
-  footageVotes FootageVotes[] @relation("footage")
+  gameplayVotes GameplayVotes[] @relation("gameplay")
   youtubeUrl   String         @unique
-  footageType  FootageType    @default(CSG)
-  upVotes      Int            @default(0)
-  downVotes    Int            @default(0)
+  gameplayType  GameplayType    @default(CSG)
   isAnalyzed   Boolean        @default(false)
   clips        Clip[]
 }
 
-model FootageVotes {
+model GameplayVotes {
   id         String      @id @default(cuid())
-  footage    Footage     @relation("footage", fields: [footageId], references: [id], onDelete: Cascade)
-  footageId  String
+  gameplay    Gameplay     @relation("gameplay", fields: [gameplayId], references: [id], onDelete: Cascade)
+  gameplayId  String
   user       User        @relation("user", fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   isGame     Boolean     @default(false)
-  actualGame FootageType
+  actualGame GameplayType
 }
 
 model Clip {
   id        String  @id @default(cuid())
-  footage   Footage @relation(fields: [footageId], references: [id])
-  footageId String
+  gameplay   Gameplay @relation(fields: [gameplayId], references: [id])
+  gameplayId String
 }
 
-enum FootageType {
+enum GameplayType {
   VAL
   CSG
   TF2
@@ -110,9 +108,9 @@ model User {
   sessions      Session[]
   // our items
   blacklisted   Boolean        @default(false)
-  footage       Footage[]
+  gameplay      Gameplay[]
   role          Roles          @default(USER)
-  footageVotes  FootageVotes[] @relation("user")
+  gameplayVotes GameplayVotes[] @relation("user")
 }
 
 model VerificationToken {

@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  Box,
-  Flex,
-  Button,
-  Text,
-  Spinner,
-  useToast,
-  Center,
-} from '@chakra-ui/react';
+import { Box, Flex, Button, Text, Spinner, useToast } from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
 import { BiTrash } from 'react-icons/bi';
 interface Item {

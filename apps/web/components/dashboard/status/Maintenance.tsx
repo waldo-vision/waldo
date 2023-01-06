@@ -33,6 +33,7 @@ export default function Maintenance() {
   const [alertTitle, setAlertTitle] = useState<string | null>(null);
 
   const handleSwitchChanges = async (change: number) => {
+    // change "0" changes the site's maintenance mode's value to true or false depending on the current value
     if (change == 0) {
       await updateSite.mutateAsync({
         isCustomAlert: data?.isCustomAlert as boolean,
@@ -40,6 +41,7 @@ export default function Maintenance() {
         alertTitle: data?.alertTitle as string,
         maintenance: !data?.maintenance,
       });
+      //change "1" changes the site's maintenance mode custom reason to a certain string value
     } else if (change == 1) {
       await updateSite.mutateAsync({
         isCustomAlert: !data?.isCustomAlert,
@@ -95,7 +97,7 @@ export default function Maintenance() {
       ) : (
         <>
           <Flex direction={'column'}>
-            <Text>Configure Service</Text>
+            <Text>Maintenance Mode</Text>
             <Text fontSize={'medium'} fontWeight={'medium'}>
               By enabling this service you are preventing users from entering
               the site.

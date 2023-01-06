@@ -6,7 +6,7 @@ on:
     branches:
       - master
     paths:
-      - apps/docs/**
+      - docs/**
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -23,8 +23,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BUILD_PATH: out/apps/docs/dist
-  DOCS_PATH: out/apps/docs
+  BUILD_PATH: out/docs/dist
+  DOCS_PATH: out/docs
 
 jobs:
   build:
@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Create Cache 📃
         run: mkdir -p /home/runner/work/waldo/waldo/.yarn/cache
-        continue-on-error: true 
+        continue-on-error: true
       - name: Setup Node 📐
         uses: actions/setup-node@v3
         with:
