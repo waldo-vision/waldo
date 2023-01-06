@@ -6,9 +6,7 @@ interface Gameplay {
   id: string;
   userId: string;
   youtubeUrl: string;
-  footageType: string;
-  upVotes?: number;
-  downVotes?: number;
+  gameplayType: string;
   isAnalyzed: boolean;
 }
 export default function AccGameplayItems() {

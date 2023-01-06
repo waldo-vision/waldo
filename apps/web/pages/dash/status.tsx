@@ -4,7 +4,6 @@ import {
   Stat,
   StatGroup,
   StatHelpText,
-  StatLabel,
   StatNumber,
 } from '@chakra-ui/react';
 import Review from '@components/dashboard/status/Review';
@@ -63,7 +62,6 @@ export default function Status() {
               p={5}
               m={5}
             >
-              <StatLabel>{label}</StatLabel>
               <StatNumber>{component}</StatNumber>
               <StatHelpText>Manage {label} service.</StatHelpText>
             </Stat>

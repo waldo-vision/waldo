@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { FiMenu, FiGlobe } from 'react-icons/fi';
 import { FaGamepad, FaUserAlt } from 'react-icons/fa';
-import WaldoLogo from '../../public/android-chrome-256x256.png';
+import WaldoLogo from '../../../public/android-chrome-256x256.png';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -25,7 +25,7 @@ type Tab = {
 };
 
 const SideBarTabs: Tab[] = [
-  { tabName: 'Users', path: '/users', icon: <FaUserAlt /> },
+  { tabName: 'Users', path: '/', icon: <FaUserAlt /> },
   { tabName: 'Gameplay', path: '/gameplay', icon: <FaGamepad /> },
   { tabName: 'Status', path: '/status', icon: <FiGlobe /> },
 ];
@@ -80,7 +80,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           <Flex align={'center'}>
             <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
             <Heading size={'md'} pl={3}>
-              WALDO
+              Waldo
             </Heading>
           </Flex>
         </Link>
@@ -89,10 +89,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       <Flex direction={'column'} gap={3}>
         {SideBarTabs.map((tab, index) => (
           <Flex
-            bgColor={
-              '/dash' + tab.path == router.pathname ? 'purple.500' : 'white'
-            }
-            color={'/dash' + tab.path == router.pathname ? 'white' : ''}
+            bgColor={'purple.500'}
+            color={'/' + tab.path == router.pathname ? 'white' : ''}
             fontWeight={'medium'}
             borderRadius={16}
             py={3}
@@ -102,7 +100,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             key={index}
             cursor={'pointer'}
             _hover={
-              '/dash' + tab.path == router.pathname
+              '/' + tab.path == router.pathname
                 ? { bgColor: 'purple.600' }
                 : {
                     bgColor: 'gray.50',
@@ -141,7 +139,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         <Flex align={'center'}>
           <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
           <Heading size={'md'} pl={3}>
-            WALDO
+            Waldo
           </Heading>
         </Flex>
       </Link>

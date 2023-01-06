@@ -13,7 +13,7 @@
         "GOOGLE_CLIENT_ID",
         "DISCORD_CLIENT_SECRET",
         "DISCORD_CLIENT_ID",
-        "CLOUDFLARE_TURNSTILE_SITE_KEY",
+        "NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY",
         "BTLNET_CLIENT_ID",
         "BTLNET_CLIENT_SECRET",
         "FB_CLIENT_ID",
@@ -21,7 +21,8 @@
         "TWITCH_CLIENT_ID",
         "TWITCH_CLIENT_SECRET",
         "UPSTASH_REDIS_REST_URL",
-        "UPSTASH_REDIS_REST_TOKEN"
+        "UPSTASH_REDIS_REST_TOKEN",
+        "NEXT_PUBLIC_NODE_ENV"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },

@@ -34,7 +34,7 @@ export const clipRouter = router({
             id: input.clipId,
           },
           include: {
-            footage: true,
+            gameplay: true,
           },
         });
 
@@ -92,7 +92,7 @@ export const clipRouter = router({
     .meta({ openapi: { method: 'POST', path: '/clip' } })
     .input(
       z.object({
-        footageId: z.string().uuid(),
+        gameplayId: z.string().uuid(),
       }),
     )
     .output(ClipSchema)
@@ -112,7 +112,7 @@ export const clipRouter = router({
       try {
         const clip = await ctx.prisma.clip.create({
           data: {
-            footageId: input.footageId,
+            gameplayId: input.gameplayId,
           },
         });
         return clip;

@@ -19,7 +19,7 @@ const securityHeaders = [
   {
     key: 'Content-Security-Policy',
     value:
-      "default-src 'self'; img-src *; script-src 'self' 'unsafe-eval' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; frame-src https://challenges.cloudflare.com https://youtube.com https://www.youtube.com; upgrade-insecure-requests;",
+      "default-src 'self'; img-src * data:; script-src 'self' 'unsafe-eval' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; frame-src https://challenges.cloudflare.com https://youtube.com https://www.youtube.com; upgrade-insecure-requests;",
   },
 ];
 
@@ -55,6 +55,10 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   async headers() {
+    if (process.env.NODE_ENV === 'production') {
+      securityHeaders[4].value =
+        "default-src 'self'; img-src * data:; script-src 'self' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; frame-src https://challenges.cloudflare.com https://youtube.com https://www.youtube.com; upgrade-insecure-requests;";
+    }
     return [
       {
         // Apply these headers to all routes in your application.
@@ -79,7 +83,7 @@ const nextConfig = {
     return [
       {
         source: '/chat',
-        destination: 'https://discord.gg/MPAV4qP8Hx',
+        destination: 'https://discord.com/invite/BBSxJ3vf',
         permanent: false,
       },
     ];
