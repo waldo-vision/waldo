@@ -58,4 +58,7 @@ COPY --from=installer /app/apps/web/package.json .
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
 
-CMD node apps/web/server.js
+# copy over OTel trace exporter
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/dist/tracing.js .
+
+CMD node --require ./tracing.js apps/web/server.js
