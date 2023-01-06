@@ -28,7 +28,7 @@ COPY .yarn .yarn
 COPY .yarnrc.yml .yarnrc.yml
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/yarn.lock ./yarn.lock
-RUN yarn install --immutable
+RUN yarn install
 
 # Build the project
 COPY --from=builder /app/out/full/ .

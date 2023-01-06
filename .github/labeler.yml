@@ -1,0 +1,14 @@
+# config for labeler action
+
+documentation:
+  - apps/docs/**/*
+  - CODE_OF_CONDUCT.md
+  - CONTRIBUTING.md
+
+frontend:
+  - apps/web/**/*
+
+'team leads':
+  - LICENSE.md
+  - SECURITY.md
+  - apps/docs/src/pages/legal/**/*

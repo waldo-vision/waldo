@@ -1,0 +1,48 @@
+name: Feature request
+description: Suggest an idea for this project
+title: '[FR]: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: textarea
+    id: general-idea
+    attributes:
+      label: General Idea
+      description: A real short summary of the feature you want implamented.
+      placeholder: Tell us what you want!
+      value: 'My big idea!'
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem does this solve?
+      placeholder: Tell us how it fixes it!
+      value: 'I need this!'
+    validations:
+      required: true
+  - type: textarea
+    id: full-desc
+    attributes:
+      label: Proper Description
+      description: Give us a full explination of what you want.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Any Alternatives?
+      description: Give us some alternative solutions or features you've considered.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any other context or screenshots about the feature request here.
+    validations:
+      required: true
