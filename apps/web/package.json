@@ -15,7 +15,6 @@
     "@chakra-ui/provider": "^2.0.26",
     "@chakra-ui/react": "^2.4.4",
     "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
     "@fontsource/nunito": "^4.5.11",
     "@heroicons/react": "^2.0.13",
     "@marsidev/react-turnstile": "^0.0.5",
