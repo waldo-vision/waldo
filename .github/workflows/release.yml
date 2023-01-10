@@ -6,14 +6,11 @@ on:
 
 jobs:
   docker:
-    name: Push Docker image to registries
+    name: Push website Docker image to registry
     runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
-    strategy:
-      matrix:
-        image: ['web', 'docs']
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -39,7 +36,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/waldo-vision/${{ matrix.image }}
+            ghcr.io/waldo-vision/web
           tags: |
             type=schedule,pattern=nightly
             type=semver,pattern={{version}}
@@ -56,23 +53,10 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./apps/${{ matrix.image }}/Dockerfile
+          file: ./apps/web/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      # - name: Docs - Build and push images
-      #   id: build-and-push
-      #   uses: docker/build-push-action@v3
-      #   with:
-      #     context: .
-      #     file: ./apps/web/Dockerfile
-      #     push: true
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
-      #     platforms: linux/amd64
-      #     cache-from: type=gha
-      #     cache-to: type=gha,mode=max
