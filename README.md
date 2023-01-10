@@ -1,6 +1,6 @@
 # Contributing
 
-To help contribute to WALDO, please visit the [WALDO Documentation page.](https://docs.waldo.vision) and make sure to comply with the [Contributor Agreement](https://docs.waldo.vision/docs/contributing).
+To help contribute to WALDO, please visit the [WALDO Documentation page.](https://docs.waldo.vision) and make sure to comply with the [Contributor Agreement](https://docs.waldo.vision/legal/code-of-conduct/).
 
 > We like [SemVer](https://semver.org) and promote using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)!
 
