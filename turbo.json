@@ -21,8 +21,7 @@
         "TWITCH_CLIENT_ID",
         "TWITCH_CLIENT_SECRET",
         "UPSTASH_REDIS_REST_URL",
-        "UPSTASH_REDIS_REST_TOKEN",
-        "NEXT_PUBLIC_NODE_ENV"
+        "UPSTASH_REDIS_REST_TOKEN"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },
