@@ -16,10 +16,14 @@ FROM node:18-alpine AS runner
 # set workdir
 WORKDIR /app
 ENV NODE_ENV production
+
 # Copy node_modules from installer to runner
-COPY --from=builder /app/out/full/ .
-COPY .yarn .yarn
+COPY .yarn/releases .yarn/releases
 COPY .yarnrc.yml .yarnrc.yml
-# Set workdir
-WORKDIR /app/packages/database/
-ENTRYPOINT yarn dlx prisma migrate deploy
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/yarn.lock ./yarn.lock
+RUN yarn install
+
+COPY --from=builder /app/out/full/ .
+
+ENTRYPOINT ["yarn", "workspace", "database", "prisma", "migrate", "deploy"]
