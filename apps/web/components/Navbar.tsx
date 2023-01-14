@@ -72,9 +72,11 @@ export default function Navigation() {
               variant={'ghost'}
               aria-label={'Toggle Navigation'}
             />
-            <Heading size={'md'} pb={1} pl={3}>
-              <Link href={'/'}>Waldo Vision</Link>
-            </Heading>
+            <Link href={'/'}>
+              <Heading size={'md'} pb={1} pl={3} width={'150px'}>
+                Waldo Vision
+              </Heading>
+            </Link>
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'left' }}>
             <Link href={'/'}>

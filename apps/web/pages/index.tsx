@@ -61,7 +61,7 @@ export default function Home() {
               position: 'fixed',
               zIndex: -10,
               borderRadius: '16px',
-              left: `${y + 1160.18}px`,
+              right: `${10.18 - y}px`,
               top: `${y / 2 + 88}px`,
               boxShadow: '0px 0px 32px 5px rgba(0, 0, 0, 0.25)',
               transform: 'rotate(25deg)',
@@ -359,7 +359,11 @@ const Feature = ({ title, text, image }: FeatureProps) => {
 
 const Features = () => {
   return (
-    <Container maxW={'7xl'} textAlign={'center'}>
+    <Container
+      maxW={'7xl'}
+      textAlign={'center'}
+      height={{ base: 1300, md: 600 }}
+    >
       <Grid
         height={'100%'}
         templateRows={{ sm: 'repeat(6, 1fr)', md: 'repeat(5, 1fr)' }}
