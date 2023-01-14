@@ -30,7 +30,7 @@ export const siteRouter = router({
       if (pageData == null) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'WALDO Page not found in the database.',
+          message: 'Waldo Vision Page not found in the database.',
         });
       }
       // no error checking because the docs will never be deleted.
@@ -61,7 +61,7 @@ export const siteRouter = router({
       if (siteData == null) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'WALDO Page not found in the database.',
+          message: 'Waldo Vision Page not found in the database.',
         });
       }
       return siteData;
@@ -105,7 +105,7 @@ export const siteRouter = router({
       if (updatePage == null) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'WALDO Page not found in the database.',
+          message: 'Waldo Vision Page not found in the database.',
         });
       }
       // no error checking because the docs will never be deleted.

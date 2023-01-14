@@ -1,6 +1,6 @@
 export const SITE = {
-  title: 'Waldo Docs',
-  description: 'Docs for the Waldo project.',
+  title: 'Waldo Vision Docs',
+  description: 'Docs for the Waldo Vision project.',
   defaultLanguage: 'en_US',
 };
 

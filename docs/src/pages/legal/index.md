@@ -1,6 +1,6 @@
 ---
 title: Legal
-description: All of Waldo Vision's legal documents in one place.
+description: All of Waldo Vision Vision's legal documents in one place.
 layout: ../../layouts/MainLayout.astro
 ---
 

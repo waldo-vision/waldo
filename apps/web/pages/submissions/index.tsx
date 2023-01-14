@@ -23,10 +23,10 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>WALDO | Submissions </title>
+        <title>Waldo Vision | Submissions </title>
         <meta
           name="description"
-          content="Submit your gameplay to the WALDO AI. Check out our discord for more information "
+          content="Submit your gameplay to the Waldo Vision AI. Check out our discord for more information "
         />
       </Head>
       <Container
@@ -54,10 +54,10 @@ export default function Index() {
                   </Text>
                 </Heading>
                 <Text maxW={'4xl'} fontSize={{ base: 13, md: 16, lg: 16 }}>
-                  Help us curate a dataset to train WALDO on. Submit links to
-                  first-person shooter gameplay videos and clips on YouTube, or
-                  review others&apos; submissions to ensure they&apos;re
-                  labelled properly.
+                  Help us curate a dataset to train Waldo Vision on. Submit
+                  links to first-person shooter gameplay videos and clips on
+                  YouTube, or review others&apos; submissions to ensure
+                  they&apos;re labelled properly.
                 </Text>
               </Flex>
             </Box>

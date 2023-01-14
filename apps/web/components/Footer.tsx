@@ -32,7 +32,7 @@ export default function Footer() {
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
           <Stack align={'flex-start'}>
             <ListHeader>Services</ListHeader>
-            <Link href={'/'}>WALDO</Link>
+            <Link href={'/'}>Waldo Vision</Link>
             <Stack direction={'row'} align={'center'} spacing={2}>
               <Link href={docs}>Docs</Link>
               <Tag size={'sm'} bg={'purple.300'} ml={2} color={'white'}>
@@ -81,7 +81,7 @@ export default function Footer() {
           <Logo />
         </Flex>
         <Text pt={6} fontSize={'sm'} textAlign={'center'}>
-          © 2022 WALDO-Vision. All rights reserved.
+          © 2022 Waldo Vision-Vision. All rights reserved.
         </Text>
       </Box>
     </Box>

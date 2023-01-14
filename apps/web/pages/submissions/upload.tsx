@@ -211,7 +211,7 @@ export default function Upload() {
           <title>Submissions | Upload</title>
           <meta
             name="description"
-            content="WALDO is an Open-source visual cheat detection, powered by A.I"
+            content="Waldo Vision is an Open-source visual cheat detection, powered by A.I"
           />
         </Head>
         <Container

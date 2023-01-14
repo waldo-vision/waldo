@@ -159,10 +159,10 @@ export default function Account() {
   ) : (
     <>
       <Head>
-        <title>WALDO | Account</title>
+        <title>Waldo Vision | Account</title>
         <meta
           name="description"
-          content="WALDO is an Open-source visual cheat detection, powered by A.I"
+          content="Waldo Vision is an Open-source visual cheat detection, powered by A.I"
         />
       </Head>
       <Box minHeight={'100vh'} mt={{ base: '60px' }} mb={20}>

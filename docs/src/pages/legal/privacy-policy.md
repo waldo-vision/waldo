@@ -1,12 +1,12 @@
 ---
 title: Privacy Policy
-description: Waldo's Privacy Policy
+description: Waldo Vision's Privacy Policy
 layout: ../../layouts/MainLayout.astro
 ---
 
 > Last updated January 11, 2023
 
-This privacy notice for Waldo Intelligence LLC ("Company," "we," "us," or "our"), describes how and why we might collect, store, use, and/or share ("process") your information when you use our services ("Services"), such as when you:
+This privacy notice for Waldo Vision Intelligence LLC ("Company," "we," "us," or "our"), describes how and why we might collect, store, use, and/or share ("process") your information when you use our services ("Services"), such as when you:
 Visit our website at waldo.vision, or any website of ours that links to this privacy notice
 Engage with us in other related ways, including any sales, marketing, or events
 Questions or concerns? Reading this privacy notice will help you understand your privacy rights and choices. If you do not agree with our policies and practices, please do not use our Services. If you still have any questions or concerns, please contact us at contact@waldo.vision.
@@ -15,7 +15,7 @@ Questions or concerns? Reading this privacy notice will help you understand your
 
 This summary provides key points from our privacy notice, but you can find out more details about any of these topics by clicking the link following each key point or by using our table of contents below to find the section you are looking for. You can also click [here](#table-of-contents) to go directly to our table of contents.
 
-What personal information do we process? When you visit, use, or navigate our Services, we may process personal information depending on how you interact with Waldo Intelligence LLC and the Services, the choices you make, and the products and features you use. Click [here](#1-what-information-do-we-collect) to learn more.
+What personal information do we process? When you visit, use, or navigate our Services, we may process personal information depending on how you interact with Waldo Vision Intelligence LLC and the Services, the choices you make, and the products and features you use. Click [here](#1-what-information-do-we-collect) to learn more.
 
 Do we process any sensitive personal information? We do not process sensitive personal information.
 
@@ -31,7 +31,7 @@ What are your rights? Depending on where you are located geographically, the app
 
 How do you exercise your rights? The easiest way to exercise your rights is by filling out our data subject request form available [here](https://app.termly.io/notify/118e4d43-8fd5-4d80-a272-1d3a804d3519), or by contacting us. We will consider and act upon any request in accordance with applicable data protection laws.
 
-Want to learn more about what Waldo Intelligence LLC does with any information we collect? Click [here](#table-of-contents) to review the notice in full.
+Want to learn more about what Waldo Vision Intelligence LLC does with any information we collect? Click [here](#table-of-contents) to review the notice in full.
 
 ## Table of Contents
 
@@ -236,7 +236,7 @@ We may update this privacy notice from time to time. The updated version will be
 If you have questions or comments about this notice, you may email us at contact@waldo.vision or by post to:
 
 ```
-Waldo Intelligence LLC
+Waldo Vision Intelligence LLC
 PO BOX 7782
 Amarillo, TX 79114
 United States

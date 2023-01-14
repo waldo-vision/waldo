@@ -1,6 +1,6 @@
 ---
 title: Code of Conduct
-description: Waldo's Code of Conduct
+description: Waldo Vision's Code of Conduct
 layout: ../../layouts/MainLayout.astro
 ---
 
