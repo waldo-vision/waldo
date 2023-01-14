@@ -125,10 +125,10 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>WALDO | Login</title>
+        <title>Waldo Vision | Login</title>
         <meta
           name="description"
-          content="WALDO is an Open-source visual cheat detection, powered by A.I"
+          content="Waldo Vision is an Open-source visual cheat detection, powered by A.I"
         />
       </Head>
       <Box maxWidth={'100%'} maxHeight={'100vh'} textAlign={'left'}>
@@ -155,7 +155,7 @@ export default function Login() {
                   >
                     <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
                     <Heading size={'md'} pl={3}>
-                      WALDO
+                      Waldo Vision
                     </Heading>
                   </Flex>
                 </Link>
@@ -193,7 +193,7 @@ export default function Login() {
                   >
                     <Image src={WaldoLogo} width={40} height={40} alt="Logo" />
                     <Heading size={'md'} pl={3}>
-                      WALDO
+                      Waldo Vision
                     </Heading>
                   </Flex>
                 </Link>

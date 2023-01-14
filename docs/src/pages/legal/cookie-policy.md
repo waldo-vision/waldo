@@ -1,12 +1,12 @@
 ---
 title: Cookie Policy
-description: Waldo's Cookie Policy
+description: Waldo Vision's Cookie Policy
 layout: ../../layouts/MainLayout.astro
 ---
 
-Last Updated: \_\_\_\_
+> Last updated January 11, 2023
 
-This Cookie Policy explains how Waldo Vision ("Company," "we," "us," and "our") uses cookies and similar technologies to recognize you when you visit our website at https://waldo.vision ("Website"). It explains what these technologies are and why we use them, as well as your rights to control our use of them.
+This Cookie Policy explains how Waldo Intelligence LLC ("Company," "we," "us," and "our") uses cookies and similar technologies to recognize you when you visit our website at https://waldo.vision ("Website"). It explains what these technologies are and why we use them, as well as your rights to control our use of them.
 
 In some cases we may use cookies to collect personal information, or that becomes personal information if we combine it with other information.
 
@@ -14,7 +14,7 @@ In some cases we may use cookies to collect personal information, or that become
 
 Cookies are small data files that are placed on your computer or mobile device when you visit a website. Cookies are widely used by website owners in order to make their websites work, or to work more efficiently, as well as to provide reporting information.
 
-Cookies set by the website owner (in this case, \***\*\_\_\*\***) are called "first-party cookies." Cookies set by parties other than the website owner are called "third-party cookies." Third-party cookies enable third-party features or functionality to be provided on or through the website (e.g., advertising, interactive content, and analytics). The parties that set these third-party cookies can recognize your computer both when it visits the website in question and also when it visits certain other websites.
+Cookies set by the website owner (in this case, Waldo Intelligence LLC) are called "first-party cookies." Cookies set by parties other than the website owner are called "third-party cookies." Third-party cookies enable third-party features or functionality to be provided on or through the website (e.g., advertising, interactive content, and analytics). The parties that set these third-party cookies can recognize your computer both when it visits the website in question and also when it visits certain other websites.
 
 ## Why do we use cookies?
 
@@ -28,39 +28,32 @@ The Cookie Consent Manager can be found in the notification banner and on our we
 
 The specific types of first- and third-party cookies served through our Website and the purposes they perform are described in the table below (please note that the specific cookies served may vary depending on the specific Online Properties you visit):
 
-## Analytics and customization cookies:
+<br />
+<table><tbody><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Name:</td><td style="display: inline-block; margin-left: 5px;"><span style="word-break: break-all;">_ga</span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Purpose:</td><td style="display: inline-block; margin-left: 5px;"><span style="word-break: break-all;">It records a particular ID used to come up with data about website usage by the user. It is a HTTP cookie that expires after 2 years.</span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Provider:</td><td style="display: inline-block; margin-left: 5px;"><span style=" word-break: break-all;">.waldo.vision</span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Service:</td><td style="display: inline-block; margin-left: 5px;"><span style=" word-break: break-all;">Google Analytics  <a href="https://policies.google.com/technologies/ads" style="!important;" target="_blank">View Service Privacy Policy</a>  </span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Country:</td><td style="display: inline-block; margin-left: 5px;"><span style="word-break: break-all;">United States</span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Type:</td><td style="display: inline-block; margin-left: 5px;"><span style="word-break: break-all;">http_cookie</span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Expires in:</td><td style="display: inline-block; margin-left: 5px;"><span style="word-break: break-all;">1 year 11 months 29 days</span></td></tr></tbody></table>
 
-These cookies collect information that is used either in aggregate form to help us understand how our Website is being used or how effective our marketing campaigns are, or to help us customize our Website for you.
+<br />
+<br />
 
-Name:\_ga
-Purpose:It records a particular ID used to come up with data about website usage by the user. It is a HTTP cookie that expires after 2 years.
-Provider:.waldo.vision
-Service:Google Analytics View Service Privacy Policy
-Country:United States
-Type:http_cookie
-Expires in:1 year 11 months 29 days
+<table><tbody><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Name:</td><td style="display: inline-block; margin-left: 5px;"><span style="word-break: break-all;">_ga_#</span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Purpose:</td><td style="display: inline-block; margin-left: 5px;"><span style="word-break: break-all;">Used to distinguish individual users by means of designation of a randomly generated number as client identifier, which allows calculation of visits and sessions.</span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Provider:</td><td style="display: inline-block; margin-left: 5px;"><span style=" word-break: break-all;">.waldo.vision</span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Service:</td><td style="display: inline-block; margin-left: 5px;"><span style=" word-break: break-all;">Google Analytics  <a href="https://policies.google.com/technologies/ads" style="!important;" target="_blank">View Service Privacy Policy</a>  </span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Country:</td><td style="display: inline-block; margin-left: 5px;"><span style="word-break: break-all;">United States</span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Type:</td><td style="display: inline-block; margin-left: 5px;"><span style="word-break: break-all;">http_cookie</span></td></tr><tr style="font-family: Roboto, Arial; font-size: 12px; line-height: 1.67; margin: 0 0 8px; vertical-align: top;"><td style="text-align: right; min-width: 80px;">Expires in:</td><td style="display: inline-block; margin-left: 5px;"><span style="word-break: break-all;">1 year 11 months 29 days</span></td></tr></tbody></table>
 
-Name:\_ga\_#
-Purpose:Used to distinguish individual users by means of designation of a randomly generated number as client identifier, which allows calculation of visits and sessions
-Provider:.waldo.vision
-Service:Google analytics View Service Privacy Policy
-Country:United States
-Type:http_cookie
-Expires in:1 year 11 months 29 days
+<br />
 
 ## How can I control cookies on my browser?
 
 As the means by which you can refuse cookies through your web browser controls vary from browser to browser, you should visit your browser's help menu for more information. The following is information about how to manage cookies on the most popular browsers:
-Chrome
-Internet Explorer
-Firefox
-Safari
-Edge
-Opera
+
+- [Chrome](https://support.google.com/chrome/answer/95647#zippy=%2Callow-or-block-cookies)
+- [Internet Explorer](https://support.microsoft.com/en-us/windows/delete-and-manage-cookies-168dab11-0753-043d-7c16-ede5947fc64d)
+- [Firefox](https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop?redirectslug=enable-and-disable-cookies-website-preferences&redirectlocale=en-US)
+- [Safari](https://support.apple.com/en-ie/guide/safari/sfri11471/mac)
+- [Edge](https://support.microsoft.com/en-us/windows/microsoft-edge-browsing-data-and-privacy-bb8174ba-9d73-dcf2-9b4a-c582b4e640dd)
+- [Opera](https://help.opera.com/en/latest/web-preferences/)
+
 In addition, most advertising networks offer you a way to opt out of targeted advertising. If you would like to find out more information, please visit:
-Digital Advertising Alliance
-Digital Advertising Alliance of Canada
-European Interactive Digital Advertising Alliance
+
+- [Digital Advertising Alliance](http://www.aboutads.info/choices/)
+- [Digital Advertising Alliance of Canada](https://youradchoices.ca/)
+- [European Interactive Digital Advertising Alliance](http://www.youronlinechoices.com/)
 
 ## What about other tracking technologies, like web beacons?
 
@@ -70,7 +63,7 @@ Cookies are not the only way to recognize or track visitors to a website. We may
 
 Websites may also use so-called "Flash Cookies" (also known as Local Shared Objects or "LSOs") to, among other things, collect and store information about your use of our services, fraud prevention, and for other site operations.
 
-If you do not want Flash Cookies stored on your computer, you can adjust the settings of your Flash player to block Flash Cookies storage using the tools contained in the Website Storage Settings Panel. You can also control Flash Cookies by going to the Global Storage Settings Panel and following the instructions (which may include instructions that explain, for example, how to delete existing Flash Cookies (referred to "information" on the Macromedia site), how to prevent Flash LSOs from being placed on your computer without your being asked, and (for Flash Player 8 and later) how to block Flash Cookies that are not being delivered by the operator of the page you are on at the time).
+If you do not want Flash Cookies stored on your computer, you can adjust the settings of your Flash player to block Flash Cookies storage using the tools contained in the [Website Storage Settings Panel](http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager07.html). You can also control Flash Cookies by going to the [Global Storage Settings Panel](http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager03.html) and following the instructions (which may include instructions that explain, for example, how to delete existing Flash Cookies (referred to "information" on the Macromedia site), how to prevent Flash LSOs from being placed on your computer without your being asked, and (for Flash Player 8 and later) how to block Flash Cookies that are not being delivered by the operator of the page you are on at the time).
 
 Please note that setting the Flash Player to restrict or limit acceptance of Flash Cookies may reduce or impede the functionality of some Flash applications, including, potentially, Flash applications used in connection with our services or online content.
 
@@ -86,6 +79,13 @@ The date at the top of this Cookie Policy indicates when it was last updated.
 
 ## Where can I get further information?
 
-If you have any questions about our use of cookies or other technologies, please email us at support@waldo.vision or on our [Discord server](https://waldo.vision/chat).
+If you have any questions about our use of cookies or other technologies, please email us at contact@waldo.vision or by post to:
+
+```
+Waldo Intelligence LLC
+PO BOX 7782
+Amarillo, TX 79114
+United States
+```
 
 This cookie policy was created using Termly's Cookie Consent Manager.

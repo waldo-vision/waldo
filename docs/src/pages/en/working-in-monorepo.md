@@ -1,14 +1,14 @@
 ---
 title: Working in the Monorepo
-description: Working in the Waldo monorepo
+description: Working in the Waldo Vision monorepo
 layout: ../../layouts/MainLayout.astro
 ---
 
-Just some advice for working in the [Waldo monorepo](https://github.com/waldo-vision/waldo).
+Just some advice for working in the [Waldo Vision monorepo](https://github.com/waldo-vision/waldo).
 
 ## Project Structure
 
-Inside the `apps` directory are all the Waldo "apps". This includes this website (the docs), the main Waldo website, and the desktop app.
+Inside the `apps` directory are all the Waldo Vision "apps". This includes this website (the docs), the main Waldo Vision website, and the desktop app.
 
 Inside the `packages` directory is code that is reused between many of the different apps. You can consider these packages to be shared utilities if it helps you conceptualize it.
 

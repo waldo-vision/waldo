@@ -1,6 +1,6 @@
 export const SITE = {
-  title: 'Waldo Docs',
-  description: 'Docs for the Waldo project.',
+  title: 'Waldo Vision Docs',
+  description: 'Docs for the Waldo Vision project.',
   defaultLanguage: 'en_US',
 };
 
@@ -45,14 +45,15 @@ export type Sidebar = Record<
 >;
 export const SIDEBAR: Sidebar = {
   en: {
-    'Start Here': [
+    Welcome: [
       { text: 'Introduction', link: 'en/introduction' },
       { text: 'Getting Started', link: 'en/getting-started' },
     ],
-    Referance: [
+    Reference: [
       { text: 'Working in the Monorepo', link: 'en/working-in-monorepo' },
     ],
     Legal: [
+      { text: 'Legal', link: 'legal' },
       { text: 'Code of Conduct', link: 'legal/code-of-conduct' },
       { text: 'Cookie Policy', link: 'legal/cookie-policy' },
       { text: 'Privacy Policy', link: 'legal/privacy-policy' },

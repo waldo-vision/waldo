@@ -1,15 +1,15 @@
 ---
 title: Introduction
-description: Waldo docs intro
+description: Waldo Vision docs intro
 layout: ../../layouts/MainLayout.astro
 ---
 
-**Welcome to Waldo!**
+**Welcome to Waldo Vision!**
 
-This is the documentation for all of the Waldo project. If your unaware of what Waldo is, please see our [main site](https://waldo.vision).
+Welcome to the Waldo Vision documentation site! Here, you will find everything you need to know about using and contributing to the Waldo Vision project. If your unaware of what Waldo Vision is, please see our [main site](https://waldo.vision).
 
-## Getting Started
+To get started with Waldo Vision, check out the [Getting Started](/en/getting-started) page. This page will walk you through the steps of setting up and using Waldo Vision in your own project.
 
-To start contributing to Waldo, check our [getting started](/en/getting-started) page. It provides all the documentation on how to setup Waldo so you can start contributing.
+If you run into any issues while using Waldo Vision, or if you have any questions or suggestions, please don't hesitate to open an issue on our [Github Issues](https://github.com/waldo-vision/waldo/issues/new/choose) tab. Our community is always happy to help out and discuss the project.
 
-Found a missing feature that you can't live without? Please suggest it on our [Github Issues](https://github.com/waldo-vision/waldo/issues/new/choose), and even consider adding it yourself! Waldo is an open source project, and contributions from developers like yourself are how we grow!
+Thank you for using Waldo Vision, and we hope you find this useful!

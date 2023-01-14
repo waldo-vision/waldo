@@ -45,11 +45,12 @@ export default function Home() {
     <>
       <Head>
         <title>
-          WALDO | Open-source visual cheat detection, powered by A.I
+          Waldo Vision | Open-source visual cheat detection, powered by deep
+          learning
         </title>
         <meta
           name="description"
-          content="WALDO is an Open-source visual cheat detection, powered by A.I"
+          content="Waldo Vision is an open-source visual cheat detection project, powered by deep learning"
         />
       </Head>
 
@@ -60,7 +61,7 @@ export default function Home() {
               position: 'fixed',
               zIndex: -10,
               borderRadius: '16px',
-              left: `${y + 1160.18}px`,
+              right: `${10.18 - y}px`,
               top: `${y / 2 + 88}px`,
               boxShadow: '0px 0px 32px 5px rgba(0, 0, 0, 0.25)',
               transform: 'rotate(25deg)',
@@ -107,12 +108,12 @@ export default function Home() {
               gap={3}
             >
               <Heading fontSize={'57px'} py={2} textAlign={'center'}>
-                WALDO
+                Waldo Vision
               </Heading>
               <Text fontSize={'27px'} textAlign={'center'}>
                 <b>Open-source </b>
                 <span>visual cheat detection, </span>
-                <b>powered by A.I</b>
+                <b>powered by deep learning</b>
               </Text>
 
               <Text fontSize={'l'} fontWeight={'thin'}>
@@ -174,17 +175,17 @@ export default function Home() {
                 </Text>
                 <br />
                 <Text as={'span'} color={'purple.400'}>
-                  WALDO?
+                  Waldo Vision?
                 </Text>
               </Heading>
               <Flex direction={'column'} gap={3}>
                 <Text>
-                  WALDO Vision is a machine learning system that will analyze
+                  Waldo Vision is a machine learning system that will analyze
                   FPS gameplay clips, and return a probability that the player
                   is using aimbot cheats.
                 </Text>
                 <Text>
-                  <b>How?</b> WALDO Vision will train on hundreds of hours of
+                  <b>How?</b> Waldo Vision will train on hundreds of hours of
                   gameplay to learn what characteristics distinguish human aim
                   from computer aim
                 </Text>
@@ -221,27 +222,27 @@ export default function Home() {
               fontWeight={600}
               fontSize={{ base: '3xl', sm: '4xl', lg: '5xl' }}
             >
-              <Text>WALDO needs your help!</Text>
+              <Text>Waldo Vision needs your help!</Text>
             </Heading>
             <Text maxW={'4xl'}>
-              The WALDO system isn&apos;t ready for showtime yet. In order to
-              get good results, our machine learning model needs to train on
-              hundreds of hours of gameplay videos.{' '}
-              <b>This is where you come in. </b> Help train WALDO by submitting
-              links to your gameplay videos, or by reviewing clips that others
-              have submitted for relevance.
+              The Waldo Vision system isn&apos;t ready for showtime yet. In
+              order to get good results, our machine learning model needs to
+              train on hundreds of hours of gameplay videos.{' '}
+              <b>This is where you come in. </b> Help train Waldo Vision by
+              submitting links to your gameplay videos, or by reviewing clips
+              that others have submitted for relevance.
               <br />
               <br />
               <br />
             </Text>
             <Heading fontWeight={600} fontSize={'lg'}>
-              Want to help build WALDO?
+              Want to help build Waldo Vision?
             </Heading>
             <Text maxW={'4xl'}>
               We need volunteers with a wide variety of skill-sets: Machine
               Learning / Computer Vision, DevOps & Infrastructure, Web Design,
               Programming, Testing, Data Collection, and more. Join our to start
-              helping us make WALDO Vision a reality.
+              helping us make Waldo Vision a reality.
             </Text>
             <Flex direction={{ base: 'column', md: 'row' }} gap={'4'} my={5}>
               <Link href={'/submissions/upload'}>
@@ -358,7 +359,11 @@ const Feature = ({ title, text, image }: FeatureProps) => {
 
 const Features = () => {
   return (
-    <Container maxW={'7xl'} textAlign={'center'}>
+    <Container
+      maxW={'7xl'}
+      textAlign={'center'}
+      height={{ base: 1300, md: 600 }}
+    >
       <Grid
         height={'100%'}
         templateRows={{ sm: 'repeat(6, 1fr)', md: 'repeat(5, 1fr)' }}
@@ -382,10 +387,10 @@ const Features = () => {
             >
               <Flex direction={'column'}>
                 <Text fontSize={'2rem'} fontWeight={'bold'}>
-                  WALDO
+                  Waldo Vision
                 </Text>
                 <Text fontWeight={450}>
-                  Bring back the fun in your games with WALDO.
+                  Bring back the fun in your games with Waldo Vision.
                 </Text>
               </Flex>
               <Link href={discord}>
@@ -409,7 +414,7 @@ const Features = () => {
             title={'Open Source'}
             text={
               <Text>
-                View WALDO source code on our{' '}
+                View Waldo Vision source code on our{' '}
                 <Link href={githubrepo}>
                   <Text as={'span'} fontWeight={'bold'}>
                     github
@@ -438,7 +443,7 @@ const Features = () => {
                     community
                   </Text>
                 </Link>{' '}
-                of developers and contributors making WALDO Vision a reality.
+                of developers and contributors making Waldo Vision a reality.
               </Text>
             }
           />
@@ -455,7 +460,7 @@ const Features = () => {
             title={'Free'}
             text={
               <Text>
-                WALDO Vision is community supported, and will be a free service
+                Waldo Vision is community supported, and will be a free service
                 at launch
               </Text>
             }
@@ -474,7 +479,7 @@ const Features = () => {
             text={
               <Text>
                 We&apos;re starting small, and will only support a few games at
-                launch. As we develop WALDO Vision, we hope to add support for a
+                launch. As we develop Waldo Vision, we hope to add support for a
                 lot more games.
               </Text>
             }

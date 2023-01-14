@@ -115,7 +115,7 @@ const WaldoSite = () => {
 
               <Flex p={4} h={'inherit'} w={'inherit'} direction={'column'}>
                 <Text fontWeight={'semibold'} fontSize={'3xl'}>
-                  WALDO
+                  Waldo Vision
                 </Text>
                 <Flex mt={2} direction={'row'} alignItems={'center'} gap={2}>
                   <Text fontWeight={'normal'} fontSize={'lg'}>

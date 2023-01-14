@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: Getting started with contributing to Waldo
+description: Getting started with contributing to Waldo Vision
 layout: ../../layouts/MainLayout.astro
 ---
 
@@ -14,7 +14,7 @@ Before you can started hacking away on waldo, you need to have certain tools to 
 
 ## Setting Up Services
 
-Waldo is dependent on a number of services, and depending on your needs, you can either self host, or use a cloud option for all of them. We recommend you self host for ease of development, but the cloud options do exist if you wish to use them.
+Waldo Vision is dependent on a number of services, and depending on your needs, you can either self host, or use a cloud option for all of them. We recommend you self host for ease of development, but the cloud options do exist if you wish to use them.
 
 ### Cloud Options
 
@@ -74,7 +74,7 @@ To start the services locally, simply run `docker compose up -d`. Or shut them o
 1. You may also want to additionally set the `Cloudflare Turnstile` keys for submissions to work, or the `Youtube API Key` for the review site to work properly.
 
    - Currently there is no guide for these items, but there isn't much to setting them up. The only item of note is that the YT API Key needs to be `version 3` of the api.
-   - If you do not wish to setup a cloudflare site to be able to generate turnstile keys, you can use the demo site and secret keys which you can find here:   https://developers.cloudflare.com/turnstile/frequently-asked-questions/#are-there-sitekeys-and-secret-keys-that-can-be-used-for-testing.
+   - If you do not wish to setup a cloudflare site to be able to generate turnstile keys, you can use the demo site and secret keys which you can find here: https://developers.cloudflare.com/turnstile/frequently-asked-questions/#are-there-sitekeys-and-secret-keys-that-can-be-used-for-testing.
 
 1. The finale `.env` file _might_ look a little something like this after everything is filled in:
 
