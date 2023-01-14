@@ -13,12 +13,13 @@ services:
     env_file:
       - ./apps/web/.env
 
-  docs:
-    container_name: docs
+  migrate:
+    container_name: migrate
     build:
       # set to root of monorepo
       context: .
       # use dockerfile for web
-      dockerfile: ./apps/docs/Dockerfile
-    ports:
-      - '3000:80'
+      dockerfile: ./packages/database/Dockerfile
+    env_file:
+      # just
+      - ./apps/web/.env
