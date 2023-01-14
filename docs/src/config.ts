@@ -45,11 +45,11 @@ export type Sidebar = Record<
 >;
 export const SIDEBAR: Sidebar = {
   en: {
-    'Start Here': [
+    Welcome: [
       { text: 'Introduction', link: 'en/introduction' },
       { text: 'Getting Started', link: 'en/getting-started' },
     ],
-    Referance: [
+    Reference: [
       { text: 'Working in the Monorepo', link: 'en/working-in-monorepo' },
     ],
     Legal: [
