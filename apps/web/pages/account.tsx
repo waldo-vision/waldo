@@ -162,7 +162,7 @@ export default function Account() {
         <title>Waldo Vision | Account</title>
         <meta
           name="description"
-          content="Waldo Vision is an Open-source visual cheat detection, powered by A.I"
+          content="Waldo Vision is an open-source visual cheat detection project, powered by deep learning"
         />
       </Head>
       <Box minHeight={'100vh'} mt={{ base: '60px' }} mb={20}>

@@ -128,7 +128,7 @@ export default function Review() {
         <title>Submissions | Review</title>
         <meta
           name="description"
-          content="Waldo is an Open-source visual cheat detection, powered by A.I"
+          content="Waldo Vision is an open-source visual cheat detection project, powered by deep learning"
         />
       </Head>
       <div>

@@ -45,11 +45,12 @@ export default function Home() {
     <>
       <Head>
         <title>
-          Waldo Vision | Open-source visual cheat detection, powered by A.I
+          Waldo Vision | Open-source visual cheat detection, powered by deep
+          learning
         </title>
         <meta
           name="description"
-          content="Waldo Vision is an Open-source visual cheat detection, powered by A.I"
+          content="Waldo Vision is an open-source visual cheat detection project, powered by deep learning"
         />
       </Head>
 
@@ -112,7 +113,7 @@ export default function Home() {
               <Text fontSize={'27px'} textAlign={'center'}>
                 <b>Open-source </b>
                 <span>visual cheat detection, </span>
-                <b>powered by A.I</b>
+                <b>powered by deep learning</b>
               </Text>
 
               <Text fontSize={'l'} fontWeight={'thin'}>
@@ -179,14 +180,14 @@ export default function Home() {
               </Heading>
               <Flex direction={'column'} gap={3}>
                 <Text>
-                  Waldo Vision Vision is a machine learning system that will
-                  analyze FPS gameplay clips, and return a probability that the
-                  player is using aimbot cheats.
+                  Waldo Vision is a machine learning system that will analyze
+                  FPS gameplay clips, and return a probability that the player
+                  is using aimbot cheats.
                 </Text>
                 <Text>
-                  <b>How?</b> Waldo Vision Vision will train on hundreds of
-                  hours of gameplay to learn what characteristics distinguish
-                  human aim from computer aim
+                  <b>How?</b> Waldo Vision will train on hundreds of hours of
+                  gameplay to learn what characteristics distinguish human aim
+                  from computer aim
                 </Text>
               </Flex>
             </Stack>
@@ -241,7 +242,7 @@ export default function Home() {
               We need volunteers with a wide variety of skill-sets: Machine
               Learning / Computer Vision, DevOps & Infrastructure, Web Design,
               Programming, Testing, Data Collection, and more. Join our to start
-              helping us make Waldo Vision Vision a reality.
+              helping us make Waldo Vision a reality.
             </Text>
             <Flex direction={{ base: 'column', md: 'row' }} gap={'4'} my={5}>
               <Link href={'/submissions/upload'}>
@@ -438,8 +439,7 @@ const Features = () => {
                     community
                   </Text>
                 </Link>{' '}
-                of developers and contributors making Waldo Vision Vision a
-                reality.
+                of developers and contributors making Waldo Vision a reality.
               </Text>
             }
           />
@@ -456,8 +456,8 @@ const Features = () => {
             title={'Free'}
             text={
               <Text>
-                Waldo Vision Vision is community supported, and will be a free
-                service at launch
+                Waldo Vision is community supported, and will be a free service
+                at launch
               </Text>
             }
           />
@@ -475,8 +475,8 @@ const Features = () => {
             text={
               <Text>
                 We&apos;re starting small, and will only support a few games at
-                launch. As we develop Waldo Vision Vision, we hope to add
-                support for a lot more games.
+                launch. As we develop Waldo Vision, we hope to add support for a
+                lot more games.
               </Text>
             }
           />

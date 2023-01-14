@@ -26,7 +26,7 @@ export default function Index() {
         <title>Waldo Vision | Submissions </title>
         <meta
           name="description"
-          content="Submit your gameplay to the Waldo Vision AI. Check out our discord for more information "
+          content="Submit your gameplay to help train Waldo Vision. Check out our discord for more information"
         />
       </Head>
       <Container
