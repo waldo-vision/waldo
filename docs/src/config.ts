@@ -53,6 +53,7 @@ export const SIDEBAR: Sidebar = {
       { text: 'Working in the Monorepo', link: 'en/working-in-monorepo' },
     ],
     Legal: [
+      { text: 'Legal', link: 'legal' },
       { text: 'Code of Conduct', link: 'legal/code-of-conduct' },
       { text: 'Cookie Policy', link: 'legal/cookie-policy' },
       { text: 'Privacy Policy', link: 'legal/privacy-policy' },
