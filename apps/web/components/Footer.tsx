@@ -81,7 +81,7 @@ export default function Footer() {
           <Logo />
         </Flex>
         <Text pt={6} fontSize={'sm'} textAlign={'center'}>
-          @ 2023 Waldo Intelligence LLC
+          &copy; 2023 Waldo Intelligence LLC
         </Text>
       </Box>
     </Box>
