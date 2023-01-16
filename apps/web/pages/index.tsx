@@ -187,7 +187,7 @@ export default function Home() {
                 <Text>
                   <b>How?</b> Waldo Vision will train on hundreds of hours of
                   gameplay to learn what characteristics distinguish human aim
-                  from computer aim
+                  from computer aim.
                 </Text>
               </Flex>
             </Stack>
@@ -461,7 +461,7 @@ const Features = () => {
             text={
               <Text>
                 Waldo Vision is community supported, and will be a free service
-                at launch
+                at launch.
               </Text>
             }
           />
