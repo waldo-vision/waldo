@@ -1,5 +1,6 @@
 name: Pull Request
-on: [pull_request]
+# https://github.com/actions/labeler/issues/399#issuecomment-1357785473
+on: [pull_request_target]
 jobs:
   Secret-Scan:
     runs-on: ubuntu-latest
