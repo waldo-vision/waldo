@@ -320,7 +320,11 @@ export default function Upload() {
                           rightIcon={<ChevronDownIcon width={16} height={16} />}
                           borderRadius={15}
                         >
-                          Select a Game:
+                          Select a Game:{' '}
+                          {
+                            games.find(game => game.shortName == selectedGame)
+                              ?.name
+                          }
                         </MenuButton>
                         <MenuList>
                           <MenuOptionGroup
