@@ -27,7 +27,6 @@ import { BsGithub, BsFacebook } from 'react-icons/bs';
 import Head from 'next/head';
 type Provider = {
   provider: string;
-  docs: string;
   hex?: string;
   selected?: boolean;
 };
@@ -90,30 +89,25 @@ export default function Login() {
     const providers = [
       {
         provider: 'Discord',
-        docs: 'https://discord.com/developers/docs/topics/oauth2',
         hex: '#5865F2',
         selected: false,
       },
       {
         provider: 'Google',
-        docs: 'https://developers.google.com/identity/protocols/oauth2',
         selected: false,
       },
       {
         provider: 'Github',
-        docs: 'https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps',
         hex: '#000000',
         selected: false,
       },
       {
         provider: 'BattleNET',
-        docs: 'https://develop.battle.net/documentation/guides/using-oauth',
         hex: '#009AE4',
         selected: false,
       },
       {
         provider: 'Twitch',
-        docs: 'https://dev.twitch.tv/docs/authentication/getting-tokens-oauth',
         hex: '#9146FF',
         selected: false,
       },
@@ -134,7 +128,7 @@ export default function Login() {
       <Box maxWidth={'100%'} maxHeight={'100vh'} textAlign={'left'}>
         <Flex direction={'row'} height={'100vh'} width={'100v'}>
           <Box
-            display={{ base: 'nonce', md: 'flex' }}
+            display={{ base: 'none', lg: 'flex' }}
             w={{ base: 0, md: 0, lg: '50%' }}
             height={'full'}
           >
@@ -205,7 +199,7 @@ export default function Login() {
             </Box>
             <Divider mt={12} />
             {authProviders &&
-              authProviders.map(({ provider, docs, hex, selected }, index) => (
+              authProviders.map(({ provider, hex, selected }, index) => (
                 <Box
                   w={'full'}
                   mt={12}
@@ -261,34 +255,6 @@ export default function Login() {
                           </Flex>
                         </Box>
                       </Center>
-                      <Flex right={'0'} ml={'auto'}>
-                        <Center>
-                          <Button
-                            variant="outline"
-                            visibility={{
-                              base: 'hidden',
-                              sm: 'hidden',
-                              md: 'hidden',
-                              lg: 'visible',
-                            }}
-                            mr={6}
-                            _hover={{
-                              backgroundColor: 'gray.700',
-                              color: 'white',
-                            }}
-                          >
-                            <Link href={docs}>
-                              <Text
-                                color={selected ? 'white' : ''}
-                                fontSize={{ base: 12, sm: 12, md: 12, lg: 14 }}
-                                textOverflow={'ellipsis'}
-                              >
-                                Learn More
-                              </Text>
-                            </Link>
-                          </Button>
-                        </Center>
-                      </Flex>
                     </Flex>
                   </Box>
                 </Box>
