@@ -84,6 +84,7 @@ export default function Home() {
               top: `${380 - y / 2}px`,
               boxShadow: '0px 0px 32px 5px rgba(0, 0, 0, 0.25)',
               transform: 'rotate(25deg)',
+              transition: 'transform 100ms ease-in-out',
             }}
             src={InScansImage}
             alt={'Dashboard in scans page'}
@@ -94,12 +95,7 @@ export default function Home() {
             placeholder={'blur'}
           />
         </Container>
-        <Container
-          maxW={'7xl'}
-          minH={'100vh'}
-          pt={{ base: 0, md: '120px', lg: 0 }}
-          pb={10}
-        >
+        <Container maxW={'7xl'} minH={'100vh'} pb={10}>
           <Center minH={'100vh'}>
             <Flex
               direction={'column'}
@@ -187,7 +183,7 @@ export default function Home() {
                 <Text>
                   <b>How?</b> Waldo Vision will train on hundreds of hours of
                   gameplay to learn what characteristics distinguish human aim
-                  from computer aim
+                  from computer aim.
                 </Text>
               </Flex>
             </Stack>
@@ -378,7 +374,7 @@ const Features = () => {
         <GridItem
           rowSpan={{ sm: 2, md: 5 }}
           colSpan={{ sm: 1, md: 3 }}
-          bg={'#8552D910'}
+          bg={'#eeedf8'}
           overflow={'hidden'}
           p={3}
           textAlign={'center'}
@@ -466,7 +462,7 @@ const Features = () => {
             text={
               <Text>
                 Waldo Vision is community supported, and will be a free service
-                at launch
+                at launch.
               </Text>
             }
           />
