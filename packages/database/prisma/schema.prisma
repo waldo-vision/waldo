@@ -38,7 +38,17 @@ model Gameplay {
   gameplayType  GameplayType    @default(CSG)
   isAnalyzed   Boolean        @default(false)
   clips        Clip[]
+  cheats       CheatType[]
 }
+
+enum CheatType {
+  NOCHEAT
+  AIMBOT
+  TRIGGERBOT
+  ESP
+  SPINBOT
+}
+
 
 model GameplayVotes {
   id         String      @id @default(cuid())
@@ -94,6 +104,7 @@ model Session {
 
 enum Roles {
   USER
+  TRUSTED
   MOD
   ADMIN
 }

@@ -40,7 +40,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { prisma } from '@server/db/client';
 import { legal } from '@utils/links';
-
+type Cheat = 'NOCHEAT' | 'AIMBOT' | 'TRIGGERBOT' | 'ESP' | 'SPINBOT';
 export default function Upload() {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -48,6 +48,7 @@ export default function Upload() {
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [selectedGame, setSelectedGame] = useState<string>('csg');
+  const [cheats, setCheats] = useState<Cheat[]>(['NOCHEAT']);
   const [legalConfirmations, setLegalConfirmations] = useState<number>(0);
 
   const [currentUrl, setCurrentUrl] = useState<string>('');
@@ -87,6 +88,13 @@ export default function Upload() {
     { name: 'VALORANT', shortName: 'val' },
     { name: 'Team Fortress 2', shortName: 'tf2' },
     { name: 'Apex Legends', shortName: 'ape' },
+  ];
+  const cheatsArray = [
+    { name: 'NOCHEAT' },
+    { name: 'AIMBOT' },
+    { name: 'TRIGGERBOT' },
+    { name: 'ESP' },
+    { name: 'SPINBOT' },
   ];
 
   const options = [
@@ -171,6 +179,7 @@ export default function Upload() {
         | 'APE'
         | 'R6S',
       youtubeUrl: currentUrl as string,
+      cheats: cheats as Cheat[],
     };
     try {
       await createGameplay.mutateAsync(input);
@@ -313,7 +322,7 @@ export default function Upload() {
                         borderRadius={15}
                       />
                     </Box>
-                    <Box mt={4}>
+                    <Flex mt={4} experimental_spaceX={4}>
                       <Menu>
                         <MenuButton
                           as={Button}
@@ -341,7 +350,31 @@ export default function Upload() {
                           </MenuOptionGroup>
                         </MenuList>
                       </Menu>
-                    </Box>
+                      <Menu>
+                        <MenuButton
+                          as={Button}
+                          rightIcon={<ChevronDownIcon width={16} height={16} />}
+                          borderRadius={15}
+                        >
+                          Select a Cheat:
+                        </MenuButton>
+                        <MenuList>
+                          <MenuOptionGroup
+                            defaultValue="csg"
+                            title="Games"
+                            type="radio"
+                            onChange={cheat => setCheats([cheat as Cheat])}
+                          >
+                            {cheatsArray &&
+                              cheatsArray.map((cheat, index) => (
+                                <MenuItemOption key={index} value={cheat.name}>
+                                  {cheat.name}
+                                </MenuItemOption>
+                              ))}
+                          </MenuOptionGroup>
+                        </MenuList>
+                      </Menu>
+                    </Flex>
                     <Box mt={6}>
                       {options.map((option, index) => (
                         <Box key={index}>

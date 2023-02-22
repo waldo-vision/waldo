@@ -3,6 +3,7 @@ import ytdl from 'ytdl-core';
 import {
   GameplaySchema,
   GameplayTypes,
+  CheatTypes,
   GameplaysDashSchema,
   ReviewItemsGameplaySchema,
 } from '@utils/zod/gameplay';
@@ -66,9 +67,11 @@ export const gameplayRouter = router({
               user: true,
             },
           });
-          gameplays.forEach((gameplay, index) => {
-            Object.assign(gameplays[index], { gameplayCount: gameplayCount });
-          });
+          gameplays.forEach(
+            (gameplay: typeof GameplaySchema, index: number) => {
+              Object.assign(gameplays[index], { gameplayCount: gameplayCount });
+            },
+          );
           return gameplays;
         } catch (error) {
           throw new TRPCError({
@@ -93,9 +96,11 @@ export const gameplayRouter = router({
             take: takeValue,
             skip: skipValue,
           });
-          gameplays.forEach((gameplay, index) => {
-            Object.assign(gameplays[index], { gameplayCount: gameplayCount });
-          });
+          gameplays.forEach(
+            (gameplay: typeof GameplaySchema, index: number) => {
+              Object.assign(gameplays[index], { gameplayCount: gameplayCount });
+            },
+          );
           console.log(gameplays);
           return gameplays;
         } catch (error) {
@@ -113,6 +118,7 @@ export const gameplayRouter = router({
       z.object({
         youtubeUrl: z.string().url(),
         gameplayType: GameplayTypes,
+        cheats: z.array(CheatTypes),
       }),
     )
     .output(GameplaySchema)
@@ -136,6 +142,7 @@ export const gameplayRouter = router({
             userId: ctx.session.user.id,
             youtubeUrl: input.youtubeUrl,
             gameplayType: input.gameplayType,
+            cheats: input.cheats,
           },
         });
 

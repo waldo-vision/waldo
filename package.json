@@ -27,5 +27,9 @@
   "engines": {
     "node": "^18.12.1"
   },
-  "packageManager": "yarn@3.3.0"
+  "packageManager": "yarn@3.3.0",
+  "dependencies": {
+    "@prisma/client": "latest",
+    "prisma": "latest"
+  }
 }
