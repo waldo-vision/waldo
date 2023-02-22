@@ -237,8 +237,13 @@ export default function Home() {
             <Text maxW={'4xl'}>
               We need volunteers with a wide variety of skill-sets: Machine
               Learning / Computer Vision, DevOps & Infrastructure, Web Design,
-              Programming, Testing, Data Collection, and more. Join our to start
-              helping us make Waldo Vision a reality.
+              Programming, Testing, Data Collection, and more. Join our{' '}
+              <Link href={discord}>
+                <Text as={'span'} fontWeight={'bold'}>
+                  discord
+                </Text>
+              </Link>{' '}
+              to start helping us make Waldo Vision a reality.
             </Text>
             <Flex direction={{ base: 'column', md: 'row' }} gap={'4'} my={5}>
               <Link href={'/submissions/upload'}>
