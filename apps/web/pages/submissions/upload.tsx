@@ -352,7 +352,7 @@ export default function Upload() {
                           </MenuOptionGroup>
                         </MenuList>
                       </Menu>
-                      {userSession?.user?.role === 'TRUSTED' && (
+                      {userSession?.user?.role !== 'USER' && (
                         <Menu>
                           <MenuButton
                             as={Button}
