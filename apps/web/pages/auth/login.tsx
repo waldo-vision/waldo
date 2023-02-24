@@ -14,7 +14,9 @@ import {
   ModalFooter,
   Divider,
   Heading,
+  Checkbox,
 } from '@chakra-ui/react';
+import { legal } from '@utils/links';
 import { Session } from 'next-auth';
 import { signIn, getSession, signOut } from 'next-auth/react';
 import WaldoLogo from '../../public/android-chrome-256x256.png';
@@ -36,6 +38,7 @@ export default function Login() {
   const [lastSelected, setLastSelected] = useState<number | null>(null);
   const [currentProvider, setCurrentProvider] = useState<string>();
   const [authProviders, setAuthProviders] = useState<Array<Provider>>();
+  const [isLegalChecked, setIsLegalChecked] = useState<boolean>(false);
   const toast = useToast();
   const createToast = () => {
     toast({
@@ -259,19 +262,40 @@ export default function Login() {
                   </Box>
                 </Box>
               ))}
-            <Flex justifyContent={'end'}>
-              <Button
-                mr={{ base: 5 }}
-                mb={12}
-                mt={8}
-                bgColor="black"
-                _hover={{ backgroundColor: 'gray.800' }}
-                color="white"
-                onClick={() => handleLoginLogic()}
-                disabled={currentProvider ? false : true}
-              >
-                Connect
-              </Button>
+            <Flex mt={8} alignItems={'center'}>
+              <Text>
+                <Checkbox
+                  fontWeight={'bold'}
+                  ml={6}
+                  onChange={() => setIsLegalChecked(!isLegalChecked)}
+                >
+                  I agree &nbsp;to the&nbsp;
+                </Checkbox>
+                <Link href={legal.TOS}>
+                  <Text as={'span'} fontWeight={'bold'}>
+                    Terms of Service
+                  </Text>
+                </Link>
+                &nbsp;and &nbsp;
+                <Link href={legal.privacy}>
+                  <Text as={'span'} fontWeight={'bold'}>
+                    Privacy Policy
+                  </Text>
+                </Link>
+                .
+              </Text>
+              <Flex alignItems={'end'} justifyContent={'end'} ml={'auto'}>
+                <Button
+                  mr={{ base: 5 }}
+                  bgColor="black"
+                  _hover={{ backgroundColor: 'gray.800' }}
+                  color="white"
+                  onClick={() => handleLoginLogic()}
+                  disabled={currentProvider && isLegalChecked ? false : true}
+                >
+                  Connect
+                </Button>
+              </Flex>
             </Flex>
           </Box>
           <Center h={'100vh'}>
