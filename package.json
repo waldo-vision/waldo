@@ -29,7 +29,7 @@
   },
   "packageManager": "yarn@3.3.0",
   "dependencies": {
-    "@prisma/client": "latest",
-    "prisma": "latest"
+    "@prisma/client": "4.10.1",
+    "prisma": "4.10.1"
   }
 }
