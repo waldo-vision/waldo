@@ -134,7 +134,7 @@ export default function Upload() {
 
     await delay();
 
-    setSelectedGame('csg');
+    setSelectedGame('');
     setCurrentUrl('');
     setRequestDone(false);
     createToast(
@@ -150,7 +150,7 @@ export default function Upload() {
       return;
     }
     if (requestDone) {
-      setSelectedGame('csg');
+      setSelectedGame('');
       setCurrentUrl('');
       setRequestDone(false);
       setError(false);
@@ -329,11 +329,13 @@ export default function Upload() {
                           rightIcon={<ChevronDownIcon width={16} height={16} />}
                           borderRadius={15}
                         >
-                          Select a Game:
+                          {!selectedGame
+                            ? 'Select a Game:'
+                            : games.find(game => game.shortName == selectedGame)
+                                ?.name}
                         </MenuButton>
                         <MenuList>
                           <MenuOptionGroup
-                            defaultValue="csg"
                             title="Games"
                             type="radio"
                             onChange={game => setSelectedGame(game.toString())}
