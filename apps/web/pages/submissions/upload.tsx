@@ -350,30 +350,37 @@ export default function Upload() {
                           </MenuOptionGroup>
                         </MenuList>
                       </Menu>
-                      <Menu>
-                        <MenuButton
-                          as={Button}
-                          rightIcon={<ChevronDownIcon width={16} height={16} />}
-                          borderRadius={15}
-                        >
-                          Select a Cheat:
-                        </MenuButton>
-                        <MenuList>
-                          <MenuOptionGroup
-                            defaultValue="csg"
-                            title="Games"
-                            type="radio"
-                            onChange={cheat => setCheats([cheat as Cheat])}
+                      {userSession?.user?.role === 'TRUSTED' && (
+                        <Menu>
+                          <MenuButton
+                            as={Button}
+                            rightIcon={
+                              <ChevronDownIcon width={16} height={16} />
+                            }
+                            borderRadius={15}
                           >
-                            {cheatsArray &&
-                              cheatsArray.map((cheat, index) => (
-                                <MenuItemOption key={index} value={cheat.name}>
-                                  {cheat.name}
-                                </MenuItemOption>
-                              ))}
-                          </MenuOptionGroup>
-                        </MenuList>
-                      </Menu>
+                            Select a Cheat:
+                          </MenuButton>
+                          <MenuList>
+                            <MenuOptionGroup
+                              defaultValue="csg"
+                              title="Games"
+                              type="radio"
+                              onChange={cheat => setCheats([cheat as Cheat])}
+                            >
+                              {cheatsArray &&
+                                cheatsArray.map((cheat, index) => (
+                                  <MenuItemOption
+                                    key={index}
+                                    value={cheat.name}
+                                  >
+                                    {cheat.name}
+                                  </MenuItemOption>
+                                ))}
+                            </MenuOptionGroup>
+                          </MenuList>
+                        </Menu>
+                      )}
                     </Flex>
                     <Box mt={6}>
                       {options.map((option, index) => (

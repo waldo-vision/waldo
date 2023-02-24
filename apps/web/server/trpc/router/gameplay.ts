@@ -67,11 +67,9 @@ export const gameplayRouter = router({
               user: true,
             },
           });
-          gameplays.forEach(
-            (gameplay: typeof GameplaySchema, index: number) => {
-              Object.assign(gameplays[index], { gameplayCount: gameplayCount });
-            },
-          );
+          gameplays.forEach((gameplay, index: number) => {
+            Object.assign(gameplays[index], { gameplayCount: gameplayCount });
+          });
           return gameplays;
         } catch (error) {
           throw new TRPCError({
@@ -96,11 +94,9 @@ export const gameplayRouter = router({
             take: takeValue,
             skip: skipValue,
           });
-          gameplays.forEach(
-            (gameplay: typeof GameplaySchema, index: number) => {
-              Object.assign(gameplays[index], { gameplayCount: gameplayCount });
-            },
-          );
+          gameplays.forEach((gameplay, index: number) => {
+            Object.assign(gameplays[index], { gameplayCount: gameplayCount });
+          });
           console.log(gameplays);
           return gameplays;
         } catch (error) {
