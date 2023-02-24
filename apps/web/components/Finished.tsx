@@ -1,7 +1,3 @@
-import React from 'react';
-
-const Finished = () => {
+export default function Finished() {
   return <div>No more videos to show</div>;
-};
-
-export default Finished;
+}

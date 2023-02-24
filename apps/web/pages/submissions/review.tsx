@@ -1,12 +1,4 @@
-import {
-  Box,
-  Center,
-  Text,
-  Flex,
-  Button,
-  Image,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Center, Text, Flex, Button, useToast } from '@chakra-ui/react';
 import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import Loading from '@components/Loading';
@@ -17,6 +9,7 @@ import { prisma } from '@server/db/client';
 import TurnstileWidget from '@components/TurnstileWidget';
 import Finished from '@components/Finished';
 import { getSession } from 'next-auth/react';
+import Image from 'next/image';
 interface ReviewItem {
   id: string;
   user: {
@@ -131,125 +124,138 @@ export default function Review() {
           content="Waldo Vision is an open-source visual cheat detection project, powered by deep learning"
         />
       </Head>
-      <div>
-        <Center h={'100vh'}>
-          {loading || !reviewItemData ? (
-            <Loading color={'purple.500'} />
-          ) : (
-            <Flex direction={'column'}>
-              {finished || error ? (
-                <Finished />
-              ) : (
-                <>
-                  <Center mb={4}>
-                    <TurnstileWidget
-                      valid={result => setIsRequestValid(result)}
-                    />
-                  </Center>
-                  <Box bgColor={'white'} p={6} borderRadius={12}>
-                    <Flex direction={'row'}>
-                      {/* User Icon */}
-                      <Box>
-                        <Image
-                          src={reviewItem?.user?.image as string}
-                          alt={'User Icon'}
-                          w={54}
-                          h={54}
-                          borderRadius={28}
-                        />
-                      </Box>
-                      {/* Top titles */}
-                      {reviewItem && (
-                        <Flex
-                          direction={'column'}
-                          justifyContent={'center'}
-                          fontSize={18}
-                          ml={2}
-                        >
-                          <Text>
-                            Submitted by&nbsp;
-                            <Text as={'span'} fontWeight={'bold'}>
-                              {reviewItem?.user?.name}
-                            </Text>
-                          </Text>
-
-                          <Text fontWeight={'normal'}>
-                            Does this clip match gameplay from{' '}
-                            <Text fontWeight={'bold'} as={'span'}>
-                              {reviewItem?.gameplayType === 'CSG'
-                                ? 'Counter Strike: Global Offensive'
-                                : reviewItem?.gameplayType === 'VAL'
-                                ? 'Valorant'
-                                : reviewItem?.gameplayType === 'APE'
-                                ? 'Apex Legends'
-                                : reviewItem?.gameplayType === 'TF2'
-                                ? 'Team Fortress 2'
-                                : reviewItem?.gameplayType === 'COD'
-                                ? 'Call of Duty'
-                                : 'a relevant First Person Shooter game?'}
-                            </Text>
-                          </Text>
-                        </Flex>
-                      )}
-                    </Flex>
-                    {/* Iframe */}
-                    <Box mt={6}>
-                      {/* we might want to find a alternative to iframe as it doesn't inherit styles from parent w chakra -ceri */}
-                      {reviewItem && (
-                        <iframe
-                          src={getYtEmbedLink(reviewItem.youtubeUrl)}
-                          style={{
-                            borderRadius: 12,
-                            width: '100%',
-                            height: '42vh',
-                          }}
-                        />
-                      )}
+      <Center h={'100vh'} mt={{ base: 5 }}>
+        {loading || !reviewItemData ? (
+          <Loading color={'purple.500'} />
+        ) : (
+          <Flex direction={'column'}>
+            {finished || error ? (
+              <Finished />
+            ) : (
+              <>
+                <Center mb={4} display={{ base: 'none', md: 'flex' }}>
+                  <TurnstileWidget
+                    valid={result => setIsRequestValid(result)}
+                  />
+                </Center>
+                <Box bgColor={'white'} p={6} borderRadius={12}>
+                  <Flex direction={'row'}>
+                    {/* User Icon */}
+                    <Box>
+                      <Image
+                        src={reviewItem?.user?.image as string}
+                        alt={'User Icon'}
+                        width={54}
+                        height={54}
+                        style={{ borderRadius: '100%' }}
+                      />
                     </Box>
-                    {/* Footer */}
-                    <Flex mt={4} alignItems={'center'}>
-                      <Text>
-                        By answering you accept the{' '}
-                        <Text
-                          as={'span'}
-                          fontWeight={'semibold'}
-                          textDecoration={'underline'}
-                        >
-                          Terms of Service
+                    {/* Top titles */}
+                    {reviewItem && (
+                      <Flex
+                        direction={'column'}
+                        justifyContent={'center'}
+                        fontSize={18}
+                        ml={2}
+                      >
+                        <Text>
+                          Submitted by&nbsp;
+                          <Text as={'span'} fontWeight={'bold'}>
+                            {reviewItem?.user?.name}
+                          </Text>
                         </Text>
-                      </Text>
-                      {/* Button */}
-                      <Box ml={'auto'} right={0}>
-                        <Button
-                          color={'white'}
-                          bgColor={'#373737'}
-                          px={4}
-                          _hover={{ bgColor: '#474747' }}
-                          mr={3}
-                          ml={3}
-                          onClick={() => handleYesClick()}
-                        >
-                          Yes
-                        </Button>
-                        <Button
-                          variant="outline"
-                          color={'#373737'}
-                          borderColor={'#373737'}
-                          px={4}
-                          _hover={{ bgColor: 'gray.300' }}
-                          onClick={() => handleNoClick()}
-                        >
-                          No
-                        </Button>
-                      </Box>
-                    </Flex>
+
+                        <Text fontWeight={'normal'}>
+                          Does this clip match gameplay from{' '}
+                          <Text fontWeight={'bold'} as={'span'}>
+                            {reviewItem?.gameplayType === 'CSG'
+                              ? 'Counter Strike: Global Offensive'
+                              : reviewItem?.gameplayType === 'VAL'
+                              ? 'Valorant'
+                              : reviewItem?.gameplayType === 'APE'
+                              ? 'Apex Legends'
+                              : reviewItem?.gameplayType === 'TF2'
+                              ? 'Team Fortress 2'
+                              : reviewItem?.gameplayType === 'COD'
+                              ? 'Call of Duty'
+                              : 'a relevant First Person Shooter game?'}
+                          </Text>
+                        </Text>
+                      </Flex>
+                    )}
+                  </Flex>
+                  {/* Iframe */}
+                  <Box mt={6}>
+                    {/* we might want to find a alternative to iframe as it doesn't inherit styles from parent w chakra -ceri */}
+                    {reviewItem && (
+                      <iframe
+                        src={getYtEmbedLink(reviewItem.youtubeUrl)}
+                        style={{
+                          borderRadius: 12,
+                          width: '100%',
+                          height: '42vh',
+                        }}
+                      />
+                    )}
                   </Box>
-                </>
-              )}
-            </Flex>
-          )}
-        </Center>
-      </div>
+                  {/* Footer */}
+                  <Flex
+                    direction={{ base: 'column', md: 'row' }}
+                    mt={4}
+                    gap={3}
+                  >
+                    <Text>
+                      By answering you accept the{' '}
+                      <Text
+                        as={'span'}
+                        fontWeight={'semibold'}
+                        textDecoration={'underline'}
+                      >
+                        Terms of Service
+                      </Text>
+                    </Text>
+                    {/* Button */}
+                    <Box ml={'auto'} right={0}>
+                      <Button
+                        color={'white'}
+                        bgColor={'#373737'}
+                        px={4}
+                        _hover={{ bgColor: '#474747' }}
+                        mr={3}
+                        ml={3}
+                        onClick={() => handleYesClick()}
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        variant="outline"
+                        color={'#373737'}
+                        borderColor={'#373737'}
+                        px={4}
+                        _hover={{ bgColor: 'gray.300' }}
+                        onClick={() => handleNoClick()}
+                      >
+                        No
+                      </Button>
+                    </Box>
+                  </Flex>
+                </Box>
+                <Text
+                  mt={3}
+                  maxW={'70%'}
+                  textAlign={'center'}
+                  alignSelf={'center'}
+                  fontWeight={'light'}
+                  fontSize={'3xs'}
+                >
+                  The videos shown are not related to Waldo Intelligence and may
+                  contain sensitive content. Viewer discretion is advised
+                </Text>
+              </>
+            )}
+          </Flex>
+        )}
+      </Center>
     </>
   );
 }

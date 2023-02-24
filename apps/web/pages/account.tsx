@@ -359,9 +359,6 @@ export default function Account() {
                               height={'full'}
                               width={'100%'}
                               borderRadius={14}
-                              onClick={() => {
-                                console.log(gameplayItems);
-                              }}
                             />
                             <Box>
                               <Flex direction={'column'}>
