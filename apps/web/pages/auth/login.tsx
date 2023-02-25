@@ -14,7 +14,9 @@ import {
   ModalFooter,
   Divider,
   Heading,
+  Checkbox,
 } from '@chakra-ui/react';
+import { legal } from '@utils/links';
 import { Session } from 'next-auth';
 import { signIn, getSession, signOut } from 'next-auth/react';
 import WaldoLogo from '../../public/android-chrome-256x256.png';
@@ -27,7 +29,6 @@ import { BsGithub, BsFacebook } from 'react-icons/bs';
 import Head from 'next/head';
 type Provider = {
   provider: string;
-  docs: string;
   hex?: string;
   selected?: boolean;
 };
@@ -37,6 +38,7 @@ export default function Login() {
   const [lastSelected, setLastSelected] = useState<number | null>(null);
   const [currentProvider, setCurrentProvider] = useState<string>();
   const [authProviders, setAuthProviders] = useState<Array<Provider>>();
+  const [isLegalChecked, setIsLegalChecked] = useState<boolean>(false);
   const toast = useToast();
   const createToast = () => {
     toast({
@@ -90,30 +92,25 @@ export default function Login() {
     const providers = [
       {
         provider: 'Discord',
-        docs: 'https://discord.com/developers/docs/topics/oauth2',
         hex: '#5865F2',
         selected: false,
       },
       {
         provider: 'Google',
-        docs: 'https://developers.google.com/identity/protocols/oauth2',
         selected: false,
       },
       {
         provider: 'Github',
-        docs: 'https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps',
         hex: '#000000',
         selected: false,
       },
       {
         provider: 'BattleNET',
-        docs: 'https://develop.battle.net/documentation/guides/using-oauth',
         hex: '#009AE4',
         selected: false,
       },
       {
         provider: 'Twitch',
-        docs: 'https://dev.twitch.tv/docs/authentication/getting-tokens-oauth',
         hex: '#9146FF',
         selected: false,
       },
@@ -134,7 +131,7 @@ export default function Login() {
       <Box maxWidth={'100%'} maxHeight={'100vh'} textAlign={'left'}>
         <Flex direction={'row'} height={'100vh'} width={'100v'}>
           <Box
-            display={{ base: 'nonce', md: 'flex' }}
+            display={{ base: 'none', lg: 'flex' }}
             w={{ base: 0, md: 0, lg: '50%' }}
             height={'full'}
           >
@@ -205,7 +202,7 @@ export default function Login() {
             </Box>
             <Divider mt={12} />
             {authProviders &&
-              authProviders.map(({ provider, docs, hex, selected }, index) => (
+              authProviders.map(({ provider, hex, selected }, index) => (
                 <Box
                   w={'full'}
                   mt={12}
@@ -261,51 +258,44 @@ export default function Login() {
                           </Flex>
                         </Box>
                       </Center>
-                      <Flex right={'0'} ml={'auto'}>
-                        <Center>
-                          <Button
-                            variant="outline"
-                            visibility={{
-                              base: 'hidden',
-                              sm: 'hidden',
-                              md: 'hidden',
-                              lg: 'visible',
-                            }}
-                            mr={6}
-                            _hover={{
-                              backgroundColor: 'gray.700',
-                              color: 'white',
-                            }}
-                          >
-                            <Link href={docs}>
-                              <Text
-                                color={selected ? 'white' : ''}
-                                fontSize={{ base: 12, sm: 12, md: 12, lg: 14 }}
-                                textOverflow={'ellipsis'}
-                              >
-                                Learn More
-                              </Text>
-                            </Link>
-                          </Button>
-                        </Center>
-                      </Flex>
                     </Flex>
                   </Box>
                 </Box>
               ))}
-            <Flex justifyContent={'end'}>
-              <Button
-                mr={{ base: 5 }}
-                mb={12}
-                mt={8}
-                bgColor="black"
-                _hover={{ backgroundColor: 'gray.800' }}
-                color="white"
-                onClick={() => handleLoginLogic()}
-                disabled={currentProvider ? false : true}
-              >
-                Connect
-              </Button>
+            <Flex mt={8} alignItems={'center'}>
+              <Text>
+                <Checkbox
+                  fontWeight={'bold'}
+                  ml={6}
+                  onChange={() => setIsLegalChecked(!isLegalChecked)}
+                >
+                  I agree &nbsp;to the&nbsp;
+                </Checkbox>
+                <Link href={legal.TOS}>
+                  <Text as={'span'} fontWeight={'bold'}>
+                    Terms of Service
+                  </Text>
+                </Link>
+                &nbsp;and &nbsp;
+                <Link href={legal.privacy}>
+                  <Text as={'span'} fontWeight={'bold'}>
+                    Privacy Policy
+                  </Text>
+                </Link>
+                .
+              </Text>
+              <Flex alignItems={'end'} justifyContent={'end'} ml={'auto'}>
+                <Button
+                  mr={{ base: 5 }}
+                  bgColor="black"
+                  _hover={{ backgroundColor: 'gray.800' }}
+                  color="white"
+                  onClick={() => handleLoginLogic()}
+                  disabled={currentProvider && isLegalChecked ? false : true}
+                >
+                  Connect
+                </Button>
+              </Flex>
             </Flex>
           </Box>
           <Center h={'100vh'}>
