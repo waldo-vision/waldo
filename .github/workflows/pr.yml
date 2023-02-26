@@ -30,7 +30,7 @@ jobs:
           sync-labels: true
 
   Lint:
-    name: Build and Test
+    name: Code Lint
     timeout-minutes: 10
     runs-on: ubuntu-latest
     # To use Remote Caching, uncomment the next lines and follow the steps below.
@@ -56,3 +56,26 @@ jobs:
 
       - name: Lint
         run: yarn lint
+
+  Types:
+    name: Lint Types
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Type Lint
+        run: yarn turbo run types
