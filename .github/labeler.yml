@@ -13,5 +13,12 @@ frontend:
   - SECURITY.md
   - apps/docs/src/pages/legal/**/*
 
+infrastructure:
+  - .github/**/*
+  - docker-compose.test.yml
+  - docker-compose.yml
+  - docker/**/*
+  - '**/Dockerfile'
+
 rust:
   - apps/desktop/**/*
