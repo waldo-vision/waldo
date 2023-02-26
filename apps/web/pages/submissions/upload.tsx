@@ -40,14 +40,15 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { prisma } from '@server/db/client';
 import { legal } from '@utils/links';
-
+type Cheat = 'NOCHEAT' | 'AIMBOT' | 'TRIGGERBOT' | 'ESP' | 'SPINBOT';
 export default function Upload() {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>(true);
   const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [selectedGame, setSelectedGame] = useState<string>('');
+  const [selectedGame, setSelectedGame] = useState<string>('csg');
+  const [cheats, setCheats] = useState<Cheat[]>([]);
   const [legalConfirmations, setLegalConfirmations] = useState<number>(0);
 
   const [currentUrl, setCurrentUrl] = useState<string>('');
@@ -87,6 +88,13 @@ export default function Upload() {
     { name: 'VALORANT', shortName: 'val' },
     { name: 'Team Fortress 2', shortName: 'tf2' },
     { name: 'Apex Legends', shortName: 'ape' },
+  ];
+  const cheatsArray = [
+    { name: 'NOCHEAT' },
+    { name: 'AIMBOT' },
+    { name: 'TRIGGERBOT' },
+    { name: 'ESP' },
+    { name: 'SPINBOT' },
   ];
 
   const options = [
@@ -171,6 +179,7 @@ export default function Upload() {
         | 'APE'
         | 'R6S',
       youtubeUrl: currentUrl as string,
+      cheats: cheats.length == 0 ? ['NOCHEAT'] : (cheats as Cheat[]),
     };
     try {
       await createGameplay.mutateAsync(input);
@@ -313,7 +322,7 @@ export default function Upload() {
                         borderRadius={15}
                       />
                     </Box>
-                    <Box mt={4}>
+                    <Flex mt={4} experimental_spaceX={4}>
                       <Menu>
                         <MenuButton
                           as={Button}
@@ -343,7 +352,44 @@ export default function Upload() {
                           </MenuOptionGroup>
                         </MenuList>
                       </Menu>
-                    </Box>
+                      {userSession?.user?.role !== 'USER' && (
+                        <Menu closeOnSelect={false}>
+                          <MenuButton
+                            as={Button}
+                            rightIcon={
+                              <ChevronDownIcon width={16} height={16} />
+                            }
+                            borderRadius={15}
+                          >
+                            Select a Cheat:
+                          </MenuButton>
+                          <MenuList>
+                            <MenuOptionGroup title="Cheats" type="checkbox">
+                              {cheatsArray.map(cheat => (
+                                <MenuItemOption
+                                  key={cheat.name}
+                                  value={cheat.name}
+                                  onClick={() => {
+                                    if (cheats.includes(cheat.name as Cheat)) {
+                                      setCheats(
+                                        cheats.filter(c => c !== cheat.name),
+                                      );
+                                    } else {
+                                      setCheats([
+                                        ...cheats,
+                                        cheat.name as Cheat,
+                                      ]);
+                                    }
+                                  }}
+                                >
+                                  {cheat.name}
+                                </MenuItemOption>
+                              ))}
+                            </MenuOptionGroup>
+                          </MenuList>
+                        </Menu>
+                      )}
+                    </Flex>
                     <Box mt={6}>
                       {options.map((option, index) => (
                         <Box key={index}>
@@ -370,7 +416,7 @@ export default function Upload() {
                     </Box>
                     <Flex direction={{ base: 'column', md: 'row' }} gap={5}>
                       <Box mt={6} maxW={'400px'}>
-                        <Text>
+                        <Text onClick={() => console.log(cheats)}>
                           By submitting, you are agreeing to our&nbsp;
                           <Link href={legal.TOS}>
                             <Text as={'span'} fontWeight={'bold'}>
