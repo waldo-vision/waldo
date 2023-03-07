@@ -45,7 +45,7 @@
     "sharp": "^0.31.2",
     "superjson": "^1.11.0",
     "trpc-openapi": "^1.0.0",
-    "typescript": "4.9.4",
+    "typescript": "^4.9.5",
     "ytdl-core": "^4.11.2",
     "zod": "^3.19.1"
   },

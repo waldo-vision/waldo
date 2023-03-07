@@ -4885,7 +4885,7 @@ __metadata:
     mongoose: ^6.7.1
     ts-node-dev: ^2.0.0
     tsconfig: "workspace:*"
-    typescript: ^4.8.4
+    typescript: ^4.9.5
     uuid: ^9.0.0
     ytdl-core: ^4.11.2
   languageName: unknown
@@ -5782,7 +5782,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     tsconfig: "workspace:*"
-    typescript: 4.9.4
+    typescript: ^4.9.5
   languageName: unknown
   linkType: soft
 
@@ -6369,7 +6369,7 @@ __metadata:
     eslint-plugin-promise: ^6.1.1
     eslint-plugin-react: 7.31.8
     prettier: ^2.7.1
-    typescript: ^4.8.4
+    typescript: ^4.9.5
   languageName: unknown
   linkType: soft
 
@@ -12544,7 +12544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:*, typescript@npm:4.9.4, typescript@npm:^4.8.4":
+"typescript@npm:*, typescript@npm:4.9.4":
   version: 4.9.4
   resolution: "typescript@npm:4.9.4"
   bin:
@@ -12554,13 +12554,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@4.9.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
+"typescript@npm:^4.9.5":
+  version: 4.9.5
+  resolution: "typescript@npm:4.9.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ee000bc26848147ad423b581bd250075662a354d84f0e06eb76d3b892328d8d4440b7487b5a83e851b12b255f55d71835b008a66cbf8f255a11e4400159237db
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@4.9.4#~builtin<compat/typescript>":
   version: 4.9.4
   resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
+  version: 4.9.5
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
   languageName: node
   linkType: hard
 
@@ -13049,7 +13069,7 @@ __metadata:
     prettier: ^2.8.1
     tsconfig: "workspace:*"
     turbo: ^1.7.0
-    typescript: ^4.8.4
+    typescript: ^4.9.5
   languageName: unknown
   linkType: soft
 
@@ -13120,7 +13140,7 @@ __metadata:
     superjson: ^1.11.0
     trpc-openapi: ^1.0.0
     tsconfig: "workspace:*"
-    typescript: 4.9.4
+    typescript: ^4.9.5
     ytdl-core: ^4.11.2
     zod: ^3.19.1
   languageName: unknown
