@@ -3058,13 +3058,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@marsidev/react-turnstile@npm:^0.0.5":
-  version: 0.0.5
-  resolution: "@marsidev/react-turnstile@npm:0.0.5"
+"@marsidev/react-turnstile@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "@marsidev/react-turnstile@npm:0.0.8"
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: cfcce875ab6bd7960d18702750a1060e866e356000773c4ce511a267e2152a31d4eb1b1afb30518b06625191f92b97e4b428d7a7fe19494a0c38bf261952f310
+  checksum: 56c7db2b54b5e349cdc03598019cdc50d05397d5440982a737bc86b9868e8054998603a2c5a32a817f98340d1328e4fc0638d0855cfbc875aaf0b10bf5e9fb5c
   languageName: node
   linkType: hard
 
@@ -3457,7 +3457,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:^4.10.1, @prisma/client@npm:latest":
+"@prisma/client@npm:^4.10.1":
   version: 4.10.1
   resolution: "@prisma/client@npm:4.10.1"
   dependencies:
@@ -10751,7 +10751,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prisma@npm:^4.10.1, prisma@npm:latest":
+"prisma@npm:^4.10.1":
   version: 4.10.1
   resolution: "prisma@npm:4.10.1"
   dependencies:
@@ -12605,11 +12605,11 @@ __metadata:
 
 "typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@4.9.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
   version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=d73830"
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 37f6e2c3c5e2aa5934b85b0fddbf32eeac8b1bacf3a5b51d01946936d03f5377fe86255d4e5a4ae628fd0cd553386355ad362c57f13b4635064400f3e8e05b9d
+  checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
   languageName: node
   linkType: hard
 
@@ -13091,13 +13091,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "waldo.vision@workspace:."
   dependencies:
-    "@prisma/client": latest
     "@typescript-eslint/eslint-plugin": ^5.46.1
     "@typescript-eslint/parser": ^5.46.1
     eslint: ^8.30.0
     eslint-config-custom: "workspace:*"
     prettier: ^2.8.1
-    prisma: latest
     tsconfig: "workspace:*"
     turbo: ^1.7.0
     typescript: ^4.8.4
@@ -13139,7 +13137,7 @@ __metadata:
     "@emotion/styled": ^11.10.5
     "@fontsource/nunito": ^4.5.11
     "@heroicons/react": ^2.0.13
-    "@marsidev/react-turnstile": ^0.0.5
+    "@marsidev/react-turnstile": ^0.0.8
     "@next-auth/prisma-adapter": ^1.0.5
     "@tanstack/query-core": ^4.20.4
     "@tanstack/react-query": ^4.18.0
