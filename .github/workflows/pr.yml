@@ -49,10 +49,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'yarn'
+          # # can't cache v3?
+          # # https://github.com/actions/setup-node/blob/7c29869aec4da703a571b27bcd84d4f15af0b56e/docs/advanced-usage.md#caching-packages-data
+          # cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Lint
         run: yarn lint
@@ -72,10 +74,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'yarn'
+          # cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Type Lint
         run: yarn turbo run types
