@@ -15,3 +15,13 @@ frontend:
 
 rust:
   - apps/desktop/**/*
+
+ci:
+  - .github/**/*
+
+dependencies:
+  - '**/package.json'
+  - yarn.lock
+  - .yarn/**/*
+  - '**/Cargo.lock'
+  - '**/Cargo.toml'
