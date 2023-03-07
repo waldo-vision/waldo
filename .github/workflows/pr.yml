@@ -48,7 +48,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: lts/*
           # # can't cache v3?
           # # https://github.com/actions/setup-node/blob/7c29869aec4da703a571b27bcd84d4f15af0b56e/docs/advanced-usage.md#caching-packages-data
           # cache: 'yarn'
@@ -73,7 +73,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: lts/*
           # cache: 'yarn'
 
       - name: Install dependencies
