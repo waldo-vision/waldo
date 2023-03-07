@@ -3457,7 +3457,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:^4.10.1, @prisma/client@npm:latest":
+"@prisma/client@npm:^4.10.1":
   version: 4.10.1
   resolution: "@prisma/client@npm:4.10.1"
   dependencies:
@@ -5893,7 +5893,7 @@ __metadata:
     astro: ^1.8.0
     eslint-config-custom: "workspace:*"
     html-escaper: ^3.0.3
-    preact: ^10.7.3
+    preact: ^10.13.0
     react: ^18.1.0
     react-dom: ^18.1.0
     tsconfig: "workspace:*"
@@ -10666,7 +10666,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact@npm:^10.6.3, preact@npm:^10.7.3":
+"preact@npm:^10.13.0":
+  version: 10.13.0
+  resolution: "preact@npm:10.13.0"
+  checksum: d1629e52c01f25b83c8993bc2ae739ba338534015bd62456c21e19c1a2a4369643c93f709443028d9fabc1997bdc0aee7b9b2f4ac4dedc9529a6dbcc059fb762
+  languageName: node
+  linkType: hard
+
+"preact@npm:^10.6.3":
   version: 10.11.3
   resolution: "preact@npm:10.11.3"
   checksum: 9387115aa0581e8226309e6456e9856f17dfc0e3d3e63f774de80f3d462a882ba7c60914c05942cb51d51e23e120dcfe904b8d392d46f29ad15802941fe7a367
@@ -10751,7 +10758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prisma@npm:^4.10.1, prisma@npm:latest":
+"prisma@npm:^4.10.1":
   version: 4.10.1
   resolution: "prisma@npm:4.10.1"
   dependencies:
@@ -12605,11 +12612,11 @@ __metadata:
 
 "typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@4.9.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
   version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=d73830"
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 37f6e2c3c5e2aa5934b85b0fddbf32eeac8b1bacf3a5b51d01946936d03f5377fe86255d4e5a4ae628fd0cd553386355ad362c57f13b4635064400f3e8e05b9d
+  checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
   languageName: node
   linkType: hard
 
@@ -13091,13 +13098,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "waldo.vision@workspace:."
   dependencies:
-    "@prisma/client": latest
     "@typescript-eslint/eslint-plugin": ^5.46.1
     "@typescript-eslint/parser": ^5.46.1
     eslint: ^8.30.0
     eslint-config-custom: "workspace:*"
     prettier: ^2.8.1
-    prisma: latest
     tsconfig: "workspace:*"
     turbo: ^1.7.0
     typescript: ^4.8.4
