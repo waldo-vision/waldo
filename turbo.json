@@ -30,6 +30,9 @@
     "lint": {
       "outputs": []
     },
+    "types": {
+      "outputs": []
+    },
     "clean": {
       "cache": false
     },
