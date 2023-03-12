@@ -53,6 +53,9 @@ jobs:
           # # https://github.com/actions/setup-node/blob/7c29869aec4da703a571b27bcd84d4f15af0b56e/docs/advanced-usage.md#caching-packages-data
           # cache: 'yarn'
 
+      - name: Enable corepack
+        run: corepack enable
+
       - name: Install dependencies
         run: yarn install --immutable
 
@@ -75,6 +78,9 @@ jobs:
         with:
           node-version: lts/*
           # cache: 'yarn'
+
+      - name: Enable corepack
+        run: corepack enable
 
       - name: Install dependencies
         run: yarn install --immutable
