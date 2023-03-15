@@ -16,6 +16,7 @@ import {
   Heading,
   Checkbox,
 } from '@chakra-ui/react';
+
 import { legal } from '@utils/links';
 import { Session } from 'next-auth';
 import { signIn, getSession, signOut } from 'next-auth/react';
@@ -51,6 +52,17 @@ export default function Login() {
       isClosable: true,
     });
   };
+
+  const createErrorToast = (str: String) => {
+    toast({
+      position: 'bottom-right',
+      title: 'Error',
+      description: str,
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+    });
+  };
   const retrieveUserSession = async () => {
     const session = await getSession();
     setUserSession(session);
@@ -58,6 +70,12 @@ export default function Login() {
 
   const handleSelect = (index: number) => {
     if (!authProviders) return;
+    if (authProviders[index].provider == 'Google') {
+      const errorMsg =
+        "Currently Google signin is disabled, we're working on it!";
+      createErrorToast(errorMsg);
+      return;
+    }
     setCurrentProvider(authProviders[index].provider.toLowerCase());
     if (
       userSession?.user?.provider.toLocaleLowerCase() ==
@@ -66,6 +84,7 @@ export default function Login() {
       createToast();
       return;
     }
+
     setLastSelected(index);
     if (lastSelected == null) {
       const val = authProviders[index];
@@ -215,7 +234,13 @@ export default function Login() {
                     boxShadow={'lg'}
                     borderRadius={8}
                     h={24}
-                    bgColor={selected ? 'gray.700' : 'white'}
+                    bgColor={
+                      provider == 'Google'
+                        ? 'gray.400'
+                        : selected
+                        ? 'gray.700'
+                        : 'white'
+                    }
                   >
                     <Flex direction={'row'}>
                       <Center h={24}>
