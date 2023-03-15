@@ -43,7 +43,7 @@ jobs:
           cache: 'yarn'
       - name: Setup Pages 📄
         id: pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v3
       - name: Filter Docs 📃
         run: yarn dlx -p turbo turbo prune --scope=docs
       - name: Install dependencies 💎
