@@ -2934,10 +2934,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/nunito@npm:^4.5.11":
-  version: 4.5.11
-  resolution: "@fontsource/nunito@npm:4.5.11"
-  checksum: 2c46890fde788b928b1fc8df8ef4e5919a2cb1fe52a6a071720b52ebb205340c22c1b32c5430cb8e7c395d1dc5437ea1182ad584c6202bb999cb484dccec6331
+"@fontsource/nunito@npm:^4.5.12":
+  version: 4.5.12
+  resolution: "@fontsource/nunito@npm:4.5.12"
+  checksum: 9158cda4fbdec12f9760a58b1ca51eaae38382f682e3b5c838ff2a0fe58bb3894e22400e95c9a8a1cb6a81485a80d29a827afdae46c7656686116efb01ce5772
   languageName: node
   linkType: hard
 
@@ -12556,11 +12556,11 @@ __metadata:
 
 "typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@4.9.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
   version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=d73830"
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 37f6e2c3c5e2aa5934b85b0fddbf32eeac8b1bacf3a5b51d01946936d03f5377fe86255d4e5a4ae628fd0cd553386355ad362c57f13b4635064400f3e8e05b9d
+  checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
   languageName: node
   linkType: hard
 
@@ -13086,7 +13086,7 @@ __metadata:
     "@chakra-ui/react": ^2.4.4
     "@emotion/react": ^11.10.5
     "@emotion/styled": ^11.10.5
-    "@fontsource/nunito": ^4.5.11
+    "@fontsource/nunito": ^4.5.12
     "@heroicons/react": ^2.0.13
     "@marsidev/react-turnstile": ^0.0.5
     "@next-auth/prisma-adapter": ^1.0.5
