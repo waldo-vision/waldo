@@ -104,8 +104,10 @@ Please note we have a [code of conduct](/legal/code-of-conduct), please follow i
 
 > Please follow the GitHub Projects, Milestones, and Issues
 
-- The Projects detail current side projects or larger systems
-- The Milestones detail current priority goals
-- The Issues detail individual features, bugs, tweaks to work on
-- Please assign yourself to work you plan to do, or leave a comment
-  _Please keep in touch with everyone, so we know who’s working on what_
+- [Projects](https://github.com/orgs/waldo-vision/projects/6) detail current side projects or larger systems
+- [Milestones](https://github.com/waldo-vision/waldo/milestones) detail current priority goals
+- [Issues](https://github.com/waldo-vision/waldo/issues) detail individual features, bugs, tweaks to work on
+
+When picking work, please take note of an issue's labels. For example, we ask that you consider issues marked as `critical` or `bug` to be of the highest priorities. Issues marked as `good first issue` are a good place to start, and anything tagged with `help wanted` is something we are actively looking for help with. Once you have chosen an issue, please assign yourself to it, and/or leave a comment on the issue to let us know you are working on it.
+
+_Please keep in touch with our team via Discord, so we know who’s working on what._
