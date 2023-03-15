@@ -1,8 +1,16 @@
-# Contributing
+# Waldo
 
-To help contribute to Waldo Vision, please visit the [Waldo Vision Documentation page](https://docs.waldo.vision) and make sure to comply with the [Contributor Agreement](https://docs.waldo.vision/legal/code-of-conduct/).
+> Open-source visual cheat detection, powered by deep learning
 
-> We like [SemVer](https://semver.org) and promote using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)!
+<!-- TODO: need some sort of splash image here -->
+
+Waldo Vision is a machine learning system that will analyze FPS gameplay clips, and return a probability that the player is using aimbot cheats.
+
+You can learn more about Waldo Vision on our [website](https://waldo.vision) or by reading our [documentation](https://docs.waldo.vision).
+
+## Contributing
+
+To help contribute to Waldo Vision, please visit the [our docs](https://docs.waldo.vision) to get started. Also check out our [Code of Conduct](https://docs.waldo.vision/legal/code-of-conduct/), we expect you to abide by it.
 
 ## Contributor list
 
