@@ -22,10 +22,6 @@ Waldo Vision is dependent on a number of services, and depending on your needs, 
 
 If you don't wish to self host CockroachDB for development, we advise you use CockroachDB's free [serverless tier](https://www.cockroachlabs.com/get-started-cockroachdb/) during development.
 
-#### Upstash Redis
-
-If you don't wish to self host a redis http proxy, we recommend you use [Upstash Redis](https://upstash.com/). The free tier can be limiting, but it does get the job done.
-
 ### Self Hosting
 
 If you feel comfortable self hosting, for our use case, you we require that you additionally install [Docker](https://www.docker.com/) and [Docker compose](https://docs.docker.com/compose/). Docker is used to help ensure that the services are setup consistantly setup accross all our contributors' machines. (If you want to use podman instead of docker, you can, but we will not provide assistance with it.)
@@ -62,15 +58,6 @@ To start the services locally, simply run `docker compose up -d`. Or shut them o
 
 1. Run `yarn turbo run db:push` to setup the database for the website
 
-1. To connect to the http redis proxy, in the `.env` file set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` like below:
-
-   ```.env
-    UPSTASH_REDIS_REST_URL="http://localhost:8079"
-    UPSTASH_REDIS_REST_TOKEN="example_token"
-   ```
-
-   (This is if your self hosting, if your using Upstash Redis, copy the rest URL and rest token from the dashboard.)
-
 1. You may also want to additionally set the `Cloudflare Turnstile` keys for submissions to work, or the `Youtube API Key` for the review site to work properly.
 
    - Currently there is no guide for these items, but there isn't much to setting them up. The only item of note is that the YT API Key needs to be `version 3` of the api.
@@ -86,9 +73,6 @@ To start the services locally, simply run `docker compose up -d`. Or shut them o
     GITHUB_CLIENT_SECRET="FDGNJO3490TNGFMGDSK"
 
     DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
-
-    UPSTASH_REDIS_REST_URL="http://localhost:8079"
-    UPSTASH_REDIS_REST_TOKEN="example_token"
 
     # plus some other stuff if you set it
    ```
