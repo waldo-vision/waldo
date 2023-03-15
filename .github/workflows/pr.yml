@@ -77,5 +77,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Build Prisma Client
+        run: turbo run db:generate
+
       - name: Type Lint
         run: yarn turbo run types
