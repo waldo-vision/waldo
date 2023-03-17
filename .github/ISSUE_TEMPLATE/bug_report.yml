@@ -35,14 +35,16 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: project
+    id: projects
     attributes:
-      label: Project
-      description: What project of ours did this occur in?
+      label: Projects
+      description: What projects of ours did this occur in?
+      multiple: true
       options:
         - Website
         - Docs Site
         - Desktop app
+        - Other
     validations:
       required: true
   - type: dropdown
@@ -55,12 +57,13 @@ body:
         - Chrome
         - Safari
         - Microsoft Edge
+        - Other
   - type: textarea
     id: logs
     attributes:
       label: Relevant log output
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
+      render: bash
   - type: checkboxes
     id: terms
     attributes:
