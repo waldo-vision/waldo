@@ -191,6 +191,7 @@ export default function Upload() {
   };
 
   useEffect(() => {
+    setLegalConfirmations(0);
     const doPageLoadThings = async () => {
       if (isDisabled?.maintenance) {
         router.push('/');

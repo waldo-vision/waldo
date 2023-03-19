@@ -13128,6 +13128,7 @@ __metadata:
     eslint-config-custom: "workspace:*"
     eslint-config-next: 13.0.6
     framer-motion: ^7.6.19
+    html-entities: ^2.3.3
     ioredis: ^5.2.4
     next: 13.0.6
     next-auth: ^4.18.6

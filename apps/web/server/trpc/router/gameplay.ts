@@ -118,19 +118,11 @@ export const gameplayRouter = router({
   create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/gameplay' } })
     .input(
-      z
-        .object({
-          youtubeUrl: z.string().url(),
-          gameplayType: GameplayTypes,
-          cheats: z.array(CheatTypes),
-        })
-        .transform(input => {
-          return {
-            youtubeUrl: serverSanitize(input.youtubeUrl),
-            gameplayType: input.gameplayType,
-            cheats: input.cheats,
-          };
-        }),
+      z.object({
+        youtubeUrl: z.string().url(),
+        gameplayType: GameplayTypes,
+        cheats: z.array(CheatTypes),
+      }),
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {

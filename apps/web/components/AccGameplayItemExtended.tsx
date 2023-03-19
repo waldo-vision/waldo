@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Flex, Button, Text, Spinner, useToast } from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
+import { decode } from 'html-entities';
 import { BiTrash } from 'react-icons/bi';
 interface Item {
   item: {
@@ -77,7 +78,7 @@ export default function AccGameplayItemExtended(props: Item) {
               {meta && meta.substring(0, 30) + '...'}
             </Text>
             <Text fontSize={{ base: 7, sm: 7, md: 8, lg: 13 }}>
-              {props.item && props.item.youtubeUrl}
+              {props.item && decode(props.item.youtubeUrl)}
             </Text>
           </>
         )}
