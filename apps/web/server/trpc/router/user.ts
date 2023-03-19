@@ -118,6 +118,8 @@ export const userRouter = router({
       ),
     )
     .query(async ({ ctx }) => {
+      // no need for security check here as you can only get your own linked accounts
+
       try {
         const linkedAccounts = await ctx.prisma.account.findMany({
           where: {

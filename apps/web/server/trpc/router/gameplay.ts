@@ -13,6 +13,9 @@ import { SegmentSchema } from '@utils/zod/segment';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { serverSanitize } from '@utils/sanitize';
 export const gameplayRouter = router({
+  /**
+   * Get a specific gameplay
+   */
   get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay' } })
     .input(
@@ -52,6 +55,11 @@ export const gameplayRouter = router({
 
       return gameplay;
     }),
+
+  /**
+   * Get many gameplay
+   * Admin API
+   */
   getMany: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/dash' } })
     .input(
@@ -62,6 +70,18 @@ export const gameplayRouter = router({
     )
     .output(z.array(GameplaysDashSchema))
     .query(async ({ input, ctx }) => {
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: ctx.session.user.role,
+          requiredPerms: Perms.roleMod,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       const takeValue = 10;
       const skipValue = input.page * 10 - 10;
       if (input.filterGames == null) {
@@ -115,6 +135,9 @@ export const gameplayRouter = router({
       }
     }),
 
+  /**
+   * Create a new gameplay
+   */
   create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/gameplay' } })
     .input(
@@ -177,6 +200,9 @@ export const gameplayRouter = router({
         });
       }
     }),
+  /**
+   * Get gameplay submitted by a user
+   */
   getUsers: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/user' } })
     .input(
@@ -446,9 +472,6 @@ export const gameplayRouter = router({
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
       console.log(input.gameplayId);
-      if (!ctx.session.user?.id) {
-        return { message: 'No user' };
-      }
       const footageVote = await ctx.prisma.gameplayVotes.create({
         data: {
           gameplayId: input.gameplayId,
