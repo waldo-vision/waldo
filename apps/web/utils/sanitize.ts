@@ -1,6 +1,5 @@
-import escape from 'validator/es/lib/escape';
-import stripLow from 'validator/es/lib/stripLow';
+import validator from 'validator';
 
 export const serverSanitize = (str: string): string => {
-  return escape(stripLow(str));
+  return validator.escape(validator.stripLow(str));
 };
