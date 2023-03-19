@@ -4,14 +4,22 @@ import { router, protectedProcedure } from '../trpc';
 import { UserSchema } from '@utils/zod/dash';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import type { Roles } from 'database';
+import { serverSanitize } from '@utils/sanitize';
 export const userRouter = router({
   blackList: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/user' } })
     .input(
-      z.object({
-        userId: z.string().cuid(),
-        blacklisted: z.boolean(),
-      }),
+      z
+        .object({
+          userId: z.string().cuid(),
+          blacklisted: z.boolean(),
+        })
+        .transform(input => {
+          return {
+            userId: serverSanitize(input.userId),
+            blacklisted: input.blacklisted,
+          };
+        }),
     )
     .output(z.object({ message: z.string(), blacklisted: z.boolean() }))
     .mutation(async ({ input, ctx }) => {
@@ -52,9 +60,15 @@ export const userRouter = router({
   delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/user' } })
     .input(
-      z.object({
-        userId: z.string().cuid(),
-      }),
+      z
+        .object({
+          userId: z.string().cuid(),
+        })
+        .transform(input => {
+          return {
+            userId: serverSanitize(input.userId),
+          };
+        }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
@@ -123,9 +137,15 @@ export const userRouter = router({
   unlinkAccount: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/user/linkedaccounts' } })
     .input(
-      z.object({
-        accountId: z.string().cuid(),
-      }),
+      z
+        .object({
+          accountId: z.string().cuid(),
+        })
+        .transform(input => {
+          return {
+            accountId: serverSanitize(input.accountId),
+          };
+        }),
     )
     .output(
       z.object({
@@ -174,10 +194,20 @@ export const userRouter = router({
   getUsers: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/user/dash' } })
     .input(
-      z.object({
-        page: z.number(),
-        filterRoles: z.string().nullable().optional(),
-      }),
+      z
+        .object({
+          page: z.number(),
+          filterRoles: z.string().nullable().optional(),
+        })
+        .transform(input => {
+          return {
+            page: input.page,
+            filterRoles:
+              input.filterRoles === null || input.filterRoles === undefined
+                ? input.filterRoles
+                : serverSanitize(input.filterRoles),
+          };
+        }),
     )
     .output(z.array(UserSchema))
     .query(async ({ input, ctx }) => {
@@ -241,10 +271,17 @@ export const userRouter = router({
   updateRole: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/user/dash' } })
     .input(
-      z.object({
-        role: z.string(),
-        userId: z.string().cuid(),
-      }),
+      z
+        .object({
+          role: z.string(),
+          userId: z.string().cuid(),
+        })
+        .transform(input => {
+          return {
+            role: serverSanitize(input.role),
+            userId: serverSanitize(input.userId),
+          };
+        }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
@@ -279,9 +316,15 @@ export const userRouter = router({
   search: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/user/search' } })
     .input(
-      z.object({
-        name: z.string().nullable(),
-      }),
+      z
+        .object({
+          name: z.string().nullable(),
+        })
+        .transform(input => {
+          return {
+            name: input.name === null ? input.name : serverSanitize(input.name),
+          };
+        }),
     )
     .output(UserSchema)
     .query(async ({ input, ctx }) => {
