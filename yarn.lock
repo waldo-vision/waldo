@@ -4875,7 +4875,7 @@ __metadata:
     "@types/uuid": ^8.3.4
     axios: ^1.1.3
     database: "workspace:*"
-    discord-api-types: ^0.37.18
+    discord-api-types: ^0.37.36
     dotenv: ^16.0.3
     eslint-config-custom: "*"
     express: ^4.18.2
@@ -5844,10 +5844,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord-api-types@npm:^0.37.18":
-  version: 0.37.24
-  resolution: "discord-api-types@npm:0.37.24"
-  checksum: 3949e623bb901c5073f55ff004f07ee4a3a6ea7e0c7c5177b19294b1c014fc8594b8e0c5532f9bb22f60dd5696f48d1f152de0735d3d6fd74114e84ada6c77c8
+"discord-api-types@npm:^0.37.36":
+  version: 0.37.36
+  resolution: "discord-api-types@npm:0.37.36"
+  checksum: ba3de3640270738c6fcef515a5d3a22069c89973e7d95984a7ddf1633a6e01fef2b99d4524f4535771694f87e4d779aa7511f21e06abd1c25707b4791c29d386
   languageName: node
   linkType: hard
 
