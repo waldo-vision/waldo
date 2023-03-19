@@ -5,9 +5,15 @@ export const utilRouter = router({
   verifyUser: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/user/verify' } })
     .input(
-      z.object({
-        tsToken: z.string(),
-      }),
+      z
+        .object({
+          tsToken: z.string(),
+        })
+        .transform(input => {
+          return {
+            tsToken: serverSanitize(input.tsToken),
+          };
+        }),
     )
     .output(
       z.object({

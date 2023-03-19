@@ -440,6 +440,8 @@ export async function getServerSideProps(context) {
     context.res,
     authOptions,
   );
-  if (user?.user?.role == 'USER') return { redirect: { destination: '/404' } };
-  else return { props: {} };
+
+  if (user?.user?.role === 'ADMIN' || user?.user?.role === 'MOD')
+    return { props: {} };
+  else return { redirect: { destination: '/404' } };
 }

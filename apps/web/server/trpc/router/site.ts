@@ -1,5 +1,6 @@
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { TRPCError } from '@trpc/server';
+import { serverSanitize } from '@utils/sanitize';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 
@@ -7,9 +8,15 @@ export const siteRouter = router({
   getPageData: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/site/page' } })
     .input(
-      z.object({
-        name: z.string(),
-      }),
+      z
+        .object({
+          name: z.string(),
+        })
+        .transform(input => {
+          return {
+            name: serverSanitize(input.name),
+          };
+        }),
     )
     .output(
       z.object({
@@ -39,9 +46,15 @@ export const siteRouter = router({
   getSiteData: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/site/site' } })
     .input(
-      z.object({
-        siteName: z.string(),
-      }),
+      z
+        .object({
+          siteName: z.string(),
+        })
+        .transform(input => {
+          return {
+            siteName: serverSanitize(input.siteName),
+          };
+        }),
     )
     .output(
       z.object({
@@ -69,13 +82,29 @@ export const siteRouter = router({
   updatePage: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/site/page' } })
     .input(
-      z.object({
-        name: z.string(),
-        maintenance: z.boolean(),
-        isCustomAlert: z.boolean(),
-        alertTitle: z.string().nullable(),
-        alertDescription: z.string().nullable(),
-      }),
+      z
+        .object({
+          name: z.string(),
+          maintenance: z.boolean(),
+          isCustomAlert: z.boolean(),
+          alertTitle: z.string().nullable(),
+          alertDescription: z.string().nullable(),
+        })
+        .transform(input => {
+          return {
+            name: serverSanitize(input.name),
+            maintenance: input.maintenance,
+            isCustomAlert: input.isCustomAlert,
+            alertTitle:
+              input.alertTitle === null
+                ? null
+                : serverSanitize(input.alertTitle),
+            alertDescription:
+              input.alertDescription === null
+                ? null
+                : serverSanitize(input.alertDescription),
+          };
+        }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
@@ -116,12 +145,27 @@ export const siteRouter = router({
   updateSite: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/site/site' } })
     .input(
-      z.object({
-        maintenance: z.boolean(),
-        isCustomAlert: z.boolean(),
-        alertTitle: z.string().nullable(),
-        alertDescription: z.string().nullable(),
-      }),
+      z
+        .object({
+          maintenance: z.boolean(),
+          isCustomAlert: z.boolean(),
+          alertTitle: z.string().nullable(),
+          alertDescription: z.string().nullable(),
+        })
+        .transform(input => {
+          return {
+            maintenance: input.maintenance,
+            isCustomAlert: input.isCustomAlert,
+            alertTitle:
+              input.alertTitle === null
+                ? null
+                : serverSanitize(input.alertTitle),
+            alertDescription:
+              input.alertDescription === null
+                ? null
+                : serverSanitize(input.alertDescription),
+          };
+        }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {

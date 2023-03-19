@@ -11,13 +11,20 @@ import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
+import { serverSanitize } from '@utils/sanitize';
 export const gameplayRouter = router({
   get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay' } })
     .input(
-      z.object({
-        gameplayId: z.string().cuid(),
-      }),
+      z
+        .object({
+          gameplayId: z.string().cuid(),
+        })
+        .transform(input => {
+          return {
+            gameplayId: serverSanitize(input.gameplayId),
+          };
+        }),
     )
     .output(GameplaySchema)
     .query(async ({ input, ctx }) => {
@@ -111,11 +118,19 @@ export const gameplayRouter = router({
   create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/gameplay' } })
     .input(
-      z.object({
-        youtubeUrl: z.string().url(),
-        gameplayType: GameplayTypes,
-        cheats: z.array(CheatTypes),
-      }),
+      z
+        .object({
+          youtubeUrl: z.string().url(),
+          gameplayType: GameplayTypes,
+          cheats: z.array(CheatTypes),
+        })
+        .transform(input => {
+          return {
+            youtubeUrl: serverSanitize(input.youtubeUrl),
+            gameplayType: input.gameplayType,
+            cheats: input.cheats,
+          };
+        }),
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
@@ -173,9 +188,18 @@ export const gameplayRouter = router({
   getUsers: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/user' } })
     .input(
-      z.object({
-        userId: z.string().cuid().nullish().optional(),
-      }),
+      z
+        .object({
+          userId: z.string().cuid().nullish().optional(),
+        })
+        .transform(input => {
+          return {
+            userId:
+              input.userId === null || input.userId === undefined
+                ? input.userId
+                : serverSanitize(input.userId),
+          };
+        }),
     )
     .output(GameplaySchema.array())
     .query(async ({ input, ctx }) => {
@@ -217,9 +241,15 @@ export const gameplayRouter = router({
   getClips: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/clips' } })
     .input(
-      z.object({
-        gameplayId: z.string().cuid(),
-      }),
+      z
+        .object({
+          gameplayId: z.string().cuid(),
+        })
+        .transform(input => {
+          return {
+            gameplayId: serverSanitize(input.gameplayId),
+          };
+        }),
     )
     .output(SegmentSchema.array())
     .query(async ({ input, ctx }) => {
@@ -257,11 +287,19 @@ export const gameplayRouter = router({
   update: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay' } })
     .input(
-      z.object({
-        gameplayId: z.string().cuid(),
-        gameplayType: GameplayTypes,
-        isAnalyzed: z.boolean(),
-      }),
+      z
+        .object({
+          gameplayId: z.string().cuid(),
+          gameplayType: GameplayTypes,
+          isAnalyzed: z.boolean(),
+        })
+        .transform(input => {
+          return {
+            gameplayId: serverSanitize(input.gameplayId),
+            gameplayType: input.gameplayType,
+            isAnalyzed: input.isAnalyzed,
+          };
+        }),
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
@@ -317,9 +355,15 @@ export const gameplayRouter = router({
   delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/gameplay' } })
     .input(
-      z.object({
-        gameplayId: z.string().cuid(),
-      }),
+      z
+        .object({
+          gameplayId: z.string().cuid(),
+        })
+        .transform(input => {
+          return {
+            gameplayId: serverSanitize(input.gameplayId),
+          };
+        }),
     )
     .mutation(async ({ input, ctx }) => {
       try {
@@ -393,11 +437,19 @@ export const gameplayRouter = router({
   review: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })
     .input(
-      z.object({
-        gameplayId: z.string().cuid(),
-        isGame: z.boolean(),
-        actualGame: GameplayTypes,
-      }),
+      z
+        .object({
+          gameplayId: z.string().cuid(),
+          isGame: z.boolean(),
+          actualGame: GameplayTypes,
+        })
+        .transform(input => {
+          return {
+            gameplayId: serverSanitize(input.gameplayId),
+            isGame: input.isGame,
+            actualGame: input.actualGame,
+          };
+        }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {

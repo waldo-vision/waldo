@@ -4,13 +4,23 @@ import { ClipSchema } from '@utils/zod/clip';
 import { protectedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
+import { serverSanitize } from '@utils/sanitize';
 export const clipRouter = router({
   get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/clip' } })
     .input(
-      z.object({
-        clipId: z.string().uuid().optional(),
-      }),
+      z
+        .object({
+          clipId: z.string().uuid().optional(),
+        })
+        .transform(input => {
+          return {
+            clipId:
+              input.clipId === undefined
+                ? input.clipId
+                : serverSanitize(input.clipId),
+          };
+        }),
     )
     .output(ClipSchema)
     .query(async ({ input, ctx }) => {
@@ -52,9 +62,18 @@ export const clipRouter = router({
   delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/clip' } })
     .input(
-      z.object({
-        clipId: z.string().uuid().optional(),
-      }),
+      z
+        .object({
+          clipId: z.string().uuid().optional(),
+        })
+        .transform(input => {
+          return {
+            clipId:
+              input.clipId === undefined
+                ? input.clipId
+                : serverSanitize(input.clipId),
+          };
+        }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
@@ -91,9 +110,15 @@ export const clipRouter = router({
   create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/clip' } })
     .input(
-      z.object({
-        gameplayId: z.string().uuid(),
-      }),
+      z
+        .object({
+          gameplayId: z.string().uuid(),
+        })
+        .transform(input => {
+          return {
+            gameplayId: serverSanitize(input.gameplayId),
+          };
+        }),
     )
     .output(ClipSchema)
     .mutation(async ({ input, ctx }) => {
