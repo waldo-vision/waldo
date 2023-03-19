@@ -13071,6 +13071,7 @@ __metadata:
     tsconfig: "workspace:*"
     turbo: ^1.7.0
     typescript: ^4.8.4
+    validator: ^13.9.0
   languageName: unknown
   linkType: soft
 
