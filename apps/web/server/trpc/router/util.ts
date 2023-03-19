@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server';
+import { serverSanitize } from '@utils/sanitize';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 
@@ -6,9 +7,15 @@ export const utilRouter = router({
   getYtVidDataFromId: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/user' } })
     .input(
-      z.object({
-        videoId: z.string(),
-      }),
+      z
+        .object({
+          videoId: z.string(),
+        })
+        .transform(input => {
+          return {
+            videoId: serverSanitize(input.videoId),
+          };
+        }),
     )
     .output(z.object({ title: z.string() }))
     .query(async ({ input, ctx }) => {
@@ -34,9 +41,15 @@ export const utilRouter = router({
   verifyUser: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/user/verify' } })
     .input(
-      z.object({
-        tsToken: z.string(),
-      }),
+      z
+        .object({
+          tsToken: z.string(),
+        })
+        .transform(input => {
+          return {
+            tsToken: serverSanitize(input.tsToken),
+          };
+        }),
     )
     .output(
       z.object({
