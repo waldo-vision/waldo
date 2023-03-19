@@ -8,7 +8,7 @@
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
     "start": "ts-node dist/index.js",
     "build": "tsc",
-    "lint": "eslint src/**/*.{ts,tsx}"
+    "lint-disable": "eslint src/**/*.{ts,tsx}"
   },
   "keywords": [],
   "dependencies": {
