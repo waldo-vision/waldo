@@ -40,16 +40,14 @@ export const ALGOLIA = {
 };
 
 export type Sidebar = Record<
-  typeof KNOWN_LANGUAGE_CODES[number],
+  (typeof KNOWN_LANGUAGE_CODES)[number],
   Record<string, { text: string; link: string }[]>
 >;
 export const SIDEBAR: Sidebar = {
   en: {
-    Welcome: [
-      { text: 'Introduction', link: 'en/introduction' },
+    Welcome: [{ text: 'Introduction', link: 'en/introduction' }],
+    Contributing: [
       { text: 'Getting Started', link: 'en/getting-started' },
-    ],
-    Reference: [
       { text: 'Working in the Monorepo', link: 'en/working-in-monorepo' },
     ],
     Legal: [
