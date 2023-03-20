@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { UserSchema } from '@utils/zod/dash';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
-import type { Roles } from 'database';
+import type { Roles, User } from 'database';
 import { serverSanitize } from '@utils/sanitize';
 export const userRouter = router({
   blackList: protectedProcedure
@@ -118,6 +118,8 @@ export const userRouter = router({
       ),
     )
     .query(async ({ ctx }) => {
+      // no need for security check here as you can only get your own linked accounts
+
       try {
         const linkedAccounts = await ctx.prisma.account.findMany({
           where: {
@@ -232,7 +234,7 @@ export const userRouter = router({
             take: takeValue,
             skip: skipValue,
           });
-          users.forEach((user, index) => {
+          users.forEach((user: User, index: number) => {
             Object.assign(users[index], { userCount: userCount });
           });
           return users;
@@ -256,7 +258,7 @@ export const userRouter = router({
             take: takeValue,
             skip: skipValue,
           });
-          users.forEach((user, index) => {
+          users.forEach((user: User, index: number) => {
             Object.assign(users[index], { userCount: userCount });
           });
           return users;

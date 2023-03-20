@@ -26,4 +26,4 @@ RUN yarn install
 
 COPY --from=builder /app/out/full/ .
 
-ENTRYPOINT ["yarn", "workspace", "database", "prisma", "migrate", "deploy"]
+ENTRYPOINT ["sh", "./packages/database/entrypoint.sh"]

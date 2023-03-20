@@ -48,7 +48,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: lts/*
           cache: 'yarn'
 
       - name: Install dependencies
@@ -71,11 +71,14 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: lts/*
           cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install
+
+      - name: Build Prisma Client
+        run: yarn turbo run db:generate
 
       - name: Type Lint
         run: yarn turbo run types

@@ -1,4 +1,4 @@
-import { APIPartialGuild, Routes } from 'discord-api-types/v10';
+import { APIPartialGuild } from 'discord-api-types/v10';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { defaultEndpointsFactory, z } from 'express-zod-api';
@@ -10,6 +10,7 @@ const IsInGuildReturn = z.object({
 });
 
 const DiscordApi = 'https://discord.com/api/v10/users/@me/guilds';
+// eslint-disable-next-line turbo/no-undeclared-env-vars
 const WaldoGuildId = process.env.WALDO_DISCORD_ID;
 
 /**
@@ -23,13 +24,13 @@ export const isInGuild = defaultEndpointsFactory.build({
     discordId: z.string(),
   }),
   output: IsInGuildReturn,
-  handler: async ({ input: { discordId }, options, logger }) => {
+  handler: async ({ input: { discordId } }) => {
     const query = await prisma.account.findUnique({
       where: {
         provider_providerAccountId: {
-          provider: "discord",
-          providerAccountId: discordId
-        }
+          provider: 'discord',
+          providerAccountId: discordId,
+        },
       },
     });
     const access_token = query?.access_token;
@@ -43,6 +44,7 @@ export const isInGuild = defaultEndpointsFactory.build({
         if (response.data[i].id === WaldoGuildId)
           return { message: 'Is in Waldo Discord', isInGuild: true };
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error.response.data);
     }

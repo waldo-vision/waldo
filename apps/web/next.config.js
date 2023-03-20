@@ -33,7 +33,11 @@ const nextConfig = {
     transpilePackages: ['ui'],
   },
   images: {
-    domains: ['cdn.discordapp.com', 'i.ytimg.com'],
+    domains: [
+      'cdn.discordapp.com',
+      'avatars.githubusercontent.com',
+      'i.ytimg.com',
+    ],
     remotePatterns: [
       {
         protocol: 'https',

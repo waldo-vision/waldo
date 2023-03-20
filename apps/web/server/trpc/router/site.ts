@@ -169,6 +169,18 @@ export const siteRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: ctx.session.user.role,
+          requiredPerms: Perms.roleMod,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       const updateSite = await ctx.prisma.waldoSite.update({
         where: {
           name: 'waldo',

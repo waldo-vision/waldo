@@ -3,7 +3,7 @@ import { Turnstile } from '@marsidev/react-turnstile';
 import { trpc } from '@utils/trpc';
 
 interface WidgetProps {
-  valid(valid: boolean): void;
+  valid(valid: boolean, tsToken?: string): void;
 }
 enum CallbackStates {
   SUCCESS,
@@ -23,10 +23,11 @@ const TurnstileWidget = (props: WidgetProps) => {
     if (state == CallbackStates.SUCCESS) {
       const result = await verifyToken.mutateAsync({ tsToken: token });
       if (result.result) {
-        props.valid(true);
+        props.valid(true, token);
       } else {
-        props.valid(false);
+        props.valid(false, token);
       }
+      console.log(result);
     } else if (state == CallbackStates.ERROR) {
       props.valid(false);
     } else if (state == CallbackStates.EXPIRE) {
