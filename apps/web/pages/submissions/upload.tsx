@@ -45,6 +45,7 @@ export default function Upload() {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>(true);
   const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
+  const [tsToken, setTsToken] = useState<string | undefined>('');
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [selectedGame, setSelectedGame] = useState<string>('csg');
@@ -180,6 +181,7 @@ export default function Upload() {
         | 'R6S',
       youtubeUrl: currentUrl as string,
       cheats: cheats.length == 0 ? ['NOCHEAT'] : (cheats as Cheat[]),
+      tsToken: tsToken as string,
     };
     try {
       await createGameplay.mutateAsync(input);
@@ -264,7 +266,10 @@ export default function Upload() {
                     .
                   </Text>
                   <TurnstileWidget
-                    valid={result => setIsRequestValid(result)}
+                    valid={(result, token) => {
+                      setIsRequestValid(result);
+                      setTsToken(token);
+                    }}
                   />
                 </Flex>
               </Center>
