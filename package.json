@@ -11,7 +11,7 @@
     "clean": "turbo run clean",
     "checks": "turbo run build lint",
     "build": "turbo run build",
-    "lint": "turbo run lint --filter=!backend",
+    "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\""
   },
   "devDependencies": {

@@ -28,7 +28,7 @@ export const createFootage = defaultEndpointsFactory.build({
     type: FootageTypeEnum,
   }),
   output: FootageZodSchema,
-  handler: async ({ input: { id, url, type }, options, logger }) => {
+  handler: async ({ input: { id, url, type } }) => {
     const existingFootage = await prisma.footage.findUnique({
       where: {
         youtubeUrl: url,
@@ -90,7 +90,7 @@ export const getFootage = defaultEndpointsFactory.build({
     id: z.string().cuid(),
   }),
   output: FootageZodSchema,
-  handler: async ({ input: { id }, options, logger }) => {
+  handler: async ({ input: { id } }) => {
     const footage = await prisma.footage.findUnique({
       where: {
         id,
@@ -126,7 +126,7 @@ export const getUserFootage = defaultEndpointsFactory.build({
       }),
     ),
   }),
-  handler: async ({ input: { id }, options, logger }) => {
+  handler: async ({ input: { id } }) => {
     const data = await prisma.user.findUnique({
       where: {
         id,
@@ -165,7 +165,7 @@ export const getFootageClips = defaultEndpointsFactory.build({
       }),
     ),
   }),
-  handler: async ({ input: { id }, options, logger }) => {
+  handler: async ({ input: { id } }) => {
     const data = await prisma.footage.findUnique({
       where: {
         id,
@@ -202,11 +202,7 @@ export const updateFootage = defaultEndpointsFactory.build({
   method: 'patch',
   input: FootageUpdateInputSchema,
   output: FootageZodSchema,
-  handler: async ({
-    input: { id, isAnalyzed, footageType },
-    options,
-    logger,
-  }) => {
+  handler: async ({ input: { id, isAnalyzed, footageType } }) => {
     try {
       const data = await prisma.footage.update({
         where: {
@@ -242,7 +238,7 @@ export const deleteFootage = defaultEndpointsFactory.build({
   output: z.object({
     message: z.string(),
   }),
-  handler: async ({ input: { id }, options, logger }) => {
+  handler: async ({ input: { id } }) => {
     try {
       await prisma.footage.delete({
         where: {
