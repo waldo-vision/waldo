@@ -41,6 +41,7 @@ export default function Review() {
   const [finished, setFinished] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
+  const [tsToken, setTsToken] = useState<string | undefined>('');
   const router = useRouter();
   const toast = useToast();
   const videoIdFromUrlRegex =
@@ -78,6 +79,7 @@ export default function Review() {
       gameplayId: reviewItem.id,
       actualGame: reviewItem.gameplayType,
       isGame: review,
+      tsToken: tsToken as string,
     });
     await refetch();
     setReviewItem(reviewItemData);
@@ -135,7 +137,10 @@ export default function Review() {
               <>
                 <Center mb={4} display={{ base: 'none', md: 'flex' }}>
                   <TurnstileWidget
-                    valid={result => setIsRequestValid(result)}
+                    valid={(result, token) => {
+                      setIsRequestValid(result);
+                      setTsToken(token);
+                    }}
                   />
                 </Center>
                 <Box bgColor={'white'} p={6} borderRadius={12}>

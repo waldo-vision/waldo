@@ -467,23 +467,25 @@ export const gameplayRouter = router({
   review: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })
     .input(
-      z
-        .object({
-          gameplayId: z.string().cuid(),
-          isGame: z.boolean(),
-          actualGame: GameplayTypes,
-        })
-        .transform(input => {
-          return {
-            gameplayId: serverSanitize(input.gameplayId),
-            isGame: input.isGame,
-            actualGame: input.actualGame,
-          };
-        }),
+      z.object({
+        gameplayId: z.string().cuid(),
+        isGame: z.boolean(),
+        actualGame: GameplayTypes,
+        tsToken: z.string(),
+      }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      console.log(input.gameplayId);
+      const isPerson = await vUser(input.tsToken);
+      if (!isPerson) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
+          // not sure if its safe to give this to the user
+          cause: '',
+        });
+      }
       const footageVote = await ctx.prisma.gameplayVotes.create({
         data: {
           gameplayId: input.gameplayId,
