@@ -3457,7 +3457,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:^4.10.1":
+"@prisma/client@npm:4.10.1":
   version: 4.10.1
   resolution: "@prisma/client@npm:4.10.1"
   dependencies:
@@ -5621,9 +5621,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "database@workspace:packages/database"
   dependencies:
-    "@prisma/client": ^4.10.1
+    "@prisma/client": 4.10.1
     eslint-config-custom: "workspace:*"
-    prisma: ^4.10.1
+    prisma: 4.10.1
     ts-node: ^10.9.1
     tsconfig: "workspace:*"
   languageName: unknown
@@ -10723,7 +10723,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prisma@npm:^4.10.1":
+"prisma@npm:4.10.1":
   version: 4.10.1
   resolution: "prisma@npm:4.10.1"
   dependencies:

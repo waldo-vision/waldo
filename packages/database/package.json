@@ -8,12 +8,12 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^4.10.1",
+    "@prisma/client": "4.10.1",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*"
   },
   "devDependencies": {
-    "prisma": "^4.10.1",
+    "prisma": "4.10.1",
     "ts-node": "^10.9.1"
   },
   "scripts": {
