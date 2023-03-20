@@ -16,7 +16,7 @@ export async function vUser(tsToken: string) {
   });
   const result = await request.json();
   if (result.success) {
-    return false;
+    return true;
   } else {
     return false;
   }
