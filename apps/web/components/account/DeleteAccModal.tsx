@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
 import { getSession } from 'next-auth/react';
-import Loading from './Loading';
+import Loading from '@components/Loading';
 interface Props {
   show: boolean;
 }

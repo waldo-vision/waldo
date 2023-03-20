@@ -19,7 +19,7 @@ const securityHeaders = [
   {
     key: 'Content-Security-Policy',
     value:
-      "default-src 'self'; img-src * data:; script-src 'self' 'unsafe-eval' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; frame-src https://challenges.cloudflare.com https://youtube.com https://www.youtube.com; upgrade-insecure-requests;",
+      "default-src 'self'; img-src * data:; script-src 'self' 'unsafe-eval' https://challenges.cloudflare.com/; connect-src 'self' https://youtube.com https://www.youtube.com; style-src 'self' 'unsafe-inline'; frame-src https://challenges.cloudflare.com https://youtube.com https://www.youtube.com; upgrade-insecure-requests;",
   },
 ];
 
@@ -33,11 +33,20 @@ const nextConfig = {
     transpilePackages: ['ui'],
   },
   images: {
-    domains: ['cdn.discordapp.com', 'avatars.githubusercontent.com'],
+    domains: [
+      'cdn.discordapp.com',
+      'avatars.githubusercontent.com',
+      'i.ytimg.com',
+    ],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'cdn.discordapp.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
         pathname: '/**',
       },
     ],
@@ -52,7 +61,7 @@ const nextConfig = {
   async headers() {
     if (process.env.NODE_ENV === 'production') {
       securityHeaders[4].value =
-        "default-src 'self'; img-src * data:; script-src 'self' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; frame-src https://challenges.cloudflare.com https://youtube.com https://www.youtube.com; upgrade-insecure-requests;";
+        "default-src 'self'; img-src * data:; script-src 'self' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; connect-src 'self' https://youtube.com https://www.youtube.com; frame-src https://challenges.cloudflare.com https://youtube.com https://www.youtube.com; upgrade-insecure-requests;";
     }
     return [
       {
