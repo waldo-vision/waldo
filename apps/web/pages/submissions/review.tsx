@@ -1,4 +1,12 @@
-import { Box, Center, Text, Flex, Button, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Text,
+  Flex,
+  Button,
+  useToast,
+  Spinner,
+} from '@chakra-ui/react';
 import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import Loading from '@components/Loading';
@@ -23,11 +31,6 @@ interface ReviewItem {
 }
 export default function Review() {
   const utils = trpc.useContext();
-  const {
-    data: reviewItemData,
-    refetch,
-    error,
-  } = trpc.gameplay.getReviewItems.useQuery();
 
   const reviewGameplay = trpc.gameplay.review.useMutation({
     async onSuccess() {
@@ -35,9 +38,6 @@ export default function Review() {
     },
   });
 
-  const [reviewItem, setReviewItem] = useState<ReviewItem | undefined>(
-    reviewItemData,
-  );
   const [finished, setFinished] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
@@ -47,6 +47,19 @@ export default function Review() {
   const videoIdFromUrlRegex =
     // eslint-disable-next-line no-useless-escape
     /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const {
+    data: reviewItemData,
+    refetch,
+    error,
+  } = trpc.gameplay.getReviewItems.useQuery(
+    {
+      tsToken: tsToken as string,
+    },
+    { enabled: false },
+  );
+  const [reviewItem, setReviewItem] = useState<ReviewItem | undefined>(
+    reviewItemData,
+  );
   // format http://img.youtube.com/vi/[video-id]/[thumbnail-number].jpg
   const getYtEmbedLink = (url: string) => {
     const result = url.match(videoIdFromUrlRegex);
@@ -96,7 +109,9 @@ export default function Review() {
 
   useEffect(() => {
     const getNecessaryData = async () => {
-      await refetch();
+      if (tsToken !== '') {
+        await refetch();
+      }
       setReviewItem(reviewItemData);
       if (error?.data?.code == 'NOT_FOUND') {
         setFinished(true);
@@ -116,7 +131,7 @@ export default function Review() {
     };
     getCurrentSession();
     getNecessaryData();
-  }, [router, reviewItemData, refetch, error?.data?.code]);
+  }, [router, error?.data?.code, isRequestValid, tsToken, reviewItemData]);
   return (
     <>
       <Head>
@@ -128,21 +143,22 @@ export default function Review() {
       </Head>
       <Center h={'100vh'} mt={{ base: 5 }}>
         {loading || !reviewItemData ? (
-          <Loading color={'purple.500'} />
+          <Flex direction={'column'} alignItems={'center'}>
+            <Spinner color={'purple.500'} size={'xl'} mb={6} />
+            <TurnstileWidget
+              valid={(result, token) => {
+                setIsRequestValid(result);
+                setTsToken(token);
+              }}
+            />
+          </Flex>
         ) : (
           <Flex direction={'column'}>
             {finished || error ? (
               <Finished />
             ) : (
               <>
-                <Center mb={4} display={{ base: 'none', md: 'flex' }}>
-                  <TurnstileWidget
-                    valid={(result, token) => {
-                      setIsRequestValid(result);
-                      setTsToken(token);
-                    }}
-                  />
-                </Center>
+                <Center mb={4} display={{ base: 'none', md: 'flex' }}></Center>
                 <Box bgColor={'white'} p={6} borderRadius={12}>
                   <Flex direction={'row'}>
                     {/* User Icon */}
