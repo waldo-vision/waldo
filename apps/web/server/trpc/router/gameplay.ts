@@ -467,15 +467,11 @@ export const gameplayRouter = router({
       const tenDocs = () => {
         return Math.floor(Math.random() * (itemCount - 1 + 1)) + 0;
       };
-      const orderBy = randomPick(['userId', 'id', 'youtubeUrl']);
-      const orderDir = randomPick([`desc`, 'asc']);
       const reviewItem = await ctx.prisma.gameplay.findMany({
         where: {
           gameplayVotes: { none: { userId: ctx.session.user.id } },
         },
         take: 1,
-        skip: tenDocs(),
-        orderBy: { [orderBy]: orderDir },
         include: {
           user: true,
           gameplayVotes: true,
@@ -483,8 +479,9 @@ export const gameplayRouter = router({
       });
       if (reviewItem[0] == null || reviewItem[0] == undefined) {
         throw new TRPCError({ code: 'NOT_FOUND' });
+      } else {
+        return reviewItem[0];
       }
-      return reviewItem[0];
     }),
   review: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })

@@ -109,8 +109,9 @@ export default function Review() {
 
   useEffect(() => {
     const getNecessaryData = async () => {
-      if (tsToken !== '') {
+      if (tsToken && tsToken.length > 3 && !reviewItemData) {
         await refetch();
+        return;
       }
       setReviewItem(reviewItemData);
       if (error?.data?.code == 'NOT_FOUND') {
@@ -131,7 +132,7 @@ export default function Review() {
     };
     getCurrentSession();
     getNecessaryData();
-  }, [router, error?.data?.code, isRequestValid, tsToken, reviewItemData]);
+  }, [router, tsToken, reviewItemData, error, refetch]);
   return (
     <>
       <Head>
@@ -142,7 +143,7 @@ export default function Review() {
         />
       </Head>
       <Center h={'100vh'} mt={{ base: 5 }}>
-        {loading || !reviewItemData ? (
+        {loading || !reviewItemData || tsToken == '' || tsToken == undefined ? (
           <Flex direction={'column'} alignItems={'center'}>
             <Spinner color={'purple.500'} size={'xl'} mb={6} />
             <TurnstileWidget
