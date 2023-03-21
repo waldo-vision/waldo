@@ -389,6 +389,7 @@ const MenuAction = (props: MenuActionProps) => {
       });
     }
   };
+
   return (
     <Menu>
       <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
@@ -401,6 +402,13 @@ const MenuAction = (props: MenuActionProps) => {
           onClick={() => handleRoleChange('USER')}
         >
           Grant User
+        </MenuItem>
+        <MenuItem
+          height={'35px'}
+          icon={<FiUser size={16} />}
+          onClick={() => handleRoleChange('TRUSTED')}
+        >
+          Grant Trusted
         </MenuItem>
         <MenuItem
           height={'35px'}
