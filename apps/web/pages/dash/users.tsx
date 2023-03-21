@@ -76,6 +76,9 @@ export default function User() {
     { name: searchUserValue },
     {
       enabled: true,
+      onError(err) {
+        return;
+      },
     },
   );
   const handleFilter = async (role: string | null) => {

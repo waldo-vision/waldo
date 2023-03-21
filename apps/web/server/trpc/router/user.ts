@@ -342,9 +342,7 @@ export const userRouter = router({
         throw new TRPCError({
           code: 'UNAUTHORIZED',
         });
-      if (input.name == undefined) {
-        input.name = '';
-      }
+      if (input.name == undefined) throw new TRPCError({ code: 'BAD_REQUEST' });
       try {
         const user = await ctx.prisma.user.findFirst({
           where: {
