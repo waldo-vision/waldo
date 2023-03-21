@@ -72,7 +72,12 @@ export default function User() {
     data: searchFilterData,
     isLoading: searchFilterLoading,
     isError,
-  } = trpc.user.search.useQuery({ name: searchUserValue }, { enabled: true });
+  } = trpc.user.search.useQuery(
+    { name: searchUserValue },
+    {
+      enabled: true,
+    },
+  );
   const handleFilter = async (role: string | null) => {
     if (role == null) {
       setSearchRole(null);
