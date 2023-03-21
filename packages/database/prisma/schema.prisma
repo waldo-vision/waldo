@@ -30,15 +30,15 @@ model WaldoSite {
 }
 
 model Gameplay {
-  id           String         @id @default(cuid())
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
+  id            String          @id @default(cuid())
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
   gameplayVotes GameplayVotes[] @relation("gameplay")
-  youtubeUrl   String         @unique
+  youtubeUrl    String          @unique
   gameplayType  GameplayType    @default(CSG)
-  isAnalyzed   Boolean        @default(false)
-  clips        Clip[]
-  cheats       CheatType[]
+  isAnalyzed    Boolean         @default(false)
+  clips         Clip[]
+  cheats        CheatType[]
 }
 
 enum CheatType {
@@ -49,19 +49,18 @@ enum CheatType {
   SPINBOT
 }
 
-
 model GameplayVotes {
-  id         String      @id @default(cuid())
-  gameplay    Gameplay     @relation("gameplay", fields: [gameplayId], references: [id], onDelete: Cascade)
-  gameplayId  String
-  user       User        @relation("user", fields: [userId], references: [id], onDelete: Cascade)
+  id         String       @id @default(cuid())
+  gameplay   Gameplay     @relation("gameplay", fields: [gameplayId], references: [id], onDelete: Cascade)
+  gameplayId String
+  user       User         @relation("user", fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  isGame     Boolean     @default(false)
+  isGame     Boolean      @default(false)
   actualGame GameplayType
 }
 
 model Clip {
-  id        String  @id @default(cuid())
+  id         String   @id @default(cuid())
   gameplay   Gameplay @relation(fields: [gameplayId], references: [id])
   gameplayId String
 }
@@ -110,17 +109,17 @@ enum Roles {
 }
 
 model User {
-  id            String         @id @default(cuid())
+  id            String          @id @default(cuid())
   name          String?
-  email         String?        @unique
+  email         String?         @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   // our items
-  blacklisted   Boolean        @default(false)
+  blacklisted   Boolean         @default(false)
   gameplay      Gameplay[]
-  role          Roles          @default(USER)
+  role          Roles           @default(USER)
   gameplayVotes GameplayVotes[] @relation("user")
 }
 
