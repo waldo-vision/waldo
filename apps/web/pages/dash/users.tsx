@@ -38,29 +38,24 @@ import { BsFillExclamationOctagonFill } from 'react-icons/bs';
 import { unstable_getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { ReactElement } from 'react';
-type Query = {
-  userCount?: number | undefined;
-  id: string;
-  name?: string | null;
-  blacklisted: boolean;
-  email?: string | null;
-  emailVerified?: Date | null;
-  image?: string | null;
-  role: string;
-};
+
 export default function User() {
   // Searching states
-  const [searchUserValue, setSearchUserValue] = useState<string | null>(null);
+  const [searchUserValue, setSearchUserValue] = useState<string>('');
   const [searchRole, setSearchRole] = useState<string | null>(null);
 
+  const handleFilter = async (role: string | null) => {
+    role == null ? setSearchRole(null) : setSearchRole(role.toUpperCase());
+  };
+
   // Data and Rows
-  // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [data, setData] = useState<Array<Query>>();
+  const [currentUserCount, setCurrentUserCount] = useState<number | null>(null);
+
   const {
-    data: userQueryData,
-    isLoading: userQueryLoading,
-    refetch: userQueryRefetch,
+    data: users,
+    isLoading: isLoading,
+    refetch: refetchUsers,
   } = trpc.user.getUsers.useQuery(
     {
       page: pageNumber,
@@ -68,62 +63,42 @@ export default function User() {
     },
     { enabled: false },
   );
+
   const {
-    data: searchFilterData,
-    isLoading: searchFilterLoading,
-    isError,
+    data: searchedUser,
+    isLoading: isSearchLoading,
+    refetch: research,
   } = trpc.user.search.useQuery(
     { name: searchUserValue },
     {
-      enabled: true,
+      enabled: false,
     },
   );
-  const handleFilter = async (role: string | null) => {
-    if (role == null) {
-      setSearchRole(null);
-      return;
+
+  useEffect(() => {
+    if (searchUserValue === '') {
+      refetchUsers();
+      users && setCurrentUserCount(users.userCount);
+    } else {
+      research();
     }
-    setSearchRole(role.toUpperCase());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageNumber, searchRole, users, searchUserValue]);
+
+  const handlePage = () => {
+    if (!currentUserCount) return;
+    if (pageNumber == Math.ceil(currentUserCount / Math.round(10))) {
+      return;
+    } else {
+      setPageNumber(pageNumber + 1);
+    }
   };
 
   const handlePageChange = async (add: boolean) => {
-    await userQueryRefetch();
     if (add) {
       setPageNumber(pageNumber + 1);
-      await userQueryRefetch();
     } else {
       setPageNumber(1);
-      await userQueryRefetch();
-    }
-  };
-
-  useEffect(() => {
-    const doLoadThings = async () => {
-      if (searchUserValue == '') {
-        setSearchUserValue(null);
-      }
-      if (!isError && searchFilterData) {
-        setData([searchFilterData]);
-      } else {
-        await userQueryRefetch();
-        setData(userQueryData);
-      }
-    };
-    doLoadThings();
-  }, [
-    userQueryData,
-    searchFilterData,
-    isError,
-    userQueryRefetch,
-    searchUserValue,
-  ]);
-
-  const handlePage = () => {
-    if (!data || !data[0].userCount) return;
-    if (pageNumber == Math.ceil(data[0].userCount / Math.round(10))) {
-      return;
-    } else {
-      setPageNumber(pageNumber + 1);
     }
   };
 
@@ -137,6 +112,7 @@ export default function User() {
           height={'50px'}
           fontWeight={'medium'}
           placeholder={'Search Users'}
+          value={searchUserValue}
           onChange={e => {
             setSearchUserValue(e.target.value);
           }}
@@ -145,7 +121,7 @@ export default function User() {
           <SearchIcon />
         </InputRightElement>
       </InputGroup>
-      <Box width={{ base: '100%', md: '70%' }}>
+      <Box width={{ base: '100%', md: '85%' }}>
         <Menu>
           <MenuButton
             as={Button}
@@ -154,11 +130,16 @@ export default function User() {
             _active={{ bgColor: 'white' }}
             rightIcon={<ChevronDownIcon />}
           >
-            Roles: {searchRole}
+            Roles:{' '}
+            {searchRole
+              ? searchRole?.toLowerCase().charAt(0).toUpperCase() +
+                searchRole?.toLowerCase().slice(1)
+              : 'All'}
           </MenuButton>
           <MenuList>
             <MenuItem onClick={() => handleFilter(null)}>All</MenuItem>
             <MenuItem onClick={() => handleFilter('User')}>User</MenuItem>
+            <MenuItem onClick={() => handleFilter('Trusted')}>Trusted</MenuItem>
             <MenuItem onClick={() => handleFilter('Mod')}>Mod</MenuItem>
             <MenuItem onClick={() => handleFilter('Admin')}>Admin</MenuItem>
           </MenuList>
@@ -207,7 +188,7 @@ export default function User() {
               </Tr>
             </Thead>
             <Tbody>
-              {searchFilterLoading || userQueryLoading ? (
+              {isLoading || (isSearchLoading && searchUserValue != '') ? (
                 <Tr>
                   <Td></Td>
                   <Td></Td>
@@ -219,57 +200,110 @@ export default function User() {
                   </Td>
                   <Td></Td>
                 </Tr>
-              ) : (
-                data?.map((result, index) => {
-                  return (
-                    <Tr bgColor={'white'} height={'70px'} key={index}>
-                      <Td borderLeftRadius={16}>
-                        <Flex direction={'row'} align={'center'} gap={2}>
-                          <Image
-                            src={result.image as string}
-                            alt={'Profile Image'}
-                            rounded={'full'}
-                            width={7}
-                            height={7}
-                          />
-                          <Text fontWeight={'bold'}>
-                            {result.name && result.name.length > 20
-                              ? result.name.substring(0, 10) +
-                                '\u2026' +
-                                result.name.slice(-10)
-                              : result.name}
+              ) : searchUserValue === '' ? (
+                users && users.users.length > 0 ? (
+                  users.users.map((result, index) => {
+                    return (
+                      <Tr bgColor={'white'} height={'70px'} key={index}>
+                        <Td borderLeftRadius={16}>
+                          <Flex direction={'row'} align={'center'} gap={2}>
+                            <Image
+                              src={result.image as string}
+                              alt={'Profile Image'}
+                              rounded={'full'}
+                              width={7}
+                              height={7}
+                            />
+                            <Text fontWeight={'bold'}>
+                              {result.name && result.name.length > 20
+                                ? result.name.substring(0, 10) +
+                                  '\u2026' +
+                                  result.name.slice(-10)
+                                : result.name}
+                            </Text>
+                          </Flex>
+                        </Td>
+                        <Td>
+                          <Text casing={'capitalize'} fontSize={15}>
+                            {result.blacklisted
+                              ? 'Blacklisted'
+                              : result.role.toLowerCase()}
                           </Text>
-                        </Flex>
-                      </Td>
-                      <Td>
-                        <Text casing={'capitalize'} fontSize={15}>
-                          {result.blacklisted
-                            ? 'Blacklisted'
-                            : result.role.toLowerCase()}
-                        </Text>
-                      </Td>
-                      <Td>
-                        <Text fontSize={15}>{result.email}</Text>
-                      </Td>
-                      <Td>
-                        <Text fontSize={15}>
-                          {result.emailVerified ? 'Verified' : 'Not Verified'}
-                        </Text>
-                      </Td>
-                      <Td>
-                        <Text fontSize={15} isTruncated>
-                          {result.id.replace(/.{5}/g, '$& : ').slice(0, -3)}
-                        </Text>
-                      </Td>
-                      <Td borderRightRadius={16}>
-                        <MenuAction
-                          userId={result.id}
-                          isBlacklisted={result.blacklisted}
-                        />
-                      </Td>
-                    </Tr>
-                  );
-                })
+                        </Td>
+                        <Td>
+                          <Text fontSize={15}>{result.email}</Text>
+                        </Td>
+                        <Td>
+                          <Text fontSize={15}>
+                            {result.emailVerified ? 'Verified' : 'Not Verified'}
+                          </Text>
+                        </Td>
+                        <Td>
+                          <Text as="samp" fontSize={15} isTruncated>
+                            {result.id.replace(/.{5}/g, '$&:').slice(0, -1)}
+                          </Text>
+                        </Td>
+                        <Td borderRightRadius={16}>
+                          <MenuAction
+                            userId={result.id}
+                            isBlacklisted={result.blacklisted}
+                          />
+                        </Td>
+                      </Tr>
+                    );
+                  })
+                ) : (
+                  <Notfound />
+                )
+              ) : searchedUser ? (
+                <Tr bgColor={'white'} height={'70px'}>
+                  <Td borderLeftRadius={16}>
+                    <Flex direction={'row'} align={'center'} gap={2}>
+                      <Image
+                        src={searchedUser.image as string}
+                        alt={'Profile Image'}
+                        rounded={'full'}
+                        width={7}
+                        height={7}
+                      />
+                      <Text fontWeight={'bold'}>
+                        {searchedUser.name && searchedUser.name.length > 20
+                          ? searchedUser.name.substring(0, 10) +
+                            '\u2026' +
+                            searchedUser.name.slice(-10)
+                          : searchedUser.name}
+                      </Text>
+                    </Flex>
+                  </Td>
+                  <Td>
+                    <Text casing={'capitalize'} fontSize={15}>
+                      {searchedUser.blacklisted
+                        ? 'Blacklisted'
+                        : searchedUser.role.toLowerCase()}
+                    </Text>
+                  </Td>
+                  <Td>
+                    <Text fontSize={15}>{searchedUser.email}</Text>
+                  </Td>
+                  <Td>
+                    <Text fontSize={15}>
+                      {searchedUser.emailVerified ? 'Verified' : 'Not Verified'}
+                    </Text>
+                  </Td>
+                  <Td>
+                    <Text as="samp" fontSize={15} isTruncated>
+                      {searchedUser.id.replace(/.{5}/g, '$&:').slice(0, -1)}
+                    </Text>
+                  </Td>
+                  <Td borderRightRadius={16}>
+                    <MenuAction
+                      userId={searchedUser.id}
+                      isBlacklisted={searchedUser.blacklisted}
+                    />
+                  </Td>
+                </Tr>
+              ) : (
+                <Notfound />
               )}
             </Tbody>
             <Tfoot bgColor={'white'} height={'50px'}>
@@ -279,49 +313,58 @@ export default function User() {
                 <Td />
                 <Td />
                 <Td />
-                <Td bgColor={'white'} borderRadius={16} isTruncated>
-                  <Flex
-                    direction={'row'}
-                    align={'center'}
-                    textAlign={'center'}
-                    gap={2}
-                  >
-                    <ChevronLeftIcon
-                      cursor={'pointer'}
-                      h={6}
-                      w={6}
-                      _hover={{ color: 'gray.400' }}
-                      color={pageNumber === 1 ? 'gray.300' : ''}
-                      onClick={() =>
-                        pageNumber === 1 ? null : handlePageChange(false)
-                      }
-                    />
-                    <Flex>
-                      <Text fontWeight={'semibold'}>Page</Text>{' '}
-                      <Text ml={2}>
-                        {pageNumber} of{' '}
-                        {data &&
-                          data[0].userCount &&
-                          Math.ceil(data[0].userCount / Math.round(10))}
-                      </Text>
+                {searchUserValue === '' ? (
+                  <Td bgColor={'white'} borderRadius={16} isTruncated>
+                    <Flex
+                      direction={'row'}
+                      align={'center'}
+                      textAlign={'center'}
+                      gap={2}
+                    >
+                      <ChevronLeftIcon
+                        cursor={pageNumber === 1 ? 'not-allowed' : 'pointer'}
+                        h={6}
+                        w={6}
+                        _hover={{ color: 'gray.400' }}
+                        color={pageNumber === 1 ? 'gray.300' : ''}
+                        onClick={() =>
+                          pageNumber === 1 ? null : handlePageChange(false)
+                        }
+                      />
+                      <Flex>
+                        <Text fontWeight={'semibold'}>Page</Text>{' '}
+                        <Text ml={2}>
+                          {pageNumber} of{' '}
+                          {currentUserCount &&
+                            currentUserCount &&
+                            Math.ceil(currentUserCount / Math.round(10))}
+                        </Text>
+                      </Flex>
+                      <ChevronRightIcon
+                        cursor={
+                          currentUserCount &&
+                          pageNumber ==
+                            Math.ceil(currentUserCount / Math.round(10))
+                            ? 'not-allowed'
+                            : 'pointer'
+                        }
+                        h={6}
+                        w={6}
+                        _hover={{ color: 'gray.400' }}
+                        color={
+                          currentUserCount &&
+                          pageNumber ==
+                            Math.ceil(currentUserCount / Math.round(10))
+                            ? 'gray.300'
+                            : ''
+                        }
+                        onClick={() => handlePage()}
+                      />
                     </Flex>
-                    <ChevronRightIcon
-                      cursor={'pointer'}
-                      h={6}
-                      w={6}
-                      _hover={{ color: 'gray.400' }}
-                      color={
-                        data &&
-                        data[0].userCount &&
-                        pageNumber ==
-                          Math.ceil(data[0].userCount / Math.round(10))
-                          ? 'gray.300'
-                          : ''
-                      }
-                      onClick={() => handlePage()}
-                    />
-                  </Flex>
-                </Td>
+                  </Td>
+                ) : (
+                  <Td>Results</Td>
+                )}
               </Tr>
             </Tfoot>
           </Table>
@@ -401,6 +444,13 @@ const MenuAction = (props: MenuActionProps) => {
         </MenuItem>
         <MenuItem
           height={'35px'}
+          icon={<FiUser size={16} />}
+          onClick={() => handleRoleChange('TRUSTED')}
+        >
+          Grant Trusted
+        </MenuItem>
+        <MenuItem
+          height={'35px'}
           icon={<CiWarning size={16} style={{ strokeWidth: '1px' }} />}
           onClick={() => handleRoleChange('MOD')}
         >
@@ -433,6 +483,20 @@ const MenuAction = (props: MenuActionProps) => {
     </Menu>
   );
 };
+
+const Notfound = () => (
+  <Tr>
+    <Td></Td>
+    <Td></Td>
+    <Td></Td>
+    <Td>
+      <Center h={600}>
+        <Text>Could not find any users.</Text>
+      </Center>
+    </Td>
+    <Td></Td>
+  </Tr>
+);
 
 User.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;

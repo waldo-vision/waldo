@@ -108,7 +108,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                     bgColor: 'gray.50',
                   }
             }
-            onClick={() => router.push('/dash/' + tab.path)}
+            onClick={() => router.push('/dash' + tab.path)}
           >
             {/* ICONS */}
             {tab.icon}

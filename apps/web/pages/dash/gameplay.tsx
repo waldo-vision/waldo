@@ -119,7 +119,8 @@ export default function Gameplay() {
             border={'none'}
             height={'50px'}
             fontWeight={'medium'}
-            placeholder={'Search Users'}
+            placeholder={'Search Gameplay'}
+            disabled={true}
           />
           <InputRightElement mt={1}>
             <SearchIcon />

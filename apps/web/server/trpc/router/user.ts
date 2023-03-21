@@ -211,7 +211,7 @@ export const userRouter = router({
           };
         }),
     )
-    .output(z.array(UserSchema))
+    .output(z.object({ users: z.array(UserSchema), userCount: z.number() }))
     .query(async ({ input, ctx }) => {
       if (
         !hasPerms({
@@ -234,10 +234,7 @@ export const userRouter = router({
             take: takeValue,
             skip: skipValue,
           });
-          users.forEach((user: User, index: number) => {
-            Object.assign(users[index], { userCount: userCount });
-          });
-          return users;
+          return { users, userCount };
         } catch (error) {
           throw new TRPCError({
             message: 'No clip document with the UUID provided could be found.',
@@ -258,10 +255,7 @@ export const userRouter = router({
             take: takeValue,
             skip: skipValue,
           });
-          users.forEach((user: User, index: number) => {
-            Object.assign(users[index], { userCount: userCount });
-          });
-          return users;
+          return { users, userCount };
         } catch (error) {
           throw new TRPCError({
             message: 'No clip document with the UUID provided could be found.',
