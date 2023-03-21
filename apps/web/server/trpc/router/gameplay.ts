@@ -173,7 +173,16 @@ export const gameplayRouter = router({
           code: 'BAD_REQUEST',
           message: 'This youtube url has already been submitted.',
         });
+      const isValid =
+        // eslint-disable-next-line max-len
+        /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
 
+      if (!input.youtubeUrl.match(isValid)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'This url does not seem to be from youtube.',
+        });
+      }
       try {
         // Validate that the URL contains a video that can be downloaded.
         await ytdl.getInfo(input.youtubeUrl);
