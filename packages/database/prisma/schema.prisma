@@ -18,6 +18,9 @@ model WaldoPage {
   alertDescription String?
   parentName       String
   site             WaldoSite @relation(fields: [parentName], references: [name], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model WaldoSite {
@@ -27,6 +30,9 @@ model WaldoSite {
   alertTitle       String?
   alertDescription String?
   pages            WaldoPage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Gameplay {
@@ -39,6 +45,9 @@ model Gameplay {
   isAnalyzed    Boolean         @default(false)
   clips         Clip[]
   cheats        CheatType[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 enum CheatType {
@@ -57,12 +66,18 @@ model GameplayVotes {
   userId     String
   isGame     Boolean      @default(false)
   actualGame GameplayType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Clip {
   id         String   @id @default(cuid())
   gameplay   Gameplay @relation(fields: [gameplayId], references: [id])
   gameplayId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 enum GameplayType {
@@ -89,6 +104,9 @@ model Account {
   id_token          String?
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([provider, providerAccountId])
 }
@@ -121,6 +139,9 @@ model User {
   gameplay      Gameplay[]
   role          Roles           @default(USER)
   gameplayVotes GameplayVotes[] @relation("user")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model VerificationToken {
