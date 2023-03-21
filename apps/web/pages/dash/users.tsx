@@ -429,6 +429,7 @@ const MenuAction = (props: MenuActionProps) => {
       });
     }
   };
+
   return (
     <Menu>
       <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
