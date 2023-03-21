@@ -175,15 +175,6 @@ export const gameplayRouter = router({
         });
 
       try {
-        const data = await ctx.prisma.gameplay.create({
-          data: {
-            userId: ctx.session.user.id,
-            youtubeUrl: input.youtubeUrl,
-            gameplayType: input.gameplayType,
-            cheats: input.cheats,
-          },
-        });
-
         // Validate that the URL contains a video that can be downloaded.
         await ytdl.getInfo(input.youtubeUrl);
         // Download video and save as a local MP4 to be used for processing.
@@ -201,7 +192,14 @@ export const gameplayRouter = router({
         // TODO: Submit clips with unique IDs and association to footage ID (API to set DB & FS to create clip file).
         // Each clip should be submitted to the database as a ClipInput.
         // Each clip should be stored to a location on the local server where it can be obtained by the Analysis team.
-
+        const data = await ctx.prisma.gameplay.create({
+          data: {
+            userId: ctx.session.user.id,
+            youtubeUrl: input.youtubeUrl,
+            gameplayType: input.gameplayType,
+            cheats: input.cheats,
+          },
+        });
         return data;
       } catch (error) {
         throw new TRPCError({
