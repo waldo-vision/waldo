@@ -45,15 +45,7 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -67,7 +59,7 @@
 
 <div align="center">
   <a href="https://github.com/waldo-vision/waldo">
-    <img src="images/screenshot.png" alt="Logo" width="960" height="600">
+    <img src="images/screenshot.png" alt="Screenshot">
   </a>
 </div>
 Waldo Vision is a machine learning system that will analyze FPS gameplay clips, and return a probability that the player is using aimbot cheats.
