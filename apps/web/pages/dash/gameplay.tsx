@@ -119,7 +119,8 @@ export default function Gameplay() {
             border={'none'}
             height={'50px'}
             fontWeight={'medium'}
-            placeholder={'Search Users'}
+            placeholder={'Search Gameplay'}
+            disabled={true}
           />
           <InputRightElement mt={1}>
             <SearchIcon />
@@ -385,8 +386,10 @@ export async function getServerSideProps(context) {
     context.res,
     authOptions,
   );
-  if (user?.user?.role == 'USER') return { redirect: { destination: '/404' } };
-  else return { props: {} };
+
+  if (user?.user?.role === 'ADMIN' || user?.user?.role === 'MOD')
+    return { props: {} };
+  else return { redirect: { destination: '/404' } };
 }
 
 Gameplay.getLayout = function getLayout(page: ReactElement) {

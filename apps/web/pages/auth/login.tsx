@@ -53,7 +53,7 @@ export default function Login() {
     });
   };
 
-  const createErrorToast = (str: String) => {
+  const createErrorToast = (str: string) => {
     toast({
       position: 'bottom-right',
       title: 'Error',

@@ -8,16 +8,27 @@ import {
   ReviewItemsGameplaySchema,
 } from '@utils/zod/gameplay';
 import { z } from 'zod';
+import { vUser } from './util';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
+import { serverSanitize } from '@utils/sanitize';
 export const gameplayRouter = router({
+  /**
+   * Get a specific gameplay
+   */
   get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay' } })
     .input(
-      z.object({
-        gameplayId: z.string().cuid(),
-      }),
+      z
+        .object({
+          gameplayId: z.string().cuid(),
+        })
+        .transform(input => {
+          return {
+            gameplayId: serverSanitize(input.gameplayId),
+          };
+        }),
     )
     .output(GameplaySchema)
     .query(async ({ input, ctx }) => {
@@ -45,6 +56,11 @@ export const gameplayRouter = router({
 
       return gameplay;
     }),
+
+  /**
+   * Get many gameplay
+   * Admin API
+   */
   getMany: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/dash' } })
     .input(
@@ -55,6 +71,18 @@ export const gameplayRouter = router({
     )
     .output(z.array(GameplaysDashSchema))
     .query(async ({ input, ctx }) => {
+      if (
+        !hasPerms({
+          userId: ctx.session.user.id,
+          userRole: ctx.session.user.role,
+          requiredPerms: Perms.roleMod,
+          blacklisted: ctx.session.user.blacklisted,
+        })
+      )
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+
       const takeValue = 10;
       const skipValue = input.page * 10 - 10;
       if (input.filterGames == null) {
@@ -108,6 +136,9 @@ export const gameplayRouter = router({
       }
     }),
 
+  /**
+   * Create a new gameplay
+   */
   create: protectedProcedure
     .meta({ openapi: { method: 'POST', path: '/gameplay' } })
     .input(
@@ -115,10 +146,21 @@ export const gameplayRouter = router({
         youtubeUrl: z.string().url(),
         gameplayType: GameplayTypes,
         cheats: z.array(CheatTypes),
+        tsToken: z.string(),
       }),
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
+      const isPerson = await vUser(input.tsToken);
+      if (!isPerson) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
+          // not sure if its safe to give this to the user
+          cause: '',
+        });
+      }
       const existingGameplay = await ctx.prisma.gameplay.findUnique({
         where: {
           youtubeUrl: input.youtubeUrl,
@@ -131,17 +173,17 @@ export const gameplayRouter = router({
           code: 'BAD_REQUEST',
           message: 'This youtube url has already been submitted.',
         });
+      const isValid =
+        // eslint-disable-next-line max-len
+        /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
 
-      try {
-        const data = await ctx.prisma.gameplay.create({
-          data: {
-            userId: ctx.session.user.id,
-            youtubeUrl: input.youtubeUrl,
-            gameplayType: input.gameplayType,
-            cheats: input.cheats,
-          },
+      if (!input.youtubeUrl.match(isValid)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'This url does not seem to be from youtube.',
         });
-
+      }
+      try {
         // Validate that the URL contains a video that can be downloaded.
         await ytdl.getInfo(input.youtubeUrl);
         // Download video and save as a local MP4 to be used for processing.
@@ -159,7 +201,14 @@ export const gameplayRouter = router({
         // TODO: Submit clips with unique IDs and association to footage ID (API to set DB & FS to create clip file).
         // Each clip should be submitted to the database as a ClipInput.
         // Each clip should be stored to a location on the local server where it can be obtained by the Analysis team.
-
+        const data = await ctx.prisma.gameplay.create({
+          data: {
+            userId: ctx.session.user.id,
+            youtubeUrl: input.youtubeUrl,
+            gameplayType: input.gameplayType,
+            cheats: input.cheats,
+          },
+        });
         return data;
       } catch (error) {
         throw new TRPCError({
@@ -170,12 +219,24 @@ export const gameplayRouter = router({
         });
       }
     }),
+  /**
+   * Get gameplay submitted by a user
+   */
   getUsers: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/user' } })
     .input(
-      z.object({
-        userId: z.string().cuid().nullish().optional(),
-      }),
+      z
+        .object({
+          userId: z.string().cuid().nullish().optional(),
+        })
+        .transform(input => {
+          return {
+            userId:
+              input.userId === null || input.userId === undefined
+                ? input.userId
+                : serverSanitize(input.userId),
+          };
+        }),
     )
     .output(GameplaySchema.array())
     .query(async ({ input, ctx }) => {
@@ -217,9 +278,15 @@ export const gameplayRouter = router({
   getClips: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/clips' } })
     .input(
-      z.object({
-        gameplayId: z.string().cuid(),
-      }),
+      z
+        .object({
+          gameplayId: z.string().cuid(),
+        })
+        .transform(input => {
+          return {
+            gameplayId: serverSanitize(input.gameplayId),
+          };
+        }),
     )
     .output(SegmentSchema.array())
     .query(async ({ input, ctx }) => {
@@ -257,11 +324,19 @@ export const gameplayRouter = router({
   update: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay' } })
     .input(
-      z.object({
-        gameplayId: z.string().cuid(),
-        gameplayType: GameplayTypes,
-        isAnalyzed: z.boolean(),
-      }),
+      z
+        .object({
+          gameplayId: z.string().cuid(),
+          gameplayType: GameplayTypes,
+          isAnalyzed: z.boolean(),
+        })
+        .transform(input => {
+          return {
+            gameplayId: serverSanitize(input.gameplayId),
+            gameplayType: input.gameplayType,
+            isAnalyzed: input.isAnalyzed,
+          };
+        }),
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
@@ -317,9 +392,15 @@ export const gameplayRouter = router({
   delete: protectedProcedure
     .meta({ openapi: { method: 'DELETE', path: '/gameplay' } })
     .input(
-      z.object({
-        gameplayId: z.string().cuid(),
-      }),
+      z
+        .object({
+          gameplayId: z.string().cuid(),
+        })
+        .transform(input => {
+          return {
+            gameplayId: serverSanitize(input.gameplayId),
+          };
+        }),
     )
     .mutation(async ({ input, ctx }) => {
       try {
@@ -361,8 +442,23 @@ export const gameplayRouter = router({
     }),
   getReviewItems: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/gameplay/review' } })
+    .input(
+      z.object({
+        tsToken: z.string(),
+      }),
+    )
     .output(ReviewItemsGameplaySchema)
     .query(async ({ input, ctx }) => {
+      const isPerson = await vUser(input.tsToken);
+      if (!isPerson) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
+          // not sure if its safe to give this to the user
+          cause: '',
+        });
+      }
       const randomPick = (values: string[]) => {
         const index = Math.floor(Math.random() * values.length);
         return values[index];
@@ -371,15 +467,11 @@ export const gameplayRouter = router({
       const tenDocs = () => {
         return Math.floor(Math.random() * (itemCount - 1 + 1)) + 0;
       };
-      const orderBy = randomPick(['userId', 'id', 'youtubeUrl']);
-      const orderDir = randomPick([`desc`, 'asc']);
       const reviewItem = await ctx.prisma.gameplay.findMany({
         where: {
           gameplayVotes: { none: { userId: ctx.session.user.id } },
         },
         take: 1,
-        skip: tenDocs(),
-        orderBy: { [orderBy]: orderDir },
         include: {
           user: true,
           gameplayVotes: true,
@@ -387,8 +479,9 @@ export const gameplayRouter = router({
       });
       if (reviewItem[0] == null || reviewItem[0] == undefined) {
         throw new TRPCError({ code: 'NOT_FOUND' });
+      } else {
+        return reviewItem[0];
       }
-      return reviewItem[0];
     }),
   review: protectedProcedure
     .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })
@@ -397,13 +490,20 @@ export const gameplayRouter = router({
         gameplayId: z.string().cuid(),
         isGame: z.boolean(),
         actualGame: GameplayTypes,
+        tsToken: z.string(),
       }),
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      console.log(input.gameplayId);
-      if (!ctx.session.user?.id) {
-        return { message: 'No user' };
+      const isPerson = await vUser(input.tsToken);
+      if (!isPerson) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
+          // not sure if its safe to give this to the user
+          cause: '',
+        });
       }
       const footageVote = await ctx.prisma.gameplayVotes.create({
         data: {

@@ -6,8 +6,6 @@ import {
   Flex,
   useToast,
   Divider,
-  Image,
-  Center,
   chakra,
 } from '@chakra-ui/react';
 import Layout from '@components/Layout';
@@ -20,14 +18,14 @@ import { trpc } from '@utils/trpc';
 import { useRouter } from 'next/router';
 import { TiTick } from 'react-icons/ti';
 import { RxCross2 } from 'react-icons/rx';
-import DeleteAccModal from '@components/DeleteAccModal';
+import AccountGameplayItem from '@components/account/AccountGameplayItem';
+import DeleteAccModal from '@components/account/DeleteAccModal';
 import Head from 'next/head';
 import { FaDiscord, FaBattleNet, FaTwitch } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { BsGithub, BsFacebook } from 'react-icons/bs';
 import { MdOutlineRemove } from 'react-icons/md';
 import useSite from '@site';
-import AccGameplayItemExtended from '@components/AccGameplayItemExtended';
 import { prisma } from '@server/db/client';
 import Loading from '@components/Loading';
 
@@ -63,7 +61,7 @@ const ProvidersList: Array<ProvidersListType> = [
   },
 ];
 
-interface Gameplay {
+export interface Gameplay {
   id: string;
   userId: string;
   youtubeUrl: string;
@@ -345,39 +343,8 @@ export default function Account() {
                   >
                     {gameplayItems &&
                       gameplayItems?.map((item, index) => (
-                        <Box
-                          key={index}
-                          bgColor={'white'}
-                          boxShadow={'md'}
-                          borderRadius={14}
-                          p={2}
-                        >
-                          <Flex direction={'column'} gap={5}>
-                            <Image
-                              src={getThumbnail(item.youtubeUrl)}
-                              alt={'Profile Icon'}
-                              height={'full'}
-                              width={'100%'}
-                              borderRadius={14}
-                            />
-                            <Box>
-                              <Flex direction={'column'}>
-                                <Box ml={2} mr={2} p={{ base: 0, lg: 5 }}>
-                                  <AccGameplayItemExtended
-                                    item={item}
-                                    id={getVideoId(item.youtubeUrl)}
-                                  />
-                                </Box>
-                              </Flex>
-                            </Box>
-                          </Flex>
-                        </Box>
+                        <AccountGameplayItem key={index} item={item} />
                       ))}
-                    {gameplayItems && gameplayItems.length < 1 && (
-                      <Center>
-                        <Box>No uploads found</Box>
-                      </Center>
-                    )}
                   </Flex>
                 </Box>
               </Flex>
@@ -424,25 +391,6 @@ export default function Account() {
   );
 }
 
-const videoIdFromUrlRegex =
-  /* eslint-disable-next-line no-useless-escape */
-  /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-// format http://img.youtube.com/vi/[video-id]/[thumbnail-number].jpg
-const youtubeThumbnailRetrievalUrl = 'http://img.youtube.com/vi/';
-const getVideoId = (url: string) => {
-  const result = url.match(videoIdFromUrlRegex);
-  if (result == null) {
-    // will never happen types are just wack.
-    return 'No result';
-  }
-  return result[2];
-};
-
-const getThumbnail = (urlInput: string) => {
-  const videoId = getVideoId(urlInput);
-  const url = `${youtubeThumbnailRetrievalUrl}${videoId}/${0}.jpg`;
-  return url;
-};
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export async function getServerSideProps(context) {

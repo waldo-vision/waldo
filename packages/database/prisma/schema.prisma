@@ -18,6 +18,9 @@ model WaldoPage {
   alertDescription String?
   parentName       String
   site             WaldoSite @relation(fields: [parentName], references: [name], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model WaldoSite {
@@ -27,18 +30,24 @@ model WaldoSite {
   alertTitle       String?
   alertDescription String?
   pages            WaldoPage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Gameplay {
-  id           String         @id @default(cuid())
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
+  id            String          @id @default(cuid())
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
   gameplayVotes GameplayVotes[] @relation("gameplay")
-  youtubeUrl   String         @unique
+  youtubeUrl    String          @unique
   gameplayType  GameplayType    @default(CSG)
-  isAnalyzed   Boolean        @default(false)
-  clips        Clip[]
-  cheats       CheatType[]
+  isAnalyzed    Boolean         @default(false)
+  clips         Clip[]
+  cheats        CheatType[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 enum CheatType {
@@ -49,21 +58,26 @@ enum CheatType {
   SPINBOT
 }
 
-
 model GameplayVotes {
-  id         String      @id @default(cuid())
-  gameplay    Gameplay     @relation("gameplay", fields: [gameplayId], references: [id], onDelete: Cascade)
-  gameplayId  String
-  user       User        @relation("user", fields: [userId], references: [id], onDelete: Cascade)
+  id         String       @id @default(cuid())
+  gameplay   Gameplay     @relation("gameplay", fields: [gameplayId], references: [id], onDelete: Cascade)
+  gameplayId String
+  user       User         @relation("user", fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  isGame     Boolean     @default(false)
+  isGame     Boolean      @default(false)
   actualGame GameplayType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Clip {
-  id        String  @id @default(cuid())
+  id         String   @id @default(cuid())
   gameplay   Gameplay @relation(fields: [gameplayId], references: [id])
   gameplayId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 enum GameplayType {
@@ -91,6 +105,9 @@ model Account {
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   @@unique([provider, providerAccountId])
 }
 
@@ -110,18 +127,21 @@ enum Roles {
 }
 
 model User {
-  id            String         @id @default(cuid())
+  id            String          @id @default(cuid())
   name          String?
-  email         String?        @unique
+  email         String?         @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   // our items
-  blacklisted   Boolean        @default(false)
+  blacklisted   Boolean         @default(false)
   gameplay      Gameplay[]
-  role          Roles          @default(USER)
+  role          Roles           @default(USER)
   gameplayVotes GameplayVotes[] @relation("user")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model VerificationToken {
