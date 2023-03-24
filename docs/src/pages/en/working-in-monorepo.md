@@ -12,6 +12,10 @@ Inside the `apps` directory are all the Waldo Vision "apps". This includes this 
 
 Inside the `packages` directory is code that is reused between many of the different apps. You can consider these packages to be shared utilities if it helps you conceptualize it.
 
+## Breaking Change Guide
+
+If your pull request contains a breaking change you must specify what the breaking change is and add it to the changelog for the current version.
+
 ## Useful Commands
 
 ### Turbo

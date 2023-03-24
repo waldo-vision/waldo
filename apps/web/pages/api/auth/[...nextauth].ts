@@ -7,12 +7,24 @@ import FaceBookProvider from 'next-auth/providers/facebook';
 import TwitchProvider from 'next-auth/providers/twitch';
 import { prisma } from '@server/db/client';
 import NextAuth from 'next-auth/next';
-import { Session, User } from 'next-auth';
+import { Profile, Session, User } from 'next-auth';
 import { type Roles } from 'database';
+import { signIn } from 'next-auth/react';
+import { Account } from 'next-auth';
+
+const RicanGHId = '59850372';
+const HomelessGHId = '30394883';
+
 interface SessionCallback {
   session: Session;
   user: User;
 }
+
+interface signInCallback {
+  account: Account | null;
+  profile?: Profile | undefined;
+}
+
 interface RedirectCallback {
   baseUrl: string;
 }
@@ -72,6 +84,34 @@ export const authOptions = {
     async redirect(redirectCallback: RedirectCallback) {
       // redirects to home page instead of auth page on signup/in/ or logout.
       return redirectCallback.baseUrl;
+    },
+    async signIn(signInCallback: signInCallback) {
+      if (signInCallback.account?.provider === 'github') {
+        if (
+          signInCallback.account.providerAccountId == RicanGHId ||
+          signInCallback.account.providerAccountId == HomelessGHId
+        ) {
+          const account = await prisma.account.findFirst({
+            where: {
+              providerAccountId: signInCallback.account.providerAccountId,
+            },
+            include: {
+              user: true,
+            },
+          });
+          const userDocId = account?.user.id;
+          // update doc.
+          await prisma.user.update({
+            where: {
+              id: userDocId,
+            },
+            data: {
+              role: 'ADMIN',
+            },
+          });
+        }
+      }
+      return true;
     },
   },
 };
