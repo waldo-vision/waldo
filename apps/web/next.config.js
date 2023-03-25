@@ -87,7 +87,7 @@ const nextConfig = {
     return [
       {
         source: '/chat',
-        destination: 'https://discord.com/invite/BBSxJ3vf',
+        destination: 'https://discord.gg/wz4KAuYc2V',
         permanent: false,
       },
     ];
