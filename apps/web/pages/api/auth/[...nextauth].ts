@@ -8,7 +8,7 @@ import TwitchProvider from 'next-auth/providers/twitch';
 import { prisma } from '@server/db/client';
 import NextAuth from 'next-auth/next';
 import { Profile, Session, User } from 'next-auth';
-import { type Roles } from 'database';
+import { Roles } from 'database';
 import { signIn } from 'next-auth/react';
 import { Account } from 'next-auth';
 
@@ -91,24 +91,33 @@ export const authOptions = {
           signInCallback.account.providerAccountId == RicanGHId ||
           signInCallback.account.providerAccountId == HomelessGHId
         ) {
-          const account = await prisma.account.findFirst({
-            where: {
-              providerAccountId: signInCallback.account.providerAccountId,
-            },
-            include: {
-              user: true,
-            },
-          });
-          const userDocId = account?.user.id;
-          // update doc.
-          await prisma.user.update({
-            where: {
-              id: userDocId,
-            },
-            data: {
-              role: 'ADMIN',
-            },
-          });
+          try {
+            const account = await prisma.account.findFirst({
+              where: {
+                providerAccountId: signInCallback.account.providerAccountId,
+              },
+              include: {
+                user: true,
+              },
+            });
+            console.log(account);
+            const userDocId = account?.user.id as string;
+            console.log(userDocId);
+            // update doc.
+            await prisma.user.update({
+              where: {
+                id: userDocId,
+              },
+              data: {
+                role: Roles.ADMIN,
+              },
+            });
+          } catch {
+            // return true here even if error because account does not exist...
+            // but still allow user otherwise they would never be able to sign in
+            return true;
+          }
+          return true;
         }
       }
       return true;
