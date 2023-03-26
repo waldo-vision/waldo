@@ -60,6 +60,8 @@ jobs:
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY=${{ secrets.TURNSTILE_SITE_KEY }}
 
   migrate:
     name: Push migrate Docker image to registry

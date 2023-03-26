@@ -21,6 +21,7 @@ RUN corepack enable
 WORKDIR /app
 
 ENV NODE_ENV production
+ARG NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY 1x00000000000000000000AA
 
 # First install the dependencies (as they change less often)
 COPY .gitignore .gitignore
