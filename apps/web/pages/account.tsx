@@ -55,10 +55,6 @@ const ProvidersList: Array<ProvidersListType> = [
     name: 'Github',
     icon: <BsGithub size={30} color={'#000000'} />,
   },
-  {
-    name: 'Facebook',
-    icon: <BsFacebook size={30} color={'#0165E1'} />,
-  },
 ];
 
 export interface Gameplay {
@@ -321,7 +317,8 @@ export default function Account() {
                                 >
                                   <RxCross2 color={'red'} />
                                   <Text fontSize={{ base: 11, sm: 13, md: 15 }}>
-                                    You are not connected to a {name} account.
+                                    You are not connected to a{' '}
+                                    {name.toLowerCase()} account.
                                   </Text>
                                 </Flex>
                               )}
