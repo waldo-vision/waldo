@@ -121,11 +121,11 @@ export default function Gameplay() {
     };
 
     const autoFillMenu = () => {
-      let menuItems: GoToItem[] = [];
+      const menuItems: GoToItem[] = [];
       if (data == undefined || data[0] == undefined) return;
       if (!data[0].gameplayCount) return;
       const totalPages = Math.ceil(data[0].gameplayCount / Math.round(10));
-      for (var i = 0; i < totalPages; i++) {
+      for (let i = 0; i < totalPages; i++) {
         menuItems.push({ number: i + 1 });
       }
       setGtMenuItems(menuItems);
