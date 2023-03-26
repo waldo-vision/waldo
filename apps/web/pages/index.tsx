@@ -103,7 +103,12 @@ export default function Home() {
               alignItems={'center'}
               gap={3}
             >
-              <Heading fontSize={'57px'} py={2} textAlign={'center'}>
+              <Heading
+                fontSize={'62px'}
+                py={2}
+                textAlign={'center'}
+                fontWeight="bold"
+              >
                 Waldo Vision
               </Heading>
               <Text fontSize={'27px'} textAlign={'center'}>

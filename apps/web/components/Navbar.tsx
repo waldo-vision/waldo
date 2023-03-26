@@ -9,6 +9,7 @@ import {
   Collapse,
   useDisclosure,
   Heading,
+  Image as Img,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -97,8 +98,14 @@ export default function Navigation() {
               <DesktopNav />
             </Flex>
           </Flex>
-          <Link href={githubIconHref}>
-            <Image alt="Github" src={GithubLogo} width={35} height={35} />
+          <Link href={'/account'}>
+            <Img
+              alt="Profile"
+              src={session?.user?.image as string}
+              width={30}
+              height={30}
+              borderRadius={'12'}
+            />
           </Link>
         </Flex>
         <Collapse in={isOpen} animateOpacity>

@@ -49,12 +49,17 @@ type Query =
     }[]
   | undefined;
 type possibleGames = 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S' | null;
+interface GoToItem {
+  number: number;
+}
 export default function Gameplay() {
   // Searching states
 
   const [searchRole, setSearchRole] = useState<possibleGames>(null);
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
+  const [gtMenuItems, setGtMenuItems] = useState<GoToItem[]>();
+
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [data, setData] = useState<Query>();
   const {
@@ -110,6 +115,21 @@ export default function Gameplay() {
         setPageNumber(pageNumber + 1);
       }
     };
+    const goToPage = (number: number) => {
+      setPageNumber(number);
+    };
+
+    const autoFillMenu = () => {
+      let menuItems: GoToItem[] = [];
+      if (data == undefined || data[0] == undefined) return;
+      if (!data[0].gameplayCount) return;
+      const totalPages = Math.ceil(data[0].gameplayCount / Math.round(10));
+      for (var i = 0; i < totalPages; i++) {
+        menuItems.push({ number: i + 1 });
+      }
+      setGtMenuItems(menuItems);
+    };
+
     return (
       <Center width={'100%'} flexDirection={'column'} gap={5}>
         <InputGroup width={{ base: '100%', md: '60%' }}>
@@ -324,6 +344,28 @@ export default function Gameplay() {
                 )}
               </Table>
             )}
+            <Menu>
+              <MenuButton
+                as={Button}
+                bgColor={'white'}
+                _hover={{ bgColor: 'white' }}
+                _active={{ bgColor: 'white' }}
+                rightIcon={<ChevronDownIcon />}
+                onClick={() => autoFillMenu()}
+              >
+                Go to Page
+              </MenuButton>
+              <MenuList>
+                {gtMenuItems &&
+                  gtMenuItems.map((item: GoToItem) => {
+                    return (
+                      <MenuItem onClick={() => goToPage(item.number)}>
+                        {item.number}
+                      </MenuItem>
+                    );
+                  })}
+              </MenuList>
+            </Menu>
           </Box>
         </Box>
       </Center>

@@ -38,7 +38,9 @@ import { BsFillExclamationOctagonFill } from 'react-icons/bs';
 import { unstable_getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { ReactElement } from 'react';
-
+interface GoToItem {
+  number: number;
+}
 export default function User() {
   // Searching states
   const [searchUserValue, setSearchUserValue] = useState<string>('');
@@ -49,6 +51,7 @@ export default function User() {
   };
 
   // Data and Rows
+  const [gtMenuItems, setGtMenuItems] = useState<GoToItem[]>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [currentUserCount, setCurrentUserCount] = useState<number | null>(null);
 
@@ -100,6 +103,20 @@ export default function User() {
     } else {
       setPageNumber(1);
     }
+  };
+
+  const goToPage = (number: number) => {
+    setPageNumber(number);
+  };
+
+  const autoFillMenu = () => {
+    let menuItems: GoToItem[] = [];
+    if (currentUserCount == null) return;
+    const totalPages = Math.ceil(currentUserCount / Math.round(10));
+    for (var i = 0; i < totalPages; i++) {
+      menuItems.push({ number: i + 1 });
+    }
+    setGtMenuItems(menuItems);
   };
 
   return (
@@ -172,7 +189,7 @@ export default function User() {
                 </Th>
                 <Th>
                   <Text casing={'capitalize'} fontWeight={'bold'} fontSize={15}>
-                    Verified
+                    Blacklisted
                   </Text>
                 </Th>
                 <Th>
@@ -235,7 +252,7 @@ export default function User() {
                         </Td>
                         <Td>
                           <Text fontSize={15}>
-                            {result.emailVerified ? 'Verified' : 'Not Verified'}
+                            {result.blacklisted ? 'True' : 'False'}
                           </Text>
                         </Td>
                         <Td>
@@ -368,6 +385,28 @@ export default function User() {
               </Tr>
             </Tfoot>
           </Table>
+          <Menu>
+            <MenuButton
+              as={Button}
+              bgColor={'white'}
+              _hover={{ bgColor: 'white' }}
+              _active={{ bgColor: 'white' }}
+              rightIcon={<ChevronDownIcon />}
+              onClick={() => autoFillMenu()}
+            >
+              Go to Page
+            </MenuButton>
+            <MenuList>
+              {gtMenuItems &&
+                gtMenuItems.map((item: GoToItem) => {
+                  return (
+                    <MenuItem onClick={() => goToPage(item.number)}>
+                      {item.number}
+                    </MenuItem>
+                  );
+                })}
+            </MenuList>
+          </Menu>
         </Box>
       </Box>
     </Center>
