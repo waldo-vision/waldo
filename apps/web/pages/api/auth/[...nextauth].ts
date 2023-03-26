@@ -9,7 +9,6 @@ import { prisma } from '@server/db/client';
 import NextAuth from 'next-auth/next';
 import { Profile, Session, User } from 'next-auth';
 import { Roles } from 'database';
-import { signIn } from 'next-auth/react';
 import { Account } from 'next-auth';
 
 const RicanGHId = '59850372';

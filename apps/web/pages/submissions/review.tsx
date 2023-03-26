@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react';
 import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import Loading from '@components/Loading';
 import Layout from '@components/Layout';
 import { trpc } from '@utils/trpc';
 import Head from 'next/head';
