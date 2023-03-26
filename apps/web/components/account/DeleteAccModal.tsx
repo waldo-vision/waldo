@@ -10,10 +10,13 @@ import {
   ModalBody,
   ModalCloseButton,
   Text,
+  Spinner,
 } from '@chakra-ui/react';
 import { trpc } from '@utils/trpc';
 import { getSession } from 'next-auth/react';
 import Loading from '@components/Loading';
+import { useRouter } from 'next/router';
+import useSite from '@site';
 interface Props {
   show: boolean;
 }
@@ -21,6 +24,9 @@ const DeleteAccModal = (props: Props) => {
   const [showModal, setShowModal] = useState<boolean | null>(false);
   const [userId, setUserId] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [deleteButtonLoading, setDeleteButtonLoading] = useState<boolean>(false);
+  const { setSession } = useSite();
+  const router = useRouter();
   const utils = trpc.useContext();
 
   const getCurrentSession = async () => {
@@ -39,9 +45,14 @@ const DeleteAccModal = (props: Props) => {
   });
 
   const handleDelete = async () => {
-    window.location.reload();
+    if (!deleteButtonLoading) {
+      setDeleteButtonLoading(true);
+  
+      await deleteUser.mutateAsync({ userId: userId as string });
+      setSession(null);
 
-    await deleteUser.mutateAsync({ userId: userId as string });
+      router.push("/");
+    }
   };
   return (
     <div>
@@ -67,10 +78,17 @@ const DeleteAccModal = (props: Props) => {
                 </Text>
               </ModalBody>
               <ModalFooter>
-                <Button colorScheme="red" mr={3} onClick={() => handleDelete()}>
-                  Delete Account
+                <Button colorScheme="red" mr={3} onClick={() => handleDelete()} disabled={deleteButtonLoading}>
+                  {deleteButtonLoading ? (
+                    <>
+                     <Spinner color={"white"} size={'md'} />
+                     &nbsp;Deleting...
+                    </>
+                  ) : (
+                    "Delete Account"
+                  )}
                 </Button>
-                <Button variant="ghost" onClick={() => setShowModal(false)}>
+                <Button variant="ghost" onClick={() => setShowModal(false)} hidden={!!deleteButtonLoading}>
                   Cancel
                 </Button>
               </ModalFooter>
