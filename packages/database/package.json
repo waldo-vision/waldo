@@ -8,13 +8,13 @@
     "seed": "esno prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "4.10.1",
+    "@prisma/client": "4.11.0",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*"
   },
   "devDependencies": {
     "esno": "^0.16.3",
-    "prisma": "4.10.1"
+    "prisma": "4.11.0"
   },
   "scripts": {
     "db:init": "yarn db:push:fdl && yarn db:seed",
