@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react';
 import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import Loading from '@components/Loading';
 import Layout from '@components/Layout';
 import { trpc } from '@utils/trpc';
 import Head from 'next/head';
@@ -74,18 +73,18 @@ export default function Review() {
 
     setLoading(true);
 
-    if (!isRequestValid) {
-      toast({
-        position: 'bottom-right',
-        title: 'Invalid Request',
-        description:
-          'Your request was deemed invalid. Please reload the page or try again.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
-      return;
-    }
+    // if (!isRequestValid) {
+    //   toast({
+    //     position: 'bottom-right',
+    //     title: 'Invalid Request',
+    //     description:
+    //       'Your request was deemed invalid. Please reload the page or try again.',
+    //     status: 'error',
+    //     duration: 5000,
+    //     isClosable: true,
+    //   });
+    //   return;
+    // }
 
     const review = action === 'yes';
     await reviewGameplay.mutateAsync({
@@ -109,10 +108,11 @@ export default function Review() {
 
   useEffect(() => {
     const getNecessaryData = async () => {
-      if (tsToken && tsToken.length > 3 && !reviewItemData) {
-        await refetch();
-        return;
-      }
+      // if (tsToken && tsToken.length > 3 && !reviewItemData) {
+      //   await refetch();
+      //   return;
+      // }
+      await refetch();
       setReviewItem(reviewItemData);
       if (error?.data?.code == 'NOT_FOUND') {
         setFinished(true);

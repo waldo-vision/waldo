@@ -151,16 +151,16 @@ export const gameplayRouter = router({
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
-      const isPerson = await vUser(input.tsToken);
-      if (!isPerson) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message:
-            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
-          // not sure if its safe to give this to the user
-          cause: '',
-        });
-      }
+      // const isPerson = await vUser(input.tsToken);
+      // if (!isPerson) {
+      //   throw new TRPCError({
+      //     code: 'BAD_REQUEST',
+      //     message:
+      //       'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
+      //     // not sure if its safe to give this to the user
+      //     cause: '',
+      //   });
+      // }
       const existingGameplay = await ctx.prisma.gameplay.findUnique({
         where: {
           youtubeUrl: input.youtubeUrl,
@@ -449,16 +449,16 @@ export const gameplayRouter = router({
     )
     .output(ReviewItemsGameplaySchema)
     .query(async ({ input, ctx }) => {
-      const isPerson = await vUser(input.tsToken);
-      if (!isPerson) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message:
-            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
-          // not sure if its safe to give this to the user
-          cause: '',
-        });
-      }
+      // const isPerson = await vUser(input.tsToken);
+      // if (!isPerson) {
+      //   throw new TRPCError({
+      //     code: 'BAD_REQUEST',
+      //     message:
+      //       'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
+      //     // not sure if its safe to give this to the user
+      //     cause: '',
+      //   });
+      // }
       const randomPick = (values: string[]) => {
         const index = Math.floor(Math.random() * values.length);
         return values[index];
