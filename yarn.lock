@@ -10110,6 +10110,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-auth@npm:4.18.6":
+  version: 4.18.6
+  resolution: "next-auth@npm:4.18.6"
+  dependencies:
+    "@babel/runtime": ^7.16.3
+    "@panva/hkdf": ^1.0.1
+    cookie: ^0.5.0
+    jose: ^4.9.3
+    oauth: ^0.9.15
+    openid-client: ^5.1.0
+    preact: ^10.6.3
+    preact-render-to-string: ^5.1.19
+    uuid: ^8.3.2
+  peerDependencies:
+    next: ^12.2.5 || ^13
+    nodemailer: ^6.6.5
+    react: ^17.0.2 || ^18
+    react-dom: ^17.0.2 || ^18
+  peerDependenciesMeta:
+    nodemailer:
+      optional: true
+  checksum: f77f83ecf7ec0f346e3297aaaa1b80d24e0e73d82a49071389fe80873b34202ec8508ff13e1a603940c03581ca785f01a9d7cdf7fabea0a4462317522a8dc14b
+  languageName: node
+  linkType: hard
+
 "next-auth@npm:^4.18.6":
   version: 4.18.7
   resolution: "next-auth@npm:4.18.7"
@@ -13363,6 +13388,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.46.1
     eslint: ^8.30.0
     eslint-config-custom: "workspace:*"
+    next-auth: 4.18.6
     prettier: ^2.8.1
     tsconfig: "workspace:*"
     turbo: ^1.7.0
