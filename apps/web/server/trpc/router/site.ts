@@ -2,10 +2,10 @@ import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { TRPCError } from '@trpc/server';
 import { serverSanitize } from '@utils/sanitize';
 import { z } from 'zod';
-import { router, protectedProcedure } from '../trpc';
+import { router, protectedProcedure, publicProcedure } from '../trpc';
 
 export const siteRouter = router({
-  getPageData: protectedProcedure
+  getPageData: publicProcedure
     .meta({ openapi: { method: 'GET', path: '/site/page' } })
     .input(
       z
@@ -43,7 +43,7 @@ export const siteRouter = router({
       // no error checking because the docs will never be deleted.
       return pageData;
     }),
-  getSiteData: protectedProcedure
+  getSiteData: publicProcedure
     .meta({ openapi: { method: 'GET', path: '/site/site' } })
     .input(
       z
