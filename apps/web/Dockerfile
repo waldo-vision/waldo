@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:18-alpine3.17 AS builder
 # ensure deps can build
 RUN apk add --update --no-cache openssl1.1-compat libc6-compat
 # enable yarn
@@ -12,7 +12,7 @@ RUN yarn dlx -p turbo turbo prune --scope=web --docker
 # See https://github.com/vercel/turborepo/issues/1997#issuecomment-1271372326
 RUN rm -rf /app/out/full/*/*/node_modules
 
-FROM node:18-alpine AS installer
+FROM node:18-alpine3.17 AS installer
 # ensure deps can build
 RUN apk add --update --no-cache openssl1.1-compat libc6-compat
 # enable yarn
@@ -35,7 +35,7 @@ COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 RUN yarn turbo run build --filter=web...
 
-FROM node:18-alpine AS runner
+FROM node:18-alpine3.17 AS runner
 
 # set workdir
 WORKDIR /app
