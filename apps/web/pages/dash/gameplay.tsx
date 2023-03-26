@@ -20,6 +20,7 @@ import {
   Tfoot,
   useToast,
   Spinner,
+  Link,
 } from '@chakra-ui/react';
 import Layout from '@components/dashboard/Layout';
 import { ReactElement, useEffect, useState } from 'react';
@@ -147,25 +148,30 @@ export default function Gameplay() {
           </InputRightElement>
         </InputGroup>
         <Box width={{ base: '100%', md: '70%' }}>
-          <Menu>
-            <MenuButton
-              as={Button}
-              bgColor={'white'}
-              _hover={{ bgColor: 'white' }}
-              _active={{ bgColor: 'white' }}
-              rightIcon={<ChevronDownIcon />}
-            >
-              Filters: {searchRole}
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={() => handleFilter('CSG')}>CSG</MenuItem>
-              <MenuItem onClick={() => handleFilter('VAL')}>VAL</MenuItem>
-              <MenuItem onClick={() => handleFilter('APE')}>APE</MenuItem>
-              <MenuItem onClick={() => handleFilter('TF2')}>TF2</MenuItem>
-              <MenuItem onClick={() => handleFilter('COD')}>COD</MenuItem>
-              <MenuItem onClick={() => handleFilter('R6S')}>R6S</MenuItem>
-            </MenuList>
-          </Menu>
+          <Flex alignItems={'center'} gap={3}>
+            <Menu>
+              <MenuButton
+                as={Button}
+                bgColor={'white'}
+                _hover={{ bgColor: 'white' }}
+                _active={{ bgColor: 'white' }}
+                rightIcon={<ChevronDownIcon />}
+              >
+                Filters: {searchRole}
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={() => handleFilter('CSG')}>CSG</MenuItem>
+                <MenuItem onClick={() => handleFilter('VAL')}>VAL</MenuItem>
+                <MenuItem onClick={() => handleFilter('APE')}>APE</MenuItem>
+                <MenuItem onClick={() => handleFilter('TF2')}>TF2</MenuItem>
+                <MenuItem onClick={() => handleFilter('COD')}>COD</MenuItem>
+                <MenuItem onClick={() => handleFilter('R6S')}>R6S</MenuItem>
+              </MenuList>
+            </Menu>
+            <Text fontWeight={'semibold'}>
+              Total gameplay items: {data && data[0].gameplayCount}
+            </Text>
+          </Flex>
           <Box overflowX="auto">
             {data && (
               <Table
@@ -264,7 +270,13 @@ export default function Gameplay() {
                             </Text>
                           </Td>
                           <Td>
-                            <Text fontSize={15}>{result.youtubeUrl}</Text>
+                            <Link
+                              fontSize={15}
+                              href={result.youtubeUrl}
+                              textColor={'blue.500'}
+                            >
+                              {result.youtubeUrl}
+                            </Link>
                           </Td>
                           <Td>
                             <Text fontSize={15}>
