@@ -3,6 +3,7 @@ import { router, protectedProcedure } from '../trpc';
 import { serverSanitize } from '@utils/sanitize';
 
 export async function vUser(tsToken: string) {
+  console.log(tsToken);
   const endpoint = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
   const body = `secret=${encodeURIComponent(
     process.env.CLOUDFLARE_TURNSTILE_SECRET,
@@ -15,6 +16,7 @@ export async function vUser(tsToken: string) {
     },
   });
   const result = await request.json();
+  console.log(result);
   if (result.success) {
     return true;
   } else {
