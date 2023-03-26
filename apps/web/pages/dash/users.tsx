@@ -139,28 +139,33 @@ export default function User() {
         </InputRightElement>
       </InputGroup>
       <Box width={{ base: '100%', md: '85%' }}>
-        <Menu>
-          <MenuButton
-            as={Button}
-            bgColor={'white'}
-            _hover={{ bgColor: 'white' }}
-            _active={{ bgColor: 'white' }}
-            rightIcon={<ChevronDownIcon />}
-          >
-            Roles:{' '}
-            {searchRole
-              ? searchRole?.toLowerCase().charAt(0).toUpperCase() +
-                searchRole?.toLowerCase().slice(1)
-              : 'All'}
-          </MenuButton>
-          <MenuList>
-            <MenuItem onClick={() => handleFilter(null)}>All</MenuItem>
-            <MenuItem onClick={() => handleFilter('User')}>User</MenuItem>
-            <MenuItem onClick={() => handleFilter('Trusted')}>Trusted</MenuItem>
-            <MenuItem onClick={() => handleFilter('Mod')}>Mod</MenuItem>
-            <MenuItem onClick={() => handleFilter('Admin')}>Admin</MenuItem>
-          </MenuList>
-        </Menu>
+        <Flex alignItems={'center'} gap={'3'}>
+          <Menu>
+            <MenuButton
+              as={Button}
+              bgColor={'white'}
+              _hover={{ bgColor: 'white' }}
+              _active={{ bgColor: 'white' }}
+              rightIcon={<ChevronDownIcon />}
+            >
+              Roles:{' '}
+              {searchRole
+                ? searchRole?.toLowerCase().charAt(0).toUpperCase() +
+                  searchRole?.toLowerCase().slice(1)
+                : 'All'}
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => handleFilter(null)}>All</MenuItem>
+              <MenuItem onClick={() => handleFilter('User')}>User</MenuItem>
+              <MenuItem onClick={() => handleFilter('Trusted')}>
+                Trusted
+              </MenuItem>
+              <MenuItem onClick={() => handleFilter('Mod')}>Mod</MenuItem>
+              <MenuItem onClick={() => handleFilter('Admin')}>Admin</MenuItem>
+            </MenuList>
+          </Menu>
+          <Text fontWeight={'semibold'}>Total users: {currentUserCount}</Text>
+        </Flex>
         <Box overflowX="auto">
           <Table
             width={'100%'}
