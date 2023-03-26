@@ -16,10 +16,12 @@ export async function vUser(tsToken: string) {
     },
   });
   const result = await request.json();
-  console.log(result);
-  if (result.success) {
+
+  if (result.success == true) {
+    console.log('true');
     return true;
   } else {
+    console.log('false');
     return false;
   }
 }
