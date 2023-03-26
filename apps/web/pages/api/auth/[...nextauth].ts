@@ -12,7 +12,7 @@ import { Roles } from 'database';
 import { signIn } from 'next-auth/react';
 import { Account } from 'next-auth';
 
-const RicanGHId = '90457772';
+const RicanGHId = '59850372';
 const HomelessGHId = '30394883';
 
 interface SessionCallback {
