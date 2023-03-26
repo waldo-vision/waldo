@@ -61,7 +61,7 @@ const nextConfig = {
   async headers() {
     if (process.env.NODE_ENV === 'production') {
       securityHeaders[4].value =
-        "default-src 'self'; img-src * data:; script-src 'self' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; connect-src 'self' https://youtube.com https://www.youtube.com; frame-src https://challenges.cloudflare.com https://youtube.com https://www.youtube.com; upgrade-insecure-requests;";
+        "default-src 'self'; img-src * data:; script-src 'self' 'sha256-ac1zrQEmy3XGPb0cfRRfRfJrTtI7BslOmDFWYr9sDbQ=' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; connect-src 'self' https://youtube.com https://www.youtube.com; frame-src https://challenges.cloudflare.com https://youtube.com https://www.youtube.com; upgrade-insecure-requests;";
     }
     return [
       {
