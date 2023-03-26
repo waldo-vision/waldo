@@ -23,7 +23,7 @@ import DeleteAccModal from '@components/account/DeleteAccModal';
 import Head from 'next/head';
 import { FaDiscord, FaBattleNet, FaTwitch } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { BsGithub, BsFacebook } from 'react-icons/bs';
+import { BsGithub } from 'react-icons/bs';
 import { MdOutlineRemove } from 'react-icons/md';
 import useSite from '@site';
 import { prisma } from '@server/db/client';

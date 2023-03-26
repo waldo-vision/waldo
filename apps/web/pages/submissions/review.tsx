@@ -42,7 +42,7 @@ export default function Review() {
   const [isRequestValid, setIsRequestValid] = useState<boolean>(false);
   const [tsToken, setTsToken] = useState<string | undefined>('');
   const router = useRouter();
-  const toast = useToast();
+  // const toast = useToast();
   const videoIdFromUrlRegex =
     // eslint-disable-next-line no-useless-escape
     /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;

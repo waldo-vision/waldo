@@ -46,6 +46,7 @@ export const authOptions = {
     BattleNetProvider({
       clientId: process.env.BTLNET_CLIENT_ID,
       clientSecret: process.env.BTLNET_CLIENT_SECRET,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       issuer: 'https://oauth.battle.net/authorize',
     }),
