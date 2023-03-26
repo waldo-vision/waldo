@@ -118,7 +118,7 @@ export default function Home() {
               </Text>
 
               <Text fontSize={'l'} fontWeight={'thin'}>
-                Currently in construction
+                Currently under construction
               </Text>
               <Flex direction={{ base: 'column', md: 'row' }} gap={5}>
                 <Link href={'/submissions'}>
@@ -420,10 +420,10 @@ const Features = () => {
             title={'Open Source'}
             text={
               <Text>
-                View Waldo Vision source code on our{' '}
+                View the Waldo Vision source code on our{' '}
                 <Link href={githubrepo}>
                   <Text as={'span'} fontWeight={'bold'}>
-                    github
+                    Github
                   </Text>
                 </Link>
                 .
