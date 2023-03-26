@@ -20,6 +20,7 @@ import {
   Tfoot,
   useToast,
   Spinner,
+  Link,
 } from '@chakra-ui/react';
 import Layout from '@components/dashboard/Layout';
 import { ReactElement, useEffect, useState } from 'react';
@@ -264,7 +265,13 @@ export default function Gameplay() {
                             </Text>
                           </Td>
                           <Td>
-                            <Text fontSize={15}>{result.youtubeUrl}</Text>
+                            <Link
+                              fontSize={15}
+                              href={result.youtubeUrl}
+                              textColor={'blue.500'}
+                            >
+                              {result.youtubeUrl}
+                            </Link>
                           </Td>
                           <Td>
                             <Text fontSize={15}>
