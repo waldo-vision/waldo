@@ -47,7 +47,8 @@ export const authOptions = {
     BattleNetProvider({
       clientId: process.env.BTLNET_CLIENT_ID,
       clientSecret: process.env.BTLNET_CLIENT_SECRET,
-      issuer: 'https://us.battle.net/oauth',
+      // @ts-ignore
+      issuer: 'https://oauth.battle.net/authorize',
     }),
     FaceBookProvider({
       clientId: process.env.FB_CLIENT_ID,
@@ -56,6 +57,7 @@ export const authOptions = {
     TwitchProvider({
       clientId: process.env.TWITCH_CLIENT_ID,
       clientSecret: process.env.TWITCH_CLIENT_SECRET,
+      issuer: 'https://id.twitch.tv/oauth2/authorize',
     }),
   ],
   callbacks: {
