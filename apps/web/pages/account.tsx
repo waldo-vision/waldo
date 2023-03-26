@@ -271,7 +271,8 @@ export default function Account() {
                                         md: 15,
                                       }}
                                     >
-                                      You are connected to a {name} account.
+                                      You are connected to a{' '}
+                                      {name.toLowerCase()} account.
                                     </Text>
                                   </Flex>
                                   {name.toUpperCase() !=
