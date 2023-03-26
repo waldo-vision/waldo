@@ -38,7 +38,9 @@ import { BsFillExclamationOctagonFill } from 'react-icons/bs';
 import { unstable_getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { ReactElement } from 'react';
-
+interface GoToItem {
+  number: number;
+}
 export default function User() {
   // Searching states
   const [searchUserValue, setSearchUserValue] = useState<string>('');
@@ -49,6 +51,7 @@ export default function User() {
   };
 
   // Data and Rows
+  const [gtMenuItems, setGtMenuItems] = useState<GoToItem[]>();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [currentUserCount, setCurrentUserCount] = useState<number | null>(null);
 
@@ -102,6 +105,20 @@ export default function User() {
     }
   };
 
+  const goToPage = (number: number) => {
+    setPageNumber(number);
+  };
+
+  const autoFillMenu = () => {
+    let menuItems: GoToItem[] = [];
+    if (currentUserCount == null) return;
+    const totalPages = Math.ceil(currentUserCount / Math.round(10));
+    for (var i = 0; i < totalPages; i++) {
+      menuItems.push({ number: i + 1 });
+    }
+    setGtMenuItems(menuItems);
+  };
+
   return (
     <Center width={'100%'} flexDirection={'column'} gap={5}>
       <InputGroup width={{ base: '100%', md: '60%' }}>
@@ -122,28 +139,33 @@ export default function User() {
         </InputRightElement>
       </InputGroup>
       <Box width={{ base: '100%', md: '85%' }}>
-        <Menu>
-          <MenuButton
-            as={Button}
-            bgColor={'white'}
-            _hover={{ bgColor: 'white' }}
-            _active={{ bgColor: 'white' }}
-            rightIcon={<ChevronDownIcon />}
-          >
-            Roles:{' '}
-            {searchRole
-              ? searchRole?.toLowerCase().charAt(0).toUpperCase() +
-                searchRole?.toLowerCase().slice(1)
-              : 'All'}
-          </MenuButton>
-          <MenuList>
-            <MenuItem onClick={() => handleFilter(null)}>All</MenuItem>
-            <MenuItem onClick={() => handleFilter('User')}>User</MenuItem>
-            <MenuItem onClick={() => handleFilter('Trusted')}>Trusted</MenuItem>
-            <MenuItem onClick={() => handleFilter('Mod')}>Mod</MenuItem>
-            <MenuItem onClick={() => handleFilter('Admin')}>Admin</MenuItem>
-          </MenuList>
-        </Menu>
+        <Flex alignItems={'center'} gap={'3'}>
+          <Menu>
+            <MenuButton
+              as={Button}
+              bgColor={'white'}
+              _hover={{ bgColor: 'white' }}
+              _active={{ bgColor: 'white' }}
+              rightIcon={<ChevronDownIcon />}
+            >
+              Roles:{' '}
+              {searchRole
+                ? searchRole?.toLowerCase().charAt(0).toUpperCase() +
+                  searchRole?.toLowerCase().slice(1)
+                : 'All'}
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => handleFilter(null)}>All</MenuItem>
+              <MenuItem onClick={() => handleFilter('User')}>User</MenuItem>
+              <MenuItem onClick={() => handleFilter('Trusted')}>
+                Trusted
+              </MenuItem>
+              <MenuItem onClick={() => handleFilter('Mod')}>Mod</MenuItem>
+              <MenuItem onClick={() => handleFilter('Admin')}>Admin</MenuItem>
+            </MenuList>
+          </Menu>
+          <Text fontWeight={'semibold'}>Total users: {currentUserCount}</Text>
+        </Flex>
         <Box overflowX="auto">
           <Table
             width={'100%'}
@@ -172,7 +194,7 @@ export default function User() {
                 </Th>
                 <Th>
                   <Text casing={'capitalize'} fontWeight={'bold'} fontSize={15}>
-                    Verified
+                    Blacklisted
                   </Text>
                 </Th>
                 <Th>
@@ -235,7 +257,7 @@ export default function User() {
                         </Td>
                         <Td>
                           <Text fontSize={15}>
-                            {result.emailVerified ? 'Verified' : 'Not Verified'}
+                            {result.blacklisted ? 'True' : 'False'}
                           </Text>
                         </Td>
                         <Td>
@@ -368,6 +390,28 @@ export default function User() {
               </Tr>
             </Tfoot>
           </Table>
+          <Menu>
+            <MenuButton
+              as={Button}
+              bgColor={'white'}
+              _hover={{ bgColor: 'white' }}
+              _active={{ bgColor: 'white' }}
+              rightIcon={<ChevronDownIcon />}
+              onClick={() => autoFillMenu()}
+            >
+              Go to Page
+            </MenuButton>
+            <MenuList>
+              {gtMenuItems &&
+                gtMenuItems.map((item: GoToItem) => {
+                  return (
+                    <MenuItem onClick={() => goToPage(item.number)}>
+                      {item.number}
+                    </MenuItem>
+                  );
+                })}
+            </MenuList>
+          </Menu>
         </Box>
       </Box>
     </Center>

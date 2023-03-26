@@ -9,13 +9,14 @@ import {
   Collapse,
   useDisclosure,
   Heading,
+  Image as Img,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import WaldoLogo from '../public/android-chrome-256x256.png';
 import GithubLogo from '../public/navbar_github.png';
-import { discord, docs, githubrepo } from '@utils/links';
+import { discord, docs, github, githubrepo } from '@utils/links';
 import useSite from '@site';
 import BlacklistedModal from './BlacklistedModal';
 export default function Navigation() {
@@ -97,9 +98,17 @@ export default function Navigation() {
               <DesktopNav />
             </Flex>
           </Flex>
-          <Link href={githubIconHref}>
-            <Image alt="Github" src={GithubLogo} width={35} height={35} />
-          </Link>
+          {session && session.user && (
+            <Link href={'/account'}>
+              <Img
+                alt="Profile"
+                src={session.user.image as string}
+                width={30}
+                height={30}
+                borderRadius={'12'}
+              />
+            </Link>
+          )}
         </Flex>
         <Collapse in={isOpen} animateOpacity>
           <MobileNav />
@@ -167,7 +176,6 @@ const MobileNavItem = ({ label, href }: NavItem) => {
   );
 };
 
-const githubIconHref = githubrepo;
 interface NavItem {
   label: string;
   href: string;
@@ -193,6 +201,11 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Docs',
     href: docs,
+    pathName: null,
+  },
+  {
+    label: 'Github',
+    href: github,
     pathName: null,
   },
 ];

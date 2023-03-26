@@ -234,11 +234,12 @@ export default function Login() {
                     boxShadow={'lg'}
                     borderRadius={8}
                     h={24}
+                    cursor={provider == 'Google' ? 'not-allowed' : ''}
                     bgColor={
                       provider == 'Google'
-                        ? 'gray.400'
+                        ? '#a3a6ab'
                         : selected
-                        ? 'gray.700'
+                        ? 'black'
                         : 'white'
                     }
                   >
@@ -252,7 +253,10 @@ export default function Login() {
                               )}
                               {provider == 'Google' && <FcGoogle size={40} />}
                               {provider == 'Github' && (
-                                <BsGithub size={40} color={hex} />
+                                <BsGithub
+                                  size={40}
+                                  color={selected ? '#fff' : hex}
+                                />
                               )}
                               {provider == 'BattleNET' && (
                                 <FaBattleNet size={40} color={hex} />
@@ -290,18 +294,18 @@ export default function Login() {
             <Flex mt={8} alignItems={'center'}>
               <Text>
                 <Checkbox
-                  fontWeight={'bold'}
+                  fontWeight={'medium'}
                   ml={6}
                   onChange={() => setIsLegalChecked(!isLegalChecked)}
                 >
-                  I agree &nbsp;to the&nbsp;
+                  I agree to the&nbsp;
                 </Checkbox>
                 <Link href={legal.TOS}>
                   <Text as={'span'} fontWeight={'bold'}>
                     Terms of Service
                   </Text>
                 </Link>
-                &nbsp;and &nbsp;
+                &nbsp;and&nbsp;
                 <Link href={legal.privacy}>
                   <Text as={'span'} fontWeight={'bold'}>
                     Privacy Policy

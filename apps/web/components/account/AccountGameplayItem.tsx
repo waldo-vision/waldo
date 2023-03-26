@@ -1,8 +1,10 @@
-import { Box, Flex, Text, Image } from '@chakra-ui/react';
+import { Box, Flex, Text, Image, useToast, Button } from '@chakra-ui/react';
 import Loading from '@components/Loading';
 import Link from 'next/link';
 import { Gameplay } from 'pages/account';
 import { useEffect, useState } from 'react';
+import { trpc } from '@utils/trpc';
+import { BiTrash } from 'react-icons/bi';
 
 type youtubeOembed = {
   title: string;
@@ -12,6 +14,38 @@ type youtubeOembed = {
 };
 export default function AccountGameplayItem({ item }: { item: Gameplay }) {
   const [videoData, setVideoData] = useState<youtubeOembed>();
+  const utils = trpc.useContext();
+  const toast = useToast();
+
+  const deleteGameplayTrpc = trpc.gameplay.delete.useMutation({
+    async onSuccess() {
+      await utils.gameplay.invalidate();
+    },
+  });
+
+  const deleteGameplay = () => {
+    try {
+      deleteGameplayTrpc.mutateAsync({ gameplayId: item.id });
+      toast({
+        position: 'bottom-right',
+        title: 'Gameplay Deletion',
+        description: 'Successfully deleted the gameplay!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        position: 'bottom-right',
+        title: 'Gameplay Deletion',
+        description:
+          'An error occurred while attempting to delete the gameplay. Try logging out and then back in. If the issue persists please contact support@waldo.vision',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   useEffect(() => {
     getVideo(item.youtubeUrl).then(data => {
@@ -40,13 +74,28 @@ export default function AccountGameplayItem({ item }: { item: Gameplay }) {
             alt={`${videoData.title} by ${videoData.author_name}`}
           />
         </Link>
-        <Flex direction={'column'}>
-          <Text fontSize={'lg'}>{videoData.title}</Text>
-          <Link href={videoData.author_url}>
+        <Flex direction={'row'}>
+          <Flex direction={'column'} width={'90%'}>
+            <Text fontSize={'lg'}>{videoData.title}</Text>
             <Text fontSize={'md'}>
-              By <b>{videoData.author_name}</b>
+              By&nbsp;
+              <Link href={videoData.author_url}>
+                <b>{videoData.author_name}</b>
+              </Link>
             </Text>
-          </Link>
+          </Flex>
+          <Box alignSelf={'end'}>
+            <Button
+              ml={3}
+              variant={'solid'}
+              bgColor={'red.300'}
+              _hover={{ bgColor: 'red.200' }}
+              color={'white'}
+              onClick={() => deleteGameplay()}
+            >
+              <BiTrash size={25} />
+            </Button>
+          </Box>
         </Flex>
       </Flex>
     </Box>
