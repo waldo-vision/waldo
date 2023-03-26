@@ -148,10 +148,10 @@ export default function Upload() {
   };
 
   const handleClipUpload = async () => {
-    // if (!isRequestValid) {
-    //   handleRequestError('Request Invalid. Reload and try again.');
-    //   return;
-    // }
+    if (!isRequestValid) {
+      handleRequestError('Request Invalid. Reload and try again.');
+      return;
+    }
     if (requestDone) {
       setSelectedGame('');
       setCurrentUrl('');
