@@ -89,6 +89,8 @@ export default function Upload() {
     { name: 'VALORANT', shortName: 'val' },
     { name: 'Team Fortress 2', shortName: 'tf2' },
     { name: 'Apex Legends', shortName: 'ape' },
+    { name: 'Call of Duty: Warzone', shortName: 'cod' },
+    { name: 'Rainbow Six Siege', shortName: 'r6s' },
   ];
   const cheatsArray = [
     { name: 'NOCHEAT' },
