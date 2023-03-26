@@ -495,7 +495,9 @@ export const gameplayRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
+      console.log(input.tsToken);
       const isPerson = await vUser(input.tsToken);
+      console.log(isPerson);
       if (!isPerson) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
