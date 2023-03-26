@@ -28,7 +28,7 @@ Right now we are focused on detecting aimbots (humanized aimbots, specifically) 
 
 Yes, we will expand this list of games in the near future.
 
-## Is this an anti-cheat?"
+## Is this an anti-cheat?
 
 No, Waldo will analyse video footage to detect aimbot cheating. No action will come directly from Waldo.
 
