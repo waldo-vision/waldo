@@ -114,6 +114,10 @@ export default function Review() {
   };
 
   useEffect(() => {
+    if (tsToken && reviewItemData) {
+      setLoading(false);
+      return;
+    }
     const getNecessaryData = async () => {
       if (tsToken && tsToken.length > 3 && !reviewItemData) {
         await refetch();

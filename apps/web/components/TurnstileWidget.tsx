@@ -17,8 +17,6 @@ const TurnstileWidget = (props: WidgetProps) => {
     if (props.refreshState > 0) {
       //@ts-ignore
       ref.current?.reset();
-      //@ts-ignore
-      ref.current?.render();
     }
   }, [props.refreshState]);
   const handleCallback = async (token: string, state: CallbackStates) => {
