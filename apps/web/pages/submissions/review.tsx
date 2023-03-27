@@ -36,6 +36,7 @@ export default function Review() {
       await utils.gameplay.invalidate();
     },
   });
+  const [refreshState, setRefreshState] = useState<number>(0);
 
   const [finished, setFinished] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -70,7 +71,8 @@ export default function Review() {
 
   const doClickLogic = async (action: 'yes' | 'no') => {
     if (!reviewItem) return;
-
+    // force update turnstile widget
+    setRefreshState(refreshState + 1);
     setLoading(true);
 
     if (!isRequestValid) {
@@ -150,6 +152,7 @@ export default function Review() {
                 setIsRequestValid(result);
                 setTsToken(token);
               }}
+              refreshState={refreshState}
             />
           </Flex>
         ) : (

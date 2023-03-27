@@ -1,8 +1,9 @@
 import { Box } from '@chakra-ui/react';
 import { Turnstile } from '@marsidev/react-turnstile';
-
+import { useRef, useEffect } from 'react';
 interface WidgetProps {
   valid(valid: boolean, tsToken?: string): void;
+  refreshState: number;
 }
 enum CallbackStates {
   SUCCESS,
@@ -11,6 +12,12 @@ enum CallbackStates {
 }
 
 const TurnstileWidget = (props: WidgetProps) => {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (props.refreshState > 0) {
+      ref.current?.reset();
+    }
+  }, [props.refreshState]);
   const handleCallback = async (token: string, state: CallbackStates) => {
     // check for token
     if (state == CallbackStates.SUCCESS) {
@@ -36,6 +43,7 @@ const TurnstileWidget = (props: WidgetProps) => {
           onExpire={() =>
             handleCallback('Token Expired', CallbackStates.EXPIRE)
           }
+          ref={ref}
         />
       </Box>
     </div>

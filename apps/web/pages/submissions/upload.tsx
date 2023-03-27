@@ -57,7 +57,6 @@ export default function Upload() {
   const toast = useToast();
   const utils = trpc.useContext();
   const router = useRouter();
-
   const createGameplay = trpc.gameplay.create.useMutation({
     async onSuccess() {
       await utils.gameplay.invalidate();
@@ -272,6 +271,7 @@ export default function Upload() {
                       setIsRequestValid(result);
                       setTsToken(token);
                     }}
+                    refreshState={0}
                   />
                 </Flex>
               </Center>
