@@ -29,6 +29,6 @@
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
-    "next-auth": "4.18.6"
+    "next-auth": "4.20.1"
   }
 }
