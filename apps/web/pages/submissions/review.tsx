@@ -215,6 +215,8 @@ export default function Review() {
                               ? 'Team Fortress 2'
                               : reviewItem?.gameplayType === 'COD'
                               ? 'Call of Duty'
+                              : reviewItem?.gameplayType === 'R6S'
+                              ? 'Raindbow Six Siege'
                               : 'a relevant First Person Shooter game?'}
                           </Text>
                         </Text>
