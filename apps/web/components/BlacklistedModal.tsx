@@ -34,12 +34,12 @@ export default function BlacklistedModal(props: Props) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              ALERT: Your account has been suspened
+              ALERT: Your account has been suspended
             </AlertDialogHeader>
 
             <AlertDialogBody>
               <Text>
-                Your waldo account has been suspened. To find out more contact
+                Your waldo account has been suspended. To find out more contact
                 appeals@waldo.vision or go to &nbsp;
                 <chakra.span
                   fontWeight={'semibold'}
