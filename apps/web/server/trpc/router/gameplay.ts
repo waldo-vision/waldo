@@ -151,16 +151,16 @@ export const gameplayRouter = router({
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
-      // const isPerson = await vUser(input.tsToken);
-      // if (!isPerson) {
-      //   throw new TRPCError({
-      //     code: 'BAD_REQUEST',
-      //     message:
-      //       'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
-      //     // not sure if its safe to give this to the user
-      //     cause: '',
-      //   });
-      // }
+      const isPerson = await vUser(input.tsToken);
+      if (!isPerson) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
+          // not sure if its safe to give this to the user
+          cause: '',
+        });
+      }
       const existingGameplay = await ctx.prisma.gameplay.findUnique({
         where: {
           youtubeUrl: input.youtubeUrl,
@@ -185,7 +185,8 @@ export const gameplayRouter = router({
       }
       try {
         // Validate that the URL contains a video that can be downloaded.
-        await ytdl.getInfo(input.youtubeUrl);
+        // don't need this yet and its just causing useless errors preventing people from submitting.
+        // await ytdl.getInfo(input.youtubeUrl);
         // Download video and save as a local MP4 to be used for processing.
         // await ytdl(url).pipe(fs.createWriteStream(`${data.id}.mp4`));
 
@@ -449,16 +450,16 @@ export const gameplayRouter = router({
     )
     .output(ReviewItemsGameplaySchema)
     .query(async ({ input, ctx }) => {
-      // const isPerson = await vUser(input.tsToken);
-      // if (!isPerson) {
-      //   throw new TRPCError({
-      //     code: 'BAD_REQUEST',
-      //     message:
-      //       'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
-      //     // not sure if its safe to give this to the user
-      //     cause: '',
-      //   });
-      // }
+      const isPerson = await vUser(input.tsToken);
+      if (!isPerson) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
+          // not sure if its safe to give this to the user
+          cause: '',
+        });
+      }
       const randomPick = (values: string[]) => {
         const index = Math.floor(Math.random() * values.length);
         return values[index];
@@ -495,11 +496,8 @@ export const gameplayRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      console.log(input.tsToken);
       const isPerson = await vUser(input.tsToken);
-      console.log('isPerson: ');
-      console.log(isPerson);
-      if (isPerson == false) {
+      if (!isPerson) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message:
