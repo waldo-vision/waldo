@@ -28,7 +28,7 @@ export default function BattleNetProvider<P extends BattleNetProfile>(options: O
     wellKnown: "https://oauth.battle.net/.well-known/openid-configuration",
     idToken: true,
     async profile(profile) {
-      const image = process.env.HOST ? `${process.env.HOST}/battle_net.png` : "https://waldo.vision/battle_net.png"
+      const image = process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}/battle_net.png` : "https://waldo.vision/battle_net.png"
       return {
         id: profile.sub,
         name: profile.battle_tag,
