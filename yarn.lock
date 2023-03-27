@@ -3132,12 +3132,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@heroicons/react@npm:^2.0.13":
-  version: 2.0.13
-  resolution: "@heroicons/react@npm:2.0.13"
+"@heroicons/react@npm:^2.0.16":
+  version: 2.0.16
+  resolution: "@heroicons/react@npm:2.0.16"
   peerDependencies:
     react: ">= 16"
-  checksum: f03c393a129cb468d103e4334815df956d7afa9d0756ee09b33e9396214d39b786523a5e650709de73c68ba085facda3fe01984ff137bcc16c85d4ed2498e663
+  checksum: 1e51bfec722bfd68f27fd4f37a024141938eb4b0058c3eab073a6d1aa08cf4f6deb1e8533ca85473cb16be1d1b528e2d57b8617f8b967e66292bf243daec5dd0
   languageName: node
   linkType: hard
 
@@ -13430,7 +13430,7 @@ __metadata:
     "@emotion/react": ^11.10.5
     "@emotion/styled": ^11.10.5
     "@fontsource/nunito": ^4.5.12
-    "@heroicons/react": ^2.0.13
+    "@heroicons/react": ^2.0.16
     "@marsidev/react-turnstile": 0.1.0
     "@next-auth/prisma-adapter": ^1.0.5
     "@tanstack/query-core": ^4.20.4

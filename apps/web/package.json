@@ -17,7 +17,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/nunito": "^4.5.12",
-    "@heroicons/react": "^2.0.13",
+    "@heroicons/react": "^2.0.16",
     "@marsidev/react-turnstile": "0.1.0",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@tanstack/query-core": "^4.20.4",
