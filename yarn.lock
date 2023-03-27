@@ -3771,18 +3771,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.20.4, @tanstack/query-core@npm:^4.20.4":
+"@tanstack/query-core@npm:4.27.0":
+  version: 4.27.0
+  resolution: "@tanstack/query-core@npm:4.27.0"
+  checksum: 914b4f01ac75632f4603b650e9105f64c739b79250baf76aad16cee216f7bad6060c04eda0c70838fe61a5f6c17883e19fcc3075b2433a906539da95ce785796
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:^4.20.4":
   version: 4.20.4
   resolution: "@tanstack/query-core@npm:4.20.4"
   checksum: bdb652296e4093d8cb042a67b9c035bc0a756e09a3b12aeb070068b07adc1c71174c2e6108f2a8c3322a26cb73ba57f431326aa0b813c81621674b9cc208cd93
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^4.18.0":
-  version: 4.20.4
-  resolution: "@tanstack/react-query@npm:4.20.4"
+"@tanstack/react-query@npm:^4.28.0":
+  version: 4.28.0
+  resolution: "@tanstack/react-query@npm:4.28.0"
   dependencies:
-    "@tanstack/query-core": 4.20.4
+    "@tanstack/query-core": 4.27.0
     use-sync-external-store: ^1.2.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -3793,7 +3800,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: ba9e2f175c58bde592c0ad14285f289585474763f8d68072d651fa75263a3a7f75eead5b62aa3140db133b95468498bc58817d07513f6f857be2bd8031b491da
+  checksum: 7baa70d22b55cfa22f8a1d92ba9f8379c5436ee81fce3f0e7df4a8c29bb26bfef4a83759cf10f752b40ae2940099fcce88ce91a773240f4999ae91136980c6e3
   languageName: node
   linkType: hard
 
@@ -13434,7 +13441,7 @@ __metadata:
     "@marsidev/react-turnstile": 0.1.0
     "@next-auth/prisma-adapter": ^1.0.5
     "@tanstack/query-core": ^4.20.4
-    "@tanstack/react-query": ^4.18.0
+    "@tanstack/react-query": ^4.28.0
     "@trpc/client": ^10.4.2
     "@trpc/next": ^10.4.2
     "@trpc/react-query": ^10.4.2
