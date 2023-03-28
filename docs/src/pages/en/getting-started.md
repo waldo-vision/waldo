@@ -6,7 +6,7 @@ layout: ../../layouts/MainLayout.astro
 
 ## Prerequisites
 
-Before you can started hacking away on waldo, you need to have the tools below to ensure everything works.
+Before you can start hacking away on waldo, you need to have the tools below to ensure everything works.
 
 - Node.js - The current `LTS` version
 - Rust - So our desktop app can build
