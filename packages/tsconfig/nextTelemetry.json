@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Next.js Telemetry",
+  "extends": "./nextjs.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "dist",
+    "lib": ["es2019"],
+    "target": "es2019",
+    "isolatedModules": false,
+    "noEmit": false
+  },
+  "include": ["server/telemetry"]
+}

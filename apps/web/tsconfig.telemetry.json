@@ -1,0 +1,9 @@
+{
+  "extends": "tsconfig/nextTelemetry.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "dist"
+  },
+  "include": ["server/telemetry/**/*.ts"],
+  "exclude": ["node_modules"]
+}
