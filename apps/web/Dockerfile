@@ -58,4 +58,6 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
-CMD node apps/web/server.js
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/dist ./apps/web/dist
+
+CMD node -r apps/web/dist/tracing.js apps/web/server.js
