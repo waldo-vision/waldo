@@ -1,2 +1,2 @@
-type GameplayType = 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S' | 'CS2';
-type GameplayTypeWithNull = 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S' | 'CS2' | null;
+type GameplayType = import('zod').infer<typeof import('@utils/zod/gameplay').GameplayTypes>;
+type GameplayTypeWithNull = GameplayType | null;
