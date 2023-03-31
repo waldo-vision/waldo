@@ -88,6 +88,7 @@ enum GameplayType {
   APE
   COD
   R6S
+  CS2
 }
 
 // NEXT-AUTH

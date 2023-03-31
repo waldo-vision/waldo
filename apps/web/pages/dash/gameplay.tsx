@@ -35,13 +35,14 @@ import Loading from '@components/Loading';
 import { unstable_getServerSession } from 'next-auth/next';
 import { BiBlock } from 'react-icons/bi';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { games } from '@config/gameplay';
 type Query =
   | {
       gameplayCount?: number | undefined;
       id: string;
       userId: string;
       youtubeUrl: string;
-      gameplayType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S';
+      gameplayType: GameplayType;
       isAnalyzed: boolean;
       user?: {
         name?: string | null;
@@ -49,14 +50,13 @@ type Query =
       };
     }[]
   | undefined;
-type possibleGames = 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S' | null;
 interface GoToItem {
   number: number;
 }
 export default function Gameplay() {
   // Searching states
 
-  const [searchRole, setSearchRole] = useState<possibleGames>(null);
+  const [searchRole, setSearchRole] = useState<GameplayTypeWithNull>(null);
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [gtMenuItems, setGtMenuItems] = useState<GoToItem[]>();
@@ -75,7 +75,7 @@ export default function Gameplay() {
     { enabled: false },
   );
 
-  const handleFilter = async (role: possibleGames) => {
+  const handleFilter = async (role: GameplayTypeWithNull) => {
     if (role == null) {
       setSearchRole(null);
       return;
@@ -160,12 +160,9 @@ export default function Gameplay() {
                 Filters: {searchRole}
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={() => handleFilter('CSG')}>CSG</MenuItem>
-                <MenuItem onClick={() => handleFilter('VAL')}>VAL</MenuItem>
-                <MenuItem onClick={() => handleFilter('APE')}>APE</MenuItem>
-                <MenuItem onClick={() => handleFilter('TF2')}>TF2</MenuItem>
-                <MenuItem onClick={() => handleFilter('COD')}>COD</MenuItem>
-                <MenuItem onClick={() => handleFilter('R6S')}>R6S</MenuItem>
+                {games.map(game => {
+                  return <MenuItem onClick={() => handleFilter(game.shortName.toUpperCase() as GameplayTypeWithNull)}>{game.shortName.toUpperCase()}</MenuItem>
+                })}
               </MenuList>
             </Menu>
             <Text fontWeight={'semibold'}>
