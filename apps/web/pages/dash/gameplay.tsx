@@ -161,7 +161,9 @@ export default function Gameplay() {
               </MenuButton>
               <MenuList>
                 {games.map(game => {
-                  return <MenuItem onClick={() => handleFilter(game.shortName.toUpperCase() as GameplayTypeWithNull)}>{game.shortName.toUpperCase()}</MenuItem>
+                  return <MenuItem onClick={() => handleFilter(game.shortName.toUpperCase() as GameplayTypeWithNull)}>
+                    {game.shortName.toUpperCase()}
+                  </MenuItem>
                 })}
               </MenuList>
             </Menu>
