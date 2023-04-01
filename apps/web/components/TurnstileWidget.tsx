@@ -15,8 +15,10 @@ const TurnstileWidget = (props: WidgetProps) => {
   const ref = useRef(null);
   useEffect(() => {
     if (props.refreshState > 0) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
       ref.current?.reset();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
       ref.current?.render();
     }

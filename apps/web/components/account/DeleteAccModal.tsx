@@ -24,7 +24,8 @@ const DeleteAccModal = (props: Props) => {
   const [showModal, setShowModal] = useState<boolean | null>(false);
   const [userId, setUserId] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [deleteButtonLoading, setDeleteButtonLoading] = useState<boolean>(false);
+  const [deleteButtonLoading, setDeleteButtonLoading] =
+    useState<boolean>(false);
   const { setSession } = useSite();
   const router = useRouter();
   const utils = trpc.useContext();
@@ -47,11 +48,11 @@ const DeleteAccModal = (props: Props) => {
   const handleDelete = async () => {
     if (!deleteButtonLoading) {
       setDeleteButtonLoading(true);
-  
+
       await deleteUser.mutateAsync({ userId: userId as string });
       setSession(null);
 
-      router.push("/");
+      router.push('/');
     }
   };
   return (
@@ -78,17 +79,26 @@ const DeleteAccModal = (props: Props) => {
                 </Text>
               </ModalBody>
               <ModalFooter>
-                <Button colorScheme="red" mr={3} onClick={() => handleDelete()} disabled={deleteButtonLoading}>
+                <Button
+                  colorScheme="red"
+                  mr={3}
+                  onClick={() => handleDelete()}
+                  disabled={deleteButtonLoading}
+                >
                   {deleteButtonLoading ? (
                     <>
-                     <Spinner color={"white"} size={'md'} />
-                     &nbsp;Deleting...
+                      <Spinner color={'white'} size={'md'} />
+                      &nbsp;Deleting...
                     </>
                   ) : (
-                    "Delete Account"
+                    'Delete Account'
                   )}
                 </Button>
-                <Button variant="ghost" onClick={() => setShowModal(false)} hidden={!!deleteButtonLoading}>
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowModal(false)}
+                  hidden={!!deleteButtonLoading}
+                >
                   Cancel
                 </Button>
               </ModalFooter>
