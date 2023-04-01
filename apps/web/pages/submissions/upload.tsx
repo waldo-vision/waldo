@@ -90,6 +90,8 @@ export default function Upload() {
     { name: 'Apex Legends', shortName: 'ape' },
     { name: 'Call of Duty: Warzone', shortName: 'cod' },
     { name: 'Rainbow Six Siege', shortName: 'r6s' },
+    { name: 'Overwatch 2', shortName: 'ow2' },
+    { name: 'Counter Strike: Global Offensive 2', shortName: 'cs2' },
   ];
   const cheatsArray = [
     { name: 'NOCHEAT' },
@@ -179,7 +181,9 @@ export default function Upload() {
         | 'TF2'
         | 'COD'
         | 'APE'
-        | 'R6S',
+        | 'R6S'
+        | 'OW2'
+        | 'CS2',
       youtubeUrl: currentUrl as string,
       cheats: cheats.length == 0 ? ['NOCHEAT'] : (cheats as Cheat[]),
       tsToken: tsToken as string,
