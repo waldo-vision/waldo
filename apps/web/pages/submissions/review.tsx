@@ -6,6 +6,7 @@ import {
   Button,
   useToast,
   Spinner,
+  Tag,
 } from '@chakra-ui/react';
 import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
@@ -27,7 +28,7 @@ interface ReviewItem {
   youtubeUrl: string;
   gameplayType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S' | 'OW2' | 'CS2';
   isAnalyzed: boolean;
-  _count: { gameplayVotes: number; clips: number };
+  _count: { gameplayVotes: number };
   total: number;
 }
 export default function Review() {
@@ -197,13 +198,23 @@ export default function Review() {
                         fontSize={18}
                         ml={2}
                       >
-                        <Text>
-                          Submitted by&nbsp;
-                          <Text as={'span'} fontWeight={'bold'}>
-                            {reviewItem?.user?.name}
+                        <Flex direction={'row'} gap={2}>
+                          <Text>
+                            Submitted by&nbsp;
+                            <Text as={'span'} fontWeight={'bold'}>
+                              {reviewItem?.user?.name}
+                            </Text>
                           </Text>
-                        </Text>
-
+                          <Tag
+                            justifyContent={'right'}
+                            ml={'auto'}
+                            bgColor={'purple.500'}
+                            textColor={'white'}
+                          >
+                            {reviewItem._count.gameplayVotes} /{' '}
+                            {reviewItem.total}
+                          </Tag>
+                        </Flex>
                         <Text fontWeight={'normal'}>
                           Does this clip match gameplay from{' '}
                           <Text fontWeight={'bold'} as={'span'}>
@@ -225,19 +236,6 @@ export default function Review() {
                               ? 'Counter Strike: Global Offensive 2'
                               : 'a relevant First Person Shooter game?'}
                           </Text>
-                          {reviewItem._count && (
-                            <>
-                              <Text mr={4}>
-                                Left To Review
-                                {reviewItem.total -
-                                  reviewItem._count.gameplayVotes}
-                              </Text>
-                              <Text>
-                                Reviewed
-                                {reviewItem._count.gameplayVotes}
-                              </Text>
-                            </>
-                          )}
                         </Text>
                       </Flex>
                     )}
