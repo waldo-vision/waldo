@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
-import { UserSchema } from '@utils/zod/dash';
+import { UserSchema, UsersSchema } from '@utils/zod/dash';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import type { Roles, User } from 'database';
 import { serverSanitize } from '@utils/sanitize';
@@ -211,7 +211,7 @@ export const userRouter = router({
           };
         }),
     )
-    .output(z.object({ users: z.array(UserSchema), userCount: z.number() }))
+    .output(z.object({ users: UsersSchema, userCount: z.number() }))
     .query(async ({ input, ctx }) => {
       if (
         !hasPerms({
@@ -322,7 +322,7 @@ export const userRouter = router({
           };
         }),
     )
-    .output(UserSchema)
+    .output(UserSchema.array())
     .query(async ({ input, ctx }) => {
       console.log(ctx.session);
       if (
@@ -338,17 +338,17 @@ export const userRouter = router({
         });
       if (input.name == undefined) throw new TRPCError({ code: 'BAD_REQUEST' });
       try {
-        const user = await ctx.prisma.user.findFirst({
+        const users = await ctx.prisma.user.findMany({
           where: {
             name: {
               contains: input.name,
             },
           },
         });
-        if (user == null) {
+        if (users == null) {
           throw new TRPCError({ code: 'NOT_FOUND' });
         }
-        return user;
+        return users;
       } catch (error) {
         throw new TRPCError({
           message: 'No user document with the name provided could be found.',

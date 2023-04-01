@@ -40,6 +40,7 @@ import { authOptions } from '../api/auth/[...nextauth]';
 import { ReactElement } from 'react';
 
 import styles from '../../styles/dash/Users.module.css';
+import { UsersType } from '@utils/zod/dash';
 interface GoToItem {
   number: number;
 }
@@ -57,8 +58,10 @@ export default function User() {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [currentUserCount, setCurrentUserCount] = useState<number | null>(null);
 
+  const [users, setUsers] = useState<UsersType>([]);
+
   const {
-    data: users,
+    data: getUsersData,
     isLoading: isLoading,
     refetch: refetchUsers,
   } = trpc.user.getUsers.useQuery(
@@ -69,8 +72,15 @@ export default function User() {
     { enabled: false },
   );
 
+  useEffect(() => {
+    if (getUsersData !== undefined) {
+      setUsers(getUsersData.users);
+      setCurrentUserCount(getUsersData.userCount);
+    }
+  }, [getUsersData]);
+
   const {
-    data: searchedUser,
+    data: searchedUsers,
     isLoading: isSearchLoading,
     refetch: research,
   } = trpc.user.search.useQuery(
@@ -81,9 +91,15 @@ export default function User() {
   );
 
   useEffect(() => {
+    if (searchedUsers !== undefined) {
+      setUsers(searchedUsers);
+      setCurrentUserCount(searchedUsers.length);
+    }
+  }, [searchedUsers]);
+
+  useEffect(() => {
     if (searchUserValue === '') {
       refetchUsers();
-      users && setCurrentUserCount(users.userCount);
     } else {
       research();
     }
@@ -224,108 +240,59 @@ export default function User() {
                   </Td>
                   <Td></Td>
                 </Tr>
-              ) : searchUserValue === '' ? (
-                users && users.users.length > 0 ? (
-                  users.users.map((result, index) => {
-                    return (
-                      <Tr bgColor={'white'} height={'70px'} key={index}>
-                        <Td borderLeftRadius={16}>
-                          <Flex direction={'row'} align={'center'} gap={2}>
-                            <Image
-                              src={result.image as string}
-                              alt={'Profile Image'}
-                              rounded={'full'}
-                              width={7}
-                              height={7}
-                            />
-                            <Text fontWeight={'bold'}>
-                              {result.name && result.name.length > 20
-                                ? result.name.substring(0, 10) +
-                                  '\u2026' +
-                                  result.name.slice(-10)
-                                : result.name}
-                            </Text>
-                          </Flex>
-                        </Td>
-                        <Td>
-                          <Text casing={'capitalize'} fontSize={15}>
-                            {result.blacklisted
-                              ? 'Blacklisted'
-                              : result.role.toLowerCase()}
-                          </Text>
-                        </Td>
-                        <Td>
-                          <Text fontSize={15} className={styles.private}>{result.email}</Text>
-                        </Td>
-                        <Td>
-                          <Text fontSize={15}>
-                            {result.blacklisted ? 'True' : 'False'}
-                          </Text>
-                        </Td>
-                        <Td>
-                          <Text as="samp" fontSize={15} isTruncated>
-                            {result.id.replace(/.{5}/g, '$&:').slice(0, -1)}
-                          </Text>
-                        </Td>
-                        <Td borderRightRadius={16}>
-                          <MenuAction
-                            userId={result.id}
-                            isBlacklisted={result.blacklisted}
+              ) : users && users.length > 0 ? (
+                users.map((result, index) => {
+                  return (
+                    <Tr bgColor={'white'} height={'70px'} key={index}>
+                      <Td borderLeftRadius={16}>
+                        <Flex direction={'row'} align={'center'} gap={2}>
+                          <Image
+                            src={result.image as string}
+                            alt={'Profile Image'}
+                            rounded={'full'}
+                            width={7}
+                            height={7}
                           />
-                        </Td>
-                      </Tr>
-                    );
-                  })
-                ) : (
-                  <Notfound />
-                )
-              ) : searchedUser ? (
-                <Tr bgColor={'white'} height={'70px'}>
-                  <Td borderLeftRadius={16}>
-                    <Flex direction={'row'} align={'center'} gap={2}>
-                      <Image
-                        src={searchedUser.image as string}
-                        alt={'Profile Image'}
-                        rounded={'full'}
-                        width={7}
-                        height={7}
-                      />
-                      <Text fontWeight={'bold'}>
-                        {searchedUser.name && searchedUser.name.length > 20
-                          ? searchedUser.name.substring(0, 10) +
-                            '\u2026' +
-                            searchedUser.name.slice(-10)
-                          : searchedUser.name}
-                      </Text>
-                    </Flex>
-                  </Td>
-                  <Td>
-                    <Text casing={'capitalize'} fontSize={15}>
-                      {searchedUser.blacklisted
-                        ? 'Blacklisted'
-                        : searchedUser.role.toLowerCase()}
-                    </Text>
-                  </Td>
-                  <Td>
-                    <Text fontSize={15}>{searchedUser.email}</Text>
-                  </Td>
-                  <Td>
-                    <Text fontSize={15}>
-                      {searchedUser.emailVerified ? 'Verified' : 'Not Verified'}
-                    </Text>
-                  </Td>
-                  <Td>
-                    <Text as="samp" fontSize={15} isTruncated>
-                      {searchedUser.id.replace(/.{5}/g, '$&:').slice(0, -1)}
-                    </Text>
-                  </Td>
-                  <Td borderRightRadius={16}>
-                    <MenuAction
-                      userId={searchedUser.id}
-                      isBlacklisted={searchedUser.blacklisted}
-                    />
-                  </Td>
-                </Tr>
+                          <Text fontWeight={'bold'}>
+                            {result.name && result.name.length > 20
+                              ? result.name.substring(0, 10) +
+                                '\u2026' +
+                                result.name.slice(-10)
+                              : result.name}
+                          </Text>
+                        </Flex>
+                      </Td>
+                      <Td>
+                        <Text casing={'capitalize'} fontSize={15}>
+                          {result.blacklisted
+                            ? 'Blacklisted'
+                            : result.role.toLowerCase()}
+                        </Text>
+                      </Td>
+                      <Td>
+                        <Text fontSize={15} className={styles.private}>
+                          {result.email}
+                        </Text>
+                      </Td>
+                      <Td>
+                        <Text fontSize={15}>
+                          {result.blacklisted ? 'True' : 'False'}
+                        </Text>
+                      </Td>
+                      <Td>
+                        <Text as="samp" fontSize={15} isTruncated>
+                          {result.id.replace(/.{5}/g, '$&:').slice(0, -1)}
+                        </Text>
+                      </Td>
+                      <Td borderRightRadius={16}>
+                        <MenuAction
+                          userId={result.id}
+                          isBlacklisted={result.blacklisted}
+                        />
+                      </Td>
+                    </Tr>
+                  );
+                })
               ) : (
                 <Notfound />
               )}
