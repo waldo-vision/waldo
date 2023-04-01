@@ -340,10 +340,20 @@ export const userRouter = router({
       try {
         const users = await ctx.prisma.user.findMany({
           where: {
-            name: {
-              contains: input.name,
-              mode: 'insensitive',
-            },
+            OR: [
+              {
+                name: {
+                  contains: input.name,
+                  mode: 'insensitive',
+                },
+              },
+              {
+                email: {
+                  contains: input.name,
+                  mode: 'insensitive',
+                },
+              },
+            ],
           },
         });
         if (users == null) {
