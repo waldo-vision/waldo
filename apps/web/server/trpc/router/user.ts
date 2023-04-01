@@ -342,6 +342,7 @@ export const userRouter = router({
           where: {
             name: {
               contains: input.name,
+              mode: 'insensitive',
             },
           },
         });
