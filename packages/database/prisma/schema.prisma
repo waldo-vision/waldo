@@ -49,6 +49,8 @@ model Gameplay {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([userId])
 }
 
 enum CheatType {
@@ -70,6 +72,8 @@ model GameplayVotes {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([gameplayId])
 }
 
 model Clip {
@@ -88,6 +92,7 @@ enum GameplayType {
   APE
   COD
   R6S
+  OW2
   CS2
 }
 
@@ -111,6 +116,7 @@ model Account {
   updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {

@@ -1,6 +1,15 @@
 import { z } from 'zod';
 import { PublicUserSchema } from './dash';
-export const GameplayTypes = z.enum(['VAL', 'CSG', 'TF2', 'APE', 'COD', 'R6S', 'CS2']);
+export const GameplayTypes = z.enum([
+  'VAL',
+  'CSG',
+  'TF2',
+  'APE',
+  'COD',
+  'R6S',
+  'OW2',
+  'CS2',
+]);
 export const CheatTypes = z.enum([
   'NOCHEAT',
   'AIMBOT',
@@ -43,5 +52,7 @@ export const ReviewItemsGameplaySchema = GameplaySchema.merge(
   z.object({
     user: PublicUserSchema,
     gameplayVotes: GameplayVotes,
+    _count: z.object({ gameplayVotes: z.number() }),
+    total: z.number(),
   }),
 );

@@ -6,6 +6,7 @@ import {
   Button,
   useToast,
   Spinner,
+  Tag,
 } from '@chakra-ui/react';
 import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
@@ -28,6 +29,8 @@ interface ReviewItem {
   youtubeUrl: string;
   gameplayType: GameplayType;
   isAnalyzed: boolean;
+  _count: { gameplayVotes: number };
+  total: number;
 }
 export default function Review() {
   const utils = trpc.useContext();
@@ -204,13 +207,23 @@ export default function Review() {
                         fontSize={18}
                         ml={2}
                       >
-                        <Text>
-                          Submitted by&nbsp;
-                          <Text as={'span'} fontWeight={'bold'}>
-                            {reviewItem?.user?.name}
+                        <Flex direction={'row'} gap={2}>
+                          <Text>
+                            Submitted by&nbsp;
+                            <Text as={'span'} fontWeight={'bold'}>
+                              {reviewItem?.user?.name}
+                            </Text>
                           </Text>
-                        </Text>
-
+                          <Tag
+                            justifyContent={'right'}
+                            ml={'auto'}
+                            bgColor={'purple.500'}
+                            textColor={'white'}
+                          >
+                            {reviewItem._count.gameplayVotes} /{' '}
+                            {reviewItem.total}
+                          </Tag>
+                        </Flex>
                         <Text fontWeight={'normal'}>
                           Does this clip match gameplay from{' '}
                           <Text fontWeight={'bold'} as={'span'}>

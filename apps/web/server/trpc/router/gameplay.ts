@@ -450,16 +450,6 @@ export const gameplayRouter = router({
     )
     .output(ReviewItemsGameplaySchema)
     .query(async ({ input, ctx }) => {
-      // const isPerson = await vUser(input.tsToken);
-      // if (!isPerson) {
-      //   throw new TRPCError({
-      //     code: 'BAD_REQUEST',
-      //     message:
-      //       'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
-      //     // not sure if its safe to give this to the user
-      //     cause: '',
-      //   });
-      // }
       const randomPick = (values: string[]) => {
         const index = Math.floor(Math.random() * values.length);
         return values[index];
@@ -478,9 +468,21 @@ export const gameplayRouter = router({
           gameplayVotes: true,
         },
       });
+      const userReviewedAmt = await ctx.prisma.user.findUnique({
+        where: {
+          id: ctx.session.user.id,
+        },
+        include: {
+          gameplayVotes: true,
+        },
+      });
       if (reviewItem[0] == null || reviewItem[0] == undefined) {
         throw new TRPCError({ code: 'NOT_FOUND' });
       } else {
+        Object.assign(reviewItem[0], {
+          _count: { gameplayVotes: userReviewedAmt.gameplayVotes.length },
+        });
+        Object.assign(reviewItem[0], { total: itemCount });
         return reviewItem[0];
       }
     }),
