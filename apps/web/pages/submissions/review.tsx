@@ -25,8 +25,10 @@ interface ReviewItem {
   };
   userId: string;
   youtubeUrl: string;
-  gameplayType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S';
+  gameplayType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S' | 'OW2' | 'CS2';
   isAnalyzed: boolean;
+  _count: { gameplayVotes: number; clips: number };
+  total: number;
 }
 export default function Review() {
   const utils = trpc.useContext();
@@ -217,8 +219,25 @@ export default function Review() {
                               ? 'Call of Duty'
                               : reviewItem?.gameplayType === 'R6S'
                               ? 'Rainbow Six Siege'
+                              : reviewItem?.gameplayType === 'OW2'
+                              ? 'Overwatch 2'
+                              : reviewItem?.gameplayType === 'CS2'
+                              ? 'Counter Strike: Global Offensive 2'
                               : 'a relevant First Person Shooter game?'}
                           </Text>
+                          {reviewItem._count && (
+                            <>
+                              <Text mr={4}>
+                                Left To Review
+                                {reviewItem.total -
+                                  reviewItem._count.gameplayVotes}
+                              </Text>
+                              <Text>
+                                Reviewed
+                                {reviewItem._count.gameplayVotes}
+                              </Text>
+                            </>
+                          )}
                         </Text>
                       </Flex>
                     )}
