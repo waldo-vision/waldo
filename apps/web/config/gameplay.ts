@@ -5,5 +5,6 @@ export const games = [
     { name: 'Apex Legends', shortName: 'ape' },
     { name: 'Call of Duty: Warzone', shortName: 'cod' },
     { name: 'Rainbow Six Siege', shortName: 'r6s' },
+    { name: 'Overwatch 2', shortName: 'ow2' },
     { name: 'Counter Strike 2', shortName: 'cs2' }
 ];
