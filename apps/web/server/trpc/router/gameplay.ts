@@ -468,6 +468,14 @@ export const gameplayRouter = router({
           gameplayVotes: true,
         },
       });
+      
+      type ReviewItemOutput = typeof reviewItem[number] & {
+        _count: {
+          gameplayVotes: number
+        },
+        total: number
+      }
+
       const userReviewedAmt = await ctx.prisma.user.findUnique({
         where: {
           id: ctx.session.user.id,
@@ -479,11 +487,12 @@ export const gameplayRouter = router({
       if (reviewItem[0] == null || reviewItem[0] == undefined) {
         throw new TRPCError({ code: 'NOT_FOUND' });
       } else {
+        
         Object.assign(reviewItem[0], {
-          _count: { gameplayVotes: userReviewedAmt.gameplayVotes.length },
+          _count: { gameplayVotes: userReviewedAmt ? userReviewedAmt.gameplayVotes.length : 0 },
         });
         Object.assign(reviewItem[0], { total: itemCount });
-        return reviewItem[0];
+        return reviewItem[0] as ReviewItemOutput;
       }
     }),
   review: protectedProcedure
