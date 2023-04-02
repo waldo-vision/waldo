@@ -31,8 +31,8 @@ interface RedirectCallback {
 
 const adapter = {
   ...PrismaAdapter(prisma),
-  linkAccount: ({ sub, ...data }: any) => prisma.account.create({ data })
-} as Adapter
+  linkAccount: ({ sub, ...data }: any) => prisma.account.create({ data }),
+} as Adapter;
 
 export const authOptions = {
   adapter,

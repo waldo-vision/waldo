@@ -53,16 +53,16 @@ export default function Login() {
     });
   };
 
-  const createErrorToast = (str: string) => {
-    toast({
-      position: 'bottom-right',
-      title: 'Error',
-      description: str,
-      status: 'error',
-      duration: 5000,
-      isClosable: true,
-    });
-  };
+  // const createErrorToast = (str: string) => {
+  //   toast({
+  //     position: 'bottom-right',
+  //     title: 'Error',
+  //     description: str,
+  //     status: 'error',
+  //     duration: 5000,
+  //     isClosable: true,
+  //   });
+  // };
   const retrieveUserSession = async () => {
     const session = await getSession();
     setUserSession(session);

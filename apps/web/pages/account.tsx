@@ -197,7 +197,8 @@ export default function Account() {
                     >
                       You have linked <b>all</b> of the following accounts:
                     </Text>
-                    {session?.user?.role == 'ADMIN' && (
+                    {(session?.user?.role == 'ADMIN' ||
+                      session?.user?.role == 'MOD') && (
                       <Text>
                         Redirect me to the{' '}
                         <chakra.span
@@ -205,19 +206,6 @@ export default function Account() {
                           textDecor={'underline'}
                           cursor={'pointer'}
                           onClick={() => router.push('/dash/users')}
-                        >
-                          Admin Dashboard
-                        </chakra.span>
-                      </Text>
-                    )}
-                    {session?.user?.role == 'MOD' && (
-                      <Text>
-                        Redirect me to the{' '}
-                        <chakra.span
-                          fontWeight={'bold'}
-                          textDecor={'underline'}
-                          cursor={'pointer'}
-                          onClick={() => router.push('/dash/user')}
                         >
                           Admin Dashboard
                         </chakra.span>

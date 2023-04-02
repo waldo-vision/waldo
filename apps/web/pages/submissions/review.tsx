@@ -19,6 +19,7 @@ import Finished from '@components/Finished';
 import { getSession } from 'next-auth/react';
 import Image from 'next/image';
 import { games } from '@config/gameplay';
+import { GameplayType } from '@utils/zod/gameplay';
 interface ReviewItem {
   id: string;
   user: {
@@ -118,12 +119,14 @@ export default function Review() {
   };
 
   const getGameName = (gameplayType: GameplayType) => {
-    const game = games.find(game => game.shortName === gameplayType.toLowerCase());
+    const game = games.find(
+      game => game.shortName === gameplayType.toLowerCase(),
+    );
     if (game) {
       return game.name;
     }
     return 'a relevant First Person Shooter game?';
-  }
+  };
 
   useEffect(() => {
     const getNecessaryData = async () => {

@@ -15,8 +15,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import WaldoLogo from '../public/android-chrome-256x256.png';
-import GithubLogo from '../public/navbar_github.png';
-import { discord, docs, github, githubrepo } from '@utils/links';
+import { discord, docs, github } from '@utils/links';
 import useSite from '@site';
 import BlacklistedModal from './BlacklistedModal';
 export default function Navigation() {

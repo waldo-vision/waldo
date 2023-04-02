@@ -11,6 +11,10 @@ export const UserSchema = z.object({
   userCount: z.number().optional(),
 });
 
+export const UsersSchema = z.array(UserSchema);
+
+export type UsersType = z.infer<typeof UsersSchema>;
+
 export const PublicUserSchema = z.object({
   name: z.string().nullable().optional(),
   image: z.string().nullable().optional(),

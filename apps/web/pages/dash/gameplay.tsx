@@ -36,6 +36,7 @@ import { unstable_getServerSession } from 'next-auth/next';
 import { BiBlock } from 'react-icons/bi';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { games } from '@config/gameplay';
+import { GameplayType, GameplayTypeWithNull } from '@utils/zod/gameplay';
 type Query =
   | {
       gameplayCount?: number | undefined;
@@ -161,18 +162,26 @@ export default function Gameplay() {
               </MenuButton>
               <MenuList>
                 {games.map(game => {
-                  return <MenuItem onClick={() => handleFilter(game.shortName.toUpperCase() as GameplayTypeWithNull)}>
-                    {game.shortName.toUpperCase()}
-                  </MenuItem>
+                  return (
+                    <MenuItem
+                      onClick={() =>
+                        handleFilter(
+                          game.shortName.toUpperCase() as GameplayTypeWithNull,
+                        )
+                      }
+                    >
+                      {game.shortName.toUpperCase()}
+                    </MenuItem>
+                  );
                 })}
               </MenuList>
             </Menu>
             <Text fontWeight={'semibold'}>
-              Total gameplay items: {data && data[0].gameplayCount}
+              Total gameplay items: {data && data[0] && data[0].gameplayCount}
             </Text>
           </Flex>
           <Box overflowX="auto">
-            {data && (
+            {data && data[0] && (
               <Table
                 width={'100%'}
                 variant={'simple'}
@@ -295,7 +304,7 @@ export default function Gameplay() {
                     })
                   )}
                 </Tbody>
-                {data && (
+                {data && data[0] && (
                   <Tfoot bgColor={'white'} height={'50px'}>
                     <Tr>
                       <Td borderLeftRadius={16} />
