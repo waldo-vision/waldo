@@ -10288,7 +10288,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openapi-types@npm:^12.0.2":
+"openapi-types@npm:^12.1.0":
   version: 12.1.0
   resolution: "openapi-types@npm:12.1.0"
   checksum: d8f3e2bae519aa6bcf2012f4a5592b7283fe928c06f3bdc182776ce637c7ed8d5f9f342724f68c95c9572aefe21ed5e89b18a0295a703da61af5f97bd2aea9a7
@@ -12168,19 +12168,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"trpc-openapi@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "trpc-openapi@npm:1.0.0"
+"trpc-openapi@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "trpc-openapi@npm:1.1.2"
   dependencies:
     co-body: ^6.1.0
     lodash.clonedeep: ^4.5.0
     node-mocks-http: ^1.12.1
-    openapi-types: ^12.0.2
-    zod-to-json-schema: ^3.19.1
+    openapi-types: ^12.1.0
+    zod-to-json-schema: ^3.20.2
   peerDependencies:
     "@trpc/server": ^10.0.0
     zod: ^3.14.4
-  checksum: dcfe84b8ef8c08b80000b3686c121f8bd297e909c6ed6a0f97d13536cc34a9bba9ef68af4df8116c4e1cc6425983c7daac6e215aac706b73ef1295a33e79a087
+  checksum: 1ff1fda7295574c4dd198c7018ee93a34f66f9da77466164e85fb9018a8fa72a28a3ce590bcc8763d3346aa88f1f628e840db1d5d45685453fb4f351fb740125
   languageName: node
   linkType: hard
 
@@ -13036,7 +13036,7 @@ __metadata:
     redis: ^4.5.1
     sharp: ^0.31.2
     superjson: ^1.11.0
-    trpc-openapi: ^1.0.0
+    trpc-openapi: ^1.1.2
     tsconfig: "workspace:*"
     typescript: 4.9.4
     validator: ^13.9.0
@@ -13254,12 +13254,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod-to-json-schema@npm:^3.19.1":
-  version: 3.20.1
-  resolution: "zod-to-json-schema@npm:3.20.1"
+"zod-to-json-schema@npm:^3.20.2":
+  version: 3.20.4
+  resolution: "zod-to-json-schema@npm:3.20.4"
   peerDependencies:
     zod: ^3.20.0
-  checksum: 405a81bce92631af6ecd5021026a565d4d281c4d44f3de7d1941eaa49bbfa726c930ad7275438ce6df98504dae2ae5d640a54d49cfc74e5a56d1e1d80723ed01
+  checksum: 55bc649dbc82ce25fbfbfdd42ca530d883d83be5d02cb81e89f6401d54bca151fc6b8cc57999c75eb6a3dcaa3f000697315fbd4f505637472621570ed52784d8
   languageName: node
   linkType: hard
 
