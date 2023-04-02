@@ -28,6 +28,14 @@ If you feel comfortable self hosting, for our use case, you we require that you 
 
 To start the services locally, simply run `docker compose up -d`. Or shut them off with `docker compose down`. (Run these in the repo after you have cloned it.)
 
+- Option for Windows Users:
+  - <span style="color:red; font-weight: bold">WARNING: Not recommended for development, use at your own risk, no support provided</span>.
+  - For Windows you can download the Beta Archive from [Cockroachlabs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb-windows.html)
+    and run the exe with `./cockroach.exe start-single-node --insecure`
+  - Then set the `DATABASE_URL` variable in `/packages/database/.env` and `/packages/web/.env` to the url displayed on start for postgresql
+  - You even have a Web interface for management and debugging
+  - WARNING BETA: (From their site: The CockroachDB executable for Windows is experimental and not suitable for production deployments. Windows 8 or higher is required.)
+
 ## Setting Up Code
 
 1. Clone the git repo `https://github.com/waldo-vision/waldo` to your machine then navigate to it using the 'cd' console command.
@@ -82,6 +90,14 @@ To start the services locally, simply run `docker compose up -d`. Or shut them o
    ```.env
     DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
    ```
+
+## Actually running code
+
+- The Project uses [yarn workspaces](https://yarnpkg.com/cli/workspace), which are defined in `/package.json`
+- Each submodule (database/webfrontend/webbackend/desktop app) defines its own `package.json` which is then used by yarn to run commands on it
+- For example running the webfrontend can be done with: `yarn workspace web start`
+- Usually it spins up a webserver at some localhost port, which is displayed in the command line
+- Additional info about the monorepo can be found at [Working in the monorepo](/en/working-in-monorepo)
 
 ## Picking work
 
