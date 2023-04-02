@@ -2,7 +2,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
-import BattleNetProvider from 'next-auth/providers/battlenet';
+import BattleNetProvider from '@auth-providers/battlenet';
 import FaceBookProvider from 'next-auth/providers/facebook';
 import TwitchProvider from 'next-auth/providers/twitch';
 import { prisma } from '@server/db/client';
@@ -10,6 +10,7 @@ import NextAuth from 'next-auth/next';
 import { Profile, Session, User } from 'next-auth';
 import { Roles } from 'database';
 import { Account } from 'next-auth';
+import { Adapter } from 'next-auth/adapters';
 
 const RicanGHId = '59850372';
 const HomelessGHId = '30394883';
@@ -27,8 +28,14 @@ interface signInCallback {
 interface RedirectCallback {
   baseUrl: string;
 }
+
+const adapter = {
+  ...PrismaAdapter(prisma),
+  linkAccount: ({ sub, ...data }: any) => prisma.account.create({ data })
+} as Adapter
+
 export const authOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter,
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID,
@@ -46,9 +53,6 @@ export const authOptions = {
     BattleNetProvider({
       clientId: process.env.BTLNET_CLIENT_ID,
       clientSecret: process.env.BTLNET_CLIENT_SECRET,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      issuer: 'https://oauth.battle.net/authorize',
     }),
     FaceBookProvider({
       clientId: process.env.FB_CLIENT_ID,
