@@ -2639,10 +2639,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docsearch/css@npm:3.3.0, @docsearch/css@npm:^3.1.0":
+"@docsearch/css@npm:3.3.0":
   version: 3.3.0
   resolution: "@docsearch/css@npm:3.3.0"
   checksum: 1cbf381fe0b454f933e736d04fe8a2d9f86c375022ef738b44d67a0b4c187b0d8fcb945a1ba5a404059e50e3968d9fe769de22779d071f6189f07c161239892c
+  languageName: node
+  linkType: hard
+
+"@docsearch/css@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "@docsearch/css@npm:3.3.3"
+  checksum: c3e678dd5e05a962d3e29b4c953632a013af3a352ad99d0e630546409e665684e122265034bca1619d9bd659e42d35c7cc90ee373836fcfb2614aae2057c5dc1
   languageName: node
   linkType: hard
 
@@ -6066,7 +6073,7 @@ __metadata:
     "@astrojs/preact": ^2.1.0
     "@astrojs/react": ^1.2.2
     "@astrojs/sitemap": ^1.0.0
-    "@docsearch/css": ^3.1.0
+    "@docsearch/css": ^3.3.3
     "@docsearch/react": ^3.1.0
     "@types/html-escaper": ^3.0.0
     "@types/node": ^18.0.0
