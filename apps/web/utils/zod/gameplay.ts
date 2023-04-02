@@ -56,3 +56,6 @@ export const ReviewItemsGameplaySchema = GameplaySchema.merge(
     total: z.number(),
   }),
 );
+
+export type GameplayType = z.infer<typeof GameplayTypes>;
+export type GameplayTypeWithNull = GameplayType | null;

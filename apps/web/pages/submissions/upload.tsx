@@ -41,6 +41,7 @@ import Head from 'next/head';
 import { prisma } from '@server/db/client';
 import { legal } from '@utils/links';
 import { games } from '@config/gameplay';
+import { GameplayType } from '@utils/zod/gameplay';
 
 type Cheat = 'NOCHEAT' | 'AIMBOT' | 'TRIGGERBOT' | 'ESP' | 'SPINBOT';
 export default function Upload() {

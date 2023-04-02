@@ -36,6 +36,7 @@ import { unstable_getServerSession } from 'next-auth/next';
 import { BiBlock } from 'react-icons/bi';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { games } from '@config/gameplay';
+import { GameplayType, GameplayTypeWithNull } from '@utils/zod/gameplay';
 type Query =
   | {
       gameplayCount?: number | undefined;
@@ -161,9 +162,17 @@ export default function Gameplay() {
               </MenuButton>
               <MenuList>
                 {games.map(game => {
-                  return <MenuItem onClick={() => handleFilter(game.shortName.toUpperCase() as GameplayTypeWithNull)}>
-                    {game.shortName.toUpperCase()}
-                  </MenuItem>
+                  return (
+                    <MenuItem
+                      onClick={() =>
+                        handleFilter(
+                          game.shortName.toUpperCase() as GameplayTypeWithNull,
+                        )
+                      }
+                    >
+                      {game.shortName.toUpperCase()}
+                    </MenuItem>
+                  );
                 })}
               </MenuList>
             </Menu>
