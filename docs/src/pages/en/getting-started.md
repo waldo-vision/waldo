@@ -1,4 +1,4 @@
-        ---
+---
 title: Getting Started
 description: Getting started with contributing to Waldo Vision
 layout: ../../layouts/MainLayout.astro

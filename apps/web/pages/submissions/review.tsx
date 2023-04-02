@@ -6,6 +6,7 @@ import {
   Button,
   useToast,
   Spinner,
+  Tag,
 } from '@chakra-ui/react';
 import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
@@ -17,6 +18,7 @@ import TurnstileWidget from '@components/TurnstileWidget';
 import Finished from '@components/Finished';
 import { getSession } from 'next-auth/react';
 import Image from 'next/image';
+import { games } from '@config/gameplay';
 interface ReviewItem {
   id: string;
   user: {
@@ -25,8 +27,10 @@ interface ReviewItem {
   };
   userId: string;
   youtubeUrl: string;
-  gameplayType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S';
+  gameplayType: GameplayType;
   isAnalyzed: boolean;
+  _count: { gameplayVotes: number };
+  total: number;
 }
 export default function Review() {
   const utils = trpc.useContext();
@@ -113,6 +117,14 @@ export default function Review() {
     doClickLogic('no');
   };
 
+  const getGameName = (gameplayType: GameplayType) => {
+    const game = games.find(game => game.shortName === gameplayType.toLowerCase());
+    if (game) {
+      return game.name;
+    }
+    return 'a relevant First Person Shooter game?';
+  }
+
   useEffect(() => {
     const getNecessaryData = async () => {
       if (tsToken && tsToken.length > 3 && !reviewItemData) {
@@ -195,29 +207,27 @@ export default function Review() {
                         fontSize={18}
                         ml={2}
                       >
-                        <Text>
-                          Submitted by&nbsp;
-                          <Text as={'span'} fontWeight={'bold'}>
-                            {reviewItem?.user?.name}
+                        <Flex direction={'row'} gap={2}>
+                          <Text>
+                            Submitted by&nbsp;
+                            <Text as={'span'} fontWeight={'bold'}>
+                              {reviewItem?.user?.name}
+                            </Text>
                           </Text>
-                        </Text>
-
+                          <Tag
+                            justifyContent={'right'}
+                            ml={'auto'}
+                            bgColor={'purple.500'}
+                            textColor={'white'}
+                          >
+                            {reviewItem._count.gameplayVotes} /{' '}
+                            {reviewItem.total}
+                          </Tag>
+                        </Flex>
                         <Text fontWeight={'normal'}>
                           Does this clip match gameplay from{' '}
                           <Text fontWeight={'bold'} as={'span'}>
-                            {reviewItem?.gameplayType === 'CSG'
-                              ? 'Counter Strike: Global Offensive'
-                              : reviewItem?.gameplayType === 'VAL'
-                              ? 'Valorant'
-                              : reviewItem?.gameplayType === 'APE'
-                              ? 'Apex Legends'
-                              : reviewItem?.gameplayType === 'TF2'
-                              ? 'Team Fortress 2'
-                              : reviewItem?.gameplayType === 'COD'
-                              ? 'Call of Duty'
-                              : reviewItem?.gameplayType === 'R6S'
-                              ? 'Rainbow Six Siege'
-                              : 'a relevant First Person Shooter game?'}
+                            {getGameName(reviewItem?.gameplayType)}
                           </Text>
                         </Text>
                       </Flex>
