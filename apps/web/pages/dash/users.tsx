@@ -38,6 +38,8 @@ import { BsFillExclamationOctagonFill } from 'react-icons/bs';
 import { unstable_getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { ReactElement } from 'react';
+
+import styles from '../../styles/dash/Users.module.css';
 interface GoToItem {
   number: number;
 }
@@ -253,7 +255,7 @@ export default function User() {
                           </Text>
                         </Td>
                         <Td>
-                          <Text fontSize={15}>{result.email}</Text>
+                          <Text fontSize={15} className={styles.private}>{result.email}</Text>
                         </Td>
                         <Td>
                           <Text fontSize={15}>

@@ -6,6 +6,7 @@ import {
   Button,
   useToast,
   Spinner,
+  Tag,
 } from '@chakra-ui/react';
 import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
@@ -17,6 +18,7 @@ import TurnstileWidget from '@components/TurnstileWidget';
 import Finished from '@components/Finished';
 import { getSession } from 'next-auth/react';
 import Image from 'next/image';
+import { games } from '@config/gameplay';
 interface ReviewItem {
   id: string;
   user: {
@@ -25,8 +27,10 @@ interface ReviewItem {
   };
   userId: string;
   youtubeUrl: string;
-  gameplayType: 'VAL' | 'CSG' | 'TF2' | 'APE' | 'COD' | 'R6S';
+  gameplayType: GameplayType;
   isAnalyzed: boolean;
+  _count: { gameplayVotes: number };
+  total: number;
 }
 export default function Review() {
   const utils = trpc.useContext();
@@ -70,10 +74,14 @@ export default function Review() {
   };
 
   const doClickLogic = async (action: 'yes' | 'no') => {
-    if (!reviewItem) return;
+    if (!reviewItem) {
+      setLoading(true);
+      setFinished(true);
+      return;
+    }
     // force update turnstile widget
+    setIsRequestValid(false);
     setRefreshState(refreshState + 1);
-    setLoading(true);
 
     if (!isRequestValid) {
       toast({
@@ -95,6 +103,7 @@ export default function Review() {
       isGame: review,
       tsToken: tsToken as string,
     });
+    setLoading(true);
     await refetch();
     setReviewItem(reviewItemData);
     setLoading(false);
@@ -107,6 +116,14 @@ export default function Review() {
   const handleNoClick = () => {
     doClickLogic('no');
   };
+
+  const getGameName = (gameplayType: GameplayType) => {
+    const game = games.find(game => game.shortName === gameplayType.toLowerCase());
+    if (game) {
+      return game.name;
+    }
+    return 'a relevant First Person Shooter game?';
+  }
 
   useEffect(() => {
     const getNecessaryData = async () => {
@@ -146,7 +163,7 @@ export default function Review() {
       <Center h={'100vh'} mt={{ base: 5 }}>
         {loading || !reviewItemData || tsToken == '' || tsToken == undefined ? (
           <Flex direction={'column'} alignItems={'center'}>
-            <Spinner color={'purple.500'} size={'xl'} mb={6} />
+            <Spinner size={'xl'} />
             <TurnstileWidget
               valid={(result, token) => {
                 setIsRequestValid(result);
@@ -162,6 +179,13 @@ export default function Review() {
             ) : (
               <>
                 <Center mb={4} display={{ base: 'none', md: 'flex' }}></Center>
+                <TurnstileWidget
+                  valid={(result, token) => {
+                    setIsRequestValid(result);
+                    setTsToken(token);
+                  }}
+                  refreshState={refreshState}
+                />
                 <Box bgColor={'white'} p={6} borderRadius={12}>
                   <Flex direction={'row'}>
                     {/* User Icon */}
@@ -172,6 +196,7 @@ export default function Review() {
                         width={54}
                         height={54}
                         style={{ borderRadius: '100%' }}
+                        onClick={() => setRefreshState(refreshState + 1)}
                       />
                     </Box>
                     {/* Top titles */}
@@ -182,27 +207,27 @@ export default function Review() {
                         fontSize={18}
                         ml={2}
                       >
-                        <Text>
-                          Submitted by&nbsp;
-                          <Text as={'span'} fontWeight={'bold'}>
-                            {reviewItem?.user?.name}
+                        <Flex direction={'row'} gap={2}>
+                          <Text>
+                            Submitted by&nbsp;
+                            <Text as={'span'} fontWeight={'bold'}>
+                              {reviewItem?.user?.name}
+                            </Text>
                           </Text>
-                        </Text>
-
+                          <Tag
+                            justifyContent={'right'}
+                            ml={'auto'}
+                            bgColor={'purple.500'}
+                            textColor={'white'}
+                          >
+                            {reviewItem._count.gameplayVotes} /{' '}
+                            {reviewItem.total}
+                          </Tag>
+                        </Flex>
                         <Text fontWeight={'normal'}>
                           Does this clip match gameplay from{' '}
                           <Text fontWeight={'bold'} as={'span'}>
-                            {reviewItem?.gameplayType === 'CSG'
-                              ? 'Counter Strike: Global Offensive'
-                              : reviewItem?.gameplayType === 'VAL'
-                              ? 'Valorant'
-                              : reviewItem?.gameplayType === 'APE'
-                              ? 'Apex Legends'
-                              : reviewItem?.gameplayType === 'TF2'
-                              ? 'Team Fortress 2'
-                              : reviewItem?.gameplayType === 'COD'
-                              ? 'Call of Duty'
-                              : 'a relevant First Person Shooter game?'}
+                            {getGameName(reviewItem?.gameplayType)}
                           </Text>
                         </Text>
                       </Flex>

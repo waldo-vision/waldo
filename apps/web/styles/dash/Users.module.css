@@ -1,0 +1,15 @@
+.private {
+    filter: blur(5px);
+}
+
+.private:hover {
+    filter: none;
+}
+
+.private:active {
+    filter: none;
+}
+
+.private:focus {
+    filter: none;
+}

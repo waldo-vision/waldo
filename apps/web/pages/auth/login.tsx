@@ -70,12 +70,7 @@ export default function Login() {
 
   const handleSelect = (index: number) => {
     if (!authProviders) return;
-    if (authProviders[index].provider == 'Google') {
-      const errorMsg =
-        "Currently Google signin is disabled, we're working on it!";
-      createErrorToast(errorMsg);
-      return;
-    }
+
     setCurrentProvider(authProviders[index].provider.toLowerCase());
     if (
       userSession?.user?.provider.toLocaleLowerCase() ==
@@ -234,14 +229,7 @@ export default function Login() {
                     boxShadow={'lg'}
                     borderRadius={8}
                     h={24}
-                    cursor={provider == 'Google' ? 'not-allowed' : ''}
-                    bgColor={
-                      provider == 'Google'
-                        ? '#a3a6ab'
-                        : selected
-                        ? 'black'
-                        : 'white'
-                    }
+                    bgColor={selected ? 'black' : 'white'}
                   >
                     <Flex direction={'row'}>
                       <Center h={24}>

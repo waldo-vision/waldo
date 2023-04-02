@@ -13,12 +13,12 @@
   },
   "dependencies": {
     "@algolia/client-search": "^4.13.1",
-    "@astrojs/preact": "^1.2.0",
+    "@astrojs/preact": "^2.1.0",
     "@astrojs/react": "^1.2.2",
     "@astrojs/sitemap": "^1.0.0",
     "@docsearch/css": "^3.1.0",
     "@docsearch/react": "^3.1.0",
-    "astro": "^1.8.0",
+    "astro": "^2.1.7",
     "preact": "^10.13.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
@@ -26,7 +26,7 @@
   "devDependencies": {
     "@types/html-escaper": "^3.0.0",
     "@types/node": "^18.0.0",
-    "@types/react": "^17.0.45",
+    "@types/react": "^18.0.29",
     "@types/react-dom": "^18.0.0",
     "eslint-config-custom": "workspace:*",
     "html-escaper": "^3.0.3",

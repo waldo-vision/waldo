@@ -40,6 +40,8 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { prisma } from '@server/db/client';
 import { legal } from '@utils/links';
+import { games } from '@config/gameplay';
+
 type Cheat = 'NOCHEAT' | 'AIMBOT' | 'TRIGGERBOT' | 'ESP' | 'SPINBOT';
 export default function Upload() {
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>();
@@ -83,14 +85,6 @@ export default function Upload() {
     setRequestDone(false);
   };
 
-  const games = [
-    { name: 'Counter Strike: Global Offensive', shortName: 'csg' },
-    { name: 'VALORANT', shortName: 'val' },
-    { name: 'Team Fortress 2', shortName: 'tf2' },
-    { name: 'Apex Legends', shortName: 'ape' },
-    { name: 'Call of Duty: Warzone', shortName: 'cod' },
-    { name: 'Rainbow Six Siege', shortName: 'r6s' },
-  ];
   const cheatsArray = [
     { name: 'NOCHEAT' },
     { name: 'AIMBOT' },
@@ -173,13 +167,7 @@ export default function Upload() {
     type Input = inferProcedureInput<AppRouter['gameplay']['create']>;
     //    ^?
     const input: Input = {
-      gameplayType: selectedGame.toUpperCase() as
-        | 'CSG'
-        | 'VAL'
-        | 'TF2'
-        | 'COD'
-        | 'APE'
-        | 'R6S',
+      gameplayType: selectedGame.toUpperCase() as GameplayType,
       youtubeUrl: currentUrl as string,
       cheats: cheats.length == 0 ? ['NOCHEAT'] : (cheats as Cheat[]),
       tsToken: tsToken as string,
