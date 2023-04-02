@@ -28,11 +28,13 @@ If you feel comfortable self hosting, for our use case, you we require that you 
 
 To start the services locally, simply run `docker compose up -d`. Or shut them off with `docker compose down`. (Run these in the repo after you have cloned it.)
 
-- For Windows you can download the Beta Archive from [Cockroachlabs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb-windows.html) or [Direct zip Link](https://binaries.cockroachdb.com/cockroach-v22.2.7.windows-6.2-amd64.zip)
-  and run the exe with `./cockroach.exe start-single-node --insecure`
-- Then set the `DATABASE_URL` variable in `/packages/database/.env` and `/packages/web/.env` to the url displayed on start for postgresql
-- You even have a Web interface for management and debugging
-- WARNING BETA: (From their site: The CockroachDB executable for Windows is experimental and not suitable for production deployments. Windows 8 or higher is required.)
+- Option for Windows Users:
+  - <span style="color:red; font-weight: bold">WARNING: Not recommended for development, use at your own risk, no support provided</span>.
+  - For Windows you can download the Beta Archive from [Cockroachlabs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb-windows.html)
+    and run the exe with `./cockroach.exe start-single-node --insecure`
+  - Then set the `DATABASE_URL` variable in `/packages/database/.env` and `/packages/web/.env` to the url displayed on start for postgresql
+  - You even have a Web interface for management and debugging
+  - WARNING BETA: (From their site: The CockroachDB executable for Windows is experimental and not suitable for production deployments. Windows 8 or higher is required.)
 
 ## Setting Up Code
 
