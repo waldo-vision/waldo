@@ -197,20 +197,20 @@ export default function Account() {
                     >
                       You have linked <b>all</b> of the following accounts:
                     </Text>
-                    {session?.user?.role == 'ADMIN' ||
-                      (session?.user?.role == 'MOD' && (
-                        <Text>
-                          Redirect me to the{' '}
-                          <chakra.span
-                            fontWeight={'bold'}
-                            textDecor={'underline'}
-                            cursor={'pointer'}
-                            onClick={() => router.push('/dash/users')}
-                          >
-                            Admin Dashboard
-                          </chakra.span>
-                        </Text>
-                      ))}
+                    {(session?.user?.role == 'ADMIN' ||
+                      session?.user?.role == 'MOD') && (
+                      <Text>
+                        Redirect me to the{' '}
+                        <chakra.span
+                          fontWeight={'bold'}
+                          textDecor={'underline'}
+                          cursor={'pointer'}
+                          onClick={() => router.push('/dash/users')}
+                        >
+                          Admin Dashboard
+                        </chakra.span>
+                      </Text>
+                    )}
                   </Flex>
                   <Flex direction={'column'}>
                     {linkedAccounts &&
