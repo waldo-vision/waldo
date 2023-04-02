@@ -177,11 +177,11 @@ export default function Gameplay() {
               </MenuList>
             </Menu>
             <Text fontWeight={'semibold'}>
-              Total gameplay items: {data && data[0].gameplayCount}
+              Total gameplay items: {data && data[0] && data[0].gameplayCount}
             </Text>
           </Flex>
           <Box overflowX="auto">
-            {data && (
+            {data && data[0] && (
               <Table
                 width={'100%'}
                 variant={'simple'}
@@ -304,7 +304,7 @@ export default function Gameplay() {
                     })
                   )}
                 </Tbody>
-                {data && (
+                {data && data[0] && (
                   <Tfoot bgColor={'white'} height={'50px'}>
                     <Tr>
                       <Td borderLeftRadius={16} />
