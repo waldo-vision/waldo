@@ -1,4 +1,5 @@
 #!/bin/sh
+set -ex
 
 echo "Migrating database..."
 yarn workspace database prisma migrate deploy
