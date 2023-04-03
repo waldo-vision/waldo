@@ -19,7 +19,10 @@
         "FB_CLIENT_ID",
         "FB_CLIENT_SECRET",
         "TWITCH_CLIENT_ID",
-        "TWITCH_CLIENT_SECRET"
+        "TWITCH_CLIENT_SECRET",
+        "NEXTAUTH_URL",
+        "NEXTAUTH_SECRET",
+        "DATABASE_URL"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },
