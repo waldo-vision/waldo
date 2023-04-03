@@ -23,3 +23,17 @@ services:
     env_file:
       # just
       - ./apps/web/.env
+
+  studio:
+    container_name: studio
+    build:
+      # set to root of monorepo
+      context: .
+      # use dockerfile for web
+      dockerfile: ./packages/database/Dockerfile
+    ports:
+      - 5555:5555
+    environment:
+      Mode: studio
+    env_file:
+      - ./apps/web/.env

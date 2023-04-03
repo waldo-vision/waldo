@@ -26,4 +26,6 @@ RUN yarn install
 
 COPY --from=builder /app/out/full/ .
 
+ENV Mode migrate
+
 ENTRYPOINT ["sh", "./packages/database/entrypoint.sh"]
