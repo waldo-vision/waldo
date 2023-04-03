@@ -4385,12 +4385,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.0.0, @types/react-dom@npm:^18.0.7, @types/react-dom@npm:^18.0.9":
-  version: 18.0.9
-  resolution: "@types/react-dom@npm:18.0.9"
+"@types/react-dom@npm:^18.0.11":
+  version: 18.0.11
+  resolution: "@types/react-dom@npm:18.0.11"
   dependencies:
     "@types/react": "*"
-  checksum: e744e3feba25fc43733289d4df4d9c0e59fcca7f34e8c89d75f81a339accb2bd70236d69382d47d2c0ad06a1529b2e56aa6171fe175854d60e07156ddceedfcb
+  checksum: 579691e4d5ec09688087568037c35edf8cfb1ab3e07f6c60029280733ee7b5c06d66df6fcc90786702c93ac8cb13bc7ff16c79ddfc75d082938fbaa36e1cdbf4
   languageName: node
   linkType: hard
 
@@ -6004,7 +6004,7 @@ __metadata:
     "@tauri-apps/cli": ^1.2.0
     "@types/node": 18.11.9
     "@types/react": ^18.0.29
-    "@types/react-dom": ^18.0.7
+    "@types/react-dom": ^18.0.11
     eslint: 8.27.0
     eslint-config-custom: "workspace:*"
     eslint-config-next: 13.0.0
@@ -6094,7 +6094,7 @@ __metadata:
     "@types/html-escaper": ^3.0.0
     "@types/node": ^18.0.0
     "@types/react": ^18.0.29
-    "@types/react-dom": ^18.0.0
+    "@types/react-dom": ^18.0.11
     astro: ^2.1.7
     eslint-config-custom: "workspace:*"
     html-escaper: ^3.0.3
@@ -13004,7 +13004,7 @@ __metadata:
     "@trpc/server": ^10.4.2
     "@types/node": 18.11.13
     "@types/react": ^18.0.29
-    "@types/react-dom": ^18.0.9
+    "@types/react-dom": ^18.0.11
     "@types/validator": ^13.7.14
     async-ratelimiter: ^1.3.5
     database: "workspace:*"

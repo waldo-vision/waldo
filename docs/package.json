@@ -27,7 +27,7 @@
     "@types/html-escaper": "^3.0.0",
     "@types/node": "^18.0.0",
     "@types/react": "^18.0.29",
-    "@types/react-dom": "^18.0.0",
+    "@types/react-dom": "^18.0.11",
     "eslint-config-custom": "workspace:*",
     "html-escaper": "^3.0.3",
     "tsconfig": "workspace:*"
