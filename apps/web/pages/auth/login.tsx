@@ -131,9 +131,9 @@ export default function Login() {
       },
     ];
     if (process.env.NODE_ENV === 'development') {
-      //add debug login if development mode
+      //add debug login if development mode to frontend login page
       providers.unshift({
-        provider: 'Debug Login',
+        provider: 'experimental_debug_login', //this needs to be the id field of provider, else it will not work
         hex: '#00FF00',
         selected: false,
       });

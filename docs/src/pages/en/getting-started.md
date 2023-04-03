@@ -91,6 +91,13 @@ To start the services locally, simply run `docker compose up -d`. Or shut them o
     DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
    ```
 
+1. Alternative OAuth Login Option (if you just want to login, without setting up the above providers):
+
+- If the web application is run in `debug` mode, there will be an option called debug login.
+- This feature is <span style="color:red; font-weight: bold">EXPERIMENTAL: use at your own risk, no support provided</span>
+- And do not forget to set `NEXTAUTH_URL` in `.env` to the current website root (example: `NEXTAUTH_URL="http://localhost:3000"`) it will not work otherwise.
+- The Webserver for workspace web needs to be started for it to work, since the OAuth emulation code is in the API
+
 ## Actually running code
 
 - The Project uses [yarn workspaces](https://yarnpkg.com/cli/workspace), which are defined in `/package.json`

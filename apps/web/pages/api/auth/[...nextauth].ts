@@ -64,11 +64,16 @@ export const authOptions = {
       clientSecret: process.env.TWITCH_CLIENT_SECRET,
       issuer: 'https://id.twitch.tv/oauth2/authorize',
     }),
-    DebugLoginProvider({
-      //debug login provider connecting to emulated oauth
-      clientId: 'DEBUGCLIENTID', //these here are only needed for typescript
-      clientSecret: 'DEBUGCLIENTSECRET',
-    }),
+    //if dev mode add debugloginprovder to provider list to backend
+    ...(process.env.NODE_ENV === 'development'
+      ? [
+          DebugLoginProvider({
+            //debug login provider connecting to emulated oauth
+            clientId: 'DEBUGCLIENTID', //these here are only needed for typescript, not used for validation
+            clientSecret: 'DEBUGCLIENTSECRET',
+          }),
+        ]
+      : []),
   ],
   callbacks: {
     async session(sessionCallback: SessionCallback) {

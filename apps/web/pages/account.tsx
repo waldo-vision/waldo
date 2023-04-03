@@ -55,6 +55,15 @@ const ProvidersList: Array<ProvidersListType> = [
     name: 'Github',
     icon: <BsGithub size={30} color={'#000000'} />,
   },
+  ...(process.env.NODE_ENV === 'development' //add debug login to fronted account list if development mode.
+    ? [
+        {
+          name: 'experimental_debug_login', //this needs to be the id field of provider, else it will not work,
+          // because name == id due to some reason
+          icon: <BsGithub size={30} color={'#000000'} />, //just to satisfy nodejs
+        },
+      ]
+    : []),
 ];
 
 export interface Gameplay {
