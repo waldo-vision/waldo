@@ -28,6 +28,7 @@ import { FaDiscord, FaBattleNet, FaTwitch } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { BsGithub, BsFacebook } from 'react-icons/bs';
 import Head from 'next/head';
+
 type Provider = {
   provider: string;
   hex?: string;
@@ -129,6 +130,14 @@ export default function Login() {
         selected: false,
       },
     ];
+    if (process.env.NODE_ENV === 'development') {
+      //add debug login if development mode
+      providers.unshift({
+        provider: 'Debug Login',
+        hex: '#00FF00',
+        selected: false,
+      });
+    }
     retrieveUserSession();
     setAuthProviders(providers);
   }, []);

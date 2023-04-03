@@ -11,6 +11,7 @@ import { Profile, Session, User } from 'next-auth';
 import { Roles } from 'database';
 import { Account } from 'next-auth';
 import { Adapter } from 'next-auth/adapters';
+import DebugLoginProvider from '@auth-providers/debug_login';
 
 const RicanGHId = '59850372';
 const HomelessGHId = '30394883';
@@ -31,8 +32,8 @@ interface RedirectCallback {
 
 const adapter = {
   ...PrismaAdapter(prisma),
-  linkAccount: ({ sub, ...data }: any) => prisma.account.create({ data })
-} as Adapter
+  linkAccount: ({ sub, ...data }: any) => prisma.account.create({ data }),
+} as Adapter;
 
 export const authOptions = {
   adapter,
@@ -62,6 +63,11 @@ export const authOptions = {
       clientId: process.env.TWITCH_CLIENT_ID,
       clientSecret: process.env.TWITCH_CLIENT_SECRET,
       issuer: 'https://id.twitch.tv/oauth2/authorize',
+    }),
+    DebugLoginProvider({
+      //debug login provider connecting to emulated oauth
+      clientId: 'DEBUGCLIENTID', //these here are only needed for typescript
+      clientSecret: 'DEBUGCLIENTSECRET',
     }),
   ],
   callbacks: {
