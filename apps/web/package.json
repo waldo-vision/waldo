@@ -33,7 +33,7 @@
     "framer-motion": "^7.6.19",
     "html-entities": "^2.3.3",
     "ioredis": "^5.2.4",
-    "next": "13.0.6",
+    "next": "13.2.4",
     "next-auth": "^4.18.6",
     "node-fetch": "^3.3.0",
     "node-redis": "^0.1.7",

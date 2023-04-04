@@ -30,8 +30,8 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
-    transpilePackages: ['ui'],
   },
+  transpilePackages: ['ui'],
   images: {
     domains: [
       'cdn.discordapp.com',
