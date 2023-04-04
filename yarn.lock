@@ -9837,7 +9837,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-auth@npm:^4.18.6":
+"next-auth@npm:^4.21.1":
   version: 4.21.1
   resolution: "next-auth@npm:4.21.1"
   dependencies:
@@ -13050,7 +13050,7 @@ __metadata:
     html-entities: ^2.3.3
     ioredis: ^5.2.4
     next: 13.2.4
-    next-auth: ^4.18.6
+    next-auth: ^4.21.1
     node-fetch: ^3.3.0
     node-redis: ^0.1.7
     react: 18.2.0

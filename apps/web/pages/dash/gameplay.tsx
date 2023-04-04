@@ -32,11 +32,12 @@ import {
 } from '@chakra-ui/icons';
 import { trpc } from '@utils/trpc';
 import Loading from '@components/Loading';
-import { unstable_getServerSession } from 'next-auth/next';
+import { getServerSession } from 'next-auth/next';
 import { BiBlock } from 'react-icons/bi';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { games } from '@config/gameplay';
 import { GameplayType, GameplayTypeWithNull } from '@utils/zod/gameplay';
+import { GetServerSideProps } from 'next';
 type Query =
   | {
       gameplayCount?: number | undefined;
@@ -440,19 +441,14 @@ const MenuAction = (props: MenuActionProps) => {
     </Menu>
   );
 };
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export async function getServerSideProps(context) {
-  const user = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions,
-  );
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const user = await getServerSession(req, res, authOptions);
 
   if (user?.user?.role === 'ADMIN' || user?.user?.role === 'MOD')
     return { props: {} };
-  else return { redirect: { destination: '/404' } };
-}
+  else return { redirect: { destination: '/404' }, props: {} };
+};
 
 Gameplay.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
