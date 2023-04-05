@@ -28,7 +28,7 @@
     "@trpc/server": "^10.4.2",
     "async-ratelimiter": "^1.3.5",
     "database": "workspace:*",
-    "eslint": "8.29.0",
+    "eslint": "8.37.0",
     "eslint-config-next": "13.0.6",
     "framer-motion": "^7.6.19",
     "html-entities": "^2.3.3",
