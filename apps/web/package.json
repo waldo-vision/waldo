@@ -24,7 +24,7 @@
     "@tanstack/react-query": "^4.28.0",
     "@trpc/client": "^10.4.2",
     "@trpc/next": "^10.4.2",
-    "@trpc/react-query": "^10.4.2",
+    "@trpc/react-query": "^10.18.0",
     "@trpc/server": "^10.4.2",
     "async-ratelimiter": "^1.3.5",
     "database": "workspace:*",
