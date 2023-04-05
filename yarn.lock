@@ -4115,20 +4115,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trpc/next@npm:^10.4.2":
-  version: 10.6.0
-  resolution: "@trpc/next@npm:10.6.0"
+"@trpc/next@npm:^10.18.0":
+  version: 10.18.0
+  resolution: "@trpc/next@npm:10.18.0"
   dependencies:
     react-ssr-prepass: ^1.5.0
   peerDependencies:
-    "@tanstack/react-query": ^4.3.8
-    "@trpc/client": 10.6.0
-    "@trpc/react-query": ^10.0.0-proxy-beta.21
-    "@trpc/server": 10.6.0
+    "@tanstack/react-query": ^4.18.0
+    "@trpc/client": 10.18.0
+    "@trpc/react-query": 10.18.0
+    "@trpc/server": 10.18.0
     next: "*"
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 8b05efdd09f80cf239b19d1d2018139c1f8363b393cb961231e8c0a2e64e1ed7ca5fca5efdfcad22a2d4b3ab5fc34a24bf638befbcc22df09a0b2d450b8203d0
+  checksum: d6ab6ac4e4538c82daeebae18f6007a8447164b615b64b64997ffa5554eb8083f4bbb4ae38fcbd6c5475a04b3424a4af4431625ca80643eed4fde7afc9fb3c1b
   languageName: node
   linkType: hard
 
@@ -13045,7 +13045,7 @@ __metadata:
     "@tanstack/query-core": ^4.20.4
     "@tanstack/react-query": ^4.28.0
     "@trpc/client": ^10.4.2
-    "@trpc/next": ^10.4.2
+    "@trpc/next": ^10.18.0
     "@trpc/react-query": ^10.18.0
     "@trpc/server": ^10.4.2
     "@types/node": 18.11.13
