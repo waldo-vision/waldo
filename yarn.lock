@@ -6717,13 +6717,13 @@ __metadata:
   linkType: hard
 
 "eslint-config-turbo@npm:latest":
-  version: 0.0.7
-  resolution: "eslint-config-turbo@npm:0.0.7"
+  version: 1.8.8
+  resolution: "eslint-config-turbo@npm:1.8.8"
   dependencies:
-    eslint-plugin-turbo: 0.0.7
+    eslint-plugin-turbo: 1.8.8
   peerDependencies:
     eslint: ">6.6.0"
-  checksum: 097c1a5fa669971cf0bd1198a00b64a6beb6917237c0d9599781c0a802536eb8f489a94d17841680bd2d02af00bd17608b909df596cb03034eb842a3dd6e2ef2
+  checksum: a513ab2257f12f7a40d0b0f9d4cdf986be87f26ff2b7b40b65fa98366e2717271fade1d826cda3ccfc16865a6833de8974848136592edc3b27e061e88091af3e
   languageName: node
   linkType: hard
 
@@ -6941,12 +6941,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-turbo@npm:0.0.7":
-  version: 0.0.7
-  resolution: "eslint-plugin-turbo@npm:0.0.7"
+"eslint-plugin-turbo@npm:1.8.8":
+  version: 1.8.8
+  resolution: "eslint-plugin-turbo@npm:1.8.8"
   peerDependencies:
     eslint: ">6.6.0"
-  checksum: d6d99111c5b84148e906919bfec11bff2f683e73ebd59830bc23e08acad668c4a72e65b0159dfa476d0da31d88f28578231e8c5a837b8e0a3cf2e353ed6a2f55
+  checksum: 395ec58653c3ee0c0559e153d68f0977930fb56f55043c4944f0683e122f623f356da0d967f27a12fc253442e5c5e8f6b8f8954fd91810128ba06723d8a30aa0
   languageName: node
   linkType: hard
 
