@@ -44,7 +44,7 @@
     "react-in-viewport": "1.0.0-alpha.28",
     "react-youtube": "^10.1.0",
     "redis": "^4.6.5",
-    "sharp": "^0.31.2",
+    "sharp": "^0.32.0",
     "superjson": "^1.11.0",
     "trpc-openapi": "^1.1.2",
     "typescript": "5.0.3",
