@@ -11,7 +11,7 @@ import {
 import Layout from '@components/Layout';
 import React, { useState, useEffect } from 'react';
 import { signOut } from 'next-auth/react';
-import { unstable_getServerSession } from 'next-auth/next';
+import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
 import { ReactElement } from 'react';
 import { trpc } from '@utils/trpc';
@@ -28,6 +28,7 @@ import { MdOutlineRemove } from 'react-icons/md';
 import useSite from '@site';
 import { prisma } from '@server/db/client';
 import Loading from '@components/Loading';
+import { GetServerSideProps } from 'next';
 
 type ProvidersListType = {
   name: string;
@@ -462,24 +463,23 @@ export default function Account() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export async function getServerSideProps(context) {
-  const user = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions,
-  );
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const user = await getServerSession(req, res, authOptions);
   const config = await prisma.waldoPage.findUnique({
     where: {
       name: 'account',
     },
   });
+
   if (config && config?.maintenance) {
-    return { redirect: { destination: '/', permanent: false } };
-  } else if (!user) return { redirect: { destination: '/auth/login' } };
-  else return { props: {} };
-}
+    return { redirect: { destination: '/', permanent: false }, props: {} };
+  } else if (!user)
+    return { redirect: { destination: '/auth/login' }, props: {} };
+  else
+    return {
+      props: {},
+    };
+};
 
 Account.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;

@@ -7,6 +7,7 @@ import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import type { ReactElement, ReactNode } from 'react';
 import Head from 'next/head';
+import PlausibleProvider from 'next-plausible';
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
@@ -45,7 +46,14 @@ function App({
         />
       </Head>
       <ChakraProvider theme={theme}>
-        <SiteProvider>{getLayout(<Component {...pageProps} />)}</SiteProvider>
+        <PlausibleProvider
+          domain="waldo.vision"
+          customDomain="https://plausible.waldo.vision"
+          trackLocalhost={false}
+          selfHosted={true}
+        >
+          <SiteProvider>{getLayout(<Component {...pageProps} />)}</SiteProvider>
+        </PlausibleProvider>
       </ChakraProvider>
     </SessionProvider>
   );

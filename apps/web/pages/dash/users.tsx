@@ -35,12 +35,13 @@ import { FiUser } from 'react-icons/fi';
 import { CiWarning } from 'react-icons/ci';
 import { BiBlock } from 'react-icons/bi';
 import { BsFillExclamationOctagonFill } from 'react-icons/bs';
-import { unstable_getServerSession } from 'next-auth/next';
+import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { ReactElement } from 'react';
 
 import styles from '../../styles/dash/Users.module.css';
 import { UsersType } from '@utils/zod/dash';
+import { GetServerSideProps } from 'next';
 interface GoToItem {
   number: number;
 }
@@ -515,16 +516,11 @@ const Notfound = () => (
 User.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export async function getServerSideProps(context) {
-  const user = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions,
-  );
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const user = await getServerSession(req, res, authOptions);
 
   if (user?.user?.role === 'ADMIN' || user?.user?.role === 'MOD')
     return { props: {} };
-  else return { redirect: { destination: '/404' } };
-}
+  else return { redirect: { destination: '/404' }, props: {} };
+};

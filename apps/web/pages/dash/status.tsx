@@ -14,7 +14,8 @@ import Maintenance from '@components/dashboard/status/Maintenance';
 import { ReactElement } from 'react';
 import Layout from '@components/dashboard/Layout';
 import { authOptions } from '../api/auth/[...nextauth]';
-import { unstable_getServerSession } from 'next-auth/next';
+import { getServerSession } from 'next-auth/next';
+import { GetServerSideProps } from 'next';
 
 type ServicesListType = {
   label: string;
@@ -71,18 +72,13 @@ export default function Status() {
     </Flex>
   );
 }
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export async function getServerSideProps(context) {
-  const user = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions,
-  );
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const user = await getServerSession(req, res, authOptions);
 
   if (user?.user?.role === 'ADMIN') return { props: {} };
-  else return { redirect: { destination: '/404' } };
-}
+  else return { redirect: { destination: '/404' }, props: {} };
+};
 
 Status.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
