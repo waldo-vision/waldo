@@ -1,10 +1,21 @@
 #!/bin/sh
+set -ex
 
-echo "Migrating database..."
-yarn workspace database prisma migrate deploy
+# check if arg provided
+if [ -z "${Mode}" ]; then
+    echo "No argument supplied"
+    exit 1
+fi
 
-echo : "Generate Prisma Client..."
-yarn workspace database prisma generate
+if [ ${Mode} = migrate ]; then
+    echo "Migrating database..."
+    yarn workspace database prisma migrate deploy
 
-echo "Seed database..."
-yarn workspace database prisma db seed
+    echo : "Generate Prisma Client..."
+    yarn workspace database prisma generate
+
+    echo "Seed database..."
+    yarn workspace database prisma db seed
+elif [ ${Mode} = studio ]; then
+    yarn workspace database prisma studio
+fi
