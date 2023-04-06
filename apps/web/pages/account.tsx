@@ -270,83 +270,23 @@ export default function Account() {
                                     <Text
                                       fontWeight={'regular'}
                                       mb={5}
-                                      fontSize={13}
+                                      fontSize={15}
+                                      _hover={{ textDecoration: 'underline' }}
+                                      cursor={'pointer'}
+                                      onClick={() =>
+                                        router.push(
+                                          '/portal/developers/apikeys',
+                                        )
+                                      }
                                     >
-                                      Create an api key to gain access to the
                                       <chakra.span
                                         fontWeight={'bold'}
-                                        fontSize={'13'}
+                                        textColor={'purple.500'}
                                       >
-                                        &nbsp;waldo.vision
+                                        Click
                                       </chakra.span>{' '}
-                                      apis.
+                                      to go to the developer portal.
                                     </Text>
-                                    <Box
-                                      width={{ md: '100%', lg: 'fit' }}
-                                      height={'100%'}
-                                    >
-                                      <Flex
-                                        direction={'column'}
-                                        gap={5}
-                                        maxW={'100%'}
-                                        minHeight={'10%'}
-                                        maxHeight={'32'}
-                                        overflowY={'scroll'}
-                                      >
-                                        <Flex
-                                          bgColor={'gray.800'}
-                                          py={2}
-                                          px={2}
-                                          mr={2}
-                                          borderRadius={16}
-                                        >
-                                          <Text
-                                            textColor={'white'}
-                                            fontWeight={'bold'}
-                                            mx={'auto'}
-                                          >
-                                            9342349234
-                                          </Text>
-                                        </Flex>
-                                        <Flex
-                                          bgColor={'gray.800'}
-                                          py={2}
-                                          px={2}
-                                          mr={2}
-                                          borderRadius={16}
-                                        >
-                                          <Text
-                                            textColor={'white'}
-                                            fontWeight={'bold'}
-                                            mx={'auto'}
-                                          >
-                                            9342349234
-                                          </Text>
-                                        </Flex>
-                                        <Flex
-                                          bgColor={'gray.800'}
-                                          py={2}
-                                          px={2}
-                                          mr={2}
-                                          borderRadius={16}
-                                        >
-                                          <Text
-                                            textColor={'white'}
-                                            fontWeight={'bold'}
-                                            mx={'auto'}
-                                          >
-                                            9342349234
-                                          </Text>
-                                        </Flex>
-                                      </Flex>
-                                      <Button
-                                        variant={'solid'}
-                                        colorScheme={'purple'}
-                                        mt={4}
-                                      >
-                                        <Text>Create a key</Text>
-                                      </Button>
-                                    </Box>
                                   </Flex>
                                   {name.toUpperCase() !=
                                   session?.user?.provider.toUpperCase() ? (
