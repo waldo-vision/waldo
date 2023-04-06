@@ -2398,7 +2398,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/react@npm:^2.5.5":
+"@chakra-ui/react@npm:^2.4.4":
   version: 2.5.5
   resolution: "@chakra-ui/react@npm:2.5.5"
   dependencies:
@@ -3609,6 +3609,71 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: 7ea62dffddb5665467eee0c44e9b69ce62d4cecc0909245582fea71f0a83fc7b66dbbc65b9fd1d64c80a342fef9671b0855e0bb21fc5b877cca1751fa482d3a8
+  languageName: node
+  linkType: hard
+
+"@motionone/animation@npm:^10.15.1":
+  version: 10.15.1
+  resolution: "@motionone/animation@npm:10.15.1"
+  dependencies:
+    "@motionone/easing": ^10.15.1
+    "@motionone/types": ^10.15.1
+    "@motionone/utils": ^10.15.1
+    tslib: ^2.3.1
+  checksum: 75b7a1e6c47c27073a578eb5559ea0a6e7075862c72e1eb1598403c8c2725f596a95b0369514c9e72f3c7439a9845c468b85a14d4e500df48e09d01b0739d4a7
+  languageName: node
+  linkType: hard
+
+"@motionone/dom@npm:^10.15.3":
+  version: 10.15.5
+  resolution: "@motionone/dom@npm:10.15.5"
+  dependencies:
+    "@motionone/animation": ^10.15.1
+    "@motionone/generators": ^10.15.1
+    "@motionone/types": ^10.15.1
+    "@motionone/utils": ^10.15.1
+    hey-listen: ^1.0.8
+    tslib: ^2.3.1
+  checksum: 2453fe3df6a2b4b339d075bcd598bda1eee1926ba0ad881edfd154362b0992c91f31c08d83c469c7e8cb8bf8ebc0ed5530972673cf5c74d99e46e3772cf5f1cb
+  languageName: node
+  linkType: hard
+
+"@motionone/easing@npm:^10.15.1":
+  version: 10.15.1
+  resolution: "@motionone/easing@npm:10.15.1"
+  dependencies:
+    "@motionone/utils": ^10.15.1
+    tslib: ^2.3.1
+  checksum: cf7cfcf9917525d892334c58282425aafc69d9ab9004c190bfa7cf91317a680e8143f227adc79557424e7f26cdf8478dcbb2ae467e744cebc58195d6f0b8153a
+  languageName: node
+  linkType: hard
+
+"@motionone/generators@npm:^10.15.1":
+  version: 10.15.1
+  resolution: "@motionone/generators@npm:10.15.1"
+  dependencies:
+    "@motionone/types": ^10.15.1
+    "@motionone/utils": ^10.15.1
+    tslib: ^2.3.1
+  checksum: 0eb6797a64d536bb5c26628343d6594a2ebc45c3c447b8ce442b4ac3a41be847b860ac009bda7968fc7d339d2ee49b18bfe36306c5dd99cf17c7d84c82de93f3
+  languageName: node
+  linkType: hard
+
+"@motionone/types@npm:^10.15.1":
+  version: 10.15.1
+  resolution: "@motionone/types@npm:10.15.1"
+  checksum: 98091f7dca257508d94d1080678c433da39a814e8e58aaa742212bf6c2a5b5e2120a6251a06e3ea522219ce6d1b6eb6aa2cab224b803fe52789033d8398ef0aa
+  languageName: node
+  linkType: hard
+
+"@motionone/utils@npm:^10.15.1":
+  version: 10.15.1
+  resolution: "@motionone/utils@npm:10.15.1"
+  dependencies:
+    "@motionone/types": ^10.15.1
+    hey-listen: ^1.0.8
+    tslib: ^2.3.1
+  checksum: 6ef13cd6637ec87c340e5536f849f8c40d30cc90139a3856d11cd70d78e3740f8815b0e63564fefd23c05a060da7a0ea5395390549606ed8801a7b832b74e04e
   languageName: node
   linkType: hard
 
@@ -7622,24 +7687,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^10.11.2":
-  version: 10.11.2
-  resolution: "framer-motion@npm:10.11.2"
+"framer-motion@npm:^7.6.19":
+  version: 7.10.3
+  resolution: "framer-motion@npm:7.10.3"
   dependencies:
     "@emotion/is-prop-valid": ^0.8.2
-    tslib: ^2.4.0
+    "@motionone/dom": ^10.15.3
+    hey-listen: ^1.0.8
+    tslib: 2.4.0
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
   dependenciesMeta:
     "@emotion/is-prop-valid":
       optional: true
-  peerDependenciesMeta:
-    react:
-      optional: true
-    react-dom:
-      optional: true
-  checksum: 7444d145dd6317172b047a9904227e6f515978060b19949a67c74d40b2ead7c2191a6899ab534845f0b33b7b36cb08bd2a1e28697c57242ec2b686ff02512830
+  checksum: 20ce8459e7e3c631af5261215acd2217f57f15d64448e2bd64eecf74d3406552523082c182211af086e01b44daad7a0c216d5135a3f8ae56fb63e152e54233aa
   languageName: node
   linkType: hard
 
@@ -8205,6 +8267,13 @@ __metadata:
     property-information: ^6.0.0
     space-separated-tokens: ^2.0.0
   checksum: 5c88419b72379ef4d9e141be5ccd13a91a0ff7b9623396b4f83a88d42987fdada27a1126d7e3efd3f9004eed0942fc0672f83baa923239f4147137852f35f733
+  languageName: node
+  linkType: hard
+
+"hey-listen@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "hey-listen@npm:1.0.8"
+  checksum: 6bad60b367688f5348e25e7ca3276a74b59ac5a09b0455e6ff8ab7d4a9e38cd2116c708a7dcd8a954d27253ce1d8717ec891d175723ea739885b828cf44e4072
   languageName: node
   linkType: hard
 
@@ -13236,7 +13305,7 @@ __metadata:
     "@chakra-ui/icons": ^2.0.18
     "@chakra-ui/layout": ^2.1.18
     "@chakra-ui/provider": ^2.0.26
-    "@chakra-ui/react": ^2.5.5
+    "@chakra-ui/react": ^2.4.4
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
     "@fontsource/nunito": ^4.5.12
@@ -13259,7 +13328,7 @@ __metadata:
     eslint: 8.37.0
     eslint-config-custom: "workspace:*"
     eslint-config-next: 13.0.6
-    framer-motion: ^10.11.2
+    framer-motion: ^7.6.19
     html-entities: ^2.3.3
     ioredis: ^5.3.1
     next: 13.2.4
