@@ -285,6 +285,7 @@ export default function Login() {
                   fontWeight={'medium'}
                   ml={6}
                   onChange={() => setIsLegalChecked(!isLegalChecked)}
+                  borderColor={'black'}
                 >
                   I agree to the&nbsp;
                 </Checkbox>
