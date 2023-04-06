@@ -35,3 +35,15 @@ No, Waldo will analyse video footage to detect aimbot cheating. No action will c
 ## What kind of gameplay should I submit? Does it need to be in any special format?
 
 Record a normal round of gameplay with whatever capture method you typically use. It doesn't need to be in any particular format, but nothing longer than 30 minutes please. Imagine you're recording a gameplay video that you're going to edit into a montage later on 😎. You'll then upload it to YouTube, and submit the link to the video on the waldo.vision submissions page.
+
+## Can I submit a random content creator's clips to waldo?
+
+Right now, we're asking users to only submit clips that they have recorded themselves or gotten explicit permission to upload. We don't want to train waldo on clips if someone does not want us to.
+
+## How is waldo sponsored by OperaGX?
+
+Basically Homeless is sponsored by OperaGX on YouTube– a portion of this integration will be given to Waldo LLC to use on various costs of the Waldo Vision project. OperaGX is not directly operating with or sponsoring Waldo LLC. The money will be classified as a donation from BH to Waldo LLC.
+
+## Should I submit cheating clips? Legit clips? Both?
+
+You can submit both cheating and non-cheating clips on the website. Both will be used in the pre-training stage.

@@ -48,6 +48,7 @@ export const SIDEBAR: Sidebar = {
     Welcome: [
       { text: 'Introduction', link: 'en/introduction' },
       { text: 'FAQ', link: 'en/faq' },
+      { text: 'Submission Guidelines', link: 'en/guidelines' },
     ],
     Contributing: [
       { text: 'Getting Started', link: 'en/getting-started' },
