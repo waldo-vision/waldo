@@ -40,6 +40,7 @@ To start the services locally, simply run `docker compose up -d`. Or shut them o
 
 1. Clone the git repo `https://github.com/waldo-vision/waldo` to your machine then navigate to it using the 'cd' console command.
 1. Run `yarn install` to install all the necessary dependencies.
+1. Once all of the dependencies are installed, we need to build argon2 so api keys can be hashed securely. To do this you will need a c compiler and a python version above 2. Once both are installed, you can run `node-gyp rebuild -C ./node_modules/argon2-ffi` in the root directory.
 1. To setup our ORM, run `yarn turbo db:generate`.
 1. Now, you need to choose whether you want to login with Discord, or Github.
    - If you choose Github, follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app). Be sure to set the `Callback URL` to `http://localhost:3000/api/auth/callback/github`.
