@@ -245,6 +245,7 @@ export default function Account() {
                                   ) : (
                                     <></>
                                   )}
+
                                   <Flex
                                     direction={'row'}
                                     align={'center'}
@@ -262,6 +263,90 @@ export default function Account() {
                                       You are connected to a{' '}
                                       {name.toLowerCase()} account.
                                     </Text>
+                                  </Flex>
+                                  <Flex direction={'column'}>
+                                    <Divider my={5} />
+                                    <Text fontWeight={'bold'}>API Access</Text>
+                                    <Text
+                                      fontWeight={'regular'}
+                                      mb={5}
+                                      fontSize={13}
+                                    >
+                                      Create an api key to gain access to the
+                                      <chakra.span
+                                        fontWeight={'bold'}
+                                        fontSize={'13'}
+                                      >
+                                        &nbsp;waldo.vision
+                                      </chakra.span>{' '}
+                                      apis.
+                                    </Text>
+                                    <Box
+                                      width={{ md: '100%', lg: 'fit' }}
+                                      height={'100%'}
+                                    >
+                                      <Flex
+                                        direction={'column'}
+                                        gap={5}
+                                        maxW={'100%'}
+                                        minHeight={'10%'}
+                                        maxHeight={'32'}
+                                        overflowY={'scroll'}
+                                      >
+                                        <Flex
+                                          bgColor={'gray.800'}
+                                          py={2}
+                                          px={2}
+                                          mr={2}
+                                          borderRadius={16}
+                                        >
+                                          <Text
+                                            textColor={'white'}
+                                            fontWeight={'bold'}
+                                            mx={'auto'}
+                                          >
+                                            9342349234
+                                          </Text>
+                                        </Flex>
+                                        <Flex
+                                          bgColor={'gray.800'}
+                                          py={2}
+                                          px={2}
+                                          mr={2}
+                                          borderRadius={16}
+                                        >
+                                          <Text
+                                            textColor={'white'}
+                                            fontWeight={'bold'}
+                                            mx={'auto'}
+                                          >
+                                            9342349234
+                                          </Text>
+                                        </Flex>
+                                        <Flex
+                                          bgColor={'gray.800'}
+                                          py={2}
+                                          px={2}
+                                          mr={2}
+                                          borderRadius={16}
+                                        >
+                                          <Text
+                                            textColor={'white'}
+                                            fontWeight={'bold'}
+                                            mx={'auto'}
+                                          >
+                                            9342349234
+                                          </Text>
+                                        </Flex>
+                                      </Flex>
+                                      <Button
+                                        variant={'solid'}
+                                        colorScheme={'purple'}
+                                        mt={4}
+                                      >
+                                        <Text>Create a key</Text>
+                                      </Button>
+                                    </Box>
                                   </Flex>
                                   {name.toUpperCase() !=
                                   session?.user?.provider.toUpperCase() ? (
