@@ -1,3 +1,4 @@
+# As this page is updated, make sure to update the appropriate section in the docs
 name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
 categories:
