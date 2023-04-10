@@ -12055,12 +12055,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"superjson@npm:^1.11.0":
-  version: 1.12.1
-  resolution: "superjson@npm:1.12.1"
+"superjson@npm:^1.12.2":
+  version: 1.12.2
+  resolution: "superjson@npm:1.12.2"
   dependencies:
     copy-anything: ^3.0.2
-  checksum: d69badde9892bd2acfb6a2c37f233b7018b64fe88357568a7ab480547d6755ac1ed33a8d438d7ca856178312f5367574de180774d558bc0b75d1439efdfc53ba
+  checksum: cf7735e172811ed87476a7c2f1bb0e83725a0e3c2d7a50a71303a973060b3c710288767fb767a7a7eee8e5625d3ccaee1176a93e27f43841627512c15c4cdf84
   languageName: node
   linkType: hard
 
@@ -13141,7 +13141,7 @@ __metadata:
     react-youtube: ^10.1.0
     redis: ^4.6.5
     sharp: ^0.32.0
-    superjson: ^1.11.0
+    superjson: ^1.12.2
     trpc-openapi: ^1.1.2
     tsconfig: "workspace:*"
     typescript: 5.0.3
