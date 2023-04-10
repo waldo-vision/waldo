@@ -45,7 +45,7 @@
     "react-youtube": "^10.1.0",
     "redis": "^4.6.5",
     "sharp": "^0.32.0",
-    "superjson": "^1.11.0",
+    "superjson": "^1.12.2",
     "trpc-openapi": "^1.1.2",
     "typescript": "5.0.3",
     "validator": "^13.9.0",
