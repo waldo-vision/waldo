@@ -4095,12 +4095,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trpc/client@npm:^10.4.2":
-  version: 10.6.0
-  resolution: "@trpc/client@npm:10.6.0"
+"@trpc/client@npm:^10.19.1":
+  version: 10.19.1
+  resolution: "@trpc/client@npm:10.19.1"
   peerDependencies:
-    "@trpc/server": 10.6.0
-  checksum: ee5f08ee132f12a7571aaa27e9aeeca154eb09b027ba104ea2e7bb90fab7b65d732e06f07cd05e242187e4a61d2ee59e425bded75801f042a14bef6158f61848
+    "@trpc/server": 10.19.1
+  checksum: ff61687b50e63efdfa4e64af4c980333b91d0a8c4421efe386709d9c9e4835ae2ef51a9517cfa6510ecd0864654112cb52a4d7a132090c5eeb73a2a646f51923
   languageName: node
   linkType: hard
 
@@ -13112,7 +13112,7 @@ __metadata:
     "@next-auth/prisma-adapter": ^1.0.5
     "@tanstack/query-core": ^4.20.4
     "@tanstack/react-query": ^4.28.0
-    "@trpc/client": ^10.4.2
+    "@trpc/client": ^10.19.1
     "@trpc/next": ^10.4.2
     "@trpc/react-query": ^10.18.0
     "@trpc/server": ^10.19.1
