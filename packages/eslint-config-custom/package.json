@@ -9,7 +9,7 @@
     "@typescript-eslint/parser": "^5.42.1",
     "eslint": "^8.37.0",
     "eslint-config-next": "13.0.0",
-    "eslint-config-prettier": "^8.7.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard-with-typescript": "^23.0.0",
     "eslint-config-turbo": "latest",
     "eslint-plugin-import": "^2.26.0",
