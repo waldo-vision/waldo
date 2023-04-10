@@ -3457,13 +3457,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@marsidev/react-turnstile@npm:0.1.0":
-  version: 0.1.0
-  resolution: "@marsidev/react-turnstile@npm:0.1.0"
+"@marsidev/react-turnstile@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@marsidev/react-turnstile@npm:0.1.2"
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 7ea62dffddb5665467eee0c44e9b69ce62d4cecc0909245582fea71f0a83fc7b66dbbc65b9fd1d64c80a342fef9671b0855e0bb21fc5b877cca1751fa482d3a8
+  checksum: e415cb1f279256d16648bfbb723787373765c53f4c65e8401ff5ff7ee550e903cbf55fda587dd69768c52deae3e685599d19dfa7cfcf174ce74d8b2ce9159f47
   languageName: node
   linkType: hard
 
@@ -13109,7 +13109,7 @@ __metadata:
     "@emotion/styled": ^11.10.6
     "@fontsource/nunito": ^4.5.12
     "@heroicons/react": ^2.0.17
-    "@marsidev/react-turnstile": 0.1.0
+    "@marsidev/react-turnstile": 0.1.2
     "@next-auth/prisma-adapter": ^1.0.5
     "@tanstack/query-core": ^4.20.4
     "@tanstack/react-query": ^4.28.0
