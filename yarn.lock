@@ -3322,17 +3322,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@express-zod-api/zod-to-ts@npm:1.1.6":
-  version: 1.1.6
-  resolution: "@express-zod-api/zod-to-ts@npm:1.1.6"
-  dependencies:
-    typescript: 4.9.4
-  peerDependencies:
-    zod: ^3
-  checksum: 5ab9b998d5fc49d568d6737ec55ac002d0ab488fcf1891e4d562df9e9884061d5475533d05ae5da7a057d16976eee2ad73e2733377f9290730002429730573f7
-  languageName: node
-  linkType: hard
-
 "@fontsource/nunito@npm:^4.5.12":
   version: 4.5.12
   resolution: "@fontsource/nunito@npm:4.5.12"
@@ -4308,7 +4297,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:*, @types/express@npm:^4.17.13":
+"@types/express@npm:*":
   version: 4.17.15
   resolution: "@types/express@npm:4.17.15"
   dependencies:
@@ -5286,7 +5275,7 @@ __metadata:
     eslint-config-custom: "*"
     express: ^4.18.2
     express-rate-limit: ^6.6.0
-    express-zod-api: ^8.3.4
+    express-zod-api: ^10.1.2
     mime: ^3.0.0
     mongoose: ^6.7.1
     ts-node-dev: ^2.0.0
@@ -7246,43 +7235,43 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-zod-api@npm:^8.3.4":
-  version: 8.7.0
-  resolution: "express-zod-api@npm:8.7.0"
+"express-zod-api@npm:^10.1.2":
+  version: 10.1.2
+  resolution: "express-zod-api@npm:10.1.2"
   dependencies:
-    "@express-zod-api/zod-to-ts": 1.1.6
     "@types/compression": ^1.7.2
-    "@types/express": ^4.17.13
     "@types/express-fileupload": ^1.2.2
     "@types/http-errors": ^2.0.0
     "@types/node": "*"
     compression: 1.7.4
-    express: 4.18.2
     express-fileupload: 1.4.0
     http-errors: 2.0.0
     mime: 3.0.0
-    openapi3-ts: 3.1.2
+    openapi3-ts: 3.2.0
     ramda: 0.28.0
     triple-beam: 1.3.0
-    typescript: 4.9.4
     winston: 3.8.2
-    zod: 3.20.2
   peerDependencies:
+    "@types/express": ^4.17.13
     "@types/jest": "*"
+    express: ^4.18.2
     jest: ">=25 <30"
-    typescript: ^4.1
+    typescript: ^4.9.3 || ^5.0.2
+    zod: ^3.21.4
   peerDependenciesMeta:
+    "@types/express":
+      optional: true
     "@types/jest":
       optional: true
     jest:
       optional: true
     typescript:
       optional: true
-  checksum: 29c5ba7ad298f7ac33a2f619f32d398eafd43f43f89735e3ea80debfe7843b29cd878b82d4026871c5ba73ed1e46ef770d5a5f99da6cf071fc62abd17b31fea5
+  checksum: 493722abb308281adc77ba9ca9faa629465b14e20c2f0bd820a63d88e6255b60d760f00018a10448fabb298e16882ff287338c7d5397cc6d588e8f3f997a3fe8
   languageName: node
   linkType: hard
 
-"express@npm:4.18.2, express@npm:^4.18.2":
+"express@npm:^4.18.2":
   version: 4.18.2
   resolution: "express@npm:4.18.2"
   dependencies:
@@ -10365,12 +10354,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openapi3-ts@npm:3.1.2":
-  version: 3.1.2
-  resolution: "openapi3-ts@npm:3.1.2"
+"openapi3-ts@npm:3.2.0":
+  version: 3.2.0
+  resolution: "openapi3-ts@npm:3.2.0"
   dependencies:
-    yaml: ^2.1.3
-  checksum: 77e5064ea9bff119ba8d8398a90246ae99174d6c23b2ed68355bb48be3243b6f4f0041a3fdcd9dba5ffe6ace786a8041d86d8a4049d65d2d40cd4bfca5bba459
+    yaml: ^2.2.1
+  checksum: 8796a29a1363bc892ba1acb3ddffd9e6b80e8f83cbfad4cd507262e957317139cac2528ab4b14c1b30bf350ebc9cc4c43ad32a89da4d7c4b85f7e815ffba3ebe
   languageName: node
   linkType: hard
 
@@ -12548,7 +12537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:*, typescript@npm:4.9.4":
+"typescript@npm:*":
   version: 4.9.4
   resolution: "typescript@npm:4.9.4"
   bin:
@@ -12568,7 +12557,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@4.9.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@*#~builtin<compat/typescript>":
   version: 4.9.4
   resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
   bin:
@@ -13310,10 +13299,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.1.3":
-  version: 2.2.0
-  resolution: "yaml@npm:2.2.0"
-  checksum: 6c89da40c3c553648595a476f23f7082c17e51b268ecce7ee0464302cbc1ffc20ba86f1b876688eb9c7d8f4b71dc28efbd7b3b86bf414a959ce5150831a9233f
+"yaml@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "yaml@npm:2.2.1"
+  checksum: 84f68cbe462d5da4e7ded4a8bded949ffa912bc264472e5a684c3d45b22d8f73a3019963a32164023bdf3d83cfb6f5b58ff7b2b10ef5b717c630f40bd6369a23
   languageName: node
   linkType: hard
 
@@ -13369,7 +13358,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.20.2, zod@npm:^3.17.3":
+"zod@npm:^3.17.3":
   version: 3.20.2
   resolution: "zod@npm:3.20.2"
   checksum: 04172f7e9350372684ccd298d4716908edc9113751295b6c4e1b3ea84e2af8997e504b33ba36f4741417bb2a5dc90bfd40501f6b0e7389df10e42a63d6d8366c
