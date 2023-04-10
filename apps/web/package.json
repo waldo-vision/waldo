@@ -40,7 +40,7 @@
     "node-redis": "^0.1.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.7.1",
+    "react-icons": "^4.8.0",
     "react-in-viewport": "1.0.0-alpha.28",
     "react-youtube": "^10.1.0",
     "redis": "^4.6.5",
