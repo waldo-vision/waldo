@@ -9887,9 +9887,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-auth@npm:^4.21.1":
-  version: 4.21.1
-  resolution: "next-auth@npm:4.21.1"
+"next-auth@npm:^4.22.0":
+  version: 4.22.0
+  resolution: "next-auth@npm:4.22.0"
   dependencies:
     "@babel/runtime": ^7.20.13
     "@panva/hkdf": ^1.0.2
@@ -9908,7 +9908,7 @@ __metadata:
   peerDependenciesMeta:
     nodemailer:
       optional: true
-  checksum: d0000a5793fb3b7df271dc992af4aefe513a82f8b27d9d9f360c384cb84a4486be4bcaa5defabf1380437dd6f5a230a1be78c8920b3581de023d9f50d2539e2b
+  checksum: 327a7715a963c890afd0b5a47316ce2c4cec887a86d96f2c208135df0f10b52c6e1fdcbb436a77926c24695165beea3bd0588da2411d5dec12fa19baae0c2533
   languageName: node
   linkType: hard
 
@@ -13131,7 +13131,7 @@ __metadata:
     html-entities: ^2.3.3
     ioredis: ^5.3.1
     next: 13.2.4
-    next-auth: ^4.21.1
+    next-auth: ^4.22.0
     next-plausible: ^3.7.2
     node-fetch: ^3.3.1
     node-redis: ^0.1.7
