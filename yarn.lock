@@ -4134,10 +4134,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trpc/server@npm:^10.4.2":
-  version: 10.6.0
-  resolution: "@trpc/server@npm:10.6.0"
-  checksum: 61f3c6f60bb54f32e975b5fbdf2b8c9bd0ba7e74149a911258640631c90e10d8d43155021c7b3762eaef99dad7097d0aa521b0f4a5ca44edbb89c5aeea8e136f
+"@trpc/server@npm:^10.19.1":
+  version: 10.19.1
+  resolution: "@trpc/server@npm:10.19.1"
+  checksum: 28df78860741ae7fe2ffff5437333113e58360964f80f2fbb468155c9313a5404b8eeead2f0e0ffa7281791f876133299277161accb38f17479405b15cf79b61
   languageName: node
   linkType: hard
 
@@ -13115,7 +13115,7 @@ __metadata:
     "@trpc/client": ^10.4.2
     "@trpc/next": ^10.4.2
     "@trpc/react-query": ^10.18.0
-    "@trpc/server": ^10.4.2
+    "@trpc/server": ^10.19.1
     "@types/node": 18.11.13
     "@types/react": ^18.0.29
     "@types/react-dom": ^18.0.11
