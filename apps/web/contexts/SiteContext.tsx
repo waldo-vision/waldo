@@ -11,6 +11,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import * as Sentry from '@sentry/nextjs';
 
 type ServiceConfig =
   | {
@@ -178,6 +179,19 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
       });
     }
   }, [aData, data, rData, status, uData]);
+
+  // Set Sentry user context
+  useEffect(() => {
+    if (session === undefined || session === null) {
+      Sentry.setUser(null);
+      return;
+    }
+    if (session.user === undefined) return;
+
+    Sentry.setUser({
+      id: session.user.id,
+    });
+  }, [session]);
 
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>;
 };
