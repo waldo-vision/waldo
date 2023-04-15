@@ -319,7 +319,7 @@ export default function Upload() {
                         borderRadius={15}
                       />
                     </Box>
-                    <Flex mt={4} experimental_spaceX={4}>
+                    <Flex mt={4} gap={4}>
                       <Menu>
                         <MenuButton
                           as={Button}
