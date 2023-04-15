@@ -19,7 +19,9 @@
         "FB_CLIENT_ID",
         "FB_CLIENT_SECRET",
         "TWITCH_CLIENT_ID",
-        "TWITCH_CLIENT_SECRET"
+        "TWITCH_CLIENT_SECRET",
+        "SENTRY_DSN",
+        "NEXT_PUBLIC_SENTRY_DSN"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },
