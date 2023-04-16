@@ -4,11 +4,16 @@ This is the monolithic NextJS app deployed at https://waldo.vision.
 
 ## Getting Started
 
-The app can be run as a local server for ease of development. This process is fairly straightforward.
+The easiest way to get started with Waldo is to build and run the app locally. This process is fairly straight forward.
 
 ### Install Dependencies
 
-Install all JS dependencies with yarn:
+You'll need to install a few dependencies in order to run the dev server:
+
+- [yarn](https://yarnpkg.com/getting-started/install) - our JavaScript package manager.
+- [docker](https://docs.docker.com/engine/install/) - used for building and running containers.
+
+With those installed, you can download additional packages with yarn:
 
 ```bash
 yarn install
@@ -16,9 +21,9 @@ yarn install
 
 ### Configuration
 
-The frontend is configured through via environment variables stored a `.env` file in this directory.
+The app is configured via environment variables stored within a `.env` file in this directory.
 
-Start by copying the the example file env file.
+Start by copying the example env file.
 
 ```bash
 cp apps/web/.env.example apps/web/.env
@@ -27,7 +32,7 @@ cp apps/web/.env.example apps/web/.env
 vim apps/web/.env
 ```
 
-Then configure the variables in this file. There are a few sections to note.
+Then configure the variables in this file.
 
 #### Discord
 
@@ -113,3 +118,5 @@ yarn workspace web build
 # Serve the app
 yarn workspace web start
 ```
+
+You should now be able to visit the website at http://localhost:3000.
