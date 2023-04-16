@@ -195,12 +195,10 @@ export default function Review() {
                     <Box>
                       <Image
                         src={
-                          reviewItem != null
-                            ? reviewItem.user != null
-                              ? reviewItem.user.image != null
-                                ? reviewItem.user.image
-                                : ''
-                              : ''
+                          reviewItem != null &&
+                          reviewItem.user != null &&
+                          reviewItem.user.image != null
+                            ? reviewItem.user.image
                             : ''
                         }
                         alt={'User Icon'}
