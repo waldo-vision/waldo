@@ -64,6 +64,12 @@ To start the services locally, simply run `docker compose up -d`. Or shut them o
 
    (This is if you're self hosting, if you're using CockroachDB cloud, copy the connection URL from the dashboard.)
 
+1. There is additional `.env` file in `packages/database`. The database url should be the same as above.
+
+   ```.env
+    DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+   ```
+
 1. Run `yarn turbo run db:push` to setup the database for the website.
 
 1. Additionally, you may also want to set the `Cloudflare Turnstile` keys so that submissions work, or the `Youtube API Key` so that the review site works properly.
@@ -83,12 +89,6 @@ To start the services locally, simply run `docker compose up -d`. Or shut them o
     DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
 
     # plus some other stuff if you set it
-   ```
-
-1. There is additional `.env` file in `packages/database`. The database url should be the same as above.
-
-   ```.env
-    DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
    ```
 
 ## Actually running code
