@@ -194,7 +194,13 @@ export default function Review() {
                     {/* User Icon */}
                     <Box>
                       <Image
-                        src={reviewItem?.user?.image as string}
+                        src={
+                          reviewItem != null &&
+                          reviewItem.user != null &&
+                          reviewItem.user.image != null
+                            ? reviewItem.user.image
+                            : 'https://waldo.vision/battle_net.png'
+                        }
                         alt={'User Icon'}
                         width={54}
                         height={54}
