@@ -194,7 +194,13 @@ export default function Review() {
                     {/* User Icon */}
                     <Box>
                       <Image
-                        src={reviewItem?.user?.image as string}
+                        src={
+                          reviewItem != null &&
+                          reviewItem.user != null &&
+                          reviewItem.user.image != null
+                            ? reviewItem.user.image
+                            : 'https://waldo.vision/battle_net.png'
+                        }
                         alt={'User Icon'}
                         width={54}
                         height={54}
@@ -209,6 +215,7 @@ export default function Review() {
                         justifyContent={'center'}
                         fontSize={18}
                         ml={2}
+                        minWidth={'42vw'}
                       >
                         <Flex direction={'row'} gap={2}>
                           <Text>
@@ -247,6 +254,7 @@ export default function Review() {
                           width: '100%',
                           height: '42vh',
                         }}
+                        allowFullScreen={true}
                       />
                     )}
                   </Box>

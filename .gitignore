@@ -52,3 +52,10 @@ yarn-error.log*
 
 # docker artifacts
 docker/cockroach/data
+
+
+# Sentry
+.sentryclirc
+
+# Sentry
+next.config.original.js

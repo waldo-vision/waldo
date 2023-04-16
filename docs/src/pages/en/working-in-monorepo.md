@@ -32,3 +32,9 @@ You should note that unless you have turbo installed globally, you will need to 
 With [yarn workspaces](https://yarnpkg.com/cli/workspace), you are able to run commands in a specific workspaces.
 
 For example, you can add react to the website with `yarn workspace web add react`, or build it alone with `yarn workspace web build`.
+
+## Labeling PRs Effectively
+
+> This section applies to maintainers only
+
+Due to our use of [release-drafter](https://github.com/release-drafter/release-drafter), the way we label PRs is important in automatically building out our releases. In addition to the labels that the auto labeler adds, we have a few more important labels you have to add yourself to PRs. For example, if you are adding a new feature, you should add the `feature` label to the PR. If you are fixing a bug, you should add the `bug` label to the PR, and so on. Furthermore, you **_can_** instruct release-drafter that it needs to increment the major, minor, or patch version by adding the `major`, `minor`, or `patch` label to the PR in addition to the other labels. To better understand what exact labels you should use for a given category of PR, you can look at the [release-drafter config](https://github.com/waldo-vision/waldo/blob/master/.github/release-drafter.yml).
