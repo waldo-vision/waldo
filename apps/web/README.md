@@ -1,34 +1,107 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# WALDO App
+
+This is the monolithic NextJS app deployed at https://waldo.vision.
 
 ## Getting Started
 
-First, run the development server:
+The app can be run as a local server for ease of development. This process is fairly straightforward.
+
+### Configuration
+
+The frontend is configured through via environment variables stored a `.env` file in this directory.
+
+Start by copying the the example file env file.
 
 ```bash
-npm run dev
-# or
-yarn dev
+cp apps/web/.env.example apps/web/.env
+
+# Open the file
+vim apps/web/.env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then configure the variables in this file. There are a few sections to note.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+#### Discord
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+If you plan on authenticating to Discord, make sure these credentials are set.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- `DISCORD_CLIENT_ID`
+- `DISCORD_CLIENT_SECRET`
 
-## Learn More
+Follow [this guide](https://discordjs.guide/oauth2/#getting-an-oauth2-url) until you have added the `Redirect URL`. Be sure to set this to `http://localhost:3000/api/auth/callback/discord`.
 
-To learn more about Next.js, take a look at the following resources:
+#### GitHub
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If you plan on authenticating to GitHub, make sure these credentials are set.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- `GITHUB_CLIENT_ID`
+- `GITHUB_CLIENT_SECRET`
 
-## Deploy on Vercel
+Follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app). Be sure to set the `Callback URL` to `http://localhost:3000/api/auth/callback/github`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### Next Auth
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Be sure to also set the `NEXTAUTH_URL` variable.
+
+- `NEXTAUTH_URL=http://localhost:3000`.
+
+#### CloudFlare Turnstile
+
+_TODO: add CloudFlare configuration docs_
+
+#### Youtube
+
+_TODO: add Youtube configuration docs_
+
+### CockroachDB
+
+The primary database used by the app is CockroachDB. You will need a working server to run this app locally.
+
+#### Hosting
+
+You can easily spin up a new CockroachDB container with the `docker-compose` file at the root of this repo.
+
+```bash
+docker-compose up -d
+
+# Check that the server is running
+docker ps
+```
+
+Alternatively, you can use CockroachDB's free [serverless tier](https://www.cockroachlabs.com/get-started-cockroachdb/) if you don't wish to self-host.
+
+#### Configuration
+
+You will now need to set the `DATABASE_URL` variable in two configuration files:
+
+- `apps/web/.env`
+- `packages/database/.env`
+
+If self-hosting using the docker-compose method, then set `DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"`.
+
+#### Migration
+
+With your configuration set, you should be ready to run the migrations needed for our ORM to work.
+
+```bash
+yarn turbo db:generate
+yarn turbo run db:push
+```
+
+### Starting the server
+
+With your environment configured, you should be ready to start the dev server.
+
+```bash
+yarn workspace web dev
+```
+
+Alternatively, you can build an optimized deployment of the app and deploy that instead.
+
+```bash
+# Build the app
+yarn workspace web build
+
+# Serve the app
+yarn workspace web start
+```
