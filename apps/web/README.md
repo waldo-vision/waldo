@@ -6,6 +6,14 @@ This is the monolithic NextJS app deployed at https://waldo.vision.
 
 The app can be run as a local server for ease of development. This process is fairly straightforward.
 
+### Install Dependencies
+
+Install all JS dependencies with yarn:
+
+```bash
+yarn install
+```
+
 ### Configuration
 
 The frontend is configured through via environment variables stored a `.env` file in this directory.
@@ -75,9 +83,9 @@ Alternatively, you can use CockroachDB's free [serverless tier](https://www.cock
 You will now need to set the `DATABASE_URL` variable in two configuration files:
 
 - `apps/web/.env`
-- `packages/database/.env`
+- `packages/database/.env`. If you haven't already, create this file with `cp packages/database/.env.example packages/database/.env`.
 
-If self-hosting using the docker-compose method, then set `DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"`.
+If self-hosting using the docker-compose method, then set `DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"` in each of these files.
 
 #### Migration
 
