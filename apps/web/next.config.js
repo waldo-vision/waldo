@@ -45,6 +45,7 @@ const nextConfig = {
       'cdn.discordapp.com',
       'avatars.githubusercontent.com',
       'i.ytimg.com',
+      'waldo.vision',
     ],
     remotePatterns: [
       {

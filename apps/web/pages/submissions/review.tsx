@@ -199,7 +199,7 @@ export default function Review() {
                           reviewItem.user != null &&
                           reviewItem.user.image != null
                             ? reviewItem.user.image
-                            : ''
+                            : 'https://waldo.vision/battle_net.png'
                         }
                         alt={'User Icon'}
                         width={54}
