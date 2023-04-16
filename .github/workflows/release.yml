@@ -127,6 +127,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Create Sentry release
         uses: getsentry/action-release@v1
@@ -137,6 +139,7 @@ jobs:
           # SENTRY_URL: https://sentry.io/
         with:
           environment: production
+          version: ${{ github.event.release.tag_name }}
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
@@ -156,5 +159,5 @@ jobs:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
           SENTRY_URL: https://sentry.io/
-          SENTRY_RELEASE: ${{ github.sha }}
+          SENTRY_RELEASE: ${{ github.event.release.tag_name }}
         run: yarn workspace web build
