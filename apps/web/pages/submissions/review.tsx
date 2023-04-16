@@ -194,7 +194,15 @@ export default function Review() {
                     {/* User Icon */}
                     <Box>
                       <Image
-                        src={reviewItem?.user?.image as string}
+                        src={
+                          reviewItem != null
+                            ? reviewItem.user != null
+                              ? reviewItem.user.image != null
+                                ? reviewItem.user.image
+                                : ''
+                              : ''
+                            : ''
+                        }
                         alt={'User Icon'}
                         width={54}
                         height={54}
