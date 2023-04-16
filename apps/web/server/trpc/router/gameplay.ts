@@ -13,6 +13,7 @@ import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { serverSanitize } from '@utils/sanitize';
+import * as Sentry from '@sentry/nextjs';
 export const gameplayRouter = router({
   /**
    * Get a specific gameplay
@@ -151,8 +152,14 @@ export const gameplayRouter = router({
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
+      const transaction = Sentry.startTransaction({
+        op: 'createGameplay',
+        name: 'Create a new gameplay',
+      });
+
       const isPerson = await vUser(input.tsToken);
       if (!isPerson) {
+        transaction.finish();
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message:
@@ -168,16 +175,19 @@ export const gameplayRouter = router({
       });
 
       // this needs to be handled client side
-      if (existingGameplay !== null)
+      if (existingGameplay !== null) {
+        transaction.finish();
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'This youtube url has already been submitted.',
         });
+      }
       const isValid =
         // eslint-disable-next-line max-len
         /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
 
       if (!input.youtubeUrl.match(isValid)) {
+        transaction.finish();
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'This url does not seem to be from youtube.',
@@ -210,8 +220,10 @@ export const gameplayRouter = router({
             cheats: input.cheats,
           },
         });
+        transaction.finish();
         return data;
       } catch (error) {
+        transaction.finish();
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'An unknown error has occurred.',
@@ -450,6 +462,10 @@ export const gameplayRouter = router({
     )
     .output(ReviewItemsGameplaySchema)
     .query(async ({ input, ctx }) => {
+      const transaction = Sentry.startTransaction({
+        op: 'getReviewItems',
+        name: 'Get Review Items',
+      });
       const randomPick = (values: string[]) => {
         const index = Math.floor(Math.random() * values.length);
         return values[index];
@@ -468,13 +484,13 @@ export const gameplayRouter = router({
           gameplayVotes: true,
         },
       });
-      
-      type ReviewItemOutput = typeof reviewItem[number] & {
+
+      type ReviewItemOutput = (typeof reviewItem)[number] & {
         _count: {
-          gameplayVotes: number
-        },
-        total: number
-      }
+          gameplayVotes: number;
+        };
+        total: number;
+      };
 
       const userReviewedAmt = await ctx.prisma.user.findUnique({
         where: {
@@ -485,13 +501,18 @@ export const gameplayRouter = router({
         },
       });
       if (reviewItem[0] == null || reviewItem[0] == undefined) {
+        transaction.finish();
         throw new TRPCError({ code: 'NOT_FOUND' });
       } else {
-        
         Object.assign(reviewItem[0], {
-          _count: { gameplayVotes: userReviewedAmt ? userReviewedAmt.gameplayVotes.length : 0 },
+          _count: {
+            gameplayVotes: userReviewedAmt
+              ? userReviewedAmt.gameplayVotes.length
+              : 0,
+          },
         });
         Object.assign(reviewItem[0], { total: itemCount });
+        transaction.finish();
         return reviewItem[0] as ReviewItemOutput;
       }
     }),
@@ -507,8 +528,13 @@ export const gameplayRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
+      const transaction = Sentry.startTransaction({
+        op: 'review',
+        name: 'Review',
+      });
       const isPerson = await vUser(input.tsToken);
       if (!isPerson) {
+        transaction.finish();
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message:
@@ -525,12 +551,15 @@ export const gameplayRouter = router({
           userId: ctx.session.user?.id,
         },
       });
-      if (!footageVote)
+      if (!footageVote) {
+        transaction.finish();
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: `Could not find a gameplay document with id:${input.gameplayId}.`,
         });
+      }
 
+      transaction.finish();
       return { message: 'Updated the gameplay document successfully.' };
     }),
 });

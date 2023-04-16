@@ -8,6 +8,8 @@ import {
   CaptureConsole,
   ReportingObserver,
 } from '@sentry/integrations';
+import { ProfilingIntegration } from '@sentry/profiling-node';
+// import { prisma } from './server/db/client';
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
@@ -16,6 +18,8 @@ Sentry.init({
   release: process.env.SENTRY_RELEASE,
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 0.5,
+  // Set sampling rate for profiling - this is relative to tracesSampleRate
+  profilesSampleRate: 1.0,
   // ...
   // Note: if you want to override the automatic release value, do not set a
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
@@ -49,5 +53,6 @@ Sentry.init({
     new ReportingObserver({
       // types: <'crash'|'deprecation'|'intervention'>[];
     }),
+    new ProfilingIntegration(),
   ],
 });
