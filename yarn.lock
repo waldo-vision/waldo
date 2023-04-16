@@ -4002,6 +4002,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/integrations@npm:^7.48.0":
+  version: 7.48.0
+  resolution: "@sentry/integrations@npm:7.48.0"
+  dependencies:
+    "@sentry/types": 7.48.0
+    "@sentry/utils": 7.48.0
+    localforage: ^1.8.1
+    tslib: ^1.9.3
+  checksum: f3347e0c5b696cc14c91a5e8c63130c2c0d3971bbbe725d5e4e423fa65bda31bd56c3c0cd6ad5a667ea98a79a7a3f584c7b44cf7bad5a17dc81df7ec98c5e398
+  languageName: node
+  linkType: hard
+
 "@sentry/nextjs@npm:^7.44.1":
   version: 7.44.1
   resolution: "@sentry/nextjs@npm:7.44.1"
@@ -4087,6 +4099,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/types@npm:7.48.0":
+  version: 7.48.0
+  resolution: "@sentry/types@npm:7.48.0"
+  checksum: a2378f3ccfe0d3c28031c48edb4516e4fd77d5e709f2b758dffc4e0c98a83983a9c2f1022d2a719b14a0db9427a53f689ccae6df24644389e461152e44da1ae0
+  languageName: node
+  linkType: hard
+
 "@sentry/utils@npm:7.44.1":
   version: 7.44.1
   resolution: "@sentry/utils@npm:7.44.1"
@@ -4094,6 +4113,16 @@ __metadata:
     "@sentry/types": 7.44.1
     tslib: ^1.9.3
   checksum: 0c64c965e4260aa9cfb288f89fbaae7e330dea429c7cf022f042ab792b36896d8f6299eb0027bc39fc97698f3887c3cfe0d2086453e592eadf05af71b0c507f2
+  languageName: node
+  linkType: hard
+
+"@sentry/utils@npm:7.48.0":
+  version: 7.48.0
+  resolution: "@sentry/utils@npm:7.48.0"
+  dependencies:
+    "@sentry/types": 7.48.0
+    tslib: ^1.9.3
+  checksum: 879a2866897684b5af43fdf2946bc37f6e5d7dd4310d3cc838a3f9b59dc3ed39084e8cf90ebf5cc699946b7c280653d6bff9cf695b43203f033aee08781b787a
   languageName: node
   linkType: hard
 
@@ -13430,6 +13459,7 @@ __metadata:
     "@heroicons/react": ^2.0.17
     "@marsidev/react-turnstile": 0.1.2
     "@next-auth/prisma-adapter": ^1.0.5
+    "@sentry/integrations": ^7.48.0
     "@sentry/nextjs": ^7.44.1
     "@tanstack/query-core": ^4.20.4
     "@tanstack/react-query": ^4.28.0
