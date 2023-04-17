@@ -5303,10 +5303,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async-ratelimiter@npm:^1.3.5":
-  version: 1.3.5
-  resolution: "async-ratelimiter@npm:1.3.5"
-  checksum: 405b305c1bbc07bacbb1b94246de8bc47a5b3ee59a8c1521c7f364471357b44321434e0f48e2bc497bc5c26eb0a55dc631034070b81089b2418eb326a888d2d6
+"async-ratelimiter@npm:^1.3.7":
+  version: 1.3.7
+  resolution: "async-ratelimiter@npm:1.3.7"
+  checksum: fcc3db7046c8cac2a9abbc7107d0126c2e26adae5144dc5db5812994ba2be7801eb1d2d9761164e329e227cb9d289e10183dbff62c0bba5cfe6742fb08fecaa0
   languageName: node
   linkType: hard
 
@@ -13372,7 +13372,7 @@ __metadata:
     "@types/react": ^18.0.29
     "@types/react-dom": ^18.0.11
     "@types/validator": ^13.7.14
-    async-ratelimiter: ^1.3.5
+    async-ratelimiter: ^1.3.7
     database: "workspace:*"
     eslint: 8.37.0
     eslint-config-custom: "workspace:*"
