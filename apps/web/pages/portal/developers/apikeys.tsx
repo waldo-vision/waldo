@@ -168,12 +168,7 @@ const ApiKeys = () => {
       <Flex mt={{ base: '60px' }} mb={20} justifyContent={'center'}>
         <Flex alignItems={'center'} direction={'column'}>
           <Flex direction={'row'}>
-            <Text
-              ml={5}
-              fontWeight={'extrabold'}
-              fontSize={25}
-              onClick={() => compareKeyAgainstHash('df', 'dsf')}
-            >
+            <Text ml={5} fontWeight={'extrabold'} fontSize={25}>
               Generate an API Key
             </Text>
             <Button
