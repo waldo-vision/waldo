@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/nextjs';
+import * as Sentry from '@sentry/node';
 import { PrismaClient } from 'database';
 
 declare global {
@@ -68,3 +68,10 @@ prisma.$on('error', e => {
   });
   console.log(e);
 });
+
+const sentryClient = Sentry.getCurrentHub().getClient();
+
+if (sentryClient !== undefined && sentryClient.addIntegration !== undefined)
+  sentryClient.addIntegration(
+    new Sentry.Integrations.Prisma({ client: prisma }),
+  );
