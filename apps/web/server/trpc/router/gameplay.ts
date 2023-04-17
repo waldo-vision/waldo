@@ -101,6 +101,7 @@ export const gameplayRouter = router({
           });
           return gameplays;
         } catch (error) {
+          Sentry.captureException(error);
           throw new TRPCError({
             message: 'No footage with the inputs provided could be found.',
             code: 'NOT_FOUND',
@@ -129,6 +130,7 @@ export const gameplayRouter = router({
           console.log(gameplays);
           return gameplays;
         } catch (error) {
+          Sentry.captureException(error);
           throw new TRPCError({
             message: 'No footage with the inputs provided could be found.',
             code: 'NOT_FOUND',
@@ -224,6 +226,7 @@ export const gameplayRouter = router({
         return data;
       } catch (error) {
         transaction.finish();
+        Sentry.captureException(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'An unknown error has occurred.',
@@ -393,6 +396,7 @@ export const gameplayRouter = router({
       } catch (error) {
         // throws RecordNotFound if record not found to update
         // but can't import for some reason
+        Sentry.captureException(error);
 
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -444,6 +448,7 @@ export const gameplayRouter = router({
       } catch (error) {
         // throws RecordNotFound if record not found to update
         // but can't import for some reason
+        Sentry.captureException(error);
 
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
