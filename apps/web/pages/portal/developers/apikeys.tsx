@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Sidebar from '@components/portal/developers/Sidebar';
 import { unstable_getServerSession } from 'next-auth';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
@@ -18,6 +19,7 @@ import useSite from '@contexts/SiteContext';
 import { trpc } from '@utils/trpc';
 import { useEffect, useState } from 'react';
 import { ApiKeyState } from 'database';
+import { compareKeyAgainstHash } from '@utils/helpers/apiHelper';
 interface ApiKey {
   id: string;
   keyOwnerId: string;
@@ -166,7 +168,12 @@ const ApiKeys = () => {
       <Flex mt={{ base: '60px' }} mb={20} justifyContent={'center'}>
         <Flex alignItems={'center'} direction={'column'}>
           <Flex direction={'row'}>
-            <Text ml={5} fontWeight={'extrabold'} fontSize={25}>
+            <Text
+              ml={5}
+              fontWeight={'extrabold'}
+              fontSize={25}
+              onClick={() => compareKeyAgainstHash('df', 'dsf')}
+            >
               Generate an API Key
             </Text>
             <Button

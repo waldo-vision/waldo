@@ -1,5 +1,5 @@
 import { scryptSync, randomBytes, timingSafeEqual } from 'crypto';
-import { argon2i } from 'argon2-ffi';
+import { verify, hash } from 'argon2';
 const checkURL = (url: string): boolean => {
   const p =
     // eslint-disable-next-line max-len
@@ -18,16 +18,19 @@ function genApiKey(size = 20, format: BufferEncoding = 'base64') {
 }
 
 async function genSecretHash(key: string) {
-  const salt = randomBytes(8).toString('hex');
-  const buffer = scryptSync(key, salt, 64);
-  const hash = await argon2i.hash(key, buffer);
+  const hashStore = await hash(key);
 
-  return hash;
+  return hashStore;
 }
 
 async function compareKeyAgainstHash(storedKey: string, suppliedKey: string) {
   try {
-    if (await argon2i.verify(storedKey, suppliedKey)) {
+    if (
+      await verify(
+        '$argon2id$v=19$m=65536,t=3,p=4$2kasxHK6CP+NaXiw9P6J/A$GhgQWBtm5Whof9dI/ZVSfeWIj6dV+VdQ8EtmimOHxyw',
+        'VnIKCuUiGondxkjOsxg1ozTnnvM=',
+      )
+    ) {
       return true;
     } else {
       return false;
