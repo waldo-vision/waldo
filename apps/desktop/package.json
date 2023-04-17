@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",
-    "@types/node": "18.11.9",
+    "@types/node": "18.15.11",
     "@types/react": "^18.0.29",
     "@types/react-dom": "^18.0.11",
     "eslint": "8.38.0",
