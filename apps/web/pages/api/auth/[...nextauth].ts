@@ -11,6 +11,7 @@ import { Profile, Session, User } from 'next-auth';
 import { Roles } from 'database';
 import { Account } from 'next-auth';
 import { Adapter } from 'next-auth/adapters';
+import * as Sentry from '@sentry/nextjs';
 
 const RicanGHId = '59850372';
 const HomelessGHId = '30394883';
@@ -118,7 +119,8 @@ export const authOptions = {
                 role: Roles.ADMIN,
               },
             });
-          } catch {
+          } catch (error) {
+            Sentry.captureException(error);
             // return true here even if error because account does not exist...
             // but still allow user otherwise they would never be able to sign in
             return true;

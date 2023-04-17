@@ -41,6 +41,7 @@ import { prisma } from '@server/db/client';
 import { legal } from '@utils/links';
 import { games } from '@config/gameplay';
 import { GameplayType } from '@utils/zod/gameplay';
+import * as Sentry from '@sentry/nextjs';
 
 type Cheat = 'NOCHEAT' | 'AIMBOT' | 'TRIGGERBOT' | 'ESP' | 'SPINBOT';
 export default function Upload() {
@@ -191,6 +192,7 @@ export default function Upload() {
       await createGameplay.mutateAsync(input);
       handleRequestSuccess();
     } catch (error: unknown) {
+      Sentry.captureException(error);
       console.log(error);
       handleRequestError(error as TRPCError);
     }

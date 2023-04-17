@@ -29,6 +29,7 @@ import useSite from '@site';
 import { prisma } from '@server/db/client';
 import Loading from '@components/Loading';
 import { GetServerSideProps } from 'next';
+import * as Sentry from '@sentry/nextjs';
 
 type ProvidersListType = {
   name: string;
@@ -106,6 +107,7 @@ export default function Account() {
         isClosable: true,
       });
     } catch (error) {
+      Sentry.captureException(error);
       toast({
         position: 'bottom-right',
         title: 'Unlink Account',

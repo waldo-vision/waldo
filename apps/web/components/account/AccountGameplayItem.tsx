@@ -5,6 +5,7 @@ import { Gameplay } from 'pages/account';
 import { useEffect, useState } from 'react';
 import { trpc } from '@utils/trpc';
 import { BiTrash } from 'react-icons/bi';
+import * as Sentry from '@sentry/nextjs';
 
 type youtubeOembed = {
   title: string;
@@ -35,6 +36,7 @@ export default function AccountGameplayItem({ item }: { item: Gameplay }) {
         isClosable: true,
       });
     } catch (error) {
+      Sentry.captureException(error);
       toast({
         position: 'bottom-right',
         title: 'Gameplay Deletion',

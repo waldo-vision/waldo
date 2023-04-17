@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { serverSanitize } from '@utils/sanitize';
 import { z } from 'zod';
 import { router, protectedProcedure, publicProcedure } from '../trpc';
+import * as Sentry from '@sentry/nextjs';
 
 export const siteRouter = router({
   getPageData: publicProcedure
@@ -29,18 +30,24 @@ export const siteRouter = router({
       }),
     )
     .query(async ({ input, ctx }) => {
+      const transaction = Sentry.startTransaction({
+        op: 'getPageData',
+        name: 'Get Page Data',
+      });
       const pageData = await ctx.prisma.waldoPage.findFirst({
         where: {
           name: input.name,
         },
       });
       if (pageData == null) {
+        transaction.finish();
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Waldo Vision Page not found in the database.',
         });
       }
       // no error checking because the docs will never be deleted.
+      transaction.finish();
       return pageData;
     }),
   getSiteData: publicProcedure
@@ -66,6 +73,10 @@ export const siteRouter = router({
       }),
     )
     .query(async ({ input, ctx }) => {
+      const transaction = Sentry.startTransaction({
+        op: 'getSiteData',
+        name: 'Get Site Data',
+      });
       const siteData = await ctx.prisma.waldoSite.findUnique({
         where: {
           name: input.siteName,
@@ -77,6 +88,7 @@ export const siteRouter = router({
           message: 'Waldo Vision Page not found in the database.',
         });
       }
+      transaction.finish();
       return siteData;
     }),
   updatePage: protectedProcedure

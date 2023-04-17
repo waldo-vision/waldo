@@ -5,6 +5,7 @@ import { protectedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { serverSanitize } from '@utils/sanitize';
+import * as Sentry from '@sentry/nextjs';
 export const clipRouter = router({
   get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/clip' } })
@@ -53,6 +54,7 @@ export const clipRouter = router({
 
         return clip;
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           message: 'No clip with the provided id could be found.',
           code: 'NOT_FOUND',
@@ -101,6 +103,7 @@ export const clipRouter = router({
           message: `Clip with uuid: ${result.id} was deleted successfully.`,
         };
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           message: 'No clip with the provided id could be found.',
           code: 'NOT_FOUND',
@@ -142,6 +145,7 @@ export const clipRouter = router({
         });
         return clip;
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           message: `Unable to create a clip.`,
           code: 'INTERNAL_SERVER_ERROR',

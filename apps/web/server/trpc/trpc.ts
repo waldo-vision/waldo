@@ -2,6 +2,8 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { OpenApiMeta } from 'trpc-openapi';
 import { type Context } from './context';
+// import * as Sentry from '@sentry/nextjs';
+import * as Sentry from '@sentry/node';
 
 const t = initTRPC
   .context<Context>()
@@ -15,10 +17,16 @@ const t = initTRPC
 
 export const router = t.router;
 
+const sentryMiddleware = t.middleware(
+  Sentry.Handlers.trpcMiddleware({
+    attachRpcInput: true,
+  }),
+);
+
 /**
  * Unprotected procedure
  **/
-export const publicProcedure = t.procedure;
+export const publicProcedure = t.procedure.use(sentryMiddleware);
 
 /**
  * Reusable middleware to ensure
@@ -31,6 +39,8 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
 
   if (ctx.session.user.blacklisted) throw new TRPCError({ code: 'FORBIDDEN' });
 
+  Sentry.setUser({ id: ctx.session.user.id });
+
   return next({
     ctx: {
       // infers the `session` as non-nullable
@@ -42,4 +52,6 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
 /**
  * Protected procedure
  **/
-export const protectedProcedure = t.procedure.use(isAuthed);
+export const protectedProcedure = t.procedure
+  .use(sentryMiddleware)
+  .use(isAuthed);

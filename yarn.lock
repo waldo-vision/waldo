@@ -3831,6 +3831,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry-internal/tracing@npm:7.48.0":
+  version: 7.48.0
+  resolution: "@sentry-internal/tracing@npm:7.48.0"
+  dependencies:
+    "@sentry/core": 7.48.0
+    "@sentry/types": 7.48.0
+    "@sentry/utils": 7.48.0
+    tslib: ^1.9.3
+  checksum: 61e9d1c5f34db9a23ae8f34b6d479e9929e968fa63e4d0d2da92cf49f4a6d82b992161b781278296112a8851920d75a9e538134014c63f7e3d7de2b3d3e6fc4a
+  languageName: node
+  linkType: hard
+
 "@sentry/browser@npm:7.44.1":
   version: 7.44.1
   resolution: "@sentry/browser@npm:7.44.1"
@@ -3872,6 +3884,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/core@npm:7.48.0":
+  version: 7.48.0
+  resolution: "@sentry/core@npm:7.48.0"
+  dependencies:
+    "@sentry/types": 7.48.0
+    "@sentry/utils": 7.48.0
+    tslib: ^1.9.3
+  checksum: cc4d0ada638a6da4b56f1824c419ef1aea7867cb1079d647cf9397752e86215fcad2dd7eebdf9893dedab64cfa3473435ed89e2afdc6eb8d68041b836b3e605a
+  languageName: node
+  linkType: hard
+
+"@sentry/hub@npm:^7.44.1":
+  version: 7.48.0
+  resolution: "@sentry/hub@npm:7.48.0"
+  dependencies:
+    "@sentry/core": 7.48.0
+    "@sentry/types": 7.48.0
+    "@sentry/utils": 7.48.0
+    tslib: ^1.9.3
+  checksum: ec0a01a5578124125f243b4947037b9dce6b36dfd42486a7820a9f7c0463f976934a9cc85848d86b316c301e516a7e69a04b8f9abdbee1e7e4da177751962672
+  languageName: node
+  linkType: hard
+
 "@sentry/integrations@npm:7.44.1":
   version: 7.44.1
   resolution: "@sentry/integrations@npm:7.44.1"
@@ -3881,6 +3916,18 @@ __metadata:
     localforage: ^1.8.1
     tslib: ^1.9.3
   checksum: 003f00c6ccc29eb1a38df9b5751457426349c316db6e772cbdfd314198efee5d4f7eaf5403480c9d63a952708b075df06391d683c84a7baae6fc239fe2963482
+  languageName: node
+  linkType: hard
+
+"@sentry/integrations@npm:^7.48.0":
+  version: 7.48.0
+  resolution: "@sentry/integrations@npm:7.48.0"
+  dependencies:
+    "@sentry/types": 7.48.0
+    "@sentry/utils": 7.48.0
+    localforage: ^1.8.1
+    tslib: ^1.9.3
+  checksum: f3347e0c5b696cc14c91a5e8c63130c2c0d3971bbbe725d5e4e423fa65bda31bd56c3c0cd6ad5a667ea98a79a7a3f584c7b44cf7bad5a17dc81df7ec98c5e398
   languageName: node
   linkType: hard
 
@@ -3927,6 +3974,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/node@npm:^7.44.1, @sentry/node@npm:^7.48.0":
+  version: 7.48.0
+  resolution: "@sentry/node@npm:7.48.0"
+  dependencies:
+    "@sentry-internal/tracing": 7.48.0
+    "@sentry/core": 7.48.0
+    "@sentry/types": 7.48.0
+    "@sentry/utils": 7.48.0
+    cookie: ^0.4.1
+    https-proxy-agent: ^5.0.0
+    lru_map: ^0.3.3
+    tslib: ^1.9.3
+  checksum: de9bbdd84d56a7851006a1c61c6ec08877fb7332bad83bfc4a3f5ca172a46b2d34cd084844531ac37de25fc317347820f182fd82e60aa54b4bb5046f848888ec
+  languageName: node
+  linkType: hard
+
+"@sentry/profiling-node@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@sentry/profiling-node@npm:0.3.0"
+  dependencies:
+    "@sentry/hub": ^7.44.1
+    "@sentry/node": ^7.44.1
+    "@sentry/tracing": ^7.44.1
+    "@sentry/types": ^7.44.1
+    "@sentry/utils": ^7.44.1
+    detect-libc: ^2.0.1
+    nan: ^2.17.0
+    node-abi: ^3.28.0
+    node-gyp: ^9.3.0
+  checksum: 780cd6bbc14beb4ed88209708902b40989983b78fc3acf34d87b0ebf78d3bd1b348aaf26212a3ef76e0733f8035c8c6c252a46ad61c13451afa3ce4c184dad05
+  languageName: node
+  linkType: hard
+
 "@sentry/react@npm:7.44.1":
   version: 7.44.1
   resolution: "@sentry/react@npm:7.44.1"
@@ -3962,10 +4042,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/tracing@npm:^7.44.1":
+  version: 7.48.0
+  resolution: "@sentry/tracing@npm:7.48.0"
+  dependencies:
+    "@sentry-internal/tracing": 7.48.0
+  checksum: a9555e4478c17f20b682c934da6589a2b6a89eaceae14ec95f991896a4b4eb87eff9bce4fbaf01ade3fbfc8801a622f232478fc1e4d13aaf337a4bc146ea639f
+  languageName: node
+  linkType: hard
+
 "@sentry/types@npm:7.44.1":
   version: 7.44.1
   resolution: "@sentry/types@npm:7.44.1"
   checksum: 49ba1a2522bada9ac9cf18ef55e71559f2e3a5b2e74544d49c3d0706ef17caca490f194bdb373217ee083fb80e18849d005d89d3a4319fbd7913de8b726e2245
+  languageName: node
+  linkType: hard
+
+"@sentry/types@npm:7.48.0, @sentry/types@npm:^7.44.1":
+  version: 7.48.0
+  resolution: "@sentry/types@npm:7.48.0"
+  checksum: a2378f3ccfe0d3c28031c48edb4516e4fd77d5e709f2b758dffc4e0c98a83983a9c2f1022d2a719b14a0db9427a53f689ccae6df24644389e461152e44da1ae0
   languageName: node
   linkType: hard
 
@@ -3976,6 +4072,16 @@ __metadata:
     "@sentry/types": 7.44.1
     tslib: ^1.9.3
   checksum: 0c64c965e4260aa9cfb288f89fbaae7e330dea429c7cf022f042ab792b36896d8f6299eb0027bc39fc97698f3887c3cfe0d2086453e592eadf05af71b0c507f2
+  languageName: node
+  linkType: hard
+
+"@sentry/utils@npm:7.48.0, @sentry/utils@npm:^7.44.1":
+  version: 7.48.0
+  resolution: "@sentry/utils@npm:7.48.0"
+  dependencies:
+    "@sentry/types": 7.48.0
+    tslib: ^1.9.3
+  checksum: 879a2866897684b5af43fdf2946bc37f6e5d7dd4310d3cc838a3f9b59dc3ed39084e8cf90ebf5cc699946b7c280653d6bff9cf695b43203f033aee08781b787a
   languageName: node
   linkType: hard
 
@@ -10010,6 +10116,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nan@npm:^2.17.0":
+  version: 2.17.0
+  resolution: "nan@npm:2.17.0"
+  dependencies:
+    node-gyp: latest
+  checksum: ec609aeaf7e68b76592a3ba96b372aa7f5df5b056c1e37410b0f1deefbab5a57a922061e2c5b369bae9c7c6b5e6eecf4ad2dac8833a1a7d3a751e0a7c7f849ed
+  languageName: node
+  linkType: hard
+
 "nanoid@npm:^3.3.4":
   version: 3.3.4
   resolution: "nanoid@npm:3.3.4"
@@ -10152,6 +10267,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-abi@npm:^3.28.0":
+  version: 3.35.0
+  resolution: "node-abi@npm:3.35.0"
+  dependencies:
+    semver: ^7.3.5
+  checksum: 0d230724ecae7b42c3b6d7c1577e52e621ca6626d8683ecdbe0ba231c39d395d5dd94b6e50a40d905d40d80b63a12ad57daa5b5892f72e0a94df0c719722e16d
+  languageName: node
+  linkType: hard
+
 "node-abi@npm:^3.3.0":
   version: 3.30.0
   resolution: "node-abi@npm:3.30.0"
@@ -10211,7 +10335,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp@npm:latest":
+"node-gyp@npm:^9.3.0, node-gyp@npm:latest":
   version: 9.3.1
   resolution: "node-gyp@npm:9.3.1"
   dependencies:
@@ -13275,7 +13399,10 @@ __metadata:
     "@heroicons/react": ^2.0.17
     "@marsidev/react-turnstile": 0.1.2
     "@next-auth/prisma-adapter": ^1.0.5
+    "@sentry/integrations": ^7.48.0
     "@sentry/nextjs": ^7.44.1
+    "@sentry/node": ^7.48.0
+    "@sentry/profiling-node": ^0.3.0
     "@tanstack/query-core": ^4.20.4
     "@tanstack/react-query": ^4.28.0
     "@trpc/client": ^10.20.0
