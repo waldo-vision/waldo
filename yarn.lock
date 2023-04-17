@@ -5,31 +5,31 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@algolia/autocomplete-core@npm:1.7.2":
-  version: 1.7.2
-  resolution: "@algolia/autocomplete-core@npm:1.7.2"
+"@algolia/autocomplete-core@npm:1.7.4":
+  version: 1.7.4
+  resolution: "@algolia/autocomplete-core@npm:1.7.4"
   dependencies:
-    "@algolia/autocomplete-shared": 1.7.2
-  checksum: 7d3e879ac74f2d3fd6f80a01d6c05bd22264c428030396234112be7628a80d3a7c250613b2d4102f8ef63115be7b96d8d0231bdf8a02aa9b58873500aa61ffcc
+    "@algolia/autocomplete-shared": 1.7.4
+  checksum: cd7c0badec2dd7f32eb1c567e740473df41d0b5cfdc009efc2b44d2c72e30d90a05882ca0616d6dc29326177d5183a7fd9c6189e5eab3abe26936e232ac5f43a
   languageName: node
   linkType: hard
 
-"@algolia/autocomplete-preset-algolia@npm:1.7.2":
-  version: 1.7.2
-  resolution: "@algolia/autocomplete-preset-algolia@npm:1.7.2"
+"@algolia/autocomplete-preset-algolia@npm:1.7.4":
+  version: 1.7.4
+  resolution: "@algolia/autocomplete-preset-algolia@npm:1.7.4"
   dependencies:
-    "@algolia/autocomplete-shared": 1.7.2
+    "@algolia/autocomplete-shared": 1.7.4
   peerDependencies:
     "@algolia/client-search": ">= 4.9.1 < 6"
     algoliasearch: ">= 4.9.1 < 6"
-  checksum: 7120ce1d312dbe6d898a0cecd9b28e45f9162a2fd9208a4c4e2efa77027455ee083c11cb782196374da717e990d6ca362c286ace475db97916e52bd277061d77
+  checksum: 4ea134757d611d1b7489f34b4366d103fb981dde3f75f39762fb71142f23bd024825f7541ab756ead9c87e223184616fd74b7762982054c96927fecd5a6e6e3e
   languageName: node
   linkType: hard
 
-"@algolia/autocomplete-shared@npm:1.7.2":
-  version: 1.7.2
-  resolution: "@algolia/autocomplete-shared@npm:1.7.2"
-  checksum: 8336cd1e79e56e3901196862ae17896c6e9542e269a05860ab72d869e35f17ab0f40ecbe35d1e34617cc70749d3f8323d09b347c443a7b7b2b126dddb44779aa
+"@algolia/autocomplete-shared@npm:1.7.4":
+  version: 1.7.4
+  resolution: "@algolia/autocomplete-shared@npm:1.7.4"
+  checksum: d304b1e3523ccf36a4a21ef9c116c83360fc1bffc595e888f05c35ab00de293104184dafebd9b9ed8ac5ffa5c416ddd4b1139e9794a253f52863c1ae544c2c9c
   languageName: node
   linkType: hard
 
@@ -2744,27 +2744,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docsearch/css@npm:3.3.0":
-  version: 3.3.0
-  resolution: "@docsearch/css@npm:3.3.0"
-  checksum: 1cbf381fe0b454f933e736d04fe8a2d9f86c375022ef738b44d67a0b4c187b0d8fcb945a1ba5a404059e50e3968d9fe769de22779d071f6189f07c161239892c
-  languageName: node
-  linkType: hard
-
-"@docsearch/css@npm:^3.3.3":
+"@docsearch/css@npm:3.3.3, @docsearch/css@npm:^3.3.3":
   version: 3.3.3
   resolution: "@docsearch/css@npm:3.3.3"
   checksum: c3e678dd5e05a962d3e29b4c953632a013af3a352ad99d0e630546409e665684e122265034bca1619d9bd659e42d35c7cc90ee373836fcfb2614aae2057c5dc1
   languageName: node
   linkType: hard
 
-"@docsearch/react@npm:^3.1.0":
-  version: 3.3.0
-  resolution: "@docsearch/react@npm:3.3.0"
+"@docsearch/react@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "@docsearch/react@npm:3.3.3"
   dependencies:
-    "@algolia/autocomplete-core": 1.7.2
-    "@algolia/autocomplete-preset-algolia": 1.7.2
-    "@docsearch/css": 3.3.0
+    "@algolia/autocomplete-core": 1.7.4
+    "@algolia/autocomplete-preset-algolia": 1.7.4
+    "@docsearch/css": 3.3.3
     algoliasearch: ^4.0.0
   peerDependencies:
     "@types/react": ">= 16.8.0 < 19.0.0"
@@ -2777,7 +2770,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 2bc4aa649fad3ff74e61537e674e658903c01509b2835827943f23895b40b7697476399179d43bc721f7e72044c797d4d793fcdaa394ff4f9fca1389a197a78c
+  checksum: 8a31c175853b61ee80748abc0cebdc33d247483643c4151a430e05d37f159bf59ea08cb69f878cff7787d3ca122b664701575543914d3c3692b448b63d3ad716
   languageName: node
   linkType: hard
 
@@ -6276,7 +6269,7 @@ __metadata:
     "@astrojs/react": ^1.2.2
     "@astrojs/sitemap": ^1.0.0
     "@docsearch/css": ^3.3.3
-    "@docsearch/react": ^3.1.0
+    "@docsearch/react": ^3.3.3
     "@types/html-escaper": ^3.0.0
     "@types/node": ^18.15.11
     "@types/react": ^18.0.29
