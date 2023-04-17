@@ -31,7 +31,7 @@
     "database": "workspace:*",
     "eslint": "8.37.0",
     "eslint-config-next": "13.0.6",
-    "framer-motion": "^7.6.19",
+    "framer-motion": "^10.12.2",
     "html-entities": "^2.3.3",
     "ioredis": "^5.3.1",
     "next": "13.2.4",
