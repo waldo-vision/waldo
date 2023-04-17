@@ -55,13 +55,30 @@ export default function Home() {
         {/*Open Graph Protocol headers (for custom embeds)*/}
         <meta property="og:title" content="Waldo Vision | AI Anticheat" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://waldo.vision/InScans.png" />
+        <meta
+          property="og:image"
+          content="https://waldo.vision/wallpaper-waldo-vision.png"
+        />
+        <meta property="og:image:width" content="2560" />
+        <meta property="og:image:height" content="1440" />
         <meta property="og:url" content="https://waldo.vision/" />
         <meta property="og:site_name" content="Waldo Vision" />
         <meta
           property="og:description"
           content="Open-source visual cheat detection, powered by deep learning"
         />
+        {/*Twitter specific stuff (also Discord due to some reason)*/}
+        <meta name="twitter:title" content="Waldo Vision | AI Anticheat" />
+        <meta
+          name="twitter:description"
+          content="Open-source visual cheat detection, powered by deep learning"
+        />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+          property="twitter:image:src"
+          content="https://waldo.vision/wallpaper-waldo-vision.png"
+        ></meta>
+        <meta name="theme-color" content="#6B46C1"></meta>
       </Head>
 
       <Flex direction={'column'} mb={150}>
