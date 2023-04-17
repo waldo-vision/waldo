@@ -52,6 +52,16 @@ export default function Home() {
           name="description"
           content="Waldo Vision is an open-source visual cheat detection project, powered by deep learning"
         />
+        {/*Open Graph Protocol headers (for custom embeds)*/}
+        <meta property="og:title" content="Waldo Vision | AI Anticheat" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://waldo.vision/InScans.png" />
+        <meta property="og:url" content="https://waldo.vision/" />
+        <meta property="og:site_name" content="Waldo Vision" />
+        <meta
+          property="og:description"
+          content="Open-source visual cheat detection, powered by deep learning"
+        />
       </Head>
 
       <Flex direction={'column'} mb={150}>
