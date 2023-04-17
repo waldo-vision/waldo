@@ -10,7 +10,9 @@ services:
       # ui
       - 8081:8080
     volumes:
-      - './docker/cockroach/data:/cockroach/cockroach-data'
+      - './docker/cockroach/data:/cockroach/cockroach-data:Z'
+    ulimits:
+      nofile: 2048
 
   redis:
     image: redis
