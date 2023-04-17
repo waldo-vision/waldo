@@ -27,6 +27,7 @@
     "@trpc/next": "^10.20.0",
     "@trpc/react-query": "^10.20.0",
     "@trpc/server": "^10.20.0",
+    "argon2": "^0.30.3",
     "async-ratelimiter": "^1.3.7",
     "database": "workspace:*",
     "eslint": "8.38.0",
