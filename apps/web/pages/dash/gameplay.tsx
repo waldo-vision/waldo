@@ -38,6 +38,7 @@ import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { games } from '@config/gameplay';
 import { GameplayType, GameplayTypeWithNull } from '@utils/zod/gameplay';
 import { GetServerSideProps } from 'next';
+import { QueryObserverBaseResult } from '@tanstack/react-query';
 type Query =
   | {
       gameplayCount?: number | undefined;
@@ -298,7 +299,10 @@ export default function Gameplay() {
                             </Text>
                           </Td>
                           <Td borderRightRadius={16}>
-                            <MenuAction gameplayId={result.id} />
+                            <MenuAction
+                              queryRefetch={userQueryRefetch}
+                              gameplayId={result.id}
+                            />
                           </Td>
                         </Tr>
                       );
@@ -395,9 +399,10 @@ export default function Gameplay() {
 }
 interface MenuActionProps {
   gameplayId: string;
+  queryRefetch: QueryObserverBaseResult['refetch']; // Handler used to refresh the list of gameplay clips.
 }
 const MenuAction = (props: MenuActionProps) => {
-  const gameplayId = props.gameplayId;
+  const { gameplayId, queryRefetch } = props;
   const utils = trpc.useContext();
   const toast = useToast();
   const deleteGameplay = trpc.gameplay.delete.useMutation({
@@ -407,6 +412,7 @@ const MenuAction = (props: MenuActionProps) => {
   });
   const handleGameplayDeletion = async () => {
     await deleteGameplay.mutateAsync({ gameplayId: gameplayId });
+    await queryRefetch();
     toast({
       position: 'bottom-right',
       title: 'Gameplay Deletion',
