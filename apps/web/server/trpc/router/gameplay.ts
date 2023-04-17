@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { vUser } from './util';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
+import * as Sentry from '@sentry/nextjs';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { serverSanitize } from '@utils/sanitize';
 export const gameplayRouter = router({
@@ -405,12 +406,16 @@ export const gameplayRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       try {
-        const gameplay = await ctx.prisma.gameplay.findUniqueOrThrow({
+        const gameplay = await ctx.prisma.gameplay.findUnique({
           where: {
             id: input.gameplayId,
           },
         });
-
+        if (gameplay == null) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+          });
+        }
         if (
           !hasPerms({
             userId: ctx.session.user.id,
@@ -432,6 +437,9 @@ export const gameplayRouter = router({
       } catch (error) {
         // throws RecordNotFound if record not found to update
         // but can't import for some reason
+
+        // if this error throws then we know it's an issue with the actual deleting
+        Sentry.captureException(error);
 
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

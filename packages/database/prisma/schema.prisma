@@ -78,7 +78,7 @@ model GameplayVotes {
 
 model Clip {
   id         String   @id @default(cuid())
-  gameplay   Gameplay @relation(fields: [gameplayId], references: [id])
+  gameplay   Gameplay @relation(fields: [gameplayId], references: [id], onDelete: Cascade)
   gameplayId String
 
   createdAt DateTime @default(now())
