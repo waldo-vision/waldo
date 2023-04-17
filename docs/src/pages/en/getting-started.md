@@ -104,17 +104,17 @@ The primary database used by the app is CockroachDB. You will need a working ser
 
 #### Hosting
 
-You can easily spin up a new CockroachDB container with the `docker-compose` file at the root of this repo.
+You can easily spin up a new CockroachDB container with the `docker compose` file at the root of this repo.
 
 ```bash
 # start the container
-docker-compose up -d
+docker compose up -d
 
 # Check that the container is running
 docker ps
 
 # If at any point you wish to shut down the container:
-docker-compose down
+docker compose down
 ```
 
 Alternatively, you can use CockroachDB's free [serverless tier](https://www.cockroachlabs.com/get-started-cockroachdb/) if you don't wish to self-host.
@@ -135,7 +135,7 @@ You will now need to set the `DATABASE_URL` variable in two configuration files:
 - `apps/web/.env`
 - `packages/database/.env`. If you haven't already, create this file with `cp packages/database/.env.example packages/database/.env`.
 
-If self-hosting using the docker-compose method, then you can set your variable like so:
+If self-hosting using the `docker compose` method, then you can set your variable like so:
 
 ```bash
 DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
