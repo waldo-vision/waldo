@@ -19,7 +19,7 @@ import useSite from '@contexts/SiteContext';
 import { trpc } from '@utils/trpc';
 import { useEffect, useState } from 'react';
 import { ApiKeyState } from 'database';
-import { compareKeyAgainstHash } from '@utils/helpers/apiHelper';
+import { compareKeyAgainstHash } from '@server/utils/apiHelper';
 import * as Sentry from '@sentry/nextjs';
 interface ApiKey {
   id: string;

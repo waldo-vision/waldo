@@ -4,7 +4,7 @@ import { protectedProcedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { KeySchema } from '@utils/zod/apiKey';
-import { genApiKey, genSecretHash } from '@utils/helpers/apiHelper';
+import { genApiKey, genSecretHash } from '@server/utils/apiHelper';
 import { ApiKeyState } from 'database';
 import * as Sentry from '@sentry/nextjs';
 export const apiKeyRouter = router({

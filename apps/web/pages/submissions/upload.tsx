@@ -1,5 +1,5 @@
 import Layout from '@components/Layout';
-import { checkURL } from '@utils/helpers/apiHelper';
+import { checkURL } from '@server/utils/apiHelper';
 import { ReactElement, useEffect, useState } from 'react';
 import { AlertStatus } from '@chakra-ui/alert';
 import {
