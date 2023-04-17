@@ -40,6 +40,8 @@ Sentry.init({
   },
 
   integrations: [
+    // auto intramentation for browser
+    new Sentry.BrowserTracing(),
     // enabled session replay
     new Sentry.Replay({}),
     // collect extra error data
