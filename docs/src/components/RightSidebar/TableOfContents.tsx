@@ -20,7 +20,7 @@ const TableOfContents: FunctionalComponent<{ headings: MarkdownHeading[] }> = ({
   useEffect(() => {
     const getItemOffsets = () => {
       const titles = document.querySelectorAll('article :is(h1, h2, h3, h4)');
-      itemOffsets.current = Array.from(titles).map((title) => ({
+      itemOffsets.current = Array.from(titles).map(title => ({
         id: title.id,
         topOffset: title.getBoundingClientRect().top + window.scrollY,
       }));
@@ -37,7 +37,7 @@ const TableOfContents: FunctionalComponent<{ headings: MarkdownHeading[] }> = ({
   useEffect(() => {
     if (!toc.current) return;
 
-    const setCurrent: IntersectionObserverCallback = (entries) => {
+    const setCurrent: IntersectionObserverCallback = entries => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
           const { id } = entry.target;
@@ -63,13 +63,13 @@ const TableOfContents: FunctionalComponent<{ headings: MarkdownHeading[] }> = ({
     // Observe all the headings in the main page content.
     document
       .querySelectorAll('article :is(h1,h2,h3)')
-      .forEach((h) => headingsObserver.observe(h));
+      .forEach(h => headingsObserver.observe(h));
 
     // Stop observing when the component is unmounted.
     return () => headingsObserver.disconnect();
   }, [toc.current]);
 
-  const onLinkClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
+  const onLinkClick: MouseEventHandler<HTMLAnchorElement> = e => {
     const href = e.currentTarget.getAttribute('href');
     if (href !== null) setCurrentID(href.replace('#', ''));
   };
@@ -82,7 +82,7 @@ const TableOfContents: FunctionalComponent<{ headings: MarkdownHeading[] }> = ({
       <ul ref={toc}>
         {headings
           .filter(({ depth }) => depth > 1 && depth < 4)
-          .map((heading) => (
+          .map(heading => (
             <li
               className={`header-link depth-${heading.depth} ${
                 currentID === heading.slug ? 'current-header-link' : ''
