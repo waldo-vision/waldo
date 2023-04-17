@@ -33,6 +33,6 @@
     "eslint-config-custom": "*",
     "ts-node-dev": "^2.0.0",
     "tsconfig": "workspace:*",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4"
   }
 }
