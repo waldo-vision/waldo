@@ -1,5 +1,6 @@
 import { scryptSync, randomBytes, timingSafeEqual } from 'crypto';
 import { verify, hash } from 'argon2';
+import * as Sentry from '@sentry/nextjs';
 
 // eslint-disable-next-line no-undef
 function genApiKey(size = 20, format: BufferEncoding = 'base64') {
@@ -21,6 +22,7 @@ async function compareKeyAgainstHash(storedKey: string, suppliedKey: string) {
       return false;
     }
   } catch (err) {
+    Sentry.captureException(err);
     return false;
   }
 }
