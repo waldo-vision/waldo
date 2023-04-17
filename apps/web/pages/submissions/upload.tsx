@@ -51,7 +51,7 @@ export default function Upload() {
   const [tsToken, setTsToken] = useState<string | undefined>('');
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [selectedGame, setSelectedGame] = useState<string | null>(null);
+  const [selectedGame, setSelectedGame] = useState<string>('');
   const [cheats, setCheats] = useState<Cheat[]>([]);
   const [legalConfirmations, setLegalConfirmations] = useState<number>(0);
 
@@ -165,8 +165,9 @@ export default function Upload() {
       handleRequestError('Please check the required legal agreement options.');
       return;
     }
-    if (selectedGame == null) {
+    if (selectedGame === '') {
       handleRequestError('Please select a game.');
+      setCurrentUrl(currentUrl); //prevent link from being cleared
       return;
     }
     type Input = inferProcedureInput<AppRouter['gameplay']['create']>;
