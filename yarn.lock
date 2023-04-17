@@ -4273,12 +4273,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trpc/client@npm:^10.19.1":
-  version: 10.19.1
-  resolution: "@trpc/client@npm:10.19.1"
+"@trpc/client@npm:^10.20.0":
+  version: 10.20.0
+  resolution: "@trpc/client@npm:10.20.0"
   peerDependencies:
-    "@trpc/server": 10.19.1
-  checksum: ff61687b50e63efdfa4e64af4c980333b91d0a8c4421efe386709d9c9e4835ae2ef51a9517cfa6510ecd0864654112cb52a4d7a132090c5eeb73a2a646f51923
+    "@trpc/server": 10.20.0
+  checksum: 28e576f8752c35fec038772cfda33c8c1e83735bb41711df1164ba5ca7fe7f8cad12a791c8ce3f9d9a6b19cf603791e35a7fab2e5bdb0a196a85fa0d2fbddec6
   languageName: node
   linkType: hard
 
@@ -13433,7 +13433,7 @@ __metadata:
     "@sentry/nextjs": ^7.44.1
     "@tanstack/query-core": ^4.20.4
     "@tanstack/react-query": ^4.28.0
-    "@trpc/client": ^10.19.1
+    "@trpc/client": ^10.20.0
     "@trpc/next": ^10.19.1
     "@trpc/react-query": ^10.18.0
     "@trpc/server": ^10.19.1
