@@ -32,78 +32,30 @@ cp apps/web/.env.example apps/web/.env
 vim apps/web/.env
 ```
 
-Then configure the variables in this file.
-
-#### Discord
-
-If you plan on authenticating to Discord, make sure these credentials are set.
-
-- `DISCORD_CLIENT_ID`
-- `DISCORD_CLIENT_SECRET`
-
-Follow [this guide](https://discordjs.guide/oauth2/#getting-an-oauth2-url) until you have added the `Redirect URL`. Be sure to set this to `http://localhost:3000/api/auth/callback/discord`.
-
-#### GitHub
-
-If you plan on authenticating to GitHub, make sure these credentials are set.
-
-- `GITHUB_CLIENT_ID`
-- `GITHUB_CLIENT_SECRET`
-
-Follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app). Be sure to set the `Callback URL` to `http://localhost:3000/api/auth/callback/github`.
-
-#### Next Auth
-
-Be sure to also set the `NEXTAUTH_URL` variable.
-
-- `NEXTAUTH_URL=http://localhost:3000`.
-
-#### CloudFlare Turnstile
-
-_TODO: add CloudFlare configuration docs_
-
-#### Youtube
-
-_TODO: add Youtube configuration docs_
-
-### CockroachDB
-
-The primary database used by the app is CockroachDB. You will need a working server to run this app locally.
-
-#### Hosting
-
-You can easily spin up a new CockroachDB container with the `docker-compose` file at the root of this repo.
-
-```bash
-docker-compose up -d
-
-# Check that the server is running
-docker ps
-```
-
-Alternatively, you can use CockroachDB's free [serverless tier](https://www.cockroachlabs.com/get-started-cockroachdb/) if you don't wish to self-host.
-
-#### Configuration
-
-You will now need to set the `DATABASE_URL` variable in two configuration files:
-
-- `apps/web/.env`
-- `packages/database/.env`. If you haven't already, create this file with `cp packages/database/.env.example packages/database/.env`.
-
-If self-hosting using the docker-compose method, then set `DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"` in each of these files.
-
-#### Migration
-
-With your configuration set, you should be ready to run the migrations needed for our ORM to work.
-
-```bash
-yarn turbo db:generate
-yarn turbo run db:push
-```
+| Variable                                  | Description                                                | Link                                                                                         |
+| :---------------------------------------- | :--------------------------------------------------------- | :------------------------------------------------------------------------------------------- |
+| DISCORD_CLIENT_ID                         | Discord OAuth client ID                                    | [docs](https://discordjs.guide/oauth2/#getting-an-oauth2-url)                                |
+| DISCORD_CLIENT_SECRET                     | Discord OAuth client secret                                |                                                                                              |
+| GOOGLE_CLIENT_ID                          | ...                                                        |                                                                                              |
+| GOOGLE_CLIENT_SECRET                      | ...                                                        |                                                                                              |
+| YOUTUBE_API_KEY                           | ...                                                        |                                                                                              |
+| GITHUB_CLIENT_ID                          | GitHub OAuth client ID                                     | [docs](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app) |
+| GITHUB_CLIENT_SECRET                      | GitHub OAuth client secret                                 |                                                                                              |
+| BTLNET_CLIENT_ID                          | ...                                                        |                                                                                              |
+| BTLNET_CLIENT_SECRET                      | ...                                                        |                                                                                              |
+| TWITCH_CLIENT_ID                          | ...                                                        |                                                                                              |
+| TWITCH_CLIENT_SECRET                      | ...                                                        |                                                                                              |
+| FB_CLIENT_ID                              | ...                                                        |                                                                                              |
+| FB_CLIENT_SECRET                          | ...                                                        |                                                                                              |
+| CLOUDFLARE_TURNSTILE_SECRET               | ...                                                        |                                                                                              |
+| NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY | ...                                                        |                                                                                              |
+| DATABASE_URL                              | Postgres connection string used to connect to CockroachDB. |                                                                                              |
+| NEXTAUTH_URL                              | ...                                                        |                                                                                              |
+| NEXTAUTH_SECRET                           | ...                                                        |                                                                                              |
 
 ### Starting the server
 
-With your environment configured, you should be ready to start the dev server.
+If you have not already, then follow the [set-up documentation](https://docs.waldo.vision/en/getting-started).
 
 ```bash
 yarn workspace web dev

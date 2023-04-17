@@ -16,88 +16,169 @@ Before you can start hacking away on waldo, you need to have the tools below to 
 
 Waldo Vision is dependent on a number of services, and depending on your needs, you can either self host, or use a cloud option for all of them. We recommend you self host for ease of development, but the cloud options do exist if you wish to use them.
 
-### Cloud Options
+## Setting Up A Local Deployment
 
-#### CockroachDB
+First, clone the git repo `https://github.com/waldo-vision/waldo` to your machine then navigate to it using the 'cd' console command.
 
-If you don't wish to self host CockroachDB for development, we advise you use CockroachDB's free [serverless tier](https://www.cockroachlabs.com/get-started-cockroachdb/) during development.
+### Install Dependencies
 
-### Self Hosting
+You'll need to install a few dependencies in order to run the dev server:
 
-If you feel comfortable self hosting, for our use case, you we require that you additionally install [Docker](https://www.docker.com/) and [Docker compose](https://docs.docker.com/compose/). Docker is used to help ensure that the services are setup consistantly setup accross all our contributors' machines. (If you want to use podman instead of docker, you can, but we will not provide assistance with it.)
+- [yarn](https://yarnpkg.com/getting-started/install) - our JavaScript package manager.
+- [docker](https://docs.docker.com/engine/install/) - used for building and running containers.
 
-To start the services locally, simply run `docker compose up -d`. Or shut them off with `docker compose down`. (Run these in the repo after you have cloned it.)
+With those installed, you can download additional packages with yarn:
 
-- Option for Windows Users:
-  - <span style="color:red; font-weight: bold">WARNING: Not recommended for development, use at your own risk, no support provided</span>.
-  - For Windows you can download the Beta Archive from [Cockroachlabs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb-windows.html)
-    and run the exe with `./cockroach.exe start-single-node --insecure`
-  - Then set the `DATABASE_URL` variable in `/packages/database/.env` and `/packages/web/.env` to the url displayed on start for postgresql
-  - You even have a Web interface for management and debugging
-  - WARNING BETA: (From their site: The CockroachDB executable for Windows is experimental and not suitable for production deployments. Windows 8 or higher is required.)
+```bash
+yarn install
+```
 
-## Setting Up Code
+### Configuration
 
-1. Clone the git repo `https://github.com/waldo-vision/waldo` to your machine then navigate to it using the 'cd' console command.
-1. Run `yarn install` to install all the necessary dependencies.
-1. To setup our ORM, run `yarn turbo db:generate`.
-1. Now, you need to choose whether you want to login with Discord, or Github.
-   - If you choose Github, follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app). Be sure to set the `Callback URL` to `http://localhost:3000/api/auth/callback/github`.
-   - If you choose Discord, follow [this guide](https://discordjs.guide/oauth2/#getting-an-oauth2-url) until you have added the `Redirect URL`. Be sure to set this to `http://localhost:3000/api/auth/callback/discord`.
-1. Copy `apps/web/.env.example` and rename said copy to `apps/web/.env`.
+The app is configured via environment variables stored within a `.env` file in this directory.
 
-   - Take the `client id` and `client secret` from the above to fill in the fields in the .env file like so:
+Start by copying the example env file.
 
-   ```.env
-    DISCORD_CLIENT_ID="57324592435671234019234"
-    DISCORD_CLIENT_SECRET="342759ASDa82dsaf345-ADHFUFA"
+```bash
+cp apps/web/.env.example apps/web/.env
 
-    GITHUB_CLIENT_ID="7482521243341245243"
-    GITHUB_CLIENT_SECRET="FDGNJO3490TNGFMGDSK"
-   ```
+# Open the file
+vim apps/web/.env
+```
 
-1. To connect to the database, in the `.env` file set the `DATABASE_URL` like below:
+#### Discord
 
-   ```.env
-    DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
-   ```
+If you plan on authenticating to Discord, make sure these credentials are set.
 
-   (This is if you're self hosting, if you're using CockroachDB cloud, copy the connection URL from the dashboard.)
+- `DISCORD_CLIENT_ID`
+- `DISCORD_CLIENT_SECRET`
 
-1. There is additional `.env` file in `packages/database`. The database url should be the same as above.
+Follow [this guide](https://discordjs.guide/oauth2/#getting-an-oauth2-url) until you have added the `Redirect URL`. Be sure to set this to `http://localhost:3000/api/auth/callback/discord`.
 
-   ```.env
-    DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
-   ```
+Update your .env file like so:
 
-1. Run `yarn turbo run db:push` to setup the database for the website.
+```.env
+DISCORD_CLIENT_ID="57324592435671234019234"
+DISCORD_CLIENT_SECRET="342759ASDa82dsaf345-ADHFUFA"
+```
 
-1. Additionally, you may also want to set the `Cloudflare Turnstile` keys so that submissions work, or the `Youtube API Key` so that the review site works properly.
+#### GitHub
 
-   - Currently there is no guide for these items, but there isn't much to setting them up. The only item of note is that the YT API Key needs to be `version 3` of the api.
-   - If you do not wish to setup a cloudflare site to be able to generate turnstile keys, you can use the demo site and secret keys which you can find here: https://developers.cloudflare.com/turnstile/frequently-asked-questions/#are-there-sitekeys-and-secret-keys-that-can-be-used-for-testing.
+If you plan on authenticating to GitHub, make sure these credentials are set.
 
-1. The finale `.env` file _might_ look a little something like this after everything is filled in:
+- `GITHUB_CLIENT_ID`
+- `GITHUB_CLIENT_SECRET`
 
-   ```.env
-    DISCORD_CLIENT_ID="57324592435671234019234"
-    DISCORD_CLIENT_SECRET="342759ASDa82dsaf345-ADHFUFA"
+Follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app). Be sure to set the `Callback URL` to `http://localhost:3000/api/auth/callback/github`.
 
-    GITHUB_CLIENT_ID="7482521243341245243"
-    GITHUB_CLIENT_SECRET="FDGNJO3490TNGFMGDSK"
+Update your .env file like so:
 
-    DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+```.env
+GITHUB_CLIENT_ID="7482521243341245243"
+GITHUB_CLIENT_SECRET="FDGNJO3490TNGFMGDSK"
+```
 
-    # plus some other stuff if you set it
-   ```
+#### Next Auth
 
-## Actually running code
+Be sure to also set the `NEXTAUTH_URL` variable.
 
-- The Project uses [yarn workspaces](https://yarnpkg.com/cli/workspace), which are defined in `/package.json`
-- Each submodule (database/webfrontend/webbackend/desktop app) defines its own `package.json` which is then used by yarn to run commands on it
-- For example running the webfrontend can be done with: `yarn workspace web start`
-- Usually it spins up a webserver at some localhost port, which is displayed in the command line
-- Additional info about the monorepo can be found at [Working in the monorepo](/en/working-in-monorepo)
+- `NEXTAUTH_URL=http://localhost:3000`.
+
+#### CloudFlare Turnstile
+
+_TODO: add CloudFlare configuration docs_
+
+You may also want to set the `Cloudflare Turnstile` keys so that submissions work.
+
+#### Youtube
+
+_TODO: add Youtube configuration docs_
+
+You may also want to set the `Youtube API Key` so that the review site works properly.
+
+_Note: YT API Key needs to be `version 3` of the api._
+
+### CockroachDB
+
+The primary database used by the app is CockroachDB. You will need a working server to run this app locally.
+
+#### Hosting
+
+You can easily spin up a new CockroachDB container with the `docker-compose` file at the root of this repo.
+
+```bash
+# start the container
+docker-compose up -d
+
+# Check that the container is running
+docker ps
+
+# If at any point you wish to shut down the container:
+docker-compose down
+```
+
+Alternatively, you can use CockroachDB's free [serverless tier](https://www.cockroachlabs.com/get-started-cockroachdb/) if you don't wish to self-host.
+
+Option for Windows Users:
+
+- <span style="color:red; font-weight: bold">WARNING: Not recommended for development, use at your own risk, no support provided</span>.
+- For Windows you can download the Beta Archive from [Cockroachlabs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb-windows.html)
+  and run the exe with `./cockroach.exe start-single-node --insecure`
+- Then set the `DATABASE_URL` variable in `/packages/database/.env` and `/packages/web/.env` to the url displayed on start for postgresql
+- You even have a Web interface for management and debugging
+- WARNING BETA: (From their site: The CockroachDB executable for Windows is experimental and not suitable for production deployments. Windows 8 or higher is required.)
+
+#### Configuration
+
+You will now need to set the `DATABASE_URL` variable in two configuration files:
+
+- `apps/web/.env`
+- `packages/database/.env`. If you haven't already, create this file with `cp packages/database/.env.example packages/database/.env`.
+
+If self-hosting using the docker-compose method, then you can set your variable like so:
+
+```bash
+DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+```
+
+#### Migration
+
+With your configuration set, you should be ready to run the migrations needed for our ORM to work.
+
+```bash
+yarn turbo db:generate
+yarn turbo run db:push
+```
+
+### Starting the server
+
+With your environment configured, you should be ready to start the dev server.
+
+```bash
+yarn workspace web dev
+```
+
+Alternatively, you can build an optimized deployment of the app and deploy that instead.
+
+```bash
+# Build the app
+yarn workspace web build
+
+# Serve the app
+yarn workspace web start
+```
+
+You should now be able to visit the website at http://localhost:3000.
+
+## Additional notes
+
+### Workspaces
+
+The Project uses [yarn workspaces](https://yarnpkg.com/cli/workspace), which are defined in `/package.json`.
+
+Each submodule (database/webfrontend/webbackend/desktop app) defines its own `package.json` which is then used by yarn to run commands on it.
+
+For example, running the webfrontend can be done with: `yarn workspace web start`.
 
 ## Picking work
 
