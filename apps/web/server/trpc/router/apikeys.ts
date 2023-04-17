@@ -133,6 +133,7 @@ export const apiKeyRouter = router({
         Object.assign(apiKey, { clientKey: clientKey });
         return apiKey;
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           message: 'An error occured creating the key.',
           code: 'NOT_FOUND',
@@ -173,6 +174,7 @@ export const apiKeyRouter = router({
 
         return { msg: 'Successfully deleted the api key.' };
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           message: 'An error occured deleting the key.',
           code: 'NOT_FOUND',
