@@ -6,6 +6,7 @@ import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { KeySchema } from '@utils/zod/apiKey';
 import { genApiKey, genSecretHash } from '@utils/helpers/apiHelper';
 import { ApiKeyState } from 'database';
+import * as Sentry from '@sentry/nextjs';
 export const apiKeyRouter = router({
   get: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/api/key' } })
@@ -40,6 +41,7 @@ export const apiKeyRouter = router({
 
         return apiKey;
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           message: 'No apikey with the provided id could be found.',
           code: 'NOT_FOUND',
@@ -82,6 +84,7 @@ export const apiKeyRouter = router({
 
         return apiKey;
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           message: 'No api keys could be found that were related to the user.',
           code: 'NOT_FOUND',

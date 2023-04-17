@@ -20,6 +20,7 @@ import { trpc } from '@utils/trpc';
 import { useEffect, useState } from 'react';
 import { ApiKeyState } from 'database';
 import { compareKeyAgainstHash } from '@utils/helpers/apiHelper';
+import * as Sentry from '@sentry/nextjs';
 interface ApiKey {
   id: string;
   keyOwnerId: string;
@@ -119,6 +120,7 @@ const ApiKeys = () => {
       });
       setModalKeyField(data.clientKey);
     } catch (error) {
+      Sentry.captureException(error);
       toast({
         position: 'bottom-right',
         title: 'Error',
@@ -151,6 +153,7 @@ const ApiKeys = () => {
       });
       refetch();
     } catch (error) {
+      Sentry.captureException(error);
       toast({
         position: 'bottom-right',
         title: 'Error',
