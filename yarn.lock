@@ -326,13 +326,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/sitemap@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@astrojs/sitemap@npm:1.0.0"
+"@astrojs/sitemap@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@astrojs/sitemap@npm:1.2.2"
   dependencies:
     sitemap: ^7.1.1
     zod: ^3.17.3
-  checksum: b278d2b1902041aa059ffc2381468df539d8ad5eb940bf1d5d1c5302aa76f14a1d23e4e512c83ed5101cbef5258a1c39265cd696721d6ee3f4e3a1a6365011d6
+  checksum: 19211ac62716fe366f722324d01f10e894e219c6a7a29fbd994a16179e933c189a019a6461653472b09e92b6e6cd6bd73ffb3b16bb8185d290677cf71f2720bf
   languageName: node
   linkType: hard
 
@@ -6274,7 +6274,7 @@ __metadata:
     "@algolia/client-search": ^4.17.0
     "@astrojs/preact": ^2.1.0
     "@astrojs/react": ^1.2.2
-    "@astrojs/sitemap": ^1.0.0
+    "@astrojs/sitemap": ^1.2.2
     "@docsearch/css": ^3.3.3
     "@docsearch/react": ^3.1.0
     "@types/html-escaper": ^3.0.0
