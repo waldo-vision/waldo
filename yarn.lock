@@ -10406,21 +10406,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-addon-api@npm:6.0.0, node-addon-api@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "node-addon-api@npm:6.0.0"
-  dependencies:
-    node-gyp: latest
-  checksum: a34a901b9f0d6d201a173e12ed378033e4e0f27f77fd27c225dc7e6f96e88a88e94bd78b2b0404fc95deee20a137f1cbfc92738cbfba38862ed9b6c2e61c1ab2
-  languageName: node
-  linkType: hard
-
 "node-addon-api@npm:^5.0.0":
   version: 5.1.0
   resolution: "node-addon-api@npm:5.1.0"
   dependencies:
     node-gyp: latest
   checksum: 2508bd2d2981945406243a7bd31362fc7af8b70b8b4d65f869c61731800058fb818cc2fd36c8eac714ddd0e568cc85becf5e165cebbdf7b5024d5151bbc75ea1
+  languageName: node
+  linkType: hard
+
+"node-addon-api@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "node-addon-api@npm:6.0.0"
+  dependencies:
+    node-gyp: latest
+  checksum: a34a901b9f0d6d201a173e12ed378033e4e0f27f77fd27c225dc7e6f96e88a88e94bd78b2b0404fc95deee20a137f1cbfc92738cbfba38862ed9b6c2e61c1ab2
   languageName: node
   linkType: hard
 
@@ -13492,7 +13492,6 @@ __metadata:
     "@typescript-eslint/parser": ^5.46.1
     eslint: ^8.37.0
     eslint-config-custom: "workspace:*"
-    node-addon-api: 6.0.0
     prettier: ^2.8.7
     tsconfig: "workspace:*"
     turbo: ^1.8.8
