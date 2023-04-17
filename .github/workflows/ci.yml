@@ -30,6 +30,9 @@ jobs:
       - name: Lint
         run: yarn lint
 
+      - name: Check Formatting (prettier)
+        run: yarn run format-check
+
   Types:
     name: Lint Types
     timeout-minutes: 10

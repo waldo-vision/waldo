@@ -28,11 +28,11 @@
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.17",
     "@types/mime": "^3.0.1",
-    "@types/node": "^18.11.9",
+    "@types/node": "^18.15.11",
     "@types/uuid": "^8.3.4",
     "eslint-config-custom": "*",
     "ts-node-dev": "^2.0.0",
     "tsconfig": "workspace:*",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4"
   }
 }

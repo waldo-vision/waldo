@@ -47,6 +47,7 @@ const nextConfig = {
       'cdn.discordapp.com',
       'avatars.githubusercontent.com',
       'i.ytimg.com',
+      'waldo.vision',
     ],
     remotePatterns: [
       {
@@ -88,6 +89,16 @@ const nextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'same-origin',
+          },
+        ],
+      },
+      {
+        source: '/:all*(svg|jpg|png)',
+        locale: false,
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=9999999999, must-revalidate',
           },
         ],
       },

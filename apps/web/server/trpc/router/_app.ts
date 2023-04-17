@@ -1,4 +1,5 @@
 import { router } from '../trpc';
+import { apiKeyRouter } from './apikeys';
 import { clipRouter } from './clip';
 import { gameplayRouter } from './gameplay';
 import { siteRouter } from './site';
@@ -11,6 +12,7 @@ export const appRouter = router({
   user: userRouter,
   util: utilRouter,
   site: siteRouter,
+  apiKey: apiKeyRouter,
 });
 
 // export type definition of API

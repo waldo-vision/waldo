@@ -1,5 +1,4 @@
 import Layout from '@components/Layout';
-import { checkURL } from '@utils/helpers/apiHelper';
 import { ReactElement, useEffect, useState } from 'react';
 import { AlertStatus } from '@chakra-ui/alert';
 import {
@@ -52,7 +51,7 @@ export default function Upload() {
   const [tsToken, setTsToken] = useState<string | undefined>('');
   const [requestDone, setRequestDone] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [selectedGame, setSelectedGame] = useState<string>('csg');
+  const [selectedGame, setSelectedGame] = useState<string>('');
   const [cheats, setCheats] = useState<Cheat[]>([]);
   const [legalConfirmations, setLegalConfirmations] = useState<number>(0);
 
@@ -66,6 +65,16 @@ export default function Upload() {
       await utils.gameplay.invalidate();
     },
   });
+  const checkURL = (url: string): boolean => {
+    const p =
+      // eslint-disable-next-line max-len
+      /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+
+    if (url.match(p)) {
+      return true;
+    }
+    return false;
+  };
 
   const { data: isDisabled } = trpc.site.getPageData.useQuery({
     name: 'upload',
@@ -164,6 +173,11 @@ export default function Upload() {
 
     if (legalConfirmations != 3) {
       handleRequestError('Please check the required legal agreement options.');
+      return;
+    }
+    if (selectedGame === '') {
+      handleRequestError('Please select a game.');
+      setCurrentUrl(currentUrl); //prevent link from being cleared
       return;
     }
     type Input = inferProcedureInput<AppRouter['gameplay']['create']>;
