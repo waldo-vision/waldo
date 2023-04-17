@@ -1,6 +1,9 @@
 FROM node:18-alpine3.17 AS builder
 # ensure deps can build
+# prisma
 RUN apk add --update --no-cache openssl1.1-compat libc6-compat
+# node-gyp
+RUN apk add --update --no-cache g++ gcc libgcc libstdc++ linux-headers make python3
 # enable yarn
 RUN corepack enable
 # set workdir
@@ -14,7 +17,10 @@ RUN rm -rf /app/out/full/*/*/node_modules
 
 FROM node:18-alpine3.17 AS installer
 # ensure deps can build
+# prisma
 RUN apk add --update --no-cache openssl1.1-compat libc6-compat
+# node-gyp
+RUN apk add --update --no-cache g++ gcc libgcc libstdc++ linux-headers make python3
 # enable yarn
 RUN corepack enable
 # set workdir
