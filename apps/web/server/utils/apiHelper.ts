@@ -1,15 +1,5 @@
 import { scryptSync, randomBytes, timingSafeEqual } from 'crypto';
 import { verify, hash } from 'argon2';
-const checkURL = (url: string): boolean => {
-  const p =
-    // eslint-disable-next-line max-len
-    /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-
-  if (url.match(p)) {
-    return true;
-  }
-  return false;
-};
 
 // eslint-disable-next-line no-undef
 function genApiKey(size = 20, format: BufferEncoding = 'base64') {
@@ -35,4 +25,4 @@ async function compareKeyAgainstHash(storedKey: string, suppliedKey: string) {
   }
 }
 
-export { checkURL, genApiKey, genSecretHash, compareKeyAgainstHash };
+export { genApiKey, genSecretHash, compareKeyAgainstHash };
