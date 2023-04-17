@@ -25,12 +25,7 @@ async function genSecretHash(key: string) {
 
 async function compareKeyAgainstHash(storedKey: string, suppliedKey: string) {
   try {
-    if (
-      await verify(
-        '$argon2id$v=19$m=65536,t=3,p=4$2kasxHK6CP+NaXiw9P6J/A$GhgQWBtm5Whof9dI/ZVSfeWIj6dV+VdQ8EtmimOHxyw',
-        'VnIKCuUiGondxkjOsxg1ozTnnvM=',
-      )
-    ) {
+    if (await verify(storedKey, suppliedKey)) {
       return true;
     } else {
       return false;
