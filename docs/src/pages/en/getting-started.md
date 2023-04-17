@@ -120,6 +120,12 @@ We also ask that you test all your changes, never commit a secret, and follow [C
 
 Note we have a [code of conduct](/legal/code-of-conduct), please follow it in all your interactions with the project.
 
+### Formatting
+
+We use [Prettier](https://prettier.io) to ensure consistent formatting across the codebase.
+
+Ensure your changes have been properly formatted by running `yarn run format`.
+
 ## Pull Request Process
 
 1. Include your pull request with details of changes to the interface, this includes new environment
