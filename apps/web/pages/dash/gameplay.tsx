@@ -36,7 +36,7 @@ import { getServerSession } from 'next-auth/next';
 import { BiBlock } from 'react-icons/bi';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { games } from '@config/gameplay';
-import { GameplayType, GameplayTypeWithNull } from '@utils/zod/gameplay';
+import { GameplayType, GameplayTypeWithUndefined } from '@utils/zod/gameplay';
 import { GetServerSideProps } from 'next';
 import { QueryObserverBaseResult } from '@tanstack/react-query';
 type Query =
@@ -59,7 +59,8 @@ interface GoToItem {
 export default function Gameplay() {
   // Searching states
 
-  const [searchRole, setSearchRole] = useState<GameplayTypeWithNull>(undefined);
+  const [searchRole, setSearchRole] =
+    useState<GameplayTypeWithUndefined>(undefined);
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [gtMenuItems, setGtMenuItems] = useState<GoToItem[]>();
@@ -78,7 +79,7 @@ export default function Gameplay() {
     { enabled: false },
   );
 
-  const handleFilter = async (role: GameplayTypeWithNull) => {
+  const handleFilter = async (role: GameplayTypeWithUndefined) => {
     if (role == null) {
       setSearchRole(undefined);
       return;
@@ -168,7 +169,7 @@ export default function Gameplay() {
                     <MenuItem
                       onClick={() =>
                         handleFilter(
-                          game.shortName.toUpperCase() as GameplayTypeWithNull,
+                          game.shortName.toUpperCase() as GameplayTypeWithUndefined,
                         )
                       }
                     >
