@@ -58,4 +58,4 @@ export const ReviewItemsGameplaySchema = GameplaySchema.merge(
 );
 
 export type GameplayType = z.infer<typeof GameplayTypes>;
-export type GameplayTypeWithNull = GameplayType | null;
+export type GameplayTypeWithUndefined = GameplayType | undefined;

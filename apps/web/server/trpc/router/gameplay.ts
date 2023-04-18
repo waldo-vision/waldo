@@ -67,7 +67,7 @@ export const gameplayRouter = router({
     .input(
       z.object({
         page: z.number(),
-        filterGames: GameplayTypes.nullable(),
+        filterGames: GameplayTypes.optional(),
       }),
     )
     .output(z.array(GameplaysDashSchema))
@@ -233,7 +233,7 @@ export const gameplayRouter = router({
     .input(
       z
         .object({
-          userId: z.string().cuid().nullish().optional(),
+          userId: z.string().cuid().optional(),
         })
         .transform(input => {
           return {
@@ -409,6 +409,7 @@ export const gameplayRouter = router({
           };
         }),
     )
+    .output(z.void())
     .mutation(async ({ input, ctx }) => {
       try {
         const gameplay = await ctx.prisma.gameplay.findUnique({
@@ -469,9 +470,6 @@ export const gameplayRouter = router({
         return values[index];
       };
       const itemCount = await ctx.prisma.gameplay.count();
-      const tenDocs = () => {
-        return Math.floor(Math.random() * (itemCount - 1 + 1)) + 0;
-      };
       const reviewItem = await ctx.prisma.gameplay.findMany({
         where: {
           gameplayVotes: { none: { userId: ctx.session.user.id } },
