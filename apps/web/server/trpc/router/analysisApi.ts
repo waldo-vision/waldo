@@ -11,6 +11,8 @@ export const analysisApiRouter = router({
       z.object({
         //pages are 10 clips
         page: z.number(),
+        rating: z.number(),
+        minVotes: z.number(),
         //todo add review requiremenets
       }),
     )
@@ -22,6 +24,10 @@ export const analysisApiRouter = router({
       const results = await ctx.prisma.gameplay.findMany({
         skip: pagenumber * 10,
         take: 10,
+        include: { gameplayVotes: { where: { isGame: true } } },
+      });
+      const noCounts = await ctx.prisma.gameplayVotes.count({
+        where: { isGame: false },
       });
       if (results == null || !results.length) {
         throw new TRPCError({
@@ -30,16 +36,48 @@ export const analysisApiRouter = router({
         });
       }
       const returnarray = {
-        gameplay: results.map(result => {
-          return {
-            id: result.id,
-            ytUrl: result.youtubeUrl,
-            game: result.gameplayType,
-          };
-        }),
+        gameplay: results
+          .filter(result => {
+            // since query includes gameplayvotes if isGame is true, then this is the total amt of yes votes.
+            const yesCounts = result.gameplayVotes.length;
+
+            // no votes is just a prisma count query where isGame if false. This just adds
+            // the total amt of no votes + the yesCounts.
+            const totalVotes = yesCounts + noCounts;
+            if (totalVotes < input.minVotes) {
+              throw new TRPCError({
+                message:
+                  'no gameplay items were found with the provided minVotes param.',
+                code: 'NOT_FOUND',
+              });
+            }
+            // yesPercentage is pretty explanatory here.
+            const yesPercentage = (yesCounts / totalVotes) * 100;
+            // this checks if the yesPercentage is greater than or equal to the rating input. This just makes sure there is a minimum result.
+            if (yesPercentage <= input.rating) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          // just loops through all of the results and formats the result;
+          .map(result => {
+            return {
+              id: result.id,
+              ytUrl: result.youtubeUrl,
+              game: result.gameplayType,
+            };
+          }),
         totalPages: Math.floor(itemCount / 10),
         page: pagenumber,
       };
+      if (returnarray.gameplay.length == 0) {
+        throw new TRPCError({
+          message:
+            'no gameplay items could be found with the provided rating percentage',
+          code: 'NOT_FOUND',
+        });
+      }
       return returnarray;
     }),
 });
