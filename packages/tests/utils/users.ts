@@ -1,4 +1,5 @@
 import { Roles } from 'database';
+import { prisma } from './db';
 
 interface ITestUser {
   userId: string;
@@ -40,4 +41,29 @@ export const allTestUsers = [
  */
 export const createUserCookie = (user: ITestUser): string => {
   return `userId=${user.userId}; provider=dumby; role=${user.role}`;
+};
+
+/**
+ * Populate the database with each of the test users.
+ */
+export const setUpUsers = async () => {
+  await prisma.user.createMany({
+    data: allTestUsers.map(user => ({
+      id: user.userId,
+      role: user.role,
+    })),
+  });
+};
+
+/**
+ * Remove test users from the database.
+ */
+export const cleanUpUsers = async () => {
+  await prisma.user.deleteMany({
+    where: {
+      id: {
+        in: allTestUsers.map(user => user.userId),
+      },
+    },
+  });
 };
