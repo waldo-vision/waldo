@@ -37,7 +37,7 @@ export const analysisApiRouter = router({
             game: result.gameplayType,
           };
         }),
-        totalPages: Math.ceil(itemCount / 10),
+        totalPages: Math.floor(itemCount / 10),
         page: pagenumber,
       };
       return returnarray;
