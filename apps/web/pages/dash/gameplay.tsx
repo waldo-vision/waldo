@@ -59,7 +59,7 @@ interface GoToItem {
 export default function Gameplay() {
   // Searching states
 
-  const [searchRole, setSearchRole] = useState<GameplayTypeWithNull>(null);
+  const [searchRole, setSearchRole] = useState<GameplayTypeWithNull>(undefined);
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [gtMenuItems, setGtMenuItems] = useState<GoToItem[]>();
@@ -80,7 +80,7 @@ export default function Gameplay() {
 
   const handleFilter = async (role: GameplayTypeWithNull) => {
     if (role == null) {
-      setSearchRole(null);
+      setSearchRole(undefined);
       return;
     }
     setSearchRole(role);

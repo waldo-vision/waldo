@@ -120,7 +120,7 @@ export default function Account() {
   // Gameplay list logic
   const { isLoading: isGameplayDataStillFetching, data: gamplayData } =
     trpc.gameplay.getUsers.useQuery({
-      userId: null,
+      userId: undefined,
     });
 
   // States

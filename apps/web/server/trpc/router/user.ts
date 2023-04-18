@@ -318,7 +318,10 @@ export const userRouter = router({
         })
         .transform(input => {
           return {
-            name: input.name === null ? input.name : serverSanitize(input.name),
+            name:
+              input.name === null
+                ? input.name
+                : serverSanitize(input.name as string),
           };
         }),
     )
