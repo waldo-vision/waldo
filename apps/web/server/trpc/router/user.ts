@@ -5,6 +5,7 @@ import { UserSchema, UsersSchema } from '@utils/zod/dash';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import type { Roles, User } from 'database';
 import { serverSanitize } from '@utils/sanitize';
+import * as Sentry from '@sentry/nextjs';
 export const userRouter = router({
   blackList: protectedProcedure
     .meta({ openapi: { method: 'PUT', path: '/user' } })
@@ -49,6 +50,7 @@ export const userRouter = router({
           blacklisted: input.blacklisted,
         };
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'An unknown error has occurred.',
@@ -96,6 +98,7 @@ export const userRouter = router({
         };
       } catch (error) {
         console.log(error);
+        Sentry.captureException(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message:
@@ -128,6 +131,7 @@ export const userRouter = router({
         });
         return linkedAccounts;
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'An error occured while trying to contact the database.',
@@ -184,6 +188,7 @@ export const userRouter = router({
           message: `Successfully deleted the account with id: ${input.accountId}.`,
         };
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           // eslint-disable-next-line max-len
@@ -236,6 +241,7 @@ export const userRouter = router({
           });
           return { users, userCount };
         } catch (error) {
+          Sentry.captureException(error);
           throw new TRPCError({
             message: 'No clip document with the UUID provided could be found.',
             code: 'NOT_FOUND',
@@ -257,6 +263,7 @@ export const userRouter = router({
           });
           return { users, userCount };
         } catch (error) {
+          Sentry.captureException(error);
           throw new TRPCError({
             message: 'No clip document with the UUID provided could be found.',
             code: 'NOT_FOUND',
@@ -303,6 +310,7 @@ export const userRouter = router({
         });
         return { message: 'success' };
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           message: 'No clip document with the UUID provided could be found.',
           code: 'NOT_FOUND',
@@ -364,6 +372,7 @@ export const userRouter = router({
         }
         return users;
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           message: 'No user document with the name provided could be found.',
           code: 'NOT_FOUND',
