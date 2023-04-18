@@ -3,7 +3,7 @@ import superjson from 'superjson';
 import { OpenApiMeta } from 'trpc-openapi';
 import { type Context } from './context';
 // import * as Sentry from '@sentry/nextjs';
-import * as Sentry from '@sentry/node';
+import * as Sentry from '@sentry/nextjs';
 
 const t = initTRPC
   .context<Context>()
