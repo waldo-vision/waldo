@@ -3,6 +3,7 @@ import { router, apiProcedure } from '../trpc';
 import { GameplayType } from 'database';
 import { z } from 'zod';
 import { GameplayTypes } from '@utils/zod/gameplay';
+import { TRPCError } from '@trpc/server';
 export const linkRetrievalRouter = router({
   getLinks: apiProcedure //this needs to be public, since python is stateless
     .meta({
@@ -29,13 +30,23 @@ export const linkRetrievalRouter = router({
           gameplayType: requiredgameplay as GameplayType,
         },
       });
-      if (results != null) {
-        const returnarray = {
-          gameplay: results.map(results => [results.id, results.youtubeUrl]),
-          totalPages: itemCount / 10,
-          page: pagenumber,
-        };
-        return returnarray;
+      if (results == null) {
+        throw new TRPCError({
+          message: 'no gameplay items found',
+          code: 'NOT_FOUND',
+        });
       }
+      const returnarray = {
+        gameplay: results.map(result => {
+          return {
+            id: result.id,
+            ytUrl: result.youtubeUrl,
+            game: result.gameplayType,
+          };
+        }),
+        totalPages: itemCount / 10,
+        page: pagenumber,
+      };
+      return returnarray;
     }),
 });
