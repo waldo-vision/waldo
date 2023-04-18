@@ -4,9 +4,11 @@ import { getServerSession } from 'next-auth';
 import { type Session } from 'next-auth';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { prisma } from '@server/db/client';
+import { IncomingHttpHeaders } from 'http';
 
 type CreateContextOptions = {
   session: Session | null;
+  headers?: IncomingHttpHeaders;
 };
 
 /** Use this helper for:
@@ -18,6 +20,7 @@ export const createContextInner = async (opts: CreateContextOptions) => {
   return {
     session: opts.session,
     prisma,
+    headers: opts.headers,
   };
 };
 
@@ -27,12 +30,13 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  **/
 export const createContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
-
+  const headers = req.headers;
   // Get the session from the server using the getServerSession wrapper function
   const session = await getServerSession(req, res, authOptions);
 
   return await createContextInner({
     session,
+    headers,
   });
 };
 

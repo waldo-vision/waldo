@@ -1,5 +1,5 @@
 import { scryptSync, randomBytes, timingSafeEqual } from 'crypto';
-import { verify, hash } from 'argon2';
+import { hash } from 'argon2';
 
 // eslint-disable-next-line no-undef
 function genApiKey(size = 20, format: BufferEncoding = 'base64') {
@@ -13,16 +13,9 @@ async function genSecretHash(key: string) {
   return hashStore;
 }
 
-async function compareKeyAgainstHash(storedKey: string, suppliedKey: string) {
-  try {
-    if (await verify(storedKey, suppliedKey)) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (err) {
-    return false;
-  }
+async function compareHashAgainstHash(hash_from_db: string, api_key: string) {
+  const hashed_api_key = await hash(api_key);
+  return hash_from_db === hashed_api_key;
 }
 
-export { genApiKey, genSecretHash, compareKeyAgainstHash };
+export { genApiKey, genSecretHash, compareHashAgainstHash };
