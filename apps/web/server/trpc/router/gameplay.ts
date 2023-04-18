@@ -465,10 +465,6 @@ export const gameplayRouter = router({
     )
     .output(ReviewItemsGameplaySchema)
     .query(async ({ input, ctx }) => {
-      const randomPick = (values: string[]) => {
-        const index = Math.floor(Math.random() * values.length);
-        return values[index];
-      };
       const itemCount = await ctx.prisma.gameplay.count();
       const reviewItem = await ctx.prisma.gameplay.findMany({
         where: {
