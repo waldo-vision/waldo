@@ -67,7 +67,7 @@ export const gameplayRouter = router({
     .input(
       z.object({
         page: z.number(),
-        filterGames: GameplayTypes.nullable(),
+        filterGames: GameplayTypes.optional(),
       }),
     )
     .output(z.array(GameplaysDashSchema))
@@ -229,7 +229,7 @@ export const gameplayRouter = router({
     .input(
       z
         .object({
-          userId: z.string().cuid().nullish().optional(),
+          userId: z.string().cuid().optional(),
         })
         .transform(input => {
           return {
@@ -404,6 +404,7 @@ export const gameplayRouter = router({
           };
         }),
     )
+    .output(z.void())
     .mutation(async ({ input, ctx }) => {
       try {
         const gameplay = await ctx.prisma.gameplay.findUnique({
