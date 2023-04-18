@@ -2,7 +2,7 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { OpenApiMeta } from 'trpc-openapi';
 import { type Context } from './context';
-import { genSecretHash } from '@server/utils/apiHelper';
+import { compareKeyAgainstHash, genSecretHash } from '@server/utils/apiHelper';
 
 const t = initTRPC
   .context<Context>()
@@ -49,18 +49,23 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
  */
 
 const isApiAuthed = t.middleware(async ({ ctx, next }) => {
-  if (ctx.headers == null || ctx.headers.authorization == null) {
+  if (
+    ctx.headers == null ||
+    ctx.headers.authorization == null ||
+    ctx.headers.authorization_id == null
+  ) {
     throw new TRPCError({
       message: 'no auth headers found',
       code: 'NOT_FOUND',
     });
   }
-  const id = await genSecretHash(ctx.headers.authorization);
+  const authorization_id = ctx.headers.authorization_id;
+  const api_key = ctx.headers.authorization;
   const result = await ctx.prisma.apiKey.findUnique({
     where: {
-      id: id,
+      id: authorization_id as string,
     },
-    select: { user: true }, //return associated user object
+    select: { user: true, key: true }, //return associated user object to detect blacklisted or not
   });
   if (result == null) {
     throw new TRPCError({
@@ -74,6 +79,11 @@ const isApiAuthed = t.middleware(async ({ ctx, next }) => {
       code: 'FORBIDDEN',
     });
   }
+
+  // check if keys match w argon
+  const dbApiKey_hashed = result.key;
+  const areKeysValid = await compareKeyAgainstHash(dbApiKey_hashed, api_key);
+
   //add token expiration check here in future (v2)
 
   return next({

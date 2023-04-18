@@ -200,10 +200,11 @@ const ApiKeys = () => {
                         <Flex left={0} top={0} mb={'auto'} mr={'auto'}>
                           <Text textColor={'purple.500'}>{object.name}</Text>
                           {/* Scopes */}
-                          <Text textColor={'gray.500'}>
-                            &nbsp;— full api access
+                          <Text textColor={'gray.300'}>
+                            &nbsp; | ID: {object.id}
                           </Text>
                         </Flex>
+
                         {/* Custom Button From Box */}
                         <Box
                           onClick={() => deleteKey(object.id)}

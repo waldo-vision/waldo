@@ -6,6 +6,10 @@ import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { prisma } from '@server/db/client';
 import { IncomingHttpHeaders } from 'http';
 
+interface ExtendedIncomingHttpHeaders extends IncomingHttpHeaders {
+  authorization_id: string;
+}
+
 type CreateContextOptions = {
   session: Session | null;
   headers?: IncomingHttpHeaders;

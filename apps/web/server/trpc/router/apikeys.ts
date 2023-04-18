@@ -75,7 +75,6 @@ export const apiKeyRouter = router({
             keyOwnerId: input.userId,
           },
         });
-
         // so the trpc error is thrown
         if (apiKey === null)
           throw new Error(
