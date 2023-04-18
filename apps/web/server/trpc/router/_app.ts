@@ -3,7 +3,7 @@ import { apiKeyRouter } from './apikeys';
 import { clipRouter } from './clip';
 import { gameplayRouter } from './gameplay';
 import { siteRouter } from './site';
-import { linkRetrievalRouter } from './linkretrieval';
+import { analysisApiRouter } from './analysisApi';
 import { userRouter } from './user';
 import { utilRouter } from './util';
 
@@ -14,7 +14,7 @@ export const appRouter = router({
   util: utilRouter,
   site: siteRouter,
   apiKey: apiKeyRouter,
-  linkRetrieval: linkRetrievalRouter,
+  analysisApi: analysisApiRouter,
 });
 
 // export type definition of API

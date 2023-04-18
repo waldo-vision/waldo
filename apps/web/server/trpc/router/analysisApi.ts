@@ -4,7 +4,7 @@ import { GameplayType } from 'database';
 import { z } from 'zod';
 import { GameplayTypes } from '@utils/zod/gameplay';
 import { TRPCError } from '@trpc/server';
-export const linkRetrievalRouter = router({
+export const analysisApiRouter = router({
   getLinks: apiProcedure //this needs to be public, since python is stateless
     .meta({
       openapi: { method: 'GET', path: '/analysis/urls' },
