@@ -3,10 +3,15 @@ import { TRPCClientError } from '@trpc/client';
 import { CheatTypes, GameplayTypes } from 'web/utils/zod/gameplay';
 
 import { adminClient, basicClient, noAuthClient } from '../utils/trpc';
-import { cleanUpClips } from '../utils/db';
-import { cleanUpUsers, setUpUsers, testUserMod } from '../utils/users';
+import { cleanUpClips, prisma } from '../utils/db';
+import {
+  cleanUpUsers,
+  setUpUsers,
+  testUserBasic,
+  testUserMod,
+} from '../utils/users';
 
-const gameplayInput1 = {
+export const gameplayInput1 = {
   youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
   gameplayType: GameplayTypes.Enum.CSG,
   cheats: [CheatTypes.Enum.NOCHEAT],
@@ -16,25 +21,39 @@ const gameplayInput1 = {
 /**
  * Standup and teardown before and after tests are run.
  */
+const fixtureGameplayIds: string[] = [];
 beforeAll(async () => {
+  // Create the test users.
   await setUpUsers();
+
+  // Create a gameplay object for each gameplay type
+  for (const [_, gameplayType] of Object.entries(GameplayTypes.Enum)) {
+    const gameplay = await prisma.gameplay.create({
+      data: {
+        userId: testUserBasic.userId,
+        youtubeUrl: gameplayInput1.youtubeUrl + gameplayType,
+        gameplayType: gameplayType,
+        cheats: gameplayInput1.cheats,
+      },
+    });
+    fixtureGameplayIds.push(gameplay.id);
+  }
 });
 
 var clipIds: string[] = [];
 afterAll(async () => {
+  // Remove any created clips.
+  // If this isn't done, it will create errors when cleaning up the test users.
   await cleanUpClips(clipIds);
-  await cleanUpUsers();
 });
 
 /**
  * Test all the basic CRUD operations for a Gameplay object.
  */
 describe('gameplay CRUD', () => {
-  let gameplayId = '';
   test('create', async () => {
     const res = await basicClient.gameplay.create.mutate({ ...gameplayInput1 });
 
-    gameplayId = res.id;
     expect(res.id.length).toBeGreaterThan(0);
     expect(res.gameplayType).toEqual(gameplayInput1.gameplayType);
     expect(res.cheats).toEqual(gameplayInput1.cheats);
@@ -42,14 +61,15 @@ describe('gameplay CRUD', () => {
   });
 
   test('get', async () => {
+    const gameplayId = fixtureGameplayIds[0];
     const res = await basicClient.gameplay.get.query({ gameplayId });
 
     expect(res.id).toEqual(gameplayId);
-    expect(res.gameplayType).toEqual(gameplayInput1.gameplayType);
     expect(res.cheats).toEqual(gameplayInput1.cheats);
   });
 
   test('update', async () => {
+    const gameplayId = fixtureGameplayIds[1];
     const newGameplayType = GameplayTypes.Enum.COD;
     const res = await basicClient.gameplay.update.mutate({
       gameplayId,
@@ -63,13 +83,15 @@ describe('gameplay CRUD', () => {
   });
 
   test('delete', async () => {
+    expect.assertions(2);
+    const gameplayId = fixtureGameplayIds[2];
+
+    // Delete gameplay
     await basicClient.gameplay.delete.mutate({
       gameplayId,
     });
-  });
 
-  test('get', async () => {
-    expect.assertions(2);
+    // Make sure gameplay no longer exists
     try {
       await basicClient.gameplay.get.query({ gameplayId });
     } catch (ex) {
@@ -84,19 +106,7 @@ describe('gameplay CRUD', () => {
  * Check alternative query methods
  */
 describe('gameplay query many', () => {
-  const numUploads = 5;
   let gameplayIds: string[] = [];
-
-  test('create', async () => {
-    for (const [_, gameplayType] of Object.entries(GameplayTypes.Enum)) {
-      const res = await basicClient.gameplay.create.mutate({
-        ...gameplayInput1,
-        youtubeUrl: gameplayInput1.youtubeUrl + gameplayType,
-        gameplayType,
-      });
-      gameplayIds.push(res.id);
-    }
-  });
 
   // Check that basic users cannot query many gameplay clips
   test('getMany (insufficient perms)', async () => {
@@ -168,7 +178,7 @@ describe('gameplay query many', () => {
   });
 
   test('getClips', async () => {
-    const gameplayId = gameplayIds[0];
+    const gameplayId = fixtureGameplayIds[0];
     // Create a clip for this gameplay
     const clip = await adminClient.clip.create.mutate({
       gameplayId,
