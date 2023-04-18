@@ -12,7 +12,7 @@ export const analysisApiRouter = router({
         //pages are 10 clips
         page: z.number(),
         rating: z.number(),
-        minVotes: z.number(),
+        minReviews: z.number(),
         //todo add review requiremenets
       }),
     )
@@ -44,7 +44,7 @@ export const analysisApiRouter = router({
             // no votes is just a prisma count query where isGame if false. This just adds
             // the total amt of no votes + the yesCounts.
             const totalVotes = yesCounts + noCounts;
-            if (totalVotes < input.minVotes) {
+            if (totalVotes < input.minReviews) {
               throw new TRPCError({
                 message:
                   'no gameplay items were found with the provided minVotes param.',
