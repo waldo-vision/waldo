@@ -76,6 +76,9 @@ export const authOptions = {
 
       const session = sessionCallback.session;
       const user = sessionCallback.user;
+
+      Sentry.getCurrentHub().getScope().setUser({ id: user.id });
+
       if (session.user) {
         session.user.id = user.id;
         if (user) {
@@ -107,6 +110,10 @@ export const authOptions = {
         ?.startChild({
           op: 'nextauth.signIn',
         });
+
+      Sentry.getCurrentHub()
+        .getScope()
+        .setUser({ id: signInCallback.account?.userId });
 
       if (signInCallback.account?.provider === 'github') {
         if (

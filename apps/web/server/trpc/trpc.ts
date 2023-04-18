@@ -39,7 +39,7 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
 
   if (ctx.session.user.blacklisted) throw new TRPCError({ code: 'FORBIDDEN' });
 
-  Sentry.setUser({ id: ctx.session.user.id });
+  Sentry.getCurrentHub().getScope().setUser({ id: ctx.session.user.id });
 
   return next({
     ctx: {
