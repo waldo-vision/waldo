@@ -207,6 +207,24 @@ We use [Prettier](https://prettier.io) to ensure consistent formatting across th
 
 Ensure your changes have been properly formatted by running `yarn run format`.
 
+### Integration Tests
+
+We utilize integration tests to verify that our APIs are working as intended and any changes made do not break existing endpoints.
+
+Please ensure all tests are passed before opening a PR.
+
+```bash
+# Start the server in `dev` mode.
+yarn workspace web dev
+
+# OR build an optimized deployment
+yarn workspace web build
+node apps/web/.next/standalone/apps/web/server.js
+
+# In a seperate tab
+yarn workspace tests jest
+```
+
 ## Pull Request Process
 
 1. Include your pull request with details of changes to the interface, this includes new environment
