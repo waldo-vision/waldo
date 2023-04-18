@@ -48,10 +48,10 @@ interface GoToItem {
 export default function User() {
   // Searching states
   const [searchUserValue, setSearchUserValue] = useState<string>('');
-  const [searchRole, setSearchRole] = useState<string | null>(null);
+  const [searchRole, setSearchRole] = useState<string | undefined>(undefined);
 
   const handleFilter = async (role: string | null) => {
-    role == null ? setSearchRole(null) : setSearchRole(role.toUpperCase());
+    role == null ? setSearchRole(undefined) : setSearchRole(role.toUpperCase());
   };
 
   // Data and Rows

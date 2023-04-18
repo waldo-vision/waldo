@@ -1,5 +1,5 @@
 import { scryptSync, randomBytes, timingSafeEqual } from 'crypto';
-import { verify, hash } from 'argon2';
+import { hash, verify } from 'argon2';
 import * as Sentry from '@sentry/nextjs';
 
 // eslint-disable-next-line no-undef

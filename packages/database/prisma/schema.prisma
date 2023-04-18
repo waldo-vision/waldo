@@ -162,7 +162,7 @@ model ApiKey {
   user       User        @relation(fields: [keyOwnerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   keyOwnerId String
   state      ApiKeyState
-  key        String
+  key        String      @unique
   name       String
 
   createdAt DateTime @default(now())

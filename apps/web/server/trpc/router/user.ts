@@ -110,7 +110,7 @@ export const userRouter = router({
     }),
   getLinkedAccounts: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/user/linkedaccounts' } })
-
+    .input(z.void())
     .output(
       z.array(
         z.object({
@@ -204,7 +204,7 @@ export const userRouter = router({
       z
         .object({
           page: z.number(),
-          filterRoles: z.string().nullable().optional(),
+          filterRoles: z.string().optional(),
         })
         .transform(input => {
           return {
@@ -322,11 +322,14 @@ export const userRouter = router({
     .input(
       z
         .object({
-          name: z.string().nullable(),
+          name: z.string().optional(),
         })
         .transform(input => {
           return {
-            name: input.name === null ? input.name : serverSanitize(input.name),
+            name:
+              input.name === null
+                ? input.name
+                : serverSanitize(input.name as string),
           };
         }),
     )
