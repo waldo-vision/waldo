@@ -18,12 +18,12 @@ export const analysisApiRouter = router({
     .query(async ({ input, ctx }) => {
       /*here query database for api key*/
       const itemCount = await ctx.prisma.gameplay.count();
-      const pagenumber = 0;
+      const pagenumber = input.page;
       const results = await ctx.prisma.gameplay.findMany({
         skip: pagenumber * 10,
         take: 10,
       });
-      if (results == null) {
+      if (results == null || !results.length) {
         throw new TRPCError({
           message: 'no gameplay items found',
           code: 'NOT_FOUND',
