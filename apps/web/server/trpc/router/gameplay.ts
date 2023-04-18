@@ -11,7 +11,6 @@ import { z } from 'zod';
 import { vUser } from './util';
 import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
-import * as Sentry from '@sentry/nextjs';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { serverSanitize } from '@utils/sanitize';
 import * as Sentry from '@sentry/nextjs';
