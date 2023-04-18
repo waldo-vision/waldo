@@ -104,7 +104,7 @@ const isApiAuthed = t.middleware(async ({ ctx, next }) => {
   });
 });
 
-export const apiProcedure = t.procedure.use(isApiAuthed);
+export const apiProcedure = t.procedure.use(sentryMiddleware).use(isApiAuthed);
 
 export const protectedProcedure = t.procedure
   .use(sentryMiddleware)
