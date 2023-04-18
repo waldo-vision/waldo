@@ -8,22 +8,22 @@ interface ITestUser {
 
 /* A list of dumby users with different roles */
 export const testUserBasic: ITestUser = {
-  userId: 'basicUser',
+  userId: 'clglqupom00bp5s87fxip254i',
   role: Roles.USER,
 };
 
 export const testUserTrusted: ITestUser = {
-  userId: 'trustedUser',
+  userId: 'clglqupom00bp5s87fxip254a',
   role: Roles.TRUSTED,
 };
 
 export const testUserMod: ITestUser = {
-  userId: 'modUser',
+  userId: 'clglqupom00bp5s87fxip254b',
   role: Roles.MOD,
 };
 
 export const testUserAdmin: ITestUser = {
-  userId: 'adminUser',
+  userId: 'clglqupom00bp5s87fxip254c',
   role: Roles.ADMIN,
 };
 
@@ -50,6 +50,7 @@ export const setUpUsers = async () => {
   await prisma.user.createMany({
     data: allTestUsers.map(user => ({
       id: user.userId,
+      name: 'test user',
       role: user.role,
     })),
   });

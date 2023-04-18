@@ -9,11 +9,19 @@ const WALDO_URI = process.env.WALDO_URI || 'http://localhost:3000';
 /**
  * Create tRPC clients for each of the test users.
  */
+export const noAuthClient = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: `${WALDO_URI}/api/trpc`,
+    }),
+  ],
+  transformer: superjson,
+});
+
 export const basicClient = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: `${WALDO_URI}/api/trpc`,
-      // You can pass any HTTP headers you wish here
       headers: {
         Cookie: users.createUserCookie(users.testUserBasic),
       },
@@ -26,7 +34,6 @@ export const trustedClient = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: `${WALDO_URI}/api/trpc`,
-      // You can pass any HTTP headers you wish here
       headers: {
         Cookie: users.createUserCookie(users.testUserTrusted),
       },
@@ -39,7 +46,6 @@ export const modClient = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: `${WALDO_URI}/api/trpc`,
-      // You can pass any HTTP headers you wish here
       headers: {
         Cookie: users.createUserCookie(users.testUserMod),
       },
@@ -52,7 +58,6 @@ export const adminClient = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: `${WALDO_URI}/api/trpc`,
-      // You can pass any HTTP headers you wish here
       headers: {
         Cookie: users.createUserCookie(users.testUserAdmin),
       },

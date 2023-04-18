@@ -12,7 +12,7 @@ export const clipRouter = router({
     .input(
       z
         .object({
-          clipId: z.string().uuid().optional(),
+          clipId: z.string().cuid().optional(),
         })
         .transform(input => {
           return {
@@ -66,7 +66,7 @@ export const clipRouter = router({
     .input(
       z
         .object({
-          clipId: z.string().uuid().optional(),
+          clipId: z.string().cuid().optional(),
         })
         .transform(input => {
           return {
@@ -100,7 +100,7 @@ export const clipRouter = router({
           },
         });
         return {
-          message: `Clip with uuid: ${result.id} was deleted successfully.`,
+          message: `Clip with cuid: ${result.id} was deleted successfully.`,
         };
       } catch (error) {
         Sentry.captureException(error);
@@ -115,7 +115,7 @@ export const clipRouter = router({
     .input(
       z
         .object({
-          gameplayId: z.string().uuid(),
+          gameplayId: z.string().cuid(),
         })
         .transform(input => {
           return {
