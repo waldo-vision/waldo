@@ -86,7 +86,7 @@ const isApiAuthed = t.middleware(async ({ ctx, next }) => {
   if (result.user.blacklisted) {
     throw new TRPCError({
       message: 'api key blacklisted',
-      code: 'FORBIDDEN',
+      code: 'UNAUTHORIZED',
     });
   }
 
