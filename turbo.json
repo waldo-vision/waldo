@@ -22,7 +22,9 @@
         "TWITCH_CLIENT_SECRET",
         "SENTRY_DSN",
         "NEXT_PUBLIC_SENTRY_DSN",
-        "SENTRY_RELEASE"
+        "SENTRY_RELEASE",
+        "WALDO_URI",
+        "DISABLE_VERIFY_AUTH"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },

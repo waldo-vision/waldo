@@ -32,26 +32,27 @@ cp apps/web/.env.example apps/web/.env
 vim apps/web/.env
 ```
 
-| Variable                                  | Description                                                | Link                                                                                         |
-| :---------------------------------------- | :--------------------------------------------------------- | :------------------------------------------------------------------------------------------- |
-| DISCORD_CLIENT_ID                         | Discord OAuth client ID                                    | [docs](https://discordjs.guide/oauth2/#getting-an-oauth2-url)                                |
-| DISCORD_CLIENT_SECRET                     | Discord OAuth client secret                                |                                                                                              |
-| GOOGLE_CLIENT_ID                          | ...                                                        |                                                                                              |
-| GOOGLE_CLIENT_SECRET                      | ...                                                        |                                                                                              |
-| YOUTUBE_API_KEY                           | ...                                                        |                                                                                              |
-| GITHUB_CLIENT_ID                          | GitHub OAuth client ID                                     | [docs](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app) |
-| GITHUB_CLIENT_SECRET                      | GitHub OAuth client secret                                 |                                                                                              |
-| BTLNET_CLIENT_ID                          | ...                                                        |                                                                                              |
-| BTLNET_CLIENT_SECRET                      | ...                                                        |                                                                                              |
-| TWITCH_CLIENT_ID                          | ...                                                        |                                                                                              |
-| TWITCH_CLIENT_SECRET                      | ...                                                        |                                                                                              |
-| FB_CLIENT_ID                              | ...                                                        |                                                                                              |
-| FB_CLIENT_SECRET                          | ...                                                        |                                                                                              |
-| CLOUDFLARE_TURNSTILE_SECRET               | ...                                                        |                                                                                              |
-| NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY | ...                                                        |                                                                                              |
-| DATABASE_URL                              | Postgres connection string used to connect to CockroachDB. |                                                                                              |
-| NEXTAUTH_URL                              | ...                                                        |                                                                                              |
-| NEXTAUTH_SECRET                           | ...                                                        |                                                                                              |
+| Variable                                  | Description                                                   | Link                                                                                         |
+| :---------------------------------------- | :------------------------------------------------------------ | :------------------------------------------------------------------------------------------- |
+| DISCORD_CLIENT_ID                         | Discord OAuth client ID                                       | [docs](https://discordjs.guide/oauth2/#getting-an-oauth2-url)                                |
+| DISCORD_CLIENT_SECRET                     | Discord OAuth client secret                                   |                                                                                              |
+| GOOGLE_CLIENT_ID                          | ...                                                           |                                                                                              |
+| GOOGLE_CLIENT_SECRET                      | ...                                                           |                                                                                              |
+| YOUTUBE_API_KEY                           | ...                                                           |                                                                                              |
+| GITHUB_CLIENT_ID                          | GitHub OAuth client ID                                        | [docs](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app) |
+| GITHUB_CLIENT_SECRET                      | GitHub OAuth client secret                                    |                                                                                              |
+| BTLNET_CLIENT_ID                          | ...                                                           |                                                                                              |
+| BTLNET_CLIENT_SECRET                      | ...                                                           |                                                                                              |
+| TWITCH_CLIENT_ID                          | ...                                                           |                                                                                              |
+| TWITCH_CLIENT_SECRET                      | ...                                                           |                                                                                              |
+| FB_CLIENT_ID                              | ...                                                           |                                                                                              |
+| FB_CLIENT_SECRET                          | ...                                                           |                                                                                              |
+| CLOUDFLARE_TURNSTILE_SECRET               | ...                                                           |                                                                                              |
+| NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY | ...                                                           |                                                                                              |
+| DATABASE_URL                              | Postgres connection string used to connect to CockroachDB.    |                                                                                              |
+| NEXTAUTH_URL                              | ...                                                           |                                                                                              |
+| NEXTAUTH_SECRET                           | ...                                                           |                                                                                              |
+| DISABLE_VERIFY_AUTH                       | Disables cookie verification. Used only for testing purposes. |                                                                                              |
 
 ### Starting the server
 
