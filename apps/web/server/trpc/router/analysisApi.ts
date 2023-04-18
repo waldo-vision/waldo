@@ -19,16 +19,17 @@ export const analysisApiRouter = router({
     .output(GameplayArray)
     .query(async ({ input, ctx }) => {
       /*here query database for api key*/
-      const itemCount = await ctx.prisma.gameplay.count();
-      const pagenumber = input.page;
-      const results = await ctx.prisma.gameplay.findMany({
-        skip: pagenumber * 10,
-        take: 10,
-        include: { gameplayVotes: { where: { isGame: true } } },
-      });
-      const noCounts = await ctx.prisma.gameplayVotes.count({
-        where: { isGame: false },
-      });
+      const [itemCount, noCounts, results] = await ctx.prisma.$transaction([
+        ctx.prisma.gameplay.count(),
+        ctx.prisma.gameplayVotes.count({
+          where: { isGame: false },
+        }),
+        ctx.prisma.gameplay.findMany({
+          skip: input.page * 10,
+          take: 10,
+          include: { gameplayVotes: { where: { isGame: true } } },
+        }),
+      ]);
       if (results == null || !results.length) {
         throw new TRPCError({
           message: 'no gameplay items found',
@@ -69,7 +70,7 @@ export const analysisApiRouter = router({
             };
           }),
         totalPages: Math.floor(itemCount / 10),
-        page: pagenumber,
+        page: input.page,
       };
       if (returnarray.gameplay.length == 0) {
         throw new TRPCError({
