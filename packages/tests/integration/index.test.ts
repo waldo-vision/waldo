@@ -8,6 +8,7 @@ import { cleanUpUsers } from '../utils/users';
 
 import './gameplay';
 import './clips';
+import './users';
 
 afterAll(async () => {
   await cleanUpUsers();

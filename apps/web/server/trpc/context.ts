@@ -33,10 +33,13 @@ const createDumbySession = (req: NextApiRequest): Session | undefined => {
   switch (cookies.get('role')) {
     case 'ADMIN':
       role = Roles.ADMIN;
+      break;
     case 'MOD':
       role = Roles.MOD;
+      break;
     case 'TRUSTED':
       role = Roles.TRUSTED;
+      break;
   }
 
   const session: Session = {

@@ -18,6 +18,7 @@ const NUM_FIXTURES = 5;
  * Standup and teardown before and after tests are run.
  */
 let fixtureClipIds: string[] = [];
+let fixtureGameplayId: string = '';
 beforeAll(async () => {
   const gameplay = await prisma.gameplay.create({
     data: {
@@ -27,6 +28,7 @@ beforeAll(async () => {
       cheats: gameplayInput1.cheats,
     },
   });
+  fixtureGameplayId = gameplay.id;
 
   for (let i = 0; i < NUM_FIXTURES; i++) {
     const clip = await prisma.clip.create({
@@ -79,6 +81,46 @@ describe('clip CRUD', () => {
       expect(ex instanceof TRPCClientError).toEqual(true);
       if (ex instanceof TRPCClientError)
         expect(ex.data.code).toEqual('NOT_FOUND');
+    }
+  });
+});
+
+/**
+ * Check that clip endpoints are protected from unauthenticated requests.
+ */
+describe('clip auth protection', () => {
+  const clipId = clipIds[3];
+
+  const assertUnauthorized = (ex: any) => {
+    expect(ex instanceof TRPCClientError).toEqual(true);
+    if (ex instanceof TRPCClientError)
+      expect(ex.data.code).toEqual('UNAUTHORIZED');
+  };
+
+  test('get', async () => {
+    expect.assertions(2);
+    try {
+      await basicClient.clip.get.query({ clipId });
+    } catch (ex) {
+      assertUnauthorized(ex);
+    }
+  });
+
+  test('create', async () => {
+    expect.assertions(2);
+    try {
+      await basicClient.clip.create.mutate({ gameplayId: fixtureGameplayId });
+    } catch (ex) {
+      assertUnauthorized(ex);
+    }
+  });
+
+  test('delete', async () => {
+    expect.assertions(2);
+    try {
+      await basicClient.clip.delete.mutate({ clipId });
+    } catch (ex) {
+      assertUnauthorized(ex);
     }
   });
 });

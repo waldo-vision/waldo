@@ -50,7 +50,7 @@ export const setUpUsers = async () => {
   await prisma.user.createMany({
     data: allTestUsers.map(user => ({
       id: user.userId,
-      name: 'test user',
+      name: user.userId,
       role: user.role,
     })),
   });
@@ -59,11 +59,12 @@ export const setUpUsers = async () => {
 /**
  * Remove test users from the database.
  */
-export const cleanUpUsers = async () => {
+export const cleanUpUsers = async (userIds?: string[]) => {
+  if (userIds === undefined) userIds = allTestUsers.map(user => user.userId);
   await prisma.user.deleteMany({
     where: {
       id: {
-        in: allTestUsers.map(user => user.userId),
+        in: userIds,
       },
     },
   });
