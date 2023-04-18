@@ -2,10 +2,9 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { OpenApiMeta } from 'trpc-openapi';
 import { type Context } from './context';
-import { compareKeyAgainstHash, genSecretHash } from '@server/utils/apiHelper';
+import { compareKeyAgainstHash } from '@server/utils/apiHelper';
 // import * as Sentry from '@sentry/nextjs';
 import * as Sentry from '@sentry/node';
-import { string } from 'zod';
 
 const t = initTRPC
   .context<Context>()
