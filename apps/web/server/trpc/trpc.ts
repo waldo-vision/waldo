@@ -5,6 +5,7 @@ import { type Context } from './context';
 import { compareKeyAgainstHash, genSecretHash } from '@server/utils/apiHelper';
 // import * as Sentry from '@sentry/nextjs';
 import * as Sentry from '@sentry/node';
+import { string } from 'zod';
 
 const t = initTRPC
   .context<Context>()
@@ -69,7 +70,10 @@ const isApiAuthed = t.middleware(async ({ ctx, next }) => {
       code: 'NOT_FOUND',
     });
   }
-  const authorization_id = ctx.headers.authorization_id;
+  const authorization_id: string =
+    ctx.headers.authorization_id instanceof Array<string>
+      ? ctx.headers.authorization_id[0]
+      : ctx.headers.authorization_id;
   const api_key = ctx.headers.authorization;
   const result = await ctx.prisma.apiKey.findUnique({
     where: {
@@ -93,6 +97,12 @@ const isApiAuthed = t.middleware(async ({ ctx, next }) => {
   // check if keys match w argon
   const dbApiKey_hashed = result.key;
   const areKeysValid = await compareKeyAgainstHash(dbApiKey_hashed, api_key);
+  if (!areKeysValid) {
+    throw new TRPCError({
+      message: 'api key invalid',
+      code: 'UNAUTHORIZED',
+    });
+  }
 
   //add token expiration check here in future (v2)
 
