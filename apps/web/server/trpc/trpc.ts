@@ -4,7 +4,7 @@ import { OpenApiMeta } from 'trpc-openapi';
 import { type Context } from './context';
 import { compareKeyAgainstHash } from '@server/utils/apiHelper';
 // import * as Sentry from '@sentry/nextjs';
-import * as Sentry from '@sentry/node';
+import * as Sentry from '@sentry/nextjs';
 
 const t = initTRPC
   .context<Context>()
@@ -18,6 +18,7 @@ const t = initTRPC
 
 export const router = t.router;
 
+// create a sentry transaction/span for each endpoint
 const sentryMiddleware = t.middleware(
   Sentry.Handlers.trpcMiddleware({
     attachRpcInput: true,
@@ -40,7 +41,9 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
 
   if (ctx.session.user.blacklisted) throw new TRPCError({ code: 'FORBIDDEN' });
 
-  Sentry.setUser({ id: ctx.session.user.id });
+  // set the user on the sentry scope
+  // so we can track effected users
+  Sentry.getCurrentHub().getScope().setUser({ id: ctx.session.user.id });
 
   return next({
     ctx: {
@@ -110,7 +113,7 @@ const isApiAuthed = t.middleware(async ({ ctx, next }) => {
   });
 });
 
-export const apiProcedure = t.procedure.use(isApiAuthed);
+export const apiProcedure = t.procedure.use(sentryMiddleware).use(isApiAuthed);
 
 export const protectedProcedure = t.procedure
   .use(sentryMiddleware)

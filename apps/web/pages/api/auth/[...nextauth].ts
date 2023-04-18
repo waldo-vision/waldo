@@ -67,8 +67,20 @@ export const authOptions = {
   ],
   callbacks: {
     async session(sessionCallback: SessionCallback) {
+      // create a span to track the time it takes to run this callback
+      const span = Sentry.getCurrentHub()
+        .getScope()
+        .getTransaction()
+        ?.startChild({
+          op: 'nextauth.session',
+        });
+
       const session = sessionCallback.session;
       const user = sessionCallback.user;
+
+      // set the user on the sentry scope
+      Sentry.getCurrentHub().getScope().setUser({ id: user.id });
+
       if (session.user) {
         session.user.id = user.id;
         if (user) {
@@ -86,6 +98,7 @@ export const authOptions = {
           session.user.blacklisted = userAccount?.user.blacklisted as boolean;
         }
       }
+      span?.finish();
       return session;
     },
     async redirect(redirectCallback: RedirectCallback) {
@@ -93,6 +106,19 @@ export const authOptions = {
       return redirectCallback.baseUrl;
     },
     async signIn(signInCallback: signInCallback) {
+      // create a span to track the time it takes to run this callback
+      const span = Sentry.getCurrentHub()
+        .getScope()
+        .getTransaction()
+        ?.startChild({
+          op: 'nextauth.signIn',
+        });
+
+      // set the user id to the current span
+      Sentry.getCurrentHub()
+        .getScope()
+        .setUser({ id: signInCallback.account?.userId });
+
       if (signInCallback.account?.provider === 'github') {
         if (
           signInCallback.account.providerAccountId == RicanGHId ||
@@ -124,10 +150,13 @@ export const authOptions = {
             // return true here even if error because account does not exist...
             // but still allow user otherwise they would never be able to sign in
             return true;
+          } finally {
+            span?.finish();
           }
           return true;
         }
       }
+      span?.finish();
       return true;
     },
   },
