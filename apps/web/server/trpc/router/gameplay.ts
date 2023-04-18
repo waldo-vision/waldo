@@ -154,14 +154,8 @@ export const gameplayRouter = router({
     )
     .output(GameplaySchema)
     .mutation(async ({ input, ctx }) => {
-      const transaction = Sentry.startTransaction({
-        op: 'createGameplay',
-        name: 'Create a new gameplay',
-      });
-
       const isPerson = await vUser(input.tsToken);
       if (!isPerson) {
-        transaction.finish();
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message:
@@ -178,7 +172,6 @@ export const gameplayRouter = router({
 
       // this needs to be handled client side
       if (existingGameplay !== null) {
-        transaction.finish();
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'This youtube url has already been submitted.',
@@ -189,7 +182,6 @@ export const gameplayRouter = router({
         /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
 
       if (!input.youtubeUrl.match(isValid)) {
-        transaction.finish();
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'This url does not seem to be from youtube.',
@@ -222,10 +214,8 @@ export const gameplayRouter = router({
             cheats: input.cheats,
           },
         });
-        transaction.finish();
         return data;
       } catch (error) {
-        transaction.finish();
         Sentry.captureException(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -474,10 +464,6 @@ export const gameplayRouter = router({
     )
     .output(ReviewItemsGameplaySchema)
     .query(async ({ input, ctx }) => {
-      const transaction = Sentry.startTransaction({
-        op: 'getReviewItems',
-        name: 'Get Review Items',
-      });
       const randomPick = (values: string[]) => {
         const index = Math.floor(Math.random() * values.length);
         return values[index];
@@ -513,7 +499,6 @@ export const gameplayRouter = router({
         },
       });
       if (reviewItem[0] == null || reviewItem[0] == undefined) {
-        transaction.finish();
         throw new TRPCError({ code: 'NOT_FOUND' });
       } else {
         Object.assign(reviewItem[0], {
@@ -524,7 +509,6 @@ export const gameplayRouter = router({
           },
         });
         Object.assign(reviewItem[0], { total: itemCount });
-        transaction.finish();
         return reviewItem[0] as ReviewItemOutput;
       }
     }),
@@ -540,13 +524,8 @@ export const gameplayRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      const transaction = Sentry.startTransaction({
-        op: 'review',
-        name: 'Review',
-      });
       const isPerson = await vUser(input.tsToken);
       if (!isPerson) {
-        transaction.finish();
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message:
@@ -564,14 +543,11 @@ export const gameplayRouter = router({
         },
       });
       if (!footageVote) {
-        transaction.finish();
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: `Could not find a gameplay document with id:${input.gameplayId}.`,
         });
       }
-
-      transaction.finish();
       return { message: 'Updated the gameplay document successfully.' };
     }),
 });
