@@ -17,6 +17,7 @@ const t = initTRPC
 
 export const router = t.router;
 
+// create a sentry transaction/span for each endpoint
 const sentryMiddleware = t.middleware(
   Sentry.Handlers.trpcMiddleware({
     attachRpcInput: true,
@@ -39,6 +40,8 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
 
   if (ctx.session.user.blacklisted) throw new TRPCError({ code: 'FORBIDDEN' });
 
+  // set the user on the sentry scope
+  // so we can track effected users
   Sentry.getCurrentHub().getScope().setUser({ id: ctx.session.user.id });
 
   return next({

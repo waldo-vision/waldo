@@ -67,6 +67,7 @@ export const authOptions = {
   ],
   callbacks: {
     async session(sessionCallback: SessionCallback) {
+      // create a span to track the time it takes to run this callback
       const span = Sentry.getCurrentHub()
         .getScope()
         .getTransaction()
@@ -77,6 +78,7 @@ export const authOptions = {
       const session = sessionCallback.session;
       const user = sessionCallback.user;
 
+      // set the user on the sentry scope
       Sentry.getCurrentHub().getScope().setUser({ id: user.id });
 
       if (session.user) {
@@ -104,6 +106,7 @@ export const authOptions = {
       return redirectCallback.baseUrl;
     },
     async signIn(signInCallback: signInCallback) {
+      // create a span to track the time it takes to run this callback
       const span = Sentry.getCurrentHub()
         .getScope()
         .getTransaction()
@@ -111,6 +114,7 @@ export const authOptions = {
           op: 'nextauth.signIn',
         });
 
+      // set the user id to the current span
       Sentry.getCurrentHub()
         .getScope()
         .setUser({ id: signInCallback.account?.userId });
