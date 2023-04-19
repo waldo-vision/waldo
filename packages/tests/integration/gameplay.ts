@@ -40,7 +40,7 @@ beforeAll(async () => {
   }
 });
 
-var clipIds: string[] = [];
+const clipIds: string[] = [];
 afterAll(async () => {
   // Remove any created clips.
   // If this isn't done, it will create errors when cleaning up the test users.
@@ -106,15 +106,12 @@ describe('gameplay CRUD', () => {
  * Check alternative query methods
  */
 describe('gameplay query many', () => {
-  let gameplayIds: string[] = [];
-
   // Check that basic users cannot query many gameplay clips
   test('getMany (insufficient perms)', async () => {
     expect.assertions(2);
     try {
       await basicClient.gameplay.getMany.query({
         page: 1,
-        filterGames: null,
       });
     } catch (ex) {
       expect(ex instanceof TRPCClientError).toEqual(true);
@@ -124,9 +121,8 @@ describe('gameplay query many', () => {
   });
 
   test('getMany (all games)', async () => {
-    let res = await adminClient.gameplay.getMany.query({
+    const res = await adminClient.gameplay.getMany.query({
       page: 1,
-      filterGames: null,
     });
 
     expect(res[0].gameplayCount).toBeGreaterThan(0);
@@ -159,9 +155,7 @@ describe('gameplay query many', () => {
   });
 
   test('getUsers (own)', async () => {
-    let res = await basicClient.gameplay.getUsers.query({
-      userId: null,
-    });
+    const res = await basicClient.gameplay.getUsers.query({});
 
     expect(res.length).toBeGreaterThan(0);
   });
@@ -185,7 +179,7 @@ describe('gameplay query many', () => {
     });
 
     // Query clips
-    let res = await adminClient.gameplay.getClips.query({
+    const res = await adminClient.gameplay.getClips.query({
       gameplayId,
     });
 

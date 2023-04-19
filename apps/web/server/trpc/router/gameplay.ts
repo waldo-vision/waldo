@@ -248,7 +248,8 @@ export const gameplayRouter = router({
     .query(async ({ input, ctx }) => {
       // if no user id provided, use user id from session
       // userId should only be passed by system admins, not avg users
-      const userId = input.userId === null ? ctx.session.user.id : input.userId;
+      const userId =
+        input.userId === undefined ? ctx.session.user.id : input.userId;
 
       if (
         !hasPerms({

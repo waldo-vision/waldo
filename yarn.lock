@@ -6705,18 +6705,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"co-body@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "co-body@npm:6.1.0"
-  dependencies:
-    inflation: ^2.0.0
-    qs: ^6.5.2
-    raw-body: ^2.3.3
-    type-is: ^1.6.16
-  checksum: d0a78831a6651f2085fce16b0ecdc49f45fb5baf4f94148c2f499e7ec89d188205362548b9c500eae15a819360cfda208079e68a72c204cf66ca3ffa2fc0f57e
-  languageName: node
-  linkType: hard
-
 "co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
@@ -11875,24 +11863,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-mocks-http@npm:^1.12.1":
-  version: 1.12.1
-  resolution: "node-mocks-http@npm:1.12.1"
-  dependencies:
-    accepts: ^1.3.7
-    content-disposition: ^0.5.3
-    depd: ^1.1.0
-    fresh: ^0.5.2
-    merge-descriptors: ^1.0.1
-    methods: ^1.1.2
-    mime: ^1.3.4
-    parseurl: ^1.3.3
-    range-parser: ^1.2.0
-    type-is: ^1.6.18
-  checksum: 80b2ef4967d95e5804f4be5edd13bab06e6cad7c00813e32fd1958189ee8c4c68b833aabcbb2b39194b412b14504a7724e628d74ca5956a83221e0fa838aaf92
-  languageName: node
-  linkType: hard
-
 "node-redis@npm:^0.1.7":
   version: 0.1.7
   resolution: "node-redis@npm:0.1.7"
@@ -12663,7 +12633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:6.11.0, qs@npm:^6.5.2":
+"qs@npm:6.11.0":
   version: 6.11.0
   resolution: "qs@npm:6.11.0"
   dependencies:
@@ -14203,22 +14173,6 @@ __metadata:
   version: 2.1.0
   resolution: "trough@npm:2.1.0"
   checksum: a577bb561c2b401cc0e1d9e188fcfcdf63b09b151ff56a668da12197fe97cac15e3d77d5b51f426ccfd94255744a9118e9e9935afe81a3644fa1be9783c82886
-  languageName: node
-  linkType: hard
-
-"trpc-openapi@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "trpc-openapi@npm:1.1.2"
-  dependencies:
-    co-body: ^6.1.0
-    lodash.clonedeep: ^4.5.0
-    node-mocks-http: ^1.12.1
-    openapi-types: ^12.1.0
-    zod-to-json-schema: ^3.20.2
-  peerDependencies:
-    "@trpc/server": ^10.0.0
-    zod: ^3.14.4
-  checksum: 1ff1fda7295574c4dd198c7018ee93a34f66f9da77466164e85fb9018a8fa72a28a3ce590bcc8763d3346aa88f1f628e840db1d5d45685453fb4f351fb740125
   languageName: node
   linkType: hard
 
