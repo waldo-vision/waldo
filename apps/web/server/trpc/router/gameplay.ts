@@ -13,6 +13,7 @@ import { router, protectedProcedure } from '../trpc';
 import { SegmentSchema } from '@utils/zod/segment';
 import { hasPerms, Perms } from '@server/utils/hasPerms';
 import { serverSanitize } from '@utils/sanitize';
+import * as Sentry from '@sentry/nextjs';
 export const gameplayRouter = router({
   /**
    * Get a specific gameplay
@@ -66,7 +67,7 @@ export const gameplayRouter = router({
     .input(
       z.object({
         page: z.number(),
-        filterGames: GameplayTypes.nullable(),
+        filterGames: GameplayTypes.optional(),
       }),
     )
     .output(z.array(GameplaysDashSchema))
@@ -100,6 +101,7 @@ export const gameplayRouter = router({
           });
           return gameplays;
         } catch (error) {
+          Sentry.captureException(error);
           throw new TRPCError({
             message: 'No footage with the inputs provided could be found.',
             code: 'NOT_FOUND',
@@ -128,6 +130,7 @@ export const gameplayRouter = router({
           console.log(gameplays);
           return gameplays;
         } catch (error) {
+          Sentry.captureException(error);
           throw new TRPCError({
             message: 'No footage with the inputs provided could be found.',
             code: 'NOT_FOUND',
@@ -168,11 +171,12 @@ export const gameplayRouter = router({
       });
 
       // this needs to be handled client side
-      if (existingGameplay !== null)
+      if (existingGameplay !== null) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'This youtube url has already been submitted.',
         });
+      }
       const isValid =
         // eslint-disable-next-line max-len
         /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
@@ -204,7 +208,11 @@ export const gameplayRouter = router({
         // Each clip should be stored to a location on the local server where it can be obtained by the Analysis team.
         const data = await ctx.prisma.gameplay.create({
           data: {
-            userId: ctx.session.user.id,
+            user: {
+              connect: {
+                id: ctx.session.user.id,
+              },
+            },
             youtubeUrl: input.youtubeUrl,
             gameplayType: input.gameplayType,
             cheats: input.cheats,
@@ -212,6 +220,7 @@ export const gameplayRouter = router({
         });
         return data;
       } catch (error) {
+        Sentry.captureException(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'An unknown error has occurred.',
@@ -228,7 +237,7 @@ export const gameplayRouter = router({
     .input(
       z
         .object({
-          userId: z.string().cuid().nullish().optional(),
+          userId: z.string().cuid().optional(),
         })
         .transform(input => {
           return {
@@ -381,6 +390,7 @@ export const gameplayRouter = router({
       } catch (error) {
         // throws RecordNotFound if record not found to update
         // but can't import for some reason
+        Sentry.captureException(error);
 
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -403,14 +413,19 @@ export const gameplayRouter = router({
           };
         }),
     )
+    .output(z.void())
     .mutation(async ({ input, ctx }) => {
       try {
-        const gameplay = await ctx.prisma.gameplay.findUniqueOrThrow({
+        const gameplay = await ctx.prisma.gameplay.findUnique({
           where: {
             id: input.gameplayId,
           },
         });
-
+        if (gameplay == null) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+          });
+        }
         if (
           !hasPerms({
             userId: ctx.session.user.id,
@@ -432,6 +447,10 @@ export const gameplayRouter = router({
       } catch (error) {
         // throws RecordNotFound if record not found to update
         // but can't import for some reason
+        Sentry.captureException(error);
+
+        // if this error throws then we know it's an issue with the actual deleting
+        Sentry.captureException(error);
 
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -450,49 +469,66 @@ export const gameplayRouter = router({
     )
     .output(ReviewItemsGameplaySchema)
     .query(async ({ input, ctx }) => {
-      const randomPick = (values: string[]) => {
-        const index = Math.floor(Math.random() * values.length);
-        return values[index];
-      };
-      const itemCount = await ctx.prisma.gameplay.count();
-      const tenDocs = () => {
-        return Math.floor(Math.random() * (itemCount - 1 + 1)) + 0;
-      };
-      const reviewItem = await ctx.prisma.gameplay.findMany({
-        where: {
-          gameplayVotes: { none: { userId: ctx.session.user.id } },
-        },
-        take: 1,
-        include: {
-          user: true,
-          gameplayVotes: true,
-        },
+      Sentry.getCurrentHub().getScope().addBreadcrumb({
+        category: 'trpc.gameplay.getReviewItems',
+        level: 'log',
+        // message: '',
       });
-      
-      type ReviewItemOutput = typeof reviewItem[number] & {
-        _count: {
-          gameplayVotes: number
-        },
-        total: number
-      }
 
-      const userReviewedAmt = await ctx.prisma.user.findUnique({
-        where: {
-          id: ctx.session.user.id,
-        },
-        include: {
-          gameplayVotes: true,
-        },
-      });
-      if (reviewItem[0] == null || reviewItem[0] == undefined) {
-        throw new TRPCError({ code: 'NOT_FOUND' });
-      } else {
-        
-        Object.assign(reviewItem[0], {
-          _count: { gameplayVotes: userReviewedAmt ? userReviewedAmt.gameplayVotes.length : 0 },
+      try {
+        // optimize prisma query
+        const [itemCount, reviewItem, userReviewedAmt] =
+          await ctx.prisma.$transaction([
+            ctx.prisma.gameplay.count(),
+            ctx.prisma.gameplay.findMany({
+              where: {
+                gameplayVotes: { none: { userId: ctx.session.user.id } },
+              },
+              take: 1,
+              include: {
+                user: true,
+                gameplayVotes: true,
+              },
+            }),
+            ctx.prisma.user.findUnique({
+              where: {
+                id: ctx.session.user.id,
+              },
+              include: {
+                gameplayVotes: true,
+              },
+            }),
+          ]);
+
+        type ReviewItemOutput = (typeof reviewItem)[number] & {
+          _count: {
+            gameplayVotes: number;
+          };
+          total: number;
+        };
+
+        if (reviewItem[0] == null || reviewItem[0] == undefined) {
+          throw new TRPCError({ code: 'NOT_FOUND' });
+        } else {
+          // this is so cursed
+          Object.assign(reviewItem[0], {
+            _count: {
+              gameplayVotes: userReviewedAmt
+                ? userReviewedAmt.gameplayVotes.length
+                : 0,
+            },
+          });
+          Object.assign(reviewItem[0], { total: itemCount });
+          return reviewItem[0] as ReviewItemOutput;
+        }
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        Sentry.captureException(error);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
         });
-        Object.assign(reviewItem[0], { total: itemCount });
-        return reviewItem[0] as ReviewItemOutput;
       }
     }),
   review: protectedProcedure
@@ -507,30 +543,58 @@ export const gameplayRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      const isPerson = await vUser(input.tsToken);
-      if (!isPerson) {
+      Sentry.getCurrentHub()
+        .getScope()
+        .addBreadcrumb({
+          category: 'trpc.gameplay.review',
+          level: 'log',
+          data: {
+            gameplayId: input.gameplayId,
+          },
+        });
+      try {
+        // veryify user with turnstile
+        const isPerson = await vUser(input.tsToken);
+        if (!isPerson) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message:
+              'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
+            // not sure if its safe to give this to the user
+            cause: '',
+          });
+        }
+        const footageVote = await ctx.prisma.gameplayVotes.create({
+          data: {
+            gameplay: {
+              connect: {
+                id: input.gameplayId,
+              },
+            },
+            isGame: input.isGame,
+            actualGame: input.actualGame,
+            user: {
+              connect: {
+                id: ctx.session.user.id,
+              },
+            },
+          },
+        });
+        if (!footageVote) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: `Could not find a gameplay document with id:${input.gameplayId}.`,
+          });
+        }
+        return { message: 'Updated the gameplay document successfully.' };
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        Sentry.captureException(error);
         throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message:
-            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
-          // not sure if its safe to give this to the user
-          cause: '',
+          code: 'INTERNAL_SERVER_ERROR',
         });
       }
-      const footageVote = await ctx.prisma.gameplayVotes.create({
-        data: {
-          gameplayId: input.gameplayId,
-          isGame: input.isGame,
-          actualGame: input.actualGame,
-          userId: ctx.session.user?.id,
-        },
-      });
-      if (!footageVote)
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: `Could not find a gameplay document with id:${input.gameplayId}.`,
-        });
-
-      return { message: 'Updated the gameplay document successfully.' };
     }),
 });

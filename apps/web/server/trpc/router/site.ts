@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { serverSanitize } from '@utils/sanitize';
 import { z } from 'zod';
 import { router, protectedProcedure, publicProcedure } from '../trpc';
+import * as Sentry from '@sentry/nextjs';
 
 export const siteRouter = router({
   getPageData: publicProcedure

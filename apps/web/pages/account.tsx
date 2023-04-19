@@ -29,6 +29,7 @@ import useSite from '@site';
 import { prisma } from '@server/db/client';
 import Loading from '@components/Loading';
 import { GetServerSideProps } from 'next';
+import * as Sentry from '@sentry/nextjs';
 
 type ProvidersListType = {
   name: string;
@@ -106,6 +107,7 @@ export default function Account() {
         isClosable: true,
       });
     } catch (error) {
+      Sentry.captureException(error);
       toast({
         position: 'bottom-right',
         title: 'Unlink Account',
@@ -120,7 +122,7 @@ export default function Account() {
   // Gameplay list logic
   const { isLoading: isGameplayDataStillFetching, data: gamplayData } =
     trpc.gameplay.getUsers.useQuery({
-      userId: null,
+      userId: session?.user?.id,
     });
 
   // States
@@ -246,6 +248,7 @@ export default function Account() {
                                   ) : (
                                     <></>
                                   )}
+
                                   <Flex
                                     direction={'row'}
                                     align={'center'}
@@ -262,6 +265,30 @@ export default function Account() {
                                     >
                                       You are connected to a{' '}
                                       {name.toLowerCase()} account.
+                                    </Text>
+                                  </Flex>
+                                  <Flex direction={'column'}>
+                                    <Divider my={5} />
+                                    <Text fontWeight={'bold'}>API Access</Text>
+                                    <Text
+                                      fontWeight={'regular'}
+                                      mb={5}
+                                      fontSize={15}
+                                      _hover={{ textDecoration: 'underline' }}
+                                      cursor={'pointer'}
+                                      onClick={() =>
+                                        router.push(
+                                          '/portal/developers/apikeys',
+                                        )
+                                      }
+                                    >
+                                      <chakra.span
+                                        fontWeight={'bold'}
+                                        textColor={'purple.500'}
+                                      >
+                                        Click
+                                      </chakra.span>{' '}
+                                      to go to the developer portal.
                                     </Text>
                                   </Flex>
                                   {name.toUpperCase() !=

@@ -78,7 +78,7 @@ model GameplayVotes {
 
 model Clip {
   id         String   @id @default(cuid())
-  gameplay   Gameplay @relation(fields: [gameplayId], references: [id])
+  gameplay   Gameplay @relation(fields: [gameplayId], references: [id], onDelete: Cascade)
   gameplayId String
 
   createdAt DateTime @default(now())
@@ -147,6 +147,23 @@ model User {
   gameplay      Gameplay[]
   role          Roles           @default(USER)
   gameplayVotes GameplayVotes[] @relation("user")
+  apiKeys       ApiKey[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum ApiKeyState {
+  ACTIVE
+  EXPIRED
+}
+
+model ApiKey {
+  id         String      @id @default(cuid())
+  user       User        @relation(fields: [keyOwnerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  keyOwnerId String
+  state      ApiKeyState
+  key        String      @unique
+  name       String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

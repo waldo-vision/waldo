@@ -36,8 +36,9 @@ import { getServerSession } from 'next-auth/next';
 import { BiBlock } from 'react-icons/bi';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { games } from '@config/gameplay';
-import { GameplayType, GameplayTypeWithNull } from '@utils/zod/gameplay';
+import { GameplayType, GameplayTypeWithUndefined } from '@utils/zod/gameplay';
 import { GetServerSideProps } from 'next';
+import { QueryObserverBaseResult } from '@tanstack/react-query';
 type Query =
   | {
       gameplayCount?: number | undefined;
@@ -58,7 +59,8 @@ interface GoToItem {
 export default function Gameplay() {
   // Searching states
 
-  const [searchRole, setSearchRole] = useState<GameplayTypeWithNull>(null);
+  const [searchRole, setSearchRole] =
+    useState<GameplayTypeWithUndefined>(undefined);
   // Data and Rows
   // const { data, isLoading } = trpc.user.getUsers.useQuery({ page: 1 });
   const [gtMenuItems, setGtMenuItems] = useState<GoToItem[]>();
@@ -77,9 +79,9 @@ export default function Gameplay() {
     { enabled: false },
   );
 
-  const handleFilter = async (role: GameplayTypeWithNull) => {
+  const handleFilter = async (role: GameplayTypeWithUndefined) => {
     if (role == null) {
-      setSearchRole(null);
+      setSearchRole(undefined);
       return;
     }
     setSearchRole(role);
@@ -167,7 +169,7 @@ export default function Gameplay() {
                     <MenuItem
                       onClick={() =>
                         handleFilter(
-                          game.shortName.toUpperCase() as GameplayTypeWithNull,
+                          game.shortName.toUpperCase() as GameplayTypeWithUndefined,
                         )
                       }
                     >
@@ -298,7 +300,10 @@ export default function Gameplay() {
                             </Text>
                           </Td>
                           <Td borderRightRadius={16}>
-                            <MenuAction gameplayId={result.id} />
+                            <MenuAction
+                              queryRefetch={userQueryRefetch}
+                              gameplayId={result.id}
+                            />
                           </Td>
                         </Tr>
                       );
@@ -395,9 +400,10 @@ export default function Gameplay() {
 }
 interface MenuActionProps {
   gameplayId: string;
+  queryRefetch: QueryObserverBaseResult['refetch']; // Handler used to refresh the list of gameplay clips.
 }
 const MenuAction = (props: MenuActionProps) => {
-  const gameplayId = props.gameplayId;
+  const { gameplayId, queryRefetch } = props;
   const utils = trpc.useContext();
   const toast = useToast();
   const deleteGameplay = trpc.gameplay.delete.useMutation({
@@ -407,6 +413,7 @@ const MenuAction = (props: MenuActionProps) => {
   });
   const handleGameplayDeletion = async () => {
     await deleteGameplay.mutateAsync({ gameplayId: gameplayId });
+    await queryRefetch();
     toast({
       position: 'bottom-right',
       title: 'Gameplay Deletion',
