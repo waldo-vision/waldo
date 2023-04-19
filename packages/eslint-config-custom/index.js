@@ -7,7 +7,7 @@ module.exports = {
     'turbo',
     'prettier',
   ],
-  plugins: ['prettier'],
+  plugins: ['prettier', 'jest'],
   env: {
     es2017: true,
     node: true,

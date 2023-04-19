@@ -22,7 +22,8 @@
         "TWITCH_CLIENT_SECRET",
         "SENTRY_DSN",
         "NEXT_PUBLIC_SENTRY_DSN",
-        "SENTRY_RELEASE"
+        "SENTRY_RELEASE",
+        "DISABLE_VERIFY_AUTH"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },
@@ -47,6 +48,10 @@
     },
     "db:push:fdl": {
       "cache": false
+    },
+    "tests:int": {
+      "cache": false,
+      "env": ["WALDO_URI"]
     }
   },
   "globalEnv": ["NODE_ENV"]

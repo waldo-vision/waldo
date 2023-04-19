@@ -232,6 +232,15 @@ export const userRouter = router({
 
       const takeValue = 10;
       const skipValue = input.page * 10 - 10;
+
+      // Check that skip value is in valid range
+      if (skipValue < 0) {
+        throw new TRPCError({
+          message: `Invalid page number "${input.page}"`,
+          code: 'BAD_REQUEST',
+        });
+      }
+
       if (input.filterRoles == null) {
         const userCount: number = await ctx.prisma.user.count();
         try {
@@ -243,7 +252,7 @@ export const userRouter = router({
         } catch (error) {
           Sentry.captureException(error);
           throw new TRPCError({
-            message: 'No clip document with the UUID provided could be found.',
+            message: 'No user with the CUID provided could be found.',
             code: 'NOT_FOUND',
           });
         }
@@ -265,7 +274,7 @@ export const userRouter = router({
         } catch (error) {
           Sentry.captureException(error);
           throw new TRPCError({
-            message: 'No clip document with the UUID provided could be found.',
+            message: 'No user with the CUID provided could be found.',
             code: 'NOT_FOUND',
           });
         }
@@ -312,7 +321,7 @@ export const userRouter = router({
       } catch (error) {
         Sentry.captureException(error);
         throw new TRPCError({
-          message: 'No clip document with the UUID provided could be found.',
+          message: 'No clip document with the CUID provided could be found.',
           code: 'NOT_FOUND',
         });
       }

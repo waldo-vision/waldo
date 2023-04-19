@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth';
 import { type Session } from 'next-auth';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { prisma } from '@server/db/client';
+import { createDummySession } from '@server/utils/fakeAuth';
 import { IncomingHttpHeaders } from 'http';
 
 interface ExtendedIncomingHttpHeaders extends IncomingHttpHeaders {
@@ -35,6 +36,19 @@ export const createContextInner = async (opts: CreateContextOptions) => {
 export const createContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
   const headers = req.headers;
+
+  // See if authentication has been disabled for this environment.
+  // If so, create a dummy session.
+  if (['1', 'true'].includes(process.env.DISABLE_VERIFY_AUTH || '')) {
+    const session = createDummySession(req);
+
+    // If a the dummy variables have not been set, continue with auth as usual.
+    if (session?.user?.id && session.user.role)
+      return await createContextInner({
+        session,
+      });
+  }
+
   // Get the session from the server using the getServerSession wrapper function
   const session = await getServerSession(req, res, authOptions);
 
