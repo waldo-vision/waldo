@@ -208,7 +208,11 @@ export const gameplayRouter = router({
         // Each clip should be stored to a location on the local server where it can be obtained by the Analysis team.
         const data = await ctx.prisma.gameplay.create({
           data: {
-            userId: ctx.session.user.id,
+            user: {
+              connect: {
+                id: ctx.session.user.id,
+              },
+            },
             youtubeUrl: input.youtubeUrl,
             gameplayType: input.gameplayType,
             cheats: input.cheats,
@@ -530,10 +534,18 @@ export const gameplayRouter = router({
       }
       const footageVote = await ctx.prisma.gameplayVotes.create({
         data: {
-          gameplayId: input.gameplayId,
+          gameplay: {
+            connect: {
+              id: input.gameplayId,
+            },
+          },
           isGame: input.isGame,
           actualGame: input.actualGame,
-          userId: ctx.session.user?.id,
+          user: {
+            connect: {
+              id: ctx.session.user.id,
+            },
+          },
         },
       });
       if (!footageVote) {
