@@ -469,45 +469,66 @@ export const gameplayRouter = router({
     )
     .output(ReviewItemsGameplaySchema)
     .query(async ({ input, ctx }) => {
-      const itemCount = await ctx.prisma.gameplay.count();
-      const reviewItem = await ctx.prisma.gameplay.findMany({
-        where: {
-          gameplayVotes: { none: { userId: ctx.session.user.id } },
-        },
-        take: 1,
-        include: {
-          user: true,
-          gameplayVotes: true,
-        },
+      Sentry.getCurrentHub().getScope().addBreadcrumb({
+        category: 'trpc.gameplay.getReviewItems',
+        level: 'log',
+        // message: '',
       });
 
-      type ReviewItemOutput = (typeof reviewItem)[number] & {
-        _count: {
-          gameplayVotes: number;
-        };
-        total: number;
-      };
+      try {
+        // optimize prisma query
+        const [itemCount, reviewItem, userReviewedAmt] =
+          await ctx.prisma.$transaction([
+            ctx.prisma.gameplay.count(),
+            ctx.prisma.gameplay.findMany({
+              where: {
+                gameplayVotes: { none: { userId: ctx.session.user.id } },
+              },
+              take: 1,
+              include: {
+                user: true,
+                gameplayVotes: true,
+              },
+            }),
+            ctx.prisma.user.findUnique({
+              where: {
+                id: ctx.session.user.id,
+              },
+              include: {
+                gameplayVotes: true,
+              },
+            }),
+          ]);
 
-      const userReviewedAmt = await ctx.prisma.user.findUnique({
-        where: {
-          id: ctx.session.user.id,
-        },
-        include: {
-          gameplayVotes: true,
-        },
-      });
-      if (reviewItem[0] == null || reviewItem[0] == undefined) {
-        throw new TRPCError({ code: 'NOT_FOUND' });
-      } else {
-        Object.assign(reviewItem[0], {
+        type ReviewItemOutput = (typeof reviewItem)[number] & {
           _count: {
-            gameplayVotes: userReviewedAmt
-              ? userReviewedAmt.gameplayVotes.length
-              : 0,
-          },
+            gameplayVotes: number;
+          };
+          total: number;
+        };
+
+        if (reviewItem[0] == null || reviewItem[0] == undefined) {
+          throw new TRPCError({ code: 'NOT_FOUND' });
+        } else {
+          // this is so cursed
+          Object.assign(reviewItem[0], {
+            _count: {
+              gameplayVotes: userReviewedAmt
+                ? userReviewedAmt.gameplayVotes.length
+                : 0,
+            },
+          });
+          Object.assign(reviewItem[0], { total: itemCount });
+          return reviewItem[0] as ReviewItemOutput;
+        }
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        Sentry.captureException(error);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
         });
-        Object.assign(reviewItem[0], { total: itemCount });
-        return reviewItem[0] as ReviewItemOutput;
       }
     }),
   review: protectedProcedure
@@ -522,38 +543,58 @@ export const gameplayRouter = router({
     )
     .output(z.object({ message: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      const isPerson = await vUser(input.tsToken);
-      if (!isPerson) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message:
-            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
-          // not sure if its safe to give this to the user
-          cause: '',
+      Sentry.getCurrentHub()
+        .getScope()
+        .addBreadcrumb({
+          category: 'trpc.gameplay.review',
+          level: 'log',
+          data: {
+            gameplayId: input.gameplayId,
+          },
         });
-      }
-      const footageVote = await ctx.prisma.gameplayVotes.create({
-        data: {
-          gameplay: {
-            connect: {
-              id: input.gameplayId,
+      try {
+        // veryify user with turnstile
+        const isPerson = await vUser(input.tsToken);
+        if (!isPerson) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message:
+              'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
+            // not sure if its safe to give this to the user
+            cause: '',
+          });
+        }
+        const footageVote = await ctx.prisma.gameplayVotes.create({
+          data: {
+            gameplay: {
+              connect: {
+                id: input.gameplayId,
+              },
+            },
+            isGame: input.isGame,
+            actualGame: input.actualGame,
+            user: {
+              connect: {
+                id: ctx.session.user.id,
+              },
             },
           },
-          isGame: input.isGame,
-          actualGame: input.actualGame,
-          user: {
-            connect: {
-              id: ctx.session.user.id,
-            },
-          },
-        },
-      });
-      if (!footageVote) {
+        });
+        if (!footageVote) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: `Could not find a gameplay document with id:${input.gameplayId}.`,
+          });
+        }
+        return { message: 'Updated the gameplay document successfully.' };
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        Sentry.captureException(error);
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: `Could not find a gameplay document with id:${input.gameplayId}.`,
+          code: 'INTERNAL_SERVER_ERROR',
         });
       }
-      return { message: 'Updated the gameplay document successfully.' };
     }),
 });
