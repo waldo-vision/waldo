@@ -1,7 +1,7 @@
 import { PrismaClient } from 'database';
 
 export const prisma = new PrismaClient({
-  log: ['error'],
+  log: ['warn', 'error'],
 });
 
 /**
