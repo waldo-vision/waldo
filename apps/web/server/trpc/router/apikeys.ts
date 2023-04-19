@@ -117,7 +117,11 @@ export const apiKeyRouter = router({
         const serverHashedKey = await genSecretHash(clientKey);
         const apiKey = await ctx.prisma.apiKey.create({
           data: {
-            keyOwnerId: input.userId,
+            user: {
+              connect: {
+                id: input.userId,
+              },
+            },
             name: input.name,
             key: serverHashedKey,
             state: ApiKeyState.ACTIVE,
