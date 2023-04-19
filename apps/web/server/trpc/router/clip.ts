@@ -140,7 +140,11 @@ export const clipRouter = router({
       try {
         const clip = await ctx.prisma.clip.create({
           data: {
-            gameplayId: input.gameplayId,
+            gameplay: {
+              connect: {
+                id: input.gameplayId,
+              },
+            },
           },
         });
         return clip;
