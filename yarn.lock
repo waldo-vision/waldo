@@ -4894,7 +4894,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"accepts@npm:^1.3.7, accepts@npm:~1.3.5, accepts@npm:~1.3.8":
+"accepts@npm:~1.3.5, accepts@npm:~1.3.8":
   version: 1.3.8
   resolution: "accepts@npm:1.3.8"
   dependencies:
@@ -5798,18 +5798,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"co-body@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "co-body@npm:6.1.0"
-  dependencies:
-    inflation: ^2.0.0
-    qs: ^6.5.2
-    raw-body: ^2.3.3
-    type-is: ^1.6.16
-  checksum: d0a78831a6651f2085fce16b0ecdc49f45fb5baf4f94148c2f499e7ec89d188205362548b9c500eae15a819360cfda208079e68a72c204cf66ca3ffa2fc0f57e
-  languageName: node
-  linkType: hard
-
 "color-convert@npm:^1.9.0, color-convert@npm:^1.9.3":
   version: 1.9.3
   resolution: "color-convert@npm:1.9.3"
@@ -5973,7 +5961,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"content-disposition@npm:0.5.4, content-disposition@npm:^0.5.3":
+"content-disposition@npm:0.5.4":
   version: 0.5.4
   resolution: "content-disposition@npm:0.5.4"
   dependencies:
@@ -6238,7 +6226,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"depd@npm:^1.1.0, depd@npm:^1.1.2":
+"depd@npm:^1.1.2":
   version: 1.1.2
   resolution: "depd@npm:1.1.2"
   checksum: 6b406620d269619852885ce15965272b829df6f409724415e0002c8632ab6a8c0a08ec1f0bd2add05dc7bd7507606f7e2cc034fa24224ab829580040b835ecd9
@@ -7720,7 +7708,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fresh@npm:0.5.2, fresh@npm:^0.5.2":
+"fresh@npm:0.5.2":
   version: 0.5.2
   resolution: "fresh@npm:0.5.2"
   checksum: 13ea8b08f91e669a64e3ba3a20eb79d7ca5379a81f1ff7f4310d54e2320645503cc0c78daedc93dfb6191287295f6479544a649c64d8e41a1c0fb0c221552346
@@ -8432,13 +8420,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inflation@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "inflation@npm:2.0.0"
-  checksum: a0494871b12275afdef9e2710ee1af1e0fc642b04613a9be69c05ef8b5e9627f3bd7d358a937fa47aa20235ee7313a4f30255048533add0ad4918beb918a586e
-  languageName: node
-  linkType: hard
-
 "inflight@npm:^1.0.4":
   version: 1.0.6
   resolution: "inflight@npm:1.0.6"
@@ -9051,13 +9032,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.clonedeep@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "lodash.clonedeep@npm:4.5.0"
-  checksum: 92c46f094b064e876a23c97f57f81fbffd5d760bf2d8a1c61d85db6d1e488c66b0384c943abee4f6af7debf5ad4e4282e74ff83177c9e63d8ff081a4837c3489
-  languageName: node
-  linkType: hard
-
 "lodash.defaults@npm:^4.2.0":
   version: 4.2.0
   resolution: "lodash.defaults@npm:4.2.0"
@@ -9390,7 +9364,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"merge-descriptors@npm:1.0.1, merge-descriptors@npm:^1.0.1":
+"merge-descriptors@npm:1.0.1":
   version: 1.0.1
   resolution: "merge-descriptors@npm:1.0.1"
   checksum: 5abc259d2ae25bb06d19ce2b94a21632583c74e2a9109ee1ba7fd147aa7362b380d971e0251069f8b3eb7d48c21ac839e21fa177b335e82c76ec172e30c31a26
@@ -9411,7 +9385,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"methods@npm:^1.1.2, methods@npm:~1.1.2":
+"methods@npm:~1.1.2":
   version: 1.1.2
   resolution: "methods@npm:1.1.2"
   checksum: 0917ff4041fa8e2f2fda5425a955fe16ca411591fbd123c0d722fcf02b73971ed6f764d85f0a6f547ce49ee0221ce2c19a5fa692157931cecb422984f1dcd13a
@@ -9775,7 +9749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime@npm:1.6.0, mime@npm:^1.3.4":
+"mime@npm:1.6.0":
   version: 1.6.0
   resolution: "mime@npm:1.6.0"
   bin:
@@ -10278,24 +10252,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-mocks-http@npm:^1.12.1":
-  version: 1.12.1
-  resolution: "node-mocks-http@npm:1.12.1"
-  dependencies:
-    accepts: ^1.3.7
-    content-disposition: ^0.5.3
-    depd: ^1.1.0
-    fresh: ^0.5.2
-    merge-descriptors: ^1.0.1
-    methods: ^1.1.2
-    mime: ^1.3.4
-    parseurl: ^1.3.3
-    range-parser: ^1.2.0
-    type-is: ^1.6.18
-  checksum: 80b2ef4967d95e5804f4be5edd13bab06e6cad7c00813e32fd1958189ee8c4c68b833aabcbb2b39194b412b14504a7724e628d74ca5956a83221e0fa838aaf92
-  languageName: node
-  linkType: hard
-
 "node-redis@npm:^0.1.7":
   version: 0.1.7
   resolution: "node-redis@npm:0.1.7"
@@ -10532,13 +10488,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openapi-types@npm:^12.1.0":
-  version: 12.1.0
-  resolution: "openapi-types@npm:12.1.0"
-  checksum: d8f3e2bae519aa6bcf2012f4a5592b7283fe928c06f3bdc182776ce637c7ed8d5f9f342724f68c95c9572aefe21ed5e89b18a0295a703da61af5f97bd2aea9a7
-  languageName: node
-  linkType: hard
-
 "openapi3-ts@npm:3.2.0":
   version: 3.2.0
   resolution: "openapi3-ts@npm:3.2.0"
@@ -10691,7 +10640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"parseurl@npm:^1.3.3, parseurl@npm:~1.3.3":
+"parseurl@npm:~1.3.3":
   version: 1.3.3
   resolution: "parseurl@npm:1.3.3"
   checksum: 407cee8e0a3a4c5cd472559bca8b6a45b82c124e9a4703302326e9ab60fc1081442ada4e02628efef1eb16197ddc7f8822f5a91fd7d7c86b51f530aedb17dfa2
@@ -11039,7 +10988,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:6.11.0, qs@npm:^6.5.2":
+"qs@npm:6.11.0":
   version: 6.11.0
   resolution: "qs@npm:6.11.0"
   dependencies:
@@ -11062,14 +11011,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"range-parser@npm:^1.2.0, range-parser@npm:~1.2.1":
+"range-parser@npm:~1.2.1":
   version: 1.2.1
   resolution: "range-parser@npm:1.2.1"
   checksum: 0a268d4fea508661cf5743dfe3d5f47ce214fd6b7dec1de0da4d669dd4ef3d2144468ebe4179049eff253d9d27e719c88dae55be64f954e80135a0cada804ec9
   languageName: node
   linkType: hard
 
-"raw-body@npm:2.5.1, raw-body@npm:^2.3.3":
+"raw-body@npm:2.5.1":
   version: 2.5.1
   resolution: "raw-body@npm:2.5.1"
   dependencies:
@@ -12458,22 +12407,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"trpc-openapi@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "trpc-openapi@npm:1.1.2"
-  dependencies:
-    co-body: ^6.1.0
-    lodash.clonedeep: ^4.5.0
-    node-mocks-http: ^1.12.1
-    openapi-types: ^12.1.0
-    zod-to-json-schema: ^3.20.2
-  peerDependencies:
-    "@trpc/server": ^10.0.0
-    zod: ^3.14.4
-  checksum: 1ff1fda7295574c4dd198c7018ee93a34f66f9da77466164e85fb9018a8fa72a28a3ce590bcc8763d3346aa88f1f628e840db1d5d45685453fb4f351fb740125
-  languageName: node
-  linkType: hard
-
 "ts-node-dev@npm:^2.0.0":
   version: 2.0.0
   resolution: "ts-node-dev@npm:2.0.0"
@@ -12749,7 +12682,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-is@npm:^1.6.16, type-is@npm:^1.6.18, type-is@npm:~1.6.18":
+"type-is@npm:~1.6.18":
   version: 1.6.18
   resolution: "type-is@npm:1.6.18"
   dependencies:
@@ -13357,7 +13290,6 @@ __metadata:
     redis: ^4.6.5
     sharp: ^0.32.0
     superjson: ^1.12.2
-    trpc-openapi: ^1.1.2
     tsconfig: "workspace:*"
     typescript: 5.0.4
     validator: ^13.9.0
@@ -13596,15 +13528,6 @@ __metadata:
     miniget: ^4.2.2
     sax: ^1.1.3
   checksum: 57df38b5b1e4955db0e0c0be8d185f34de9eaee102ad1281d69de91628230cc84e8d46d278409eafa68c4aab4085a0f9fe8de30e9ea8644e011e20cae7f37c0e
-  languageName: node
-  linkType: hard
-
-"zod-to-json-schema@npm:^3.20.2":
-  version: 3.20.4
-  resolution: "zod-to-json-schema@npm:3.20.4"
-  peerDependencies:
-    zod: ^3.20.0
-  checksum: 55bc649dbc82ce25fbfbfdd42ca530d883d83be5d02cb81e89f6401d54bca151fc6b8cc57999c75eb6a3dcaa3f000697315fbd4f505637472621570ed52784d8
   languageName: node
   linkType: hard
 
