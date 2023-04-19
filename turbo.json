@@ -23,7 +23,6 @@
         "SENTRY_DSN",
         "NEXT_PUBLIC_SENTRY_DSN",
         "SENTRY_RELEASE",
-        "WALDO_URI",
         "DISABLE_VERIFY_AUTH"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
@@ -49,6 +48,10 @@
     },
     "db:push:fdl": {
       "cache": false
+    },
+    "tests:int": {
+      "cache": false,
+      "env": ["WALDO_URI"]
     }
   },
   "globalEnv": ["NODE_ENV"]

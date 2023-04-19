@@ -4,10 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "test": "jest"
-  },
-  "publishConfig": {
-    "access": "public"
+    "tests:int": "jest"
   },
   "dependencies": {
     "jest": "^29.5.0",

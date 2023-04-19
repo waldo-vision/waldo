@@ -59,7 +59,7 @@ jobs:
       - name: Type Lint
         run: yarn turbo run types
 
-  Tests:
+  Integration-Tests:
     name: Integration Tests
     timeout-minutes: 10
     runs-on: ubuntu-latest
@@ -80,10 +80,9 @@ jobs:
         run: yarn install
 
       # See https://stackoverflow.com/questions/73648218/github-action-setup-secure-cockroachdb
-      - name: Start a single CockroachDB instance (cockroachdb/cockroach:latest-v22.2) with docker
+      - name: Start a single CockroachDB instance
         run: |
-          docker pull cockroachdb/cockroach:latest-v22.2
-          docker run -d --name roach --hostname roach -p 26257:26257 -p 8080:8080 cockroachdb/cockroach:latest-v22.2 start-single-node --insecure
+          docker compose up -d
           sudo apt update && sudo apt install wait-for-it -y
           wait-for-it -h localhost -p 26257
 
@@ -103,7 +102,7 @@ jobs:
           DISABLE_VERIFY_AUTH: '1'
           NEXTAUTH_URL: http://localhost:3000
           NEXTAUTH_SECRET: myauthsecret
-          # Turnstile keys are dumby keys: https://developers.cloudflare.com/turnstile/reference/testing/
+          # Turnstile keys are dummy keys: https://developers.cloudflare.com/turnstile/reference/testing/
           CLOUDFLARE_TURNSTILE_SECRET: 1x0000000000000000000000000000000AA
           NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
         run: |

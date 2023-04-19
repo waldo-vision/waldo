@@ -222,7 +222,7 @@ yarn workspace web build
 node apps/web/.next/standalone/apps/web/server.js
 
 # In a seperate tab
-yarn workspace tests jest
+yarn turbo run tests:int
 ```
 
 ## Pull Request Process

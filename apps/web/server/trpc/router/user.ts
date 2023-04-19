@@ -252,7 +252,7 @@ export const userRouter = router({
         } catch (error) {
           Sentry.captureException(error);
           throw new TRPCError({
-            message: 'No user with the UUID provided could be found.',
+            message: 'No user with the CUID provided could be found.',
             code: 'NOT_FOUND',
           });
         }
@@ -274,7 +274,7 @@ export const userRouter = router({
         } catch (error) {
           Sentry.captureException(error);
           throw new TRPCError({
-            message: 'No user with the UUID provided could be found.',
+            message: 'No user with the CUID provided could be found.',
             code: 'NOT_FOUND',
           });
         }
@@ -321,7 +321,7 @@ export const userRouter = router({
       } catch (error) {
         Sentry.captureException(error);
         throw new TRPCError({
-          message: 'No clip document with the UUID provided could be found.',
+          message: 'No clip document with the CUID provided could be found.',
           code: 'NOT_FOUND',
         });
       }

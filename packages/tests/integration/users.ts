@@ -11,11 +11,11 @@ const NUM_FIXTURES = 5;
 /**
  * Populate database with fixtures.
  */
-let fixtureUserIds = Array.from(Array(NUM_FIXTURES).keys()).map(
+const fixtureUserIds = Array.from(Array(NUM_FIXTURES).keys()).map(
   i => `clglqupom00bp5s87fxip254${String.fromCharCode(75 + i).toLowerCase()}`,
 );
 beforeAll(async () => {
-  // Create dumby users
+  // Create dummy users
   await prisma.user.createMany({
     data: fixtureUserIds.map(userId => ({
       id: userId,
@@ -51,7 +51,7 @@ describe('user queries', () => {
     expect(res.userCount).toBeGreaterThan(0);
   });
 
-  test('search', async () => {
+  test('search (name)', async () => {
     const users = await adminClient.user.search.query({
       name: testUserBasic.userId,
     });
@@ -64,6 +64,14 @@ describe('user queries', () => {
       name: '00000000000000000000000000000',
     });
     expect(users.length).toEqual(0);
+  });
+
+  test('search (email)', async () => {
+    const users = await adminClient.user.search.query({
+      name: testUserBasic.email,
+    });
+
+    expect(users.length).toBeGreaterThan(0);
   });
 });
 
