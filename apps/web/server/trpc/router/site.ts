@@ -7,7 +7,6 @@ import * as Sentry from '@sentry/nextjs';
 
 export const siteRouter = router({
   getPageData: publicProcedure
-    .meta({ openapi: { method: 'GET', path: '/site/page' } })
     .input(
       z
         .object({
@@ -45,7 +44,6 @@ export const siteRouter = router({
       return pageData;
     }),
   getSiteData: publicProcedure
-    .meta({ openapi: { method: 'GET', path: '/site/site' } })
     .input(
       z
         .object({
