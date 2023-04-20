@@ -19,7 +19,6 @@ export const gameplayRouter = router({
    * Get a specific gameplay
    */
   get: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/gameplay' } })
     .input(
       z
         .object({
@@ -63,7 +62,6 @@ export const gameplayRouter = router({
    * Admin API
    */
   getMany: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/gameplay/dash' } })
     .input(
       z.object({
         page: z.number(),
@@ -143,7 +141,6 @@ export const gameplayRouter = router({
    * Create a new gameplay
    */
   create: protectedProcedure
-    .meta({ openapi: { method: 'POST', path: '/gameplay' } })
     .input(
       z.object({
         youtubeUrl: z.string().url(),
@@ -233,7 +230,6 @@ export const gameplayRouter = router({
    * Get gameplay submitted by a user
    */
   getUsers: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/gameplay/user' } })
     .input(
       z
         .object({
@@ -287,7 +283,6 @@ export const gameplayRouter = router({
       return user.gameplay;
     }),
   getClips: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/gameplay/clips' } })
     .input(
       z
         .object({
@@ -333,7 +328,6 @@ export const gameplayRouter = router({
       return gameplay.clips;
     }),
   update: protectedProcedure
-    .meta({ openapi: { method: 'PATCH', path: '/gameplay' } })
     .input(
       z
         .object({
@@ -402,7 +396,6 @@ export const gameplayRouter = router({
       }
     }),
   delete: protectedProcedure
-    .meta({ openapi: { method: 'DELETE', path: '/gameplay' } })
     .input(
       z
         .object({
@@ -462,7 +455,6 @@ export const gameplayRouter = router({
       }
     }),
   getReviewItems: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/gameplay/review' } })
     .input(
       z.object({
         tsToken: z.string(),
@@ -533,7 +525,6 @@ export const gameplayRouter = router({
       }
     }),
   review: protectedProcedure
-    .meta({ openapi: { method: 'PATCH', path: '/gameplay/review' } })
     .input(
       z.object({
         gameplayId: z.string().cuid(),

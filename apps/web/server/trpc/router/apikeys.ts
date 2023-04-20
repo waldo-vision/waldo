@@ -9,7 +9,6 @@ import { ApiKeyState } from 'database';
 import * as Sentry from '@sentry/nextjs';
 export const apiKeyRouter = router({
   get: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/api/key' } })
     .input(
       z.object({
         keyId: z.string().cuid(),
@@ -49,7 +48,6 @@ export const apiKeyRouter = router({
       }
     }),
   getUserApiKeys: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/api/key/user' } })
     .input(
       z.object({
         userId: z.string().cuid(),
@@ -91,7 +89,6 @@ export const apiKeyRouter = router({
       }
     }),
   create: protectedProcedure
-    .meta({ openapi: { method: 'POST', path: '/api/key' } })
     .input(
       z.object({
         userId: z.string().cuid(),
@@ -144,7 +141,6 @@ export const apiKeyRouter = router({
       }
     }),
   delete: protectedProcedure
-    .meta({ openapi: { method: 'DELETE', path: '/api/key' } })
     .input(
       z.object({
         id: z.string().cuid(),

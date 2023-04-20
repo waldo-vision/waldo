@@ -48,7 +48,6 @@ export async function vUser(tsToken: string) {
 
 export const utilRouter = router({
   verifyUser: protectedProcedure
-    .meta({ openapi: { method: 'PUT', path: '/user/verify' } })
     .input(
       z
         .object({

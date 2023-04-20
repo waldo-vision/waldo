@@ -8,7 +8,6 @@ import { serverSanitize } from '@utils/sanitize';
 import * as Sentry from '@sentry/nextjs';
 export const userRouter = router({
   blackList: protectedProcedure
-    .meta({ openapi: { method: 'PUT', path: '/user' } })
     .input(
       z
         .object({
@@ -60,7 +59,6 @@ export const userRouter = router({
       }
     }),
   delete: protectedProcedure
-    .meta({ openapi: { method: 'DELETE', path: '/user' } })
     .input(
       z
         .object({
@@ -109,7 +107,6 @@ export const userRouter = router({
       }
     }),
   getLinkedAccounts: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/user/linkedaccounts' } })
     .input(z.void())
     .output(
       z.array(
@@ -141,7 +138,6 @@ export const userRouter = router({
       }
     }),
   unlinkAccount: protectedProcedure
-    .meta({ openapi: { method: 'DELETE', path: '/user/linkedaccounts' } })
     .input(
       z
         .object({
@@ -199,7 +195,6 @@ export const userRouter = router({
       }
     }),
   getUsers: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/user/dash' } })
     .input(
       z
         .object({
@@ -281,7 +276,6 @@ export const userRouter = router({
       }
     }),
   updateRole: protectedProcedure
-    .meta({ openapi: { method: 'PATCH', path: '/user/dash' } })
     .input(
       z
         .object({
@@ -327,7 +321,6 @@ export const userRouter = router({
       }
     }),
   search: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/user/search' } })
     .input(
       z
         .object({

@@ -81,7 +81,6 @@ export const siteRouter = router({
       return siteData;
     }),
   updatePage: protectedProcedure
-    .meta({ openapi: { method: 'POST', path: '/site/page' } })
     .input(
       z
         .object({
@@ -144,7 +143,6 @@ export const siteRouter = router({
       };
     }),
   updateSite: protectedProcedure
-    .meta({ openapi: { method: 'POST', path: '/site/site' } })
     .input(
       z
         .object({

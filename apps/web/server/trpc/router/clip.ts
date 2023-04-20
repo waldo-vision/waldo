@@ -8,7 +8,6 @@ import { serverSanitize } from '@utils/sanitize';
 import * as Sentry from '@sentry/nextjs';
 export const clipRouter = router({
   get: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/clip' } })
     .input(
       z
         .object({
@@ -62,7 +61,6 @@ export const clipRouter = router({
       }
     }),
   delete: protectedProcedure
-    .meta({ openapi: { method: 'DELETE', path: '/clip' } })
     .input(
       z
         .object({
@@ -111,7 +109,6 @@ export const clipRouter = router({
       }
     }),
   create: protectedProcedure
-    .meta({ openapi: { method: 'POST', path: '/clip' } })
     .input(
       z
         .object({
