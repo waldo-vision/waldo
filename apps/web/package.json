@@ -40,6 +40,7 @@
     "react-icons": "^4.8.0",
     "sharp": "^0.32.0",
     "superjson": "^1.12.2",
+    "trpc-openapi": "^1.1.2",
     "typescript": "5.0.4",
     "validator": "^13.9.0",
     "ytdl-core": "^4.11.2",
