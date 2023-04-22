@@ -33,7 +33,7 @@
     "database": "workspace:*",
     "framer-motion": "^10.12.2",
     "next": "13.2.4",
-    "next-auth": "^4.22.0",
+    "next-auth": "^4.22.1",
     "next-plausible": "^3.7.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
