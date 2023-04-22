@@ -4825,12 +4825,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trpc/client@npm:^10.20.0":
-  version: 10.20.0
-  resolution: "@trpc/client@npm:10.20.0"
+"@trpc/client@npm:^10.21.1":
+  version: 10.21.1
+  resolution: "@trpc/client@npm:10.21.1"
   peerDependencies:
-    "@trpc/server": 10.20.0
-  checksum: 28e576f8752c35fec038772cfda33c8c1e83735bb41711df1164ba5ca7fe7f8cad12a791c8ce3f9d9a6b19cf603791e35a7fab2e5bdb0a196a85fa0d2fbddec6
+    "@trpc/server": 10.21.1
+  checksum: 528e66205e09c5c6d64f7c6e7f5be52447df27ef04007ef6d9f9b67065934f73d53e25f1f9fad7b68bd8de087ad476f6ffe8e782ea78bfe102cf701eac031654
   languageName: node
   linkType: hard
 
@@ -15071,7 +15071,7 @@ __metadata:
     "@sentry/profiling-node": ^0.3.0
     "@tanstack/query-core": ^4.20.4
     "@tanstack/react-query": ^4.28.0
-    "@trpc/client": ^10.20.0
+    "@trpc/client": ^10.21.1
     "@trpc/next": ^10.20.0
     "@trpc/react-query": ^10.20.0
     "@trpc/server": ^10.20.0
