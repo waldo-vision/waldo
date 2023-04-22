@@ -180,6 +180,23 @@ Each submodule (database/webfrontend/webbackend/desktop app) defines its own `pa
 
 For example, running the webfrontend can be done with: `yarn workspace web start`.
 
+### Switching git branches
+
+If you checkout git branches/commits you may encounter different versions of the database & packages. This may mean, that your build won't compile, since the generated files are outdated.
+To fix it, run
+
+```bash
+yarn branch
+```
+
+which is just a fancy shortcut for (if you need to fix command failure):
+
+```bash
+yarn install #install dependencies
+yarn turbo db:generate #generate new db model
+yarn turbo run db:push #deploy the current db model to dev database
+```
+
 ## Picking work
 
 > Please follow the GitHub Projects, Milestones, and Issues:

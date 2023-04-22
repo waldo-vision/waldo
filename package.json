@@ -13,7 +13,8 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "format": "prettier --write \"{apps,packages,docs}/**/*.{ts,tsx,md,json}\"",
-    "format-check": "prettier --check \"{apps,packages,docs}/**/*.{ts,tsx,md,json}\""
+    "format-check": "prettier --check \"{apps,packages,docs}/**/*.{ts,tsx,md,json}\"",
+    "branch": "yarn install && yarn turbo db:generate && yarn turbo db:push"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.59.0",
