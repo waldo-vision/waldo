@@ -5290,14 +5290,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.0.29":
-  version: 18.0.29
-  resolution: "@types/react@npm:18.0.29"
+"@types/react@npm:^18.0.38":
+  version: 18.0.38
+  resolution: "@types/react@npm:18.0.38"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 75f56f81d80a1c15ee3fcd2039bdc5f7a70f49cf69827ee0fc8beece9809b234f245dd62552e91018d8f25792986bd513b44caf054554d5c5eb979a5f9460214
+  checksum: 34481c79f4f7ea2aefbaa45281319dc183200230d932d968463eba1643bd3635073d0a17c5c613150a69e36ca18b811ecffafea6384fa3dff3b5203866339d69
   languageName: node
   linkType: hard
 
@@ -7162,7 +7162,7 @@ __metadata:
     "@tauri-apps/api": ^1.2.0
     "@tauri-apps/cli": ^1.2.3
     "@types/node": 18.15.11
-    "@types/react": ^18.0.29
+    "@types/react": ^18.0.38
     "@types/react-dom": ^18.0.11
     eslint: 8.38.0
     eslint-config-custom: "workspace:*"
@@ -7266,7 +7266,7 @@ __metadata:
     "@docsearch/react": ^3.3.3
     "@types/html-escaper": ^3.0.0
     "@types/node": ^18.15.11
-    "@types/react": ^18.0.29
+    "@types/react": ^18.0.38
     "@types/react-dom": ^18.0.11
     astro: ^2.3.0
     eslint-config-custom: "workspace:*"
@@ -15076,7 +15076,7 @@ __metadata:
     "@trpc/react-query": ^10.20.0
     "@trpc/server": ^10.20.0
     "@types/node": 18.15.11
-    "@types/react": ^18.0.29
+    "@types/react": ^18.0.38
     "@types/react-dom": ^18.0.11
     "@types/validator": ^13.7.15
     argon2: ^0.30.3
