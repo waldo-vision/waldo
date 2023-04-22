@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "workspaces": [
+    "docs",
     "apps/*",
     "packages/*"
   ],
@@ -11,21 +12,22 @@
     "checks": "turbo run build lint",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md,json}\""
+    "format": "prettier --write \"{apps,packages,docs}/**/*.{ts,tsx,md,json}\"",
+    "format-check": "prettier --check \"{apps,packages,docs}/**/*.{ts,tsx,md,json}\"",
+    "branch": "yarn install && yarn turbo db:generate && yarn turbo db:push"
   },
   "devDependencies": {
-    "@types/node": "^17.0.45",
-    "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.8",
-    "eslint": "latest",
-    "eslint-config-custom": "workspace:0.0.0",
-    "prettier": "latest",
-    "tsconfig": "workspace:0.0.0",
-    "turbo": "latest",
-    "typescript": "^4.8.4"
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "eslint": "^8.38.0",
+    "eslint-config-custom": "workspace:*",
+    "prettier": "^2.8.7",
+    "tsconfig": "workspace:*",
+    "turbo": "^1.9.3",
+    "typescript": "^5.0.4"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": "^18.12.1"
   },
-  "packageManager": "pnpm@7.15.0"
+  "packageManager": "yarn@3.5.0"
 }

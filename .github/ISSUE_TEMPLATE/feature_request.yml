@@ -1,0 +1,67 @@
+name: Feature request
+description: Suggest an idea for this project
+title: '[FR]: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the feature you want.
+      options:
+        - label: I have searched the existing issues
+          required: true
+  - type: textarea
+    id: general-idea
+    attributes:
+      label: General Idea
+      description: A summary of the feature you want implamented.
+      placeholder: Tell us what you want!
+      value: 'My big idea!'
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem does this solve?
+      placeholder: Tell us how it fixes it!
+      value: 'I need this!'
+    validations:
+      required: true
+  - type: dropdown
+    id: projects
+    attributes:
+      label: Projects
+      description: What projects of ours does this apply to?
+      multiple: true
+      options:
+        - Website
+        - Docs Site
+        - Desktop app
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Any Alternatives?
+      description: Give us some alternative solutions you've considered.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any other context or screenshots about the feature request here.
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://docs.waldo.vision/legal/code-of-conduct/)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

@@ -1,6 +1,7 @@
 {
   "name": "backend",
   "version": "0.0.1",
+  "private": true,
   "description": "Back end application to process videos based on YouTube URL for AI/ML model usage.",
   "scripts": {
     "db": "docker compose up",
@@ -11,10 +12,13 @@
   },
   "keywords": [],
   "dependencies": {
+    "axios": "^1.3.5",
+    "database": "workspace:*",
+    "discord-api-types": "^0.37.37",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-rate-limit": "^6.6.0",
-    "express-zod-api": "^8.3.4",
+    "express-zod-api": "^10.1.2",
     "mime": "^3.0.0",
     "mongoose": "^6.7.1",
     "uuid": "^9.0.0",
@@ -22,13 +26,13 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.14",
+    "@types/express": "^4.17.17",
     "@types/mime": "^3.0.1",
-    "@types/node": "^18.11.9",
+    "@types/node": "^18.15.11",
     "@types/uuid": "^8.3.4",
-    "eslint-config-custom": "workspace:*",
+    "eslint-config-custom": "*",
     "ts-node-dev": "^2.0.0",
     "tsconfig": "workspace:*",
-    "typescript": "^4.8.4"
+    "typescript": "^5.0.4"
   }
 }

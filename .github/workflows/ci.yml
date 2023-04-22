@@ -1,0 +1,117 @@
+name: CI
+
+on: [pull_request, workflow_dispatch]
+jobs:
+  Lint:
+    name: Code Lint
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    # To use Remote Caching, uncomment the next lines and follow the steps below.
+    # env:
+    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    #  TURBO_REMOTE_ONLY: true
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Check Formatting (prettier)
+        run: yarn run format-check
+
+  Types:
+    name: Lint Types
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build Prisma Client
+        run: yarn turbo run db:generate
+
+      - name: Type Lint
+        run: yarn turbo run types
+
+  Integration-Tests:
+    name: Integration Tests
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      # See https://stackoverflow.com/questions/73648218/github-action-setup-secure-cockroachdb
+      - name: Start a single CockroachDB instance
+        run: |
+          docker compose up -d
+          sudo apt update && sudo apt install wait-for-it -y
+          wait-for-it -h localhost -p 26257
+
+      - name: Build server
+        run: yarn turbo run build --filter=web...
+
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgresql://root@localhost:26257?sslmode=disable
+        run: |
+          yarn turbo run db:push
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgresql://root@localhost:26257?sslmode=disable
+          WALDO_URI: http://localhost:3000
+          DISABLE_VERIFY_AUTH: '1'
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: myauthsecret
+          # Turnstile keys are dummy keys: https://developers.cloudflare.com/turnstile/reference/testing/
+          CLOUDFLARE_TURNSTILE_SECRET: 1x0000000000000000000000000000000AA
+          NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
+        run: |
+          # Copy configuration
+          cp apps/web/.env.example apps/web/.env
+
+          # Start server
+          node apps/web/.next/standalone/apps/web/server.js &
+          wait-for-it -h localhost -p 3000 -t 90
+
+          # Run integration tests
+          yarn workspace tests jest

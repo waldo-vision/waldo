@@ -4,9 +4,21 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "pages/api/auth/[...nextauth].ts",
+    "pages/account.jsx"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@utils/*": ["utils/*"],
+      "@contexts/*": ["contexts/*"],
+      "@site": ["contexts/SiteContext.tsx"],
+      "@server/*": ["server/*"],
+      "@auth-providers/*": ["auth-providers/*"],
+      "@config/*": ["config/*"]
+    }
+  },
+  "exclude": ["node_modules"]
 }

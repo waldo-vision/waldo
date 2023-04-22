@@ -1,0 +1,15 @@
+import { type DefaultSession } from 'next-auth';
+import { type Roles } from 'database';
+declare module 'next-auth' {
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user?: {
+      id: string;
+      provider: string;
+      role: Roles;
+      blacklisted: boolean;
+    } & DefaultSession['user'];
+  }
+}

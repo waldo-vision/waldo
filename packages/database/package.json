@@ -1,0 +1,26 @@
+{
+  "name": "database",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "prisma": {
+    "seed": "esno prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.13.0",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*"
+  },
+  "devDependencies": {
+    "esno": "^0.16.3",
+    "prisma": "^4.13.0"
+  },
+  "scripts": {
+    "db:init": "yarn db:push:fdl && yarn db:seed",
+    "db:seed": "esno prisma/seed.ts",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:push:fdl": "prisma db push --force-reset"
+  }
+}

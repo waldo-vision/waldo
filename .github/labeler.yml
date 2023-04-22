@@ -1,0 +1,34 @@
+# config for labeler action
+
+documentation:
+  - docs/**/*
+  - CODE_OF_CONDUCT.md
+  - CONTRIBUTING.md
+
+frontend:
+  - apps/web/**/*
+
+'team leads':
+  - LICENSE.md
+  - SECURITY.md
+  - apps/docs/src/pages/legal/**/*
+
+infrastructure:
+  - .github/**/*
+  - docker-compose.test.yml
+  - docker-compose.yml
+  - docker/**/*
+  - '**/Dockerfile'
+
+rust:
+  - apps/desktop/**/*
+
+ci:
+  - .github/**/*
+
+dependencies:
+  - '**/package.json'
+  - yarn.lock
+  - .yarn/**/*
+  - '**/Cargo.lock'
+  - '**/Cargo.toml'

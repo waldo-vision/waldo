@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  cockroach:
+    image: cockroachdb/cockroach:latest-v22.2
+    command: start-single-node --insecure
+    ports:
+      # postgres
+      - 26257:26257
+      # ui
+      - 8081:8080
+    volumes:
+      - './docker/cockroach/data:/cockroach/cockroach-data:Z'
+    ulimits:
+      nofile: 2048
+
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+
+  serverless-redis-http:
+    ports:
+      - '8079:80'
+    image: hiett/serverless-redis-http:latest
+    volumes:
+      - ./docker/http-redis/conf:/app/srh-config/tokens.json

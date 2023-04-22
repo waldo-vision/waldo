@@ -1,34 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# WALDO App
+
+This is the monolithic NextJS app deployed at https://waldo.vision.
 
 ## Getting Started
 
-First, run the development server:
+The easiest way to get started with Waldo is to build and run the app locally. This process is fairly straight forward.
+
+### Install Dependencies
+
+You'll need to install a few dependencies in order to run the dev server:
+
+- [yarn](https://yarnpkg.com/getting-started/install) - our JavaScript package manager.
+- [docker](https://docs.docker.com/engine/install/) - used for building and running containers.
+
+With those installed, you can download additional packages with yarn:
 
 ```bash
-npm run dev
-# or
-yarn dev
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Configuration
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+The app is configured via environment variables stored within a `.env` file in this directory.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Start by copying the example env file.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+cp apps/web/.env.example apps/web/.env
 
-## Learn More
+# Open the file
+vim apps/web/.env
+```
 
-To learn more about Next.js, take a look at the following resources:
+| Variable                                  | Description                                                   | Link                                                                                         |
+| :---------------------------------------- | :------------------------------------------------------------ | :------------------------------------------------------------------------------------------- |
+| DISCORD_CLIENT_ID                         | Discord OAuth client ID                                       | [docs](https://discordjs.guide/oauth2/#getting-an-oauth2-url)                                |
+| DISCORD_CLIENT_SECRET                     | Discord OAuth client secret                                   |                                                                                              |
+| GOOGLE_CLIENT_ID                          | ...                                                           |                                                                                              |
+| GOOGLE_CLIENT_SECRET                      | ...                                                           |                                                                                              |
+| YOUTUBE_API_KEY                           | ...                                                           |                                                                                              |
+| GITHUB_CLIENT_ID                          | GitHub OAuth client ID                                        | [docs](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app) |
+| GITHUB_CLIENT_SECRET                      | GitHub OAuth client secret                                    |                                                                                              |
+| BTLNET_CLIENT_ID                          | ...                                                           |                                                                                              |
+| BTLNET_CLIENT_SECRET                      | ...                                                           |                                                                                              |
+| TWITCH_CLIENT_ID                          | ...                                                           |                                                                                              |
+| TWITCH_CLIENT_SECRET                      | ...                                                           |                                                                                              |
+| FB_CLIENT_ID                              | ...                                                           |                                                                                              |
+| FB_CLIENT_SECRET                          | ...                                                           |                                                                                              |
+| CLOUDFLARE_TURNSTILE_SECRET               | ...                                                           |                                                                                              |
+| NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY | ...                                                           |                                                                                              |
+| DATABASE_URL                              | Postgres connection string used to connect to CockroachDB.    |                                                                                              |
+| NEXTAUTH_URL                              | ...                                                           |                                                                                              |
+| NEXTAUTH_SECRET                           | ...                                                           |                                                                                              |
+| DISABLE_VERIFY_AUTH                       | Disables cookie verification. Used only for testing purposes. |                                                                                              |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Starting the server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+If you have not already, then follow the [set-up documentation](https://docs.waldo.vision/en/getting-started).
 
-## Deploy on Vercel
+```bash
+yarn workspace web dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Alternatively, you can build an optimized deployment of the app and deploy that instead.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+# Build the app
+yarn workspace web build
+
+# Serve the app
+yarn workspace web start
+```
+
+You should now be able to visit the website at http://localhost:3000.
