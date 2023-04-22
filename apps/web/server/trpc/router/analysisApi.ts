@@ -3,31 +3,29 @@ import { router, apiProcedure } from '../trpc';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 export const analysisApiRouter = router({
-  getLinks: apiProcedure //this needs to be public, since python is stateless
+  getLinks: apiProcedure
     .meta({
       openapi: { method: 'GET', path: '/analysis/urls' },
     })
     .input(
       z.object({
-        //pages are 10 clips
-        page: z.number(),
-        rating: z.number(),
-        minReviews: z.number(),
-        //todo add review requiremenets
+        page: z.number(), //pages are 10 clips
+        rating: z.number(), //minimum rating for clips in yesvotes/totalvotes as integer for percentage (100 => 100% and so on)(0 to not check)
+        minReviews: z.number(), //minimum amount of reviews as integer (0 to not check)
       }),
     )
     .output(GameplayArray)
     .query(async ({ input, ctx }) => {
-      /*here query database for api key*/
-      const [itemCount, noCounts, results] = await ctx.prisma.$transaction([
-        ctx.prisma.gameplay.count(),
-        ctx.prisma.gameplayVotes.count({
-          where: { isGame: false },
-        }),
+      /*here query database for gameplay*/
+      const [itemCount, results] = await ctx.prisma.$transaction([
+        ctx.prisma.gameplay.count(), //total gameplay count for pagination
         ctx.prisma.gameplay.findMany({
+          //10 gameplays with included gameplayVotes
           skip: input.page * 10,
           take: 10,
-          include: { gameplayVotes: { where: { isGame: true } } },
+          include: {
+            gameplayVotes: {},
+          },
         }),
       ]);
       if (results == null || !results.length) {
@@ -39,19 +37,15 @@ export const analysisApiRouter = router({
       const returnarray = {
         gameplay: results
           .filter(result => {
-            // since query includes gameplayvotes if isGame is true, then this is the total amt of yes votes.
-            const yesCounts = result.gameplayVotes.length;
-
-            // no votes is just a prisma count query where isGame if false. This just adds
-            // the total amt of no votes + the yesCounts.
+            // Every gameplay gets checked for yes/total votes percentage
+            const yesCounts = result.gameplayVotes.filter(
+              vote => vote.isGame === true,
+            ).length;
+            const noCounts = result.gameplayVotes.filter(
+              vote => vote.isGame === false,
+            ).length;
+            //Total votes for current gameplay for percentage calculation and minvotes
             const totalVotes = yesCounts + noCounts;
-            if (totalVotes < input.minReviews) {
-              throw new TRPCError({
-                message:
-                  'no gameplay items were found with the provided minVotes param.',
-                code: 'NOT_FOUND',
-              });
-            }
             // yesPercentage is pretty explanatory here.
             const yesPercentage = (yesCounts / totalVotes) * 100;
             // this checks if the yesPercentage is greater than or equal to the rating input. This just makes sure there is a minimum result.
@@ -71,7 +65,7 @@ export const analysisApiRouter = router({
       if (returnarray.gameplay.length == 0) {
         throw new TRPCError({
           message:
-            'no gameplay items could be found with the provided rating percentage',
+            'no gameplay items could be found with the provided rating percentage or minimum votes parameter',
           code: 'NOT_FOUND',
         });
       }
