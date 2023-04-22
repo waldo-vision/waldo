@@ -46,6 +46,9 @@ export const analysisApiRouter = router({
             ).length;
             //Total votes for current gameplay for percentage calculation and minvotes
             const totalVotes = yesCounts + noCounts;
+            if (totalVotes < input.minReviews) {
+              return false; //sort out submissions, which do not have minimum reviews
+            }
             // yesPercentage is pretty explanatory here.
             const yesPercentage = (yesCounts / totalVotes) * 100;
             // this checks if the yesPercentage is greater than or equal to the rating input. This just makes sure there is a minimum result.
