@@ -321,9 +321,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/react@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@astrojs/react@npm:1.2.2"
+"@astrojs/react@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@astrojs/react@npm:2.1.1"
   dependencies:
     "@babel/core": ">=7.0.0-0 <8.0.0"
     "@babel/plugin-transform-react-jsx": ^7.17.12
@@ -332,7 +332,7 @@ __metadata:
     "@types/react-dom": ^17.0.17 || ^18.0.6
     react: ^17.0.2 || ^18.0.0
     react-dom: ^17.0.2 || ^18.0.0
-  checksum: 38f3d8df5d48cb4e07452b75355d246b51e0768126ee5d23fd6dc1e69b578004a372633ea1419e4edd388f1f852f99eada32611ac66225d99b025826bc96cbe2
+  checksum: df1fe4978d706b136473d1d33015533e644fc2698651128272ac91e305164de73eba5411657224af681a761fff04b8130ce588f1bf8d43053d0df5ee5e7e8c3f
   languageName: node
   linkType: hard
 
@@ -7260,7 +7260,7 @@ __metadata:
   dependencies:
     "@algolia/client-search": ^4.17.0
     "@astrojs/preact": ^2.1.0
-    "@astrojs/react": ^1.2.2
+    "@astrojs/react": ^2.1.1
     "@astrojs/sitemap": ^1.2.2
     "@docsearch/css": ^3.3.3
     "@docsearch/react": ^3.3.3
