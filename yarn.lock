@@ -7327,7 +7327,7 @@ __metadata:
     astro: ^2.3.0
     eslint-config-custom: "workspace:*"
     html-escaper: ^3.0.3
-    preact: ^10.13.1
+    preact: ^10.13.2
     react: ^18.1.0
     react-dom: ^18.1.0
     tsconfig: "workspace:*"
@@ -12491,10 +12491,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact@npm:^10.13.1":
-  version: 10.13.1
-  resolution: "preact@npm:10.13.1"
-  checksum: a10555d18f60a42e29b4ef5bf42f7a6ce4097a2e772c047fab53226e3edef4cfceb6d709452485a41017479750aa6834ab02b6a8269ceb06d489d7c3495b3d04
+"preact@npm:^10.13.2":
+  version: 10.13.2
+  resolution: "preact@npm:10.13.2"
+  checksum: 3bc98aa09bcd297eb59abd7e4f3a4d499b8e345bd68b922f7678ef105ba4721dc9b9940b221e6e3443f957d51402fe407bb96ccaa0a4b65d6808ca8a3be76bfa
   languageName: node
   linkType: hard
 
