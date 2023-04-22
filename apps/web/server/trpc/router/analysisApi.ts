@@ -55,11 +55,7 @@ export const analysisApiRouter = router({
             // yesPercentage is pretty explanatory here.
             const yesPercentage = (yesCounts / totalVotes) * 100;
             // this checks if the yesPercentage is greater than or equal to the rating input. This just makes sure there is a minimum result.
-            if (yesPercentage <= input.rating) {
-              return true;
-            } else {
-              return false;
-            }
+            return yesPercentage >= input.rating;
           })
           // just loops through all of the results and formats the result;
           .map(result => {
