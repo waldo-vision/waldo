@@ -267,30 +267,36 @@ export default function Account() {
                                       {name.toLowerCase()} account.
                                     </Text>
                                   </Flex>
-                                  <Flex direction={'column'}>
-                                    <Divider my={5} />
-                                    <Text fontWeight={'bold'}>API Access</Text>
-                                    <Text
-                                      fontWeight={'regular'}
-                                      mb={5}
-                                      fontSize={15}
-                                      _hover={{ textDecoration: 'underline' }}
-                                      cursor={'pointer'}
-                                      onClick={() =>
-                                        router.push(
-                                          '/portal/developers/apikeys',
-                                        )
-                                      }
-                                    >
-                                      <chakra.span
-                                        fontWeight={'bold'}
-                                        textColor={'purple.500'}
+                                  {session?.user?.role !== 'USER' ? (
+                                    <Flex direction={'column'}>
+                                      <Divider my={5} />
+                                      <Text fontWeight={'bold'}>
+                                        API Access
+                                      </Text>
+                                      <Text
+                                        fontWeight={'regular'}
+                                        mb={5}
+                                        fontSize={15}
+                                        _hover={{ textDecoration: 'underline' }}
+                                        cursor={'pointer'}
+                                        onClick={() =>
+                                          router.push(
+                                            '/portal/developers/apikeys',
+                                          )
+                                        }
                                       >
-                                        Click
-                                      </chakra.span>{' '}
-                                      to go to the developer portal.
-                                    </Text>
-                                  </Flex>
+                                        <chakra.span
+                                          fontWeight={'bold'}
+                                          textColor={'purple.500'}
+                                        >
+                                          Click
+                                        </chakra.span>{' '}
+                                        to go to the developer portal.
+                                      </Text>
+                                    </Flex>
+                                  ) : (
+                                    <></>
+                                  )}
                                   {name.toUpperCase() !=
                                   session?.user?.provider.toUpperCase() ? (
                                     <Button

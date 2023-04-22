@@ -354,7 +354,8 @@ export async function getServerSideProps(context) {
     return { redirect: { destination: '/', permanent: false } };
   } else if (!user) {
     return { redirect: { destination: '/auth/login' } };
-  } else if (user.user?.role === 'USER' || user.user?.role === 'TRUSTED') {
+  } else if (user.user?.role === 'USER') {
+    //Normal users should't be able to acces api
     return { redirect: { destination: '/404' } };
   } else return { props: {} };
 }
