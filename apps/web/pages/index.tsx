@@ -28,6 +28,7 @@ import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
 import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
+import { signIn } from 'next-auth/react';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
@@ -117,7 +118,11 @@ export default function Home() {
                 <b>powered by deep learning</b>
               </Text>
 
-              <Text fontSize={'l'} fontWeight={'thin'}>
+              <Text
+                fontSize={'l'}
+                fontWeight={'thin'}
+                onClick={() => signIn('hydra')}
+              >
                 Currently under construction
               </Text>
               <Flex direction={{ base: 'column', md: 'row' }} gap={5}>
