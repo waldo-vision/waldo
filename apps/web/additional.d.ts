@@ -21,5 +21,8 @@ declare namespace NodeJS {
     CLOUDFLARE_TURNSTILE_SITE_KEY: string;
     UPSTASH_REDIS_REST_URL: string;
     NODE_ENV: string;
+    HYDRA_CLIENT_ID: string;
+    HYDRA_CLIENT_SECRET: string;
+    HYDRA_SERVER_ADDRESS: string;
   }
 }
