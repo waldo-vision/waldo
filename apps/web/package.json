@@ -31,7 +31,7 @@
     "@trpc/server": "^10.20.0",
     "argon2": "^0.30.3",
     "database": "workspace:*",
-    "framer-motion": "^10.12.2",
+    "framer-motion": "^10.12.4",
     "next": "13.2.4",
     "next-auth": "^4.22.1",
     "next-plausible": "^3.7.2",
