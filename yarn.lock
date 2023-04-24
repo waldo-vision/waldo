@@ -3850,17 +3850,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.29.1":
+"@tanstack/query-core@npm:4.29.1, @tanstack/query-core@npm:^4.29.1":
   version: 4.29.1
   resolution: "@tanstack/query-core@npm:4.29.1"
   checksum: e7a5a73e5e743411e39348bee3ded4b6c5dd3a70009e72e067e257d5f3d612bfe8df0998cddff6ad7a078e0bcf7a3c92ded669758ca697055472ce910e23a368
-  languageName: node
-  linkType: hard
-
-"@tanstack/query-core@npm:^4.20.4":
-  version: 4.20.4
-  resolution: "@tanstack/query-core@npm:4.20.4"
-  checksum: bdb652296e4093d8cb042a67b9c035bc0a756e09a3b12aeb070068b07adc1c71174c2e6108f2a8c3322a26cb73ba57f431326aa0b813c81621674b9cc208cd93
   languageName: node
   linkType: hard
 
@@ -14214,7 +14207,7 @@ __metadata:
     "@sentry/integrations": ^7.49.0
     "@sentry/nextjs": ^7.49.0
     "@sentry/profiling-node": ^0.3.0
-    "@tanstack/query-core": ^4.20.4
+    "@tanstack/query-core": ^4.29.1
     "@tanstack/react-query": ^4.29.3
     "@trpc/client": ^10.21.1
     "@trpc/next": ^10.21.1
