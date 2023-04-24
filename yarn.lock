@@ -4907,16 +4907,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trpc/react-query@npm:^10.20.0":
-  version: 10.20.0
-  resolution: "@trpc/react-query@npm:10.20.0"
+"@trpc/react-query@npm:^10.21.1":
+  version: 10.21.1
+  resolution: "@trpc/react-query@npm:10.21.1"
   peerDependencies:
     "@tanstack/react-query": ^4.18.0
-    "@trpc/client": 10.20.0
-    "@trpc/server": 10.20.0
+    "@trpc/client": 10.21.1
+    "@trpc/server": 10.21.1
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 5d5c981e4a13d00a98d58c1632fbf688c57e9ce4e5c396bf9add690e33bdc974842c0817dd7491b4ecd8f738c3c71a9e775b510295a84a96894eded8ce31eb3e
+  checksum: 45aa8077535a84adf26a8deb389066aa5e9360fb3b12833b48acf1fb1aec3869432c5f60bc00d314e1f8cc4907a564208af6d0aab538fed75d4819012e8fa9ea
   languageName: node
   linkType: hard
 
@@ -15120,7 +15120,7 @@ __metadata:
     "@tanstack/react-query": ^4.29.3
     "@trpc/client": ^10.21.1
     "@trpc/next": ^10.21.1
-    "@trpc/react-query": ^10.20.0
+    "@trpc/react-query": ^10.21.1
     "@trpc/server": ^10.20.0
     "@types/node": 18.15.11
     "@types/react": ^18.0.38
