@@ -28,7 +28,7 @@
     "@trpc/client": "^10.21.1",
     "@trpc/next": "^10.21.1",
     "@trpc/react-query": "^10.21.1",
-    "@trpc/server": "^10.20.0",
+    "@trpc/server": "^10.21.1",
     "argon2": "^0.30.3",
     "database": "workspace:*",
     "framer-motion": "^10.12.4",
