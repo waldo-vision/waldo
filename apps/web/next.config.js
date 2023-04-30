@@ -134,4 +134,6 @@ module.exports = nextConfig;
 
 module.exports = withSentryConfig(module.exports, { silent: true });
 
-module.exports = withPlausibleProxy()(module.exports);
+module.exports = withPlausibleProxy({
+  customDomain: 'https://plausible.waldo.vision',
+})(module.exports);
