@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { Turnstile } from '@marsidev/react-turnstile';
+import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import { useRef, useEffect } from 'react';
 interface WidgetProps {
   valid(valid: boolean, tsToken?: string): void;
@@ -12,14 +12,10 @@ enum CallbackStates {
 }
 
 const TurnstileWidget = (props: WidgetProps) => {
-  const ref = useRef(null);
+  const ref = useRef<TurnstileInstance | null>(null);
   useEffect(() => {
     if (props.refreshState > 0) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
       ref.current?.reset();
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
       ref.current?.render();
     }
   }, [props.refreshState]);
