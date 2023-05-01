@@ -17,7 +17,7 @@
     "@astrojs/react": "^2.1.1",
     "@astrojs/sitemap": "^1.2.2",
     "@docsearch/css": "^3.3.3",
-    "@docsearch/react": "^3.3.3",
+    "@docsearch/react": "^3.3.4",
     "astro": "^2.3.0",
     "preact": "^10.13.2",
     "react": "^18.1.0",
