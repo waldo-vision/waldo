@@ -11,7 +11,6 @@ import { Profile, Session, User } from 'next-auth';
 import { Roles } from 'database';
 import { Account } from 'next-auth';
 import { Adapter } from 'next-auth/adapters';
-
 const RicanGHId = '59850372';
 const HomelessGHId = '30394883';
 

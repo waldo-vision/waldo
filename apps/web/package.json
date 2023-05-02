@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:auth": "next dev --hostname='127.0.0.1' --port='3001'",
+    "dev:auth": "next dev --hostname='127.0.0.1' --port='3000'",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,6 +21,7 @@
     "@heroicons/react": "^2.0.13",
     "@marsidev/react-turnstile": "0.1.0",
     "@next-auth/prisma-adapter": "^1.0.5",
+    "@oryd/kratos-client": "^0.0.0-next.5212bbfcf5dc",
     "@tanstack/query-core": "^4.20.4",
     "@tanstack/react-query": "^4.18.0",
     "@trpc/client": "^10.4.2",
