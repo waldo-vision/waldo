@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+  kratos:
+    image: oryd/kratos:v0.11.1
+    depends_on:
+      - hydra
+      - mailslurper
+    ports:
+      - '4000:4433' # public
+    command: serve -c /etc/config/kratos/config.yml --dev --watch-courier
+    volumes:
+      - type: bind
+        source: ./kratos
+        target: /etc/config/kratos
+    networks:
+      - intranet
+
+  hydra:
+    image: oryd/hydra:v2.0.3
+    ports:
+      - '5444:4444' # public
+      - '5445:4445' # admin
+      - '5446:5446' # token client (hydra perform authorization-code)
+    command: serve -c /etc/config/hydra/config.yml all --dev
+    volumes:
+      - type: bind
+        source: ./hydra
+        target: /etc/config/hydra
+    networks:
+      - intranet
+
+  mailslurper:
+    image: oryd/mailslurper:latest-smtps
+    ports:
+      - '4436:4436' # website
+      - '4437:4437' # API
+    networks:
+      - intranet
+
+  consent:
+    image: oryd/hydra-login-consent-node:v2.0.3
+    depends_on:
+      - hydra
+      - mailslurper
+    ports:
+      - '3100:3000' # website
+    environment:
+      - HYDRA_ADMIN_URL=http://hydra:5445
+    networks:
+      - intranet
+
+networks:
+  intranet:
+    name: intranet

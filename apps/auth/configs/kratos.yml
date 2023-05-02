@@ -1,0 +1,106 @@
+version: v0.11.0
+dev: true
+dsn: memory
+cookies:
+  same_site: Strict
+serve:
+  public:
+    base_url: http://127.0.0.1:4000/
+    cors:
+      enabled: true
+  admin:
+    base_url: http://kratos:4434/
+
+selfservice:
+  default_browser_return_url: http://127.0.0.1:3000/
+  allowed_return_urls:
+    - http://127.0.0.1:3000
+
+  methods:
+    password:
+      config:
+        haveibeenpwned_enabled: false
+        min_password_length: 6
+        identifier_similarity_check_enabled: false
+      enabled: true
+    totp:
+      config:
+        issuer: Kratos
+      enabled: true
+    lookup_secret:
+      enabled: true
+    link:
+      enabled: true
+    code:
+      enabled: true
+
+  flows:
+    error:
+      ui_url: http://127.0.0.1:3001/error
+
+    settings:
+      ui_url: http://127.0.0.1:3001/settings
+      privileged_session_max_age: 15m
+      required_aal: highest_available
+
+    recovery:
+      enabled: true
+      ui_url: http://127.0.0.1:3001/recovery
+      use: code
+
+    verification:
+      enabled: true
+      ui_url: http://127.0.0.1:3001/verification
+      use: code
+      after:
+        default_browser_return_url: http://127.0.0.1:3000/
+
+    logout:
+      after:
+        default_browser_return_url: http://127.0.0.1:3001/login
+
+    login:
+      ui_url: http://127.0.0.1:3001/login
+      lifespan: 10m
+      after:
+        default_browser_return_url: http://127.0.0.1:3000/
+
+    registration:
+      lifespan: 10m
+      ui_url: http://127.0.0.1:3001/registration
+      after:
+        password:
+          hooks:
+            - hook: session
+
+oauth2_provider:
+  url: http://hydra:4445
+
+log:
+  level: debug
+  format: text
+  leak_sensitive_values: true
+
+secrets:
+  cookie:
+    - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
+  cipher:
+    - 32-LONG-SECRET-NOT-SECURE-AT-ALL
+
+ciphers:
+  algorithm: xchacha20-poly1305
+
+hashers:
+  algorithm: bcrypt
+  bcrypt:
+    cost: 8
+
+identity:
+  default_schema_id: default
+  schemas:
+    - id: default
+      url: file:///etc/config/kratos/identity.schema.json
+
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true

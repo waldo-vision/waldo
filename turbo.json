@@ -19,7 +19,10 @@
         "FB_CLIENT_ID",
         "FB_CLIENT_SECRET",
         "TWITCH_CLIENT_ID",
-        "TWITCH_CLIENT_SECRET"
+        "TWITCH_CLIENT_SECRET",
+        "HYDRA_SERVER_ADDRESS",
+        "HYDRA_CLIENT_SECRET",
+        "HYDRA_CLIENT_ID"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },
