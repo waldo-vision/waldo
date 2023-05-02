@@ -10,4 +10,45 @@ services:
       # ui
       - 8081:8080
     volumes:
-      - './docker/cochroach/data:/cockroach/cockroach-data'
+      - './docker/cockroach/data:/cockroach/cockroach-data'
+
+  kratos:
+    image: oryd/kratos:v0.11.1
+    depends_on:
+      - hydra
+      - mailslurper
+    ports:
+      - '4000:4433' # public
+    command: serve -c /etc/config/kratos/config.yml --dev --watch-courier
+    volumes:
+      - type: bind
+        source: ./docker/kratos/config
+        target: /etc/config/kratos
+
+  hydra:
+    image: oryd/hydra:v2.0.3
+    ports:
+      - '5444:4444' # public
+      - '5445:4445' # admin
+      - '5446:5446' # token client (hydra perform authorization-code)
+    command: serve -c /etc/config/hydra/config.yml all --dev
+    volumes:
+      - type: bind
+        source: ./docker/hydra/config
+        target: /etc/config/hydra
+
+  mailslurper:
+    image: oryd/mailslurper:latest-smtps
+    ports:
+      - '4436:4436' # website
+      - '4437:4437' # API
+
+  consent:
+    image: oryd/hydra-login-consent-node:v2.0.3
+    depends_on:
+      - hydra
+      - mailslurper
+    ports:
+      - '3100:3000' # website
+    environment:
+      - HYDRA_ADMIN_URL=http://hydra:5445
