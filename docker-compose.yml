@@ -11,15 +11,3 @@ services:
       - 8081:8080
     volumes:
       - './docker/cochroach/data:/cockroach/cockroach-data'
-
-  redis:
-    image: redis
-    ports:
-      - '6379:6379'
-
-  serverless-redis-http:
-    ports:
-      - '8079:80'
-    image: hiett/serverless-redis-http:latest
-    volumes:
-      - ./docker/http-redis/conf:/app/srh-config/tokens.json

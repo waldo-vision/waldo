@@ -9,7 +9,6 @@ declare namespace NodeJS {
     YOUTUBE_API_KEY: string;
     CLOUDFLARE_TURNSTILE_SECRET: string;
     NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: string;
-    UPSTASH_REDIS_REST_TOKEN: string;
     DISCORD_CLIENT_ID: string;
     GITHUB_CLIENT_ID: string;
     GOOGLE_CLIENT_ID: string;
@@ -19,7 +18,6 @@ declare namespace NodeJS {
     YOUTUBE_API_KEY: string;
     CLOUDFLARE_TURNSTILE_SECRET: string;
     CLOUDFLARE_TURNSTILE_SITE_KEY: string;
-    UPSTASH_REDIS_REST_URL: string;
     NODE_ENV: string;
     HYDRA_CLIENT_ID: string;
     HYDRA_CLIENT_SECRET: string;
