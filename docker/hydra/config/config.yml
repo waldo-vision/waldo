@@ -4,10 +4,12 @@ serve:
 
 dsn: 'cockroach://root@cockroach:26257/hydra?sslmode=disable'
 
+log:
+  leak_sensitive_values: true
 urls:
   self:
     issuer: http://127.0.0.1:5444
-  consent: http://127.0.0.1:3100/consent
+  consent: http://127.0.0.1:3001/consent
   login: http://127.0.0.1:4000/self-service/login/browser
   logout: http://127.0.0.1:4000/self-service/logout/browser
 

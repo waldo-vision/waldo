@@ -99,6 +99,11 @@ export default function Login(): ReactElement {
             window.location.href = flow?.return_to;
             return;
           }
+          if (flow?.oauth2_login_request != null) {
+            router.push(
+              '/oauth?login_challenge=' + flow.oauth2_login_request?.challenge,
+            );
+          }
 
           router.push('/').catch(console.error);
         })
