@@ -2,14 +2,14 @@ serve:
   cookies:
     same_site_mode: Strict
 
-dsn: memory
+dsn: 'cockroach://root@cockroach:26257/hydra?sslmode=disable'
 
 urls:
   self:
     issuer: http://127.0.0.1:5444
   consent: http://127.0.0.1:3100/consent
-  login: http://127.0.0.1:3001/login
-  logout: http://127.0.0.1:3001/logout
+  login: http://127.0.0.1:4000/self-service/login/browser
+  logout: http://127.0.0.1:4000/self-service/logout/browser
 
 secrets:
   system:

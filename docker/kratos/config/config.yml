@@ -1,6 +1,6 @@
 version: v0.11.0
 dev: true
-dsn: memory
+dsn: 'cockroach://root@cockroach:26257/kratos?sslmode=disable'
 cookies:
   same_site: Strict
 serve:
