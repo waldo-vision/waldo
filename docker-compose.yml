@@ -11,12 +11,19 @@ services:
       - 8081:8080
     volumes:
       - './docker/cockroach/data:/cockroach/cockroach-data'
+  cockroach-migrate:
+    image: cockroachdb/cockroach:latest-v22.2
+    command: sql --insecure --url "postgresql://root@cockroach:26257/?sslmode=disable" --execute "CREATE DATABASE IF NOT EXISTS hydra; CREATE DATABASE IF NOT EXISTS kratos;"
+    restart: on-failure
+    depends_on:
+      - cockroach
 
   kratos:
     image: oryd/kratos:v0.11.1
     depends_on:
       - hydra
       - mailslurper
+      - kratos-migrate
     ports:
       - '4000:4433' # public
     command: serve -c /etc/config/kratos/config.yml --dev --watch-courier
@@ -24,6 +31,7 @@ services:
       - type: bind
         source: ./docker/kratos/config
         target: /etc/config/kratos
+    restart: on-failure
   kratos-migrate:
     image: oryd/kratos:v0.11.1
     environment:
@@ -34,6 +42,8 @@ services:
         target: /etc/config/kratos
     command: -c /etc/config/kratos/config.yml migrate sql -e --yes
     restart: on-failure
+    depends_on:
+      - cockroach-migrate
 
   hydra:
     image: oryd/hydra:v2.0.3
@@ -46,6 +56,9 @@ services:
       - type: bind
         source: ./docker/hydra/config
         target: /etc/config/hydra
+    depends_on:
+      - hydra-migrate
+    restart: on-failure
   hydra-migrate:
     image: oryd/hydra:v2.1.1
     environment:
@@ -56,6 +69,8 @@ services:
         source: ./docker/hydra/config
         target: /etc/config/hydra
     restart: on-failure
+    depends_on:
+      - cockroach-migrate
   mailslurper:
     image: oryd/mailslurper:latest-smtps
     ports:
