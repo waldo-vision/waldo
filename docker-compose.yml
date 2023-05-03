@@ -19,7 +19,7 @@ services:
       - cockroach
 
   kratos:
-    image: oryd/kratos:v0.11.1
+    image: oryd/kratos:v0.13.0
     depends_on:
       - hydra
       - mailslurper
@@ -33,7 +33,7 @@ services:
         target: /etc/config/kratos
     restart: on-failure
   kratos-migrate:
-    image: oryd/kratos:v0.11.1
+    image: oryd/kratos:v0.13.0
     environment:
       - DSN=cockroach://root@cockroach:26257/kratos?sslmode=disable
     volumes:
@@ -46,7 +46,7 @@ services:
       - cockroach-migrate
 
   hydra:
-    image: oryd/hydra:v2.0.3
+    image: oryd/hydra:v2.1.1
     ports:
       - '5444:4444' # public
       - '5445:4445' # admin
@@ -77,12 +77,12 @@ services:
       - '4436:4436' # website
       - '4437:4437' # API
 
-  consent:
-    image: oryd/hydra-login-consent-node:v2.0.3
-    depends_on:
-      - hydra
-      - mailslurper
-    ports:
-      - '3100:3000' # website
-    environment:
-      - HYDRA_ADMIN_URL=http://hydra:5445
+  #consent:
+  #  image: oryd/hydra-login-consent-node:v2.0.3
+  #  depends_on:
+  #    - hydra
+  #    - mailslurper
+  #  ports:
+  #    - '3100:3000' # website
+  #  environment:
+  #    - HYDRA_ADMIN_URL=http://hydra:5445
