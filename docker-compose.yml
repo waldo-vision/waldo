@@ -24,6 +24,16 @@ services:
       - type: bind
         source: ./docker/kratos/config
         target: /etc/config/kratos
+  kratos-migrate:
+    image: oryd/kratos:v0.11.1
+    environment:
+      - DSN=cockroach://root@cockroach:26257/kratos?sslmode=disable
+    volumes:
+      - type: bind
+        source: ./docker/kratos/config
+        target: /etc/config/kratos
+    command: -c /etc/config/kratos/config.yml migrate sql -e --yes
+    restart: on-failure
 
   hydra:
     image: oryd/hydra:v2.0.3
