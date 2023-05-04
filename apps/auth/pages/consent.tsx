@@ -21,6 +21,14 @@ export async function getServerSideProps(context: NextPageContext) {
     acceptOAuth2ConsentRequest: {
       grant_scope: challenge.requested_scope,
       grant_access_token_audience: challenge.requested_access_token_audience,
+      session: {
+        id_token: {
+          email: 'TESTEMAIL',
+          image: 'TODOREPLACEIMAGE',
+          name: 'TODOREPLACENAME',
+          battletag: undefined,
+        },
+      },
     },
   });
   return {
