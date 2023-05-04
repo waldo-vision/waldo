@@ -41,7 +41,7 @@ selfservice:
           - id: github
             label: 'GitHub'
             provider: github
-            mapper_url: file:///etc/config/kratos/github.jsonnet^
+            mapper_url: file:///etc/config/kratos/github.jsonnet
             #google#
           - id: google
             label: 'Google'
