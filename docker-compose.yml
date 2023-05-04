@@ -27,6 +27,8 @@ services:
     ports:
       - '4000:4433' # public
     command: serve -c /etc/config/kratos/config.yml --dev --watch-courier
+    env_file:
+      - ./docker/kratos/config/.env
     volumes:
       - type: bind
         source: ./docker/kratos/config
@@ -76,13 +78,3 @@ services:
     ports:
       - '4436:4436' # website
       - '4437:4437' # API
-
-  #consent:
-  #  image: oryd/hydra-login-consent-node:v2.0.3
-  #  depends_on:
-  #    - hydra
-  #    - mailslurper
-  #  ports:
-  #    - '3100:3000' # website
-  #  environment:
-  #    - HYDRA_ADMIN_URL=http://hydra:5445

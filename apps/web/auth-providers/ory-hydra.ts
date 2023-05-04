@@ -36,9 +36,9 @@ export default function OryHydraProvider<P extends OryHydraProfile>(
     async profile(profile): Promise<OryHydraProfile> {
       return {
         id: profile.sub,
-        name: 'HYDRAPROFILE', //TODO change these just to get acc page working again
-        email: JSON.stringify(profile, undefined, 2),
-        image: 'HYDRAPROFILE',
+        name: profile.name,
+        email: profile.email,
+        image: profile.image,
         battletag: undefined,
       };
     },
