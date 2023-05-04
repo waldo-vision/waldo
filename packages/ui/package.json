@@ -1,0 +1,17 @@
+{
+  "name": "ui",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.0.1",
+    "class-variance-authority": "^0.6.0",
+    "clsx": "^1.2.1",
+    "eslint-config-custom": "workspace:*",
+    "lucide-react": "^0.206.0",
+    "tailwind-merge": "^1.12.0",
+    "tailwindcss-animate": "^1.0.5",
+    "tsconfig": "workspace:*"
+  }
+}

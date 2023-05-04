@@ -46,9 +46,11 @@ model Gameplay {
   isAnalyzed    Boolean         @default(false)
   clips         Clip[]
   cheats        CheatType[]
+  reports GameplayReport[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+  @@unique([id, userId])
 }
 
 enum CheatType {
@@ -140,10 +142,92 @@ model User {
   gameplay      Gameplay[]
   role          Roles           @default(USER)
   gameplayVotes GameplayVotes[] @relation("user")
-
+  inbox         Inbox?
+  badges Badge[]
+  warnings InfractionWarning[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
+// V2 DRAFT (WIP)
+model Inbox {
+  id      String @id @default(cuid())
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String @unique
+  messages InboxMessage[]
+}
+
+model InboxMessage {
+  id String @id @default(cuid())
+  inbox Inbox @relation(fields: [inboxId], references: [id], onDelete: Cascade)
+  inboxId String
+
+  messageStatus MessageStatus
+  isOfficialMessage Boolean // used for checking whether a message was sent by a user or by a waldo team member
+                            // if sent by waldo TM, then the origin will say "From Waldo" instead of say "From ceridev"
+  messageContent String
+  messageSubject String
+
+  dateSent DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum MessageStatus {
+  DELIVERED
+  FAILED
+}
+
+model ReviewLeaderboard {
+  id String @id @default(cuid())
+  top3 Json
+  reviewsToSurpass1Place Int
+  createdAt DateTime @default(now())
+  lastUpdated DateTime @default(now()) @updatedAt
+}
+
+model Badge {
+  id String @id @default(cuid())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+  rewardedAt Int // rewardedAt will be the number of reviews the user had reviewed before they receieved this badge.
+  isImageBadge Boolean // if true, then the badge would be an image / award kinda like something you would see on duolingo
+                       // If false then the badge would just be a line of text and called a badge for ex, "Review God"
+                       //(would look like a tag comp in a ui lib)
+  badgeContent String?
+  imageURL String?
+}
+
+model GameplayReport {
+  id String @id @default(cuid())
+  gameplay Gameplay @relation(fields: [gameplayId, uploadedBy], references: [id, userId], onDelete: Cascade)
+  gameplayId String @unique
+  uploadedBy String @unique
+
+  reason ReportReason[]
+  extraContent String?
+}
+
+enum ReportReason {
+  DOESNT_MATCH_GAME
+  NSFW_CONTENT
+  NOT_USERS_GAMEPLAY
+}
+
+model InfractionWarning {
+  id String @id @default(cuid())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  warningMessage String
+  reason WarningReason[]
+}
+
+enum WarningReason {
+  SUBMISSION_VIOLATION
+  POLICY_VIOLATION
+  // uh any more?
+}
+
+// END V2 DRAFT
 
 model VerificationToken {
   identifier String
