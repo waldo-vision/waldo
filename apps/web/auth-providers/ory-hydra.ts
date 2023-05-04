@@ -1,11 +1,10 @@
 import { OAuthConfig, OAuthUserConfig } from 'next-auth/providers';
 
-export interface OryHydraProfile extends Record<string, any> {
+export interface OryHydraProfile extends Record<string, string> {
   id: string;
   name: string;
   email: string;
   image: string;
-  battletag?: string;
 }
 
 export default function OryHydraProvider<P extends OryHydraProfile>(
@@ -39,7 +38,6 @@ export default function OryHydraProvider<P extends OryHydraProfile>(
         name: profile.name,
         email: profile.email,
         image: profile.image,
-        battletag: undefined,
       };
     },
     options,
