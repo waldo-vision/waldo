@@ -1,6 +1,6 @@
 version: v0.11.0
 dev: true
-dsn: memory
+dsn: 'cockroach://root@cockroach:26257/hydra?sslmode=disable'
 cookies:
   same_site: Strict
 serve:
@@ -42,6 +42,53 @@ selfservice:
             label: 'GitHub'
             provider: github
             mapper_url: file:///etc/config/kratos/github.jsonnet
+            #google#
+          - id: google
+            label: 'Google'
+            provider: google
+            mapper_url: file:///etc/config/kratos/google.jsonnet
+            issuer_url: https://accounts.google.com
+            auth_url: https://accounts.google.com/o/oauth2/v2/auth
+            token_url: https://oauth2.googleapis.com/token
+            scope:
+              - openid
+              - email
+              - profile
+            #discord#
+          - id: discord
+            provider: discord
+            label: 'Discord'
+            mapper_url: file:///etc/config/kratos/discord.jsonnet
+            auth_url: https://discord.com/oauth2/authorize
+            token_url: https://discord.com/api/oauth2/token
+            scope:
+              - identify
+              - email
+            #twitch#
+          - id: twitch
+            label: 'Twitch'
+            provider: generic
+            issuer_url: https://id.twitch.tv/oauth2
+            mapper_url: file:///etc/config/kratos/twitch.jsonnet
+            scope:
+              - openid
+              - user:read:email # required for email and email_verified claims in the near future
+            requested_claims: # explicitly request email and email_verified claims because twitch doesn't add them by default
+              id_token:
+                email:
+                  essential: true
+                email_verified:
+                  essential: true
+            #battlenet#
+          - id: battlenet
+            label: Battle.net
+            provider: generic
+            auth_url: https://oauth.battle.net/authorize
+            token_url: https://oauth.battle.net/token
+            issuer_url: https://oauth.battle.net
+            mapper_url: file:///etc/config/kratos/battlenet.jsonnet
+            scope:
+              - openid
   flows:
     error:
       ui_url: http://127.0.0.1:3001/error

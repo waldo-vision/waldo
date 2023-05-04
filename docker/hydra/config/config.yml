@@ -2,7 +2,7 @@ serve:
   cookies:
     same_site_mode: Strict
 
-dsn: memory
+dsn: 'cockroach://root@cockroach:26257/hydra?sslmode=disable'
 
 log:
   leak_sensitive_values: true
