@@ -29,7 +29,6 @@ import ScansImage from '../public/Scans.png';
 import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
 import { signIn } from 'next-auth/react';
-
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
   const [y, setY] = useState(0);
@@ -41,7 +40,10 @@ export default function Home() {
   useEffect(() => {
     updateScrollPosition();
     window.addEventListener('scroll', updateScrollPosition);
-  }, []);
+    if (session) {
+      console.log(session);
+    }
+  }, [session]);
   return (
     <>
       <Head>
@@ -54,7 +56,6 @@ export default function Home() {
           content="Waldo Vision is an open-source visual cheat detection project, powered by deep learning"
         />
       </Head>
-
       <Flex direction={'column'} mb={150}>
         <Container display={{ base: 'none', lg: 'fixed' }}>
           <Image
