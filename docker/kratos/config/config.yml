@@ -12,9 +12,9 @@ serve:
     base_url: http://kratos:4434/
 
 selfservice:
-  default_browser_return_url: http://127.0.0.1:3000/
+  default_browser_return_url: http://127.0.0.1:3001
   allowed_return_urls:
-    - http://127.0.0.1:3000
+    - http://127.0.0.1:3001
 
   methods:
     password:
@@ -42,6 +42,8 @@ selfservice:
             label: 'GitHub'
             provider: github
             mapper_url: file:///etc/config/kratos/github.jsonnet
+            scope:
+              - user:email
             #google#
           - id: google
             label: 'Google'
@@ -108,7 +110,7 @@ selfservice:
       ui_url: http://127.0.0.1:3001/verification
       use: code
       after:
-        default_browser_return_url: http://127.0.0.1:3000/
+        default_browser_return_url: http://127.0.0.1:3001
 
     logout:
       after:
@@ -117,14 +119,15 @@ selfservice:
     login:
       ui_url: http://127.0.0.1:3001/login
       lifespan: 10m
-      after:
-        default_browser_return_url: http://127.0.0.1:3000/
 
     registration:
       lifespan: 10m
       ui_url: http://127.0.0.1:3001/registration
       after:
         password:
+          hooks:
+            - hook: session
+        oidc: #autologin after register
           hooks:
             - hook: session
 
