@@ -1,123 +1,62 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import DiscordProvider from 'next-auth/providers/discord';
-import GoogleProvider from 'next-auth/providers/google';
-import GitHubProvider from 'next-auth/providers/github';
-import BattleNetProvider from '@auth-providers/battlenet';
-import FaceBookProvider from 'next-auth/providers/facebook';
-import TwitchProvider from 'next-auth/providers/twitch';
-import { prisma } from '@server/db/client';
-import NextAuth from 'next-auth/next';
-import { Profile, Session, User } from 'next-auth';
-import { Roles } from 'database';
-import { Account } from 'next-auth';
+import NextAuth, { Session, User } from 'next-auth';
 import { Adapter } from 'next-auth/adapters';
-const RicanGHId = '59850372';
-const HomelessGHId = '30394883';
+import { prisma } from '@server/db/client';
+import OryHydraProvider from '@auth-providers/ory-hydra';
+import { Roles } from 'database';
+
+//TODO: readd sentry stuff
 
 interface SessionCallback {
   session: Session;
   user: User;
 }
 
-interface signInCallback {
-  account: Account | null;
-  profile?: Profile | undefined;
-}
-
 interface RedirectCallback {
   baseUrl: string;
 }
 
-// const adapter = {
-//   ...PrismaAdapter(prisma),
-//   linkAccount: ({ sub, ...data }: any) => prisma.account.create({ data }),
-// } as Adapter;
+const adapter = {
+  ...PrismaAdapter(prisma),
+  linkAccount: ({ _sub, ...data }: any) => prisma.account.create({ data }),
+} as Adapter;
 
-const authConfig = NextAuth({
+export const authOptions = {
+  adapter,
   providers: [
-    {
-      id: 'hydra',
-      name: 'Hydra',
-      type: 'oauth',
-      version: '2.0',
-      idToken: true,
-      checks: ['pkce', 'state'],
-      authorization: {
-        url: `${process.env.HYDRA_SERVER_ADDRESS}/oauth2/auth`,
-        params: {
-          grant_type: 'authorization_code',
-          scope: 'openid offline',
-          redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/hydra`,
-        },
-      },
-      wellKnown: `${process.env.HYDRA_SERVER_ADDRESS}/.well-known/openid-configuration`,
-
-      token: {
-        url: `${process.env.HYDRA_SERVER_ADDRESS}/oauth2/token`,
-      },
-      userinfo: {
-        url: `${process.env.HYDRA_SERVER_ADDRESS}/userinfo`,
-      },
-      clientId: `${process.env.HYDRA_CLIENT_ID}`,
-      clientSecret: `${process.env.HYDRA_CLIENT_SECRET}`,
-      async profile(profile, tokens) {
-        console.log(tokens);
-        const accessToken = tokens.accessToken;
-        const refreshToken = tokens.refreshToken;
-        const expires = tokens.expires;
-
-        return {
-          id: profile.sub,
-          name: profile.name,
-          email: profile.email,
-          image: profile.picture,
-          accessToken,
-          refreshToken,
-          expires,
-        };
-      },
-    },
+    OryHydraProvider({
+      clientId: process.env.HYDRA_CLIENT_ID,
+      clientSecret: process.env.HYDRA_CLIENT_SECRET,
+    }),
   ],
-});
-export default authConfig;
-// async redirect(redirectCallback: RedirectCallback) {
-//   // redirects to home page instead of auth page on signup/in/ or logout.
-//   return redirectCallback.baseUrl;
-// },
-// async signIn(signInCallback: signInCallback) {
-//   if (signInCallback.account?.provider === 'github') {
-//     if (
-//       signInCallback.account.providerAccountId == RicanGHId ||
-//       signInCallback.account.providerAccountId == HomelessGHId
-//     ) {
-//       try {
-//         const account = await prisma.account.findFirst({
-//           where: {
-//             providerAccountId: signInCallback.account.providerAccountId,
-//           },
-//           include: {
-//             user: true,
-//           },
-//         });
-//         console.log(account);
-//         const userDocId = account?.user.id as string;
-//         console.log(userDocId);
-//         // update doc.
-//         await prisma.user.update({
-//           where: {
-//             id: userDocId,
-//           },
-//           data: {
-//             role: Roles.ADMIN,
-//           },
-//         });
-//       } catch {
-//         // return true here even if error because account does not exist...
-//         // but still allow user otherwise they would never be able to sign in
-//         return true;
-//       }
-//       return true;
-//     }
-//   }
-//   return true;
-// },
+  callbacks: {
+    async session(sessionCallback: SessionCallback) {
+      const session = sessionCallback.session;
+      const user = sessionCallback.user;
+      if (session.user) {
+        session.user.id = user.id;
+        if (user) {
+          const userAccount = await prisma.account.findFirst({
+            where: {
+              userId: user.id,
+            },
+            include: {
+              user: true,
+            },
+          });
+
+          session.user.provider = userAccount?.provider as string;
+          session.user.role = userAccount?.user.role as Roles;
+          session.user.blacklisted = userAccount?.user.blacklisted as boolean;
+        }
+      }
+      return session;
+    },
+    async redirect(redirectCallback: RedirectCallback) {
+      // redirects to home page instead of auth page on signup/in/ or logout.
+      return redirectCallback.baseUrl;
+    },
+  },
+};
+
+export default NextAuth(authOptions);
