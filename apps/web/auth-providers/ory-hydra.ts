@@ -5,6 +5,9 @@ export interface OryHydraProfile extends Record<string, string> {
   name: string;
   email: string;
   image: string;
+  provider: string;
+  provider_id: string;
+  role: string;
 }
 
 export default function OryHydraProvider<P extends OryHydraProfile>(
@@ -38,6 +41,9 @@ export default function OryHydraProvider<P extends OryHydraProfile>(
         name: profile.name,
         email: profile.email,
         image: profile.image,
+        provider: profile.provider,
+        provider_id: profile.provider_id,
+        role: profile.role,
       };
     },
     options,
