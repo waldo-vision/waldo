@@ -17,12 +17,15 @@ export async function getServerSideProps(context: NextPageContext) {
     .catch(() => null);
   if (session == null || session.status != 200) {
     if (login_challenge != null) {
-      return authError(
-        'Session not valid (!= 200)',
-        process.env.NEXT_PUBLIC_ORY_KRATOS_PUBLIC_URL +
-          '/self-service/login/browser?login_challenge=' +
-          login_challenge,
-      );
+      return {
+        redirect: {
+          destination:
+            process.env.NEXT_PUBLIC_ORY_KRATOS_PUBLIC_URL +
+            '/self-service/login/browser?login_challenge=' +
+            login_challenge,
+          permanent: false,
+        },
+      };
     }
     return authError('Session not valid (!= 200)');
   }
