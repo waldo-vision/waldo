@@ -1,6 +1,27 @@
 serve:
   cookies:
-    same_site_mode: Strict
+    same_site_mode: Lax
+  public:
+    cors:
+      debug: true
+      enabled: true
+      allowed_origins:
+        - http://127.0.0.1:3001
+      allowed_methods:
+        - POST
+        - GET
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+      allowed_headers:
+        - Authorization
+        - Cookie
+        - Content-Type
+      exposed_headers:
+        - Content-Type
+        - Set-Cookie
+      allow_credentials: true
 
 dsn: 'cockroach://root@cockroach:26257/hydra?sslmode=disable'
 
