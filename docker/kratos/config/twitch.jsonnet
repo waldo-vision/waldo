@@ -19,6 +19,6 @@ local claims = {
   metadata_public: {
       provider: "twitch",
       provider_id: claims.sub,
-      permissionlevel: "USER",
+      role: "USER",
   },
 }

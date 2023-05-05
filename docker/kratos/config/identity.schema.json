@@ -39,7 +39,7 @@
     "metadata_public": {
       "type": "object",
       "properties": {
-        "permissionlevel": {
+        "role": {
           "type": "string"
         },
         "provider": {

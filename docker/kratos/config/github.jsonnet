@@ -18,7 +18,7 @@ local claims = {
     metadata_public: {
       provider: "github",
       provider_id: claims.sub,
-      permissionlevel: "USER",
+      role: "USER",
     },
   },
 }
