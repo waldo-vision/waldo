@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { HandleError, KratosErrorResponse } from '../lib/hooks';
-import { kratos } from '../lib/kratos';
+import { kratos } from '@/lib/utils';
 
 // original source: https://github.com/ory/elements/blob/a340041ccdefecd24e860ecdfb47546862b15fc7/examples/nextjs-spa/src/pages/login.tsx#L22-L144
 export default function Login(): ReactElement {

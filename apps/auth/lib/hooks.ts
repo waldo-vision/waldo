@@ -2,8 +2,7 @@ import { GenericError } from '@ory/client/api';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-
-import { kratos } from './kratos';
+import { kratos } from './utils';
 
 export interface KratosErrorResponse {
   error: GenericError;
