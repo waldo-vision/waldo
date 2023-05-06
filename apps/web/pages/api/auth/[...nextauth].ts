@@ -8,9 +8,6 @@ import GitHubProvider from 'next-auth/providers/github';
 //TODO: readd sentry stuff
 
 function parseJwt(token: string) {
-  if (!token) {
-    return;
-  }
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace('-', '+').replace('_', '/');
   return JSON.parse(Buffer.from(base64, 'base64').toString());
@@ -41,6 +38,7 @@ const adapter = {
   }: any): Promise<void> | Awaitable<AdapterAccount | null | undefined> => {
     if (data.provider === 'hydra') {
       const userinfo = parseJwt(data.id_token) as HydraIdentToken;
+      //Check if user already has account
       return prisma.account
         .findFirstOrThrow({
           where: {
@@ -76,6 +74,7 @@ const adapter = {
           });
         })
         .then(() => {
+          //return modified acc to nextauth
           return prisma.account.findFirst({
             where: {
               AND: {
@@ -92,7 +91,6 @@ const adapter = {
         .catch(() => {
           //means no user found -> we need to create our own
           //but check if user with email exists, since then you should be denied
-          console.log('SEARCH USER BY EMAIL' + userinfo.email);
           return prisma.user
             .findUnique({
               where: {
@@ -112,10 +110,10 @@ const adapter = {
             .catch(
               () =>
                 Promise.reject(
-                  'User email already exists: Migration cannot continue',
+                  'User email already exists: Migration cannot continue', //this propagates error from above
                 ) as Awaitable<AdapterAccount>,
-            ); //idk why but ts complains if not catched
-        }); //as Awaitable<AdapterAccount>;
+            );
+        });
     }
     //here not hydra
     return prisma.account.create({ data }) as Awaitable<AdapterAccount>;
