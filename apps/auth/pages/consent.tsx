@@ -17,6 +17,9 @@ export async function getServerSideProps(context: NextPageContext) {
   }
 
   const oryid = session.data.id;
+  if (session.data.identity.metadata_public == null) {
+    return authError('No metadata found in session');
+  }
   const provider = (session.data.identity.metadata_public as any).provider;
   const provider_id = (session.data.identity.metadata_public as any)
     .provider_id;
@@ -24,6 +27,9 @@ export async function getServerSideProps(context: NextPageContext) {
   const email = session.data.identity.traits['email'];
   const name = session.data.identity.traits['name'];
   const image = session.data.identity.traits['image'];
+  if (!(provider && provider_id && role && email && name && image)) {
+    return authError('Something is null in user data');
+  }
 
   const challenge_text = context.query.consent_challenge?.toString();
   if (challenge_text == null) {
