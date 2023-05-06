@@ -1,15 +1,32 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import NextAuth, { Session, User } from 'next-auth';
-import { Adapter } from 'next-auth/adapters';
+import NextAuth, { Awaitable, Session, User } from 'next-auth';
+import { Adapter, AdapterAccount } from 'next-auth/adapters';
 import { prisma } from '@server/db/client';
 import OryHydraProvider from '@auth-providers/ory-hydra';
 import { Roles } from 'database';
-
+import GitHubProvider from 'next-auth/providers/github';
 //TODO: readd sentry stuff
+
+function parseJwt(token: string) {
+  if (!token) {
+    return;
+  }
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace('-', '+').replace('_', '/');
+  return JSON.parse(Buffer.from(base64, 'base64').toString());
+}
 
 interface SessionCallback {
   session: Session;
   user: User;
+}
+
+interface HydraIdentToken {
+  email: string;
+  image: string;
+  name: string;
+  provider: string;
+  provider_id: string;
 }
 
 interface RedirectCallback {
@@ -18,7 +35,91 @@ interface RedirectCallback {
 
 const adapter = {
   ...PrismaAdapter(prisma),
-  linkAccount: ({ _sub, ...data }: any) => prisma.account.create({ data }),
+  linkAccount: ({
+    _sub,
+    ...data
+  }: any): Promise<void> | Awaitable<AdapterAccount | null | undefined> => {
+    if (data.provider === 'hydra') {
+      const userinfo = parseJwt(data.id_token) as HydraIdentToken;
+      return prisma.account
+        .findFirstOrThrow({
+          where: {
+            AND: {
+              provider: {
+                equals: userinfo.provider,
+              },
+              providerAccountId: {
+                equals: userinfo.provider_id,
+              },
+            },
+          },
+        })
+        .then(user => {
+          //we found our matching user. We'll update the values so that hydra takes over login
+          return prisma.account.update({
+            where: {
+              provider_providerAccountId: {
+                provider: user.provider,
+                providerAccountId: user.providerAccountId,
+              },
+            },
+            data: {
+              provider: 'hydra',
+              providerAccountId: data.providerAccountId,
+              access_token: data.access_token,
+              refresh_token: data.refresh_token,
+              scope: data.scope,
+              id_token: data.id_token,
+              expires_at: data.expires_at,
+              token_type: data.token_type,
+            },
+          });
+        })
+        .then(() => {
+          return prisma.account.findFirst({
+            where: {
+              AND: {
+                provider: {
+                  equals: userinfo.provider,
+                },
+                providerAccountId: {
+                  equals: userinfo.provider_id,
+                },
+              },
+            },
+          }) as Awaitable<AdapterAccount>;
+        })
+        .catch(() => {
+          //means no user found -> we need to create our own
+          //but check if user with email exists, since then you should be denied
+          console.log('SEARCH USER BY EMAIL' + userinfo.email);
+          return prisma.user
+            .findUnique({
+              where: {
+                email: userinfo.email,
+              },
+            })
+            .then(user => {
+              if (user === null) {
+                //user does not exist yet with given email
+                return prisma.account.create({
+                  data,
+                }) as Awaitable<AdapterAccount>;
+              }
+              //user already exists with wrong provider
+              return Promise.reject('REJECTED'); //this may throw errors somewhere, that should be catched
+            })
+            .catch(
+              () =>
+                Promise.reject(
+                  'User email already exists: Migration cannot continue',
+                ) as Awaitable<AdapterAccount>,
+            ); //idk why but ts complains if not catched
+        }); //as Awaitable<AdapterAccount>;
+    }
+    //here not hydra
+    return prisma.account.create({ data }) as Awaitable<AdapterAccount>;
+  },
 } as Adapter;
 
 export const authOptions = {
@@ -27,6 +128,12 @@ export const authOptions = {
     OryHydraProvider({
       clientId: process.env.HYDRA_CLIENT_ID,
       clientSecret: process.env.HYDRA_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    GitHubProvider({
+      //TODO remove for testing only
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
     }),
   ],
   callbacks: {
@@ -52,10 +159,10 @@ export const authOptions = {
       }
       return session;
     },
-    async redirect(redirectCallback: RedirectCallback) {
-      // redirects to home page instead of auth page on signup/in/ or logout.
-      return redirectCallback.baseUrl;
-    },
+  },
+  async redirect(redirectCallback: RedirectCallback) {
+    // redirects to home page instead of auth page on signup/in/ or logout.
+    return redirectCallback.baseUrl;
   },
 };
 
