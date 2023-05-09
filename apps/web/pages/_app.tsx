@@ -7,7 +7,7 @@ import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import type { ReactElement, ReactNode } from 'react';
 import Head from 'next/head';
-import '../styles/globals.css';
+
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
   IP
@@ -45,7 +45,7 @@ function App({
         />
       </Head>
       <ChakraProvider theme={theme}>
-        <SiteProvider>{getLayout(<Component {...pageProps} />)}</SiteProvider>
+        {getLayout(<Component {...pageProps} />)}
       </ChakraProvider>
     </SessionProvider>
   );

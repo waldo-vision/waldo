@@ -13766,6 +13766,7 @@ __metadata:
     eslint-config-custom: "workspace:*"
     lucide-react: ^0.206.0
     tailwind-merge: ^1.12.0
+    tailwindcss: ^3.3.2
     tailwindcss-animate: ^1.0.5
     tsconfig: "workspace:*"
   languageName: unknown

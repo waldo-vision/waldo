@@ -28,6 +28,7 @@ import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
 import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
+import { Button as Bu } from 'ui';
 import { signIn } from 'next-auth/react';
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
@@ -113,6 +114,7 @@ export default function Home() {
               >
                 Waldo Vision
               </Heading>
+              <Bu variant={'destructive'}>Button</Bu>
               <Text fontSize={'27px'} textAlign={'center'}>
                 <b>Open-source </b>
                 <span>visual cheat detection, </span>
