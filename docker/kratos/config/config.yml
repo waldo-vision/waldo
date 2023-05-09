@@ -2,12 +2,30 @@ version: v0.11.0
 dev: true
 dsn: 'cockroach://root@cockroach:26257/kratos?sslmode=disable'
 cookies:
-  same_site: Strict
+  same_site: Lax
 serve:
   public:
-    base_url: http://127.0.0.1:4000/
+    base_url: http://127.0.0.1:4000
     cors:
+      debug: true
       enabled: true
+      allowed_origins:
+        - http://127.0.0.1:3001
+      allowed_methods:
+        - POST
+        - GET
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+      allowed_headers:
+        - Authorization
+        - Cookie
+        - Content-Type
+      exposed_headers:
+        - Content-Type
+        - Set-Cookie
+      allow_credentials: true
   admin:
     base_url: http://kratos:4434/
 

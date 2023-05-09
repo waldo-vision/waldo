@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 
 import { HandleError, KratosErrorResponse } from '../lib/hooks';
-import { kratos } from '../lib/kratos';
+import { kratos } from '@/lib/utils';
 
 // original source: https://github.com/ory/elements/blob/a340041ccdefecd24e860ecdfb47546862b15fc7/examples/nextjs-spa/src/pages/registration.tsx#L22-L149
 export default function Registration(): ReactElement {

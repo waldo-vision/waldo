@@ -1,24 +1,11 @@
-import { authError } from '@/lib/utils';
-import { Configuration, FrontendApi, OAuth2Api } from '@ory/client';
+import { authError, hydra, kratos } from '@/lib/utils';
 import { NextPageContext } from 'next';
-
-const ory = new OAuth2Api(
-  new Configuration({
-    basePath: process.env.ORY_HYDRA_ADMIN_URL,
-  }),
-);
-
 export async function getServerSideProps(context: NextPageContext) {
   //here check if logged in, since no oauth approval if not logged in
   const cookies = context.req?.headers.cookie;
   if (cookies == null) {
     return authError('No cookies set');
   }
-  const kratos = new FrontendApi( //the built in kratos does not work for some reason
-    new Configuration({
-      basePath: process.env.ORY_SDK_URL,
-    }),
-  );
   const session = await kratos.toSession(undefined, {
     headers: { cookie: cookies },
   });
@@ -30,17 +17,29 @@ export async function getServerSideProps(context: NextPageContext) {
   }
 
   const oryid = session.data.id;
+  if (session.data.identity.metadata_public == null) {
+    return authError('No metadata found in session');
+  }
+  const provider = (session.data.identity.metadata_public as any).provider;
+  const provider_id = (session.data.identity.metadata_public as any)
+    .provider_id;
+  const role = (session.data.identity.metadata_public as any).role;
   const email = session.data.identity.traits['email'];
+  const name = session.data.identity.traits['name'];
+  const image = session.data.identity.traits['image'];
+  if (!(provider && provider_id && role && email && name && image)) {
+    return authError('Something is null in user data');
+  }
 
   const challenge_text = context.query.consent_challenge?.toString();
   if (challenge_text == null) {
     return;
   }
-  const challenge = await ory
+  const challenge = await hydra
     .getOAuth2ConsentRequest({ consentChallenge: challenge_text })
     .then(({ data: body }) => body);
 
-  const data = await ory.acceptOAuth2ConsentRequest({
+  const data = await hydra.acceptOAuth2ConsentRequest({
     consentChallenge: challenge_text,
     acceptOAuth2ConsentRequest: {
       grant_scope: challenge.requested_scope,
@@ -48,9 +47,11 @@ export async function getServerSideProps(context: NextPageContext) {
       session: {
         id_token: {
           email: email,
-          image: 'TODOREPLACEIMAGE',
-          name: 'TODOREPLACENAME',
-          battletag: undefined,
+          image: image,
+          name: name,
+          provider: provider,
+          provider_id: provider_id,
+          role: role,
         },
       },
     },

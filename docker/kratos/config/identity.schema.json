@@ -25,11 +25,30 @@
               "via": "email"
             }
           }
+        },
+        "name": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
         }
       },
-      "required": [
-        "email"
-      ],
+      "required": ["email"],
+      "additionalProperties": false
+    },
+    "metadata_public": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "provider_id": {
+          "type": "string"
+        }
+      },
       "additionalProperties": false
     }
   }

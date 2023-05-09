@@ -1,4 +1,4 @@
-import { authError } from '@/lib/utils';
+import { authError, kratos } from '@/lib/utils';
 import { Configuration, OAuth2Api, FrontendApi } from '@ory/client';
 import { NextPageContext } from 'next';
 
@@ -10,11 +10,6 @@ export async function getServerSideProps(context: NextPageContext) {
   if (cookies == null) {
     return authError('No cookies set');
   }
-  const kratos = new FrontendApi( //the built in kratos does not work for some reason
-    new Configuration({
-      basePath: process.env.ORY_SDK_URL,
-    }),
-  );
   const session = await kratos
     .toSession(undefined, {
       headers: { cookie: cookies },
@@ -22,12 +17,15 @@ export async function getServerSideProps(context: NextPageContext) {
     .catch(() => null);
   if (session == null || session.status != 200) {
     if (login_challenge != null) {
-      return authError(
-        'Session not valid (!= 200)',
-        process.env.ORY_SDK_URL +
-          '/self-service/login/browser?login_challenge=' +
-          login_challenge,
-      );
+      return {
+        redirect: {
+          destination:
+            process.env.NEXT_PUBLIC_ORY_KRATOS_PUBLIC_URL +
+            '/self-service/login/browser?login_challenge=' +
+            login_challenge,
+          permanent: false,
+        },
+      };
     }
     return authError('Session not valid (!= 200)');
   }
