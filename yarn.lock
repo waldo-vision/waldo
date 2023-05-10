@@ -11867,7 +11867,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.2.0, react-dom@npm:^18.1.0":
+"react-dom@npm:18.2.0, react-dom@npm:^18.1.0, react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
   dependencies:
@@ -12008,7 +12008,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.2.0, react@npm:^18.1.0":
+"react@npm:18.2.0, react@npm:^18.1.0, react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -13168,6 +13168,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tailwind-config@workspace:*, tailwind-config@workspace:packages/tailwind-config":
+  version: 0.0.0-use.local
+  resolution: "tailwind-config@workspace:packages/tailwind-config"
+  dependencies:
+    autoprefixer: ^10.4.14
+    postcss: ^8.4.23
+    tailwindcss: ^3.3.2
+    tailwindcss-animate: ^1.0.5
+  languageName: unknown
+  linkType: soft
+
 "tailwind-merge@npm:^1.12.0":
   version: 1.12.0
   resolution: "tailwind-merge@npm:1.12.0"
@@ -13765,6 +13776,9 @@ __metadata:
     clsx: ^1.2.1
     eslint-config-custom: "workspace:*"
     lucide-react: ^0.206.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    tailwind-config: "workspace:*"
     tailwind-merge: ^1.12.0
     tailwindcss: ^3.3.2
     tailwindcss-animate: ^1.0.5
@@ -14363,6 +14377,7 @@ __metadata:
     redis: ^4.5.1
     sharp: ^0.31.2
     superjson: ^1.11.0
+    tailwind-config: "workspace:*"
     tailwindcss: ^3.3.2
     trpc-openapi: ^1.0.0
     tsconfig: "workspace:*"

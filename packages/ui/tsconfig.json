@@ -1,0 +1,9 @@
+{
+  "extends": "tsconfig/nextjs.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {}
+  },
+  "exclude": ["node_modules"]
+}
