@@ -4,11 +4,11 @@ import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '../../misc/cn';
 import '../../misc/globals.css';
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background',
+  'inline-flex items-center justify-center rounded-md text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background font-default',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-[#E545FF]/[0.2] text-white',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
@@ -40,12 +40,23 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
+    let height = 'h-10'; // default;
+    if (size == 'sm') height = 'h-9';
+    if (size == 'lg') height = 'h-11';
     return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
+      <div className="inline-flex">
+        <div
+          className={`bg-gradient-to-r from-[#6F1DD8] to-[#A21CAF] px-[1px] py-[1px] rounded-md ${height}`}
+        >
+          <div className={`bg-[#111827] h-full rounded-md ${height}`}>
+            <Comp
+              className={cn(buttonVariants({ variant, size, className }))}
+              ref={ref}
+              {...props}
+            />
+          </div>
+        </div>
+      </div>
     );
   },
 );
