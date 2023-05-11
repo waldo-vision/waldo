@@ -40,23 +40,35 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
+    // if we try and just append the size style to the classNames,
+    // it comes with extra px styles which screws up the custom containers below
     let height = 'h-10'; // default;
     if (size == 'sm') height = 'h-9';
     if (size == 'lg') height = 'h-11';
     return (
-      <div className="inline-flex">
-        <div
-          className={`bg-gradient-to-r from-[#6F1DD8] to-[#A21CAF] px-[1px] py-[1px] rounded-md ${height}`}
-        >
-          <div className={`bg-[#111827] h-full rounded-md ${height}`}>
-            <Comp
-              className={cn(buttonVariants({ variant, size, className }))}
-              ref={ref}
-              {...props}
-            />
+      <>
+        {variant == 'default' ? (
+          <div className="inline-flex">
+            <div
+              className={`bg-gradient-to-r from-[#6F1DD8] to-[#A21CAF] px-[1px] py-[1px] rounded-md ${height}`}
+            >
+              <div className={`bg-[#111827] h-full rounded-md ${height}`}>
+                <Comp
+                  className={cn(buttonVariants({ variant, size, className }))}
+                  ref={ref}
+                  {...props}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        ) : (
+          <Comp
+            className={cn(buttonVariants({ variant, size, className }))}
+            ref={ref}
+            {...props}
+          />
+        )}
+      </>
     );
   },
 );
