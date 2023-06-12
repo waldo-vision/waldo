@@ -20,7 +20,7 @@
     "express-rate-limit": "^6.6.0",
     "express-zod-api": "^10.3.2",
     "mime": "^3.0.0",
-    "mongoose": "^7.0.4",
+    "mongoose": "^7.2.3",
     "uuid": "^9.0.0",
     "ytdl-core": "^4.11.4"
   },
