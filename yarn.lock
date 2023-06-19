@@ -5370,7 +5370,7 @@ __metadata:
     express-rate-limit: ^6.6.0
     express-zod-api: ^10.3.2
     mime: ^3.0.0
-    mongoose: ^7.0.4
+    mongoose: ^7.3.0
     ts-node-dev: ^2.0.0
     tsconfig: "workspace:*"
     typescript: ^5.0.4
@@ -5525,10 +5525,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bson@npm:^5.0.1":
-  version: 5.2.0
-  resolution: "bson@npm:5.2.0"
-  checksum: 1297f8776a05fe3c03b5a1c73210389bc3e596ee6f1e772b76c021fff5537d0c91e523462ba196a8a839246613a87cffbd6486d387a849c7de7cde64d1af7812
+"bson@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "bson@npm:5.3.0"
+  checksum: c1e57630fea6b82ad8bc0fb83fd8f16a2620a836ab69f6b9433250cd19704c0c8995681a3bfab9f967eae30512f0c8ee921d42ace4c1781726600c4a367593cf
   languageName: node
   linkType: hard
 
@@ -10650,17 +10650,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:5.1.0":
-  version: 5.1.0
-  resolution: "mongodb@npm:5.1.0"
+"mongodb@npm:5.6.0":
+  version: 5.6.0
+  resolution: "mongodb@npm:5.6.0"
   dependencies:
-    bson: ^5.0.1
+    bson: ^5.3.0
     mongodb-connection-string-url: ^2.6.0
     saslprep: ^1.0.3
     socks: ^2.7.1
   peerDependencies:
     "@aws-sdk/credential-providers": ^3.201.0
-    mongodb-client-encryption: ^2.3.0
+    mongodb-client-encryption: ">=2.3.0 <3"
     snappy: ^7.2.2
   dependenciesMeta:
     saslprep:
@@ -10672,22 +10672,22 @@ __metadata:
       optional: true
     snappy:
       optional: true
-  checksum: 993c14299ade84d4aadb06f16dccf31502b1018bf7a813d2477bf7a465854d3545a8950372e4410cd549c4426cf02b5d18cc4467eba35d031b46536e5cc79e3f
+  checksum: 5b1594b24795b2a7824095a917ede2fc37aaef31e60320c833ee9b11cc2f3de9dd87d5afacea2e41eb5eb579ac9780f5bc4b0bb11d3b1be78e8bf0014528192a
   languageName: node
   linkType: hard
 
-"mongoose@npm:^7.0.4":
-  version: 7.0.4
-  resolution: "mongoose@npm:7.0.4"
+"mongoose@npm:^7.3.0":
+  version: 7.3.0
+  resolution: "mongoose@npm:7.3.0"
   dependencies:
-    bson: ^5.0.1
+    bson: ^5.3.0
     kareem: 2.5.1
-    mongodb: 5.1.0
+    mongodb: 5.6.0
     mpath: 0.9.0
     mquery: 5.0.0
     ms: 2.1.3
     sift: 16.0.1
-  checksum: 4ba3aaa8054a2f70564da2b34a1b13f4b0d53cda66db12fffc24f4ac6824a6887196d16ca1b1a1d38351069f970c2545a716cb285cf7305bf1d917c27918fe9b
+  checksum: 188877cfa5937529ef4fbbf4e3ad52df3f6884bf85c921cd603b44cd154262865846504de4f41802d0f5f5eb87dfdac16ed5016642e367442f24f7c7375194eb
   languageName: node
   linkType: hard
 
