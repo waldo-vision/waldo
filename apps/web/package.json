@@ -49,7 +49,7 @@
   "devDependencies": {
     "@types/node": "18.16.0",
     "@types/react": "^18.0.38",
-    "@types/react-dom": "^18.0.11",
+    "@types/react-dom": "^18.2.6",
     "@types/validator": "^13.7.15",
     "eslint": "^8.39.0",
     "eslint-config-custom": "workspace:*",
