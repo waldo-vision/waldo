@@ -96,10 +96,15 @@ const adapter = {
               where: {
                 email: userinfo.email,
               },
+              include: {
+                accounts: {},
+              },
             })
             .then(user => {
-              if (user === null) {
-                //user does not exist yet with given email
+              console.log(JSON.stringify(user));
+              if (user === null || user.accounts.length === 0) {
+                //user.accounts.length is fix for case, where the system created the user first, without creating acc, so if no accounts found, user should be linked
+                //no accounts linked to user
                 return prisma.account.create({
                   data,
                 }) as Awaitable<AdapterAccount>;
