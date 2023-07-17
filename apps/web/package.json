@@ -38,7 +38,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
-    "sharp": "^0.32.0",
+    "sharp": "^0.32.3",
     "superjson": "^1.12.3",
     "trpc-openapi": "^1.1.2",
     "typescript": "5.0.4",
