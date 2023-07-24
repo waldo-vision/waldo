@@ -1273,15 +1273,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/icons@npm:^2.0.18":
-  version: 2.0.18
-  resolution: "@chakra-ui/icons@npm:2.0.18"
+"@chakra-ui/icon@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@chakra-ui/icon@npm:3.1.0"
   dependencies:
-    "@chakra-ui/icon": 3.0.16
+    "@chakra-ui/shared-utils": 2.0.5
   peerDependencies:
     "@chakra-ui/system": ">=2.0.0"
     react: ">=18"
-  checksum: c3967af062f5808486cda6ce72a68e8279882f071c6ff715d4f669257280f8d8685fe8b4efe1a914d227c34446da51acc9ef4cc5ef13801cf453b27e8eabf3e9
+  checksum: e8fd15f9e5d43f5b04a6eedfada15a421f21d5fa68ab72d1ac19193338c616ee1afcb41e6e7c95dc566813251a86ffb36ff76cd9f9248ed2ab11bcf5788dd9ac
+  languageName: node
+  linkType: hard
+
+"@chakra-ui/icons@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@chakra-ui/icons@npm:2.1.0"
+  dependencies:
+    "@chakra-ui/icon": 3.1.0
+  peerDependencies:
+    "@chakra-ui/system": ">=2.0.0"
+    react: ">=18"
+  checksum: 123b98349cc4d78572c366640dd865d12af0037a9ac1175cd09fb0025dcee4f51a6c7006c8561487611fc79722fa95b94b691edda494384bb9d67eedca64d7de
   languageName: node
   linkType: hard
 
@@ -14194,7 +14206,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:apps/web"
   dependencies:
-    "@chakra-ui/icons": ^2.0.18
+    "@chakra-ui/icons": ^2.1.0
     "@chakra-ui/layout": ^2.1.18
     "@chakra-ui/provider": ^2.2.2
     "@chakra-ui/react": ^2.5.5
