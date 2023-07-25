@@ -7,6 +7,7 @@ import {
   useToast,
   Spinner,
   Tag,
+  Image as Img,
 } from '@chakra-ui/react';
 import { useState, useEffect, ReactElement } from 'react';
 import { useRouter } from 'next/router';
@@ -17,7 +18,6 @@ import { prisma } from '@server/db/client';
 import TurnstileWidget from '@components/TurnstileWidget';
 import Finished from '@components/Finished';
 import { getSession } from 'next-auth/react';
-import Image from 'next/image';
 import { games } from '@config/gameplay';
 import { GameplayType } from '@utils/zod/gameplay';
 interface ReviewItem {
@@ -193,7 +193,7 @@ export default function Review() {
                   <Flex direction={'row'}>
                     {/* User Icon */}
                     <Box>
-                      <Image
+                      <Img
                         src={
                           reviewItem != null &&
                           reviewItem.user != null &&
@@ -206,6 +206,7 @@ export default function Review() {
                         height={54}
                         style={{ borderRadius: '100%' }}
                         onClick={() => setRefreshState(refreshState + 1)}
+                        fallbackSrc="https://waldo.vision/battle_net.png"
                       />
                     </Box>
                     {/* Top titles */}
