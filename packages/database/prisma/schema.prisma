@@ -29,7 +29,7 @@ model WaldoSite {
   maintenance      Boolean     @default(false)
   isCustomAlert    Boolean
   alertTitle       String?
-  alertDescription String
+  alertDescription String?
   pages            WaldoPage[]
 
   createdAt DateTime @default(now())
