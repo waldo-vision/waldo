@@ -12,6 +12,9 @@ services:
       - 3000:3000
     env_file:
       - ./apps/web/.env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
 
   migrate:
     container_name: migrate
