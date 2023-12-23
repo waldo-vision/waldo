@@ -49,6 +49,8 @@ WORKDIR /app
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV INFISICAL_ENV prod
+ENV INFISICAL_DISABLE_UPDATE_CHECK true
 
 # Install infisical
 RUN apk add --no-cache bash curl && curl -1sLf \
@@ -69,4 +71,4 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
-CMD ["infisical", "run", "--", "node", "apps/web/server.js"]
+CMD ["infisical", "run", "--env", "${INFISICAL_ENV}", "--", "node", "apps/web/server.js"]

@@ -16,6 +16,8 @@ FROM node:18-alpine3.17 AS runner
 # set workdir
 WORKDIR /app
 ENV NODE_ENV production
+ENV INFISICAL_ENV prod
+ENV INFISICAL_DISABLE_UPDATE_CHECK true
 
 # Install infisical
 RUN apk add --no-cache bash curl && curl -1sLf \
@@ -33,4 +35,4 @@ COPY --from=builder /app/out/full/ .
 
 ENV Mode migrate
 
-ENTRYPOINT ["infisical", "run", "--", "sh", "./packages/database/entrypoint.sh"]
+CMD ["infisical", "run", "--env", "${INFISICAL_ENV}", "--", "sh", "./packages/database/entrypoint.sh"]
