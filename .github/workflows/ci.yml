@@ -80,24 +80,24 @@ jobs:
         run: yarn install
 
       # See https://stackoverflow.com/questions/73648218/github-action-setup-secure-cockroachdb
-      - name: Start a single CockroachDB instance
+      - name: Start Postgres instance
         run: |
           docker compose up -d
           sudo apt update && sudo apt install wait-for-it -y
-          wait-for-it -h localhost -p 26257
+          wait-for-it -h localhost -p 5432
 
       - name: Build server
         run: yarn turbo run build --filter=web...
 
       - name: Run migrations
         env:
-          DATABASE_URL: postgresql://root@localhost:26257?sslmode=disable
+          DATABASE_URL: postgresql://waldo:waldo@localhost:5432/waldo
         run: |
           yarn turbo run db:push
 
       - name: Run tests
         env:
-          DATABASE_URL: postgresql://root@localhost:26257?sslmode=disable
+          DATABASE_URL: postgresql://waldo:waldo@localhost:5432/waldo
           WALDO_URI: http://localhost:3000
           DISABLE_VERIFY_AUTH: '1'
           NEXTAUTH_URL: http://localhost:3000
