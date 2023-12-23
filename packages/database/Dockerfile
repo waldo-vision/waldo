@@ -17,6 +17,11 @@ FROM node:18-alpine3.17 AS runner
 WORKDIR /app
 ENV NODE_ENV production
 
+# Install infisical
+RUN apk add --no-cache bash curl && curl -1sLf \
+'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.alpine.sh' | bash \
+&& apk add infisical
+
 # Copy node_modules from installer to runner
 COPY .yarn/releases .yarn/releases
 COPY .yarnrc.yml .yarnrc.yml
@@ -28,4 +33,4 @@ COPY --from=builder /app/out/full/ .
 
 ENV Mode migrate
 
-ENTRYPOINT ["sh", "./packages/database/entrypoint.sh"]
+ENTRYPOINT ["infisical", "run", "--", "sh", "./packages/database/entrypoint.sh"]
