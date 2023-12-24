@@ -1,8 +1,10 @@
+import axios from 'axios';
+
 const retrieveUserInfo = async () => {
   const api_url = '/api/logto/user-info';
-  const req = await fetch(api_url);
-  const res = await req.json();
-  console.log(res);
+  const request = await axios.get(api_url).then(res => {
+    return res;
+  });
 };
 
 export { retrieveUserInfo };

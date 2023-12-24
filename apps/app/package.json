@@ -31,6 +31,7 @@
     "@trpc/react-query": "^10.21.1",
     "@trpc/server": "^10.21.1",
     "argon2": "^0.30.3",
+    "axios": "^1.6.2",
     "database": "workspace:*",
     "framer-motion": "^10.12.4",
     "next": "13.2.4",

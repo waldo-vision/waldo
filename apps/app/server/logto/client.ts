@@ -1,11 +1,11 @@
 import LogtoClient from '@logto/next';
 
 export const logtoClient = new LogtoClient({
-  appId: 'ix0dpddnn8t5o641ibe1j',
-  appSecret: 'tQ7XDCxi4FWo97CZBek0K4AuvfKWxP3H',
-  endpoint: 'https://id.foo.bar', // E.g. http://localhost:3001
-  baseUrl: 'https://app.foo.bar', // E.g. http://localhost:3000
-  cookieSecret: 'complex_password_at_least_32_characters_long',
+  appId: process.env.APP_ID,
+  appSecret: process.env.APP_SECRET,
+  endpoint: process.env.ENDPOINT, // E.g. http://localhost:3001
+  baseUrl: process.env.BASE_URL, // E.g. http://localhost:3000
+  cookieSecret: process.env.COOKIE_SECRET,
   cookieSecure: process.env.NODE_ENV === 'production',
   scopes: ['email', 'identities'],
 });
