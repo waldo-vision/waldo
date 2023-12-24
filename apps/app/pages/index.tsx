@@ -29,7 +29,7 @@ import ScansImage from '../public/Scans.png';
 import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
 import { useRouter } from 'next/router';
-import { retrieveUserInfo } from '@server/utils/logto';
+import { retrieveUserInfoClient } from '@server/utils/logto';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
@@ -39,8 +39,8 @@ export default function Home() {
     setY(window.scrollY);
   };
 
-  function handleClick1() {
-    console.log(retrieveUserInfo());
+  async function handleClick1() {
+    console.log(await retrieveUserInfoClient());
   }
 
   const router = useRouter();

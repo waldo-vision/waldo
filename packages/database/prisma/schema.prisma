@@ -96,6 +96,11 @@ enum GameplayType {
   CS2
 }
 
+model V2Account {
+  id     String @id @default(cuid())
+  userId String
+}
+
 // NEXT-AUTH
 model Account {
   id                String  @id @default(cuid())
@@ -148,8 +153,8 @@ model User {
   role          Roles           @default(USER)
   gameplayVotes GameplayVotes[] @relation("user")
   apiKeys       ApiKey[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now()) @updatedAt
 }
 
 enum ApiKeyState {

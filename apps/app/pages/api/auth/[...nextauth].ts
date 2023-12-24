@@ -38,31 +38,9 @@ const adapter = {
 export const authOptions = {
   adapter,
   providers: [
-    DiscordProvider({
-      clientId: process.env.DISCORD_CLIENT_ID,
-      clientSecret: process.env.DISCORD_CLIENT_SECRET,
-      authorization: { params: { scope: 'identify email guilds' } },
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
     GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    }),
-    BattleNetProvider({
-      clientId: process.env.BTLNET_CLIENT_ID,
-      clientSecret: process.env.BTLNET_CLIENT_SECRET,
-    }),
-    FaceBookProvider({
-      clientId: process.env.FB_CLIENT_ID,
-      clientSecret: process.env.FB_CLIENT_SECRET,
-    }),
-    TwitchProvider({
-      clientId: process.env.TWITCH_CLIENT_ID,
-      clientSecret: process.env.TWITCH_CLIENT_SECRET,
-      issuer: 'https://id.twitch.tv/oauth2/authorize',
+      clientId: 'ceae7d1514b5772a274c',
+      clientSecret: '3f3aa88157c44d31bd7e850b6a1ecf7572a1f15d',
     }),
   ],
   callbacks: {

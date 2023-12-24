@@ -1,5 +1,4 @@
 import LogtoClient from '@logto/next';
-
 export const logtoClient = new LogtoClient({
   appId: process.env.APP_ID,
   appSecret: process.env.APP_SECRET,
