@@ -29,6 +29,7 @@ import ScansImage from '../public/Scans.png';
 import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
 import { useRouter } from 'next/router';
+import { retrieveUserInfo } from '@server/utils/logto';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
@@ -37,6 +38,10 @@ export default function Home() {
   const updateScrollPosition = () => {
     setY(window.scrollY);
   };
+
+  function handleClick1() {
+    console.log(retrieveUserInfo());
+  }
 
   const router = useRouter();
 
@@ -104,9 +109,6 @@ export default function Home() {
             // quality={1}
             placeholder={'blur'}
           />
-          <button onClick={() => router.push('/api/logto/sign-in')}>
-            Sign In
-          </button>
 
           <Image
             style={{
@@ -136,6 +138,11 @@ export default function Home() {
               alignItems={'center'}
               gap={3}
             >
+              <Button
+                onClick={() => {
+                  handleClick1();
+                }}
+              ></Button>
               <Heading
                 fontSize={'62px'}
                 py={2}

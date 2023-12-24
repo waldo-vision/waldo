@@ -14298,9 +14298,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web@workspace:*, web@workspace:apps/web":
+"web@workspace:*, web@workspace:apps/app":
   version: 0.0.0-use.local
-  resolution: "web@workspace:apps/web"
+  resolution: "web@workspace:apps/app"
   dependencies:
     "@chakra-ui/icons": ^2.0.18
     "@chakra-ui/layout": ^2.1.18
