@@ -97,8 +97,15 @@ enum GameplayType {
 }
 
 model V2Account {
-  id     String @id @default(cuid())
-  userId String
+  id                String @id @default(cuid())
+  provider          String
+  providerAccountId String
+  logtoId           String @unique
+  userId            String
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 // NEXT-AUTH
@@ -155,6 +162,7 @@ model User {
   apiKeys       ApiKey[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @default(now()) @updatedAt
+  v2Account     V2Account[]
 }
 
 enum ApiKeyState {
