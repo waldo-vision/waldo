@@ -28,6 +28,7 @@ import InScansImage from '../public/InScans.png';
 import ScansImage from '../public/Scans.png';
 import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
+import { useRouter } from 'next/router';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
@@ -36,6 +37,8 @@ export default function Home() {
   const updateScrollPosition = () => {
     setY(window.scrollY);
   };
+
+  const router = useRouter();
 
   useEffect(() => {
     updateScrollPosition();
@@ -101,6 +104,9 @@ export default function Home() {
             // quality={1}
             placeholder={'blur'}
           />
+          <button onClick={() => router.push('/api/logto/sign-in')}>
+            Sign In
+          </button>
 
           <Image
             style={{

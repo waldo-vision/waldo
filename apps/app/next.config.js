@@ -74,6 +74,9 @@ const nextConfig = {
       securityHeaders[4].value =
         "default-src 'self'; img-src * data:; script-src 'self' https://plausible.waldo.vision 'sha256-ac1zrQEmy3XGPb0cfRRfRfJrTtI7BslOmDFWYr9sDbQ=' https://challenges.cloudflare.com/; style-src 'self' 'unsafe-inline'; connect-src 'self' https://plausible.waldo.vision https://youtube.com https://www.youtube.com; frame-src https://challenges.cloudflare.com https://youtube.com https://www.youtube.com; upgrade-insecure-requests;";
     }
+    if (process.env.NODE_ENV !== 'production') {
+      securityHeaders[4].value = '';
+    }
     return [
       {
         // Apply these headers to all routes in your application.

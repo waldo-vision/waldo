@@ -2211,6 +2211,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@edge-runtime/cookies@npm:^4.0.0":
+  version: 4.0.2
+  resolution: "@edge-runtime/cookies@npm:4.0.2"
+  checksum: 6e9fae9d1227eb024658d928a8b544d68071cae875b8df0047a741d7ce42af0d0771a9b54ac37e3a46f72f79ba5b9f92dac9ab4b42e4fa1c5a592fe46b2ba204
+  languageName: node
+  linkType: hard
+
 "@emmetio/abbreviation@npm:^2.2.3":
   version: 2.2.3
   resolution: "@emmetio/abbreviation@npm:2.2.3"
@@ -3166,6 +3173,53 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@logto/client@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "@logto/client@npm:2.3.1"
+  dependencies:
+    "@logto/js": ^3.0.0
+    "@silverhand/essentials": ^2.6.2
+    camelcase-keys: ^7.0.1
+    jose: ^5.0.0
+  checksum: 44dc483f469de9664f7b82fe7e1f8e51aa0e9fda2416b4314fea874159ede3b0b24ea1770009f73ff88c90b7be4424ffcd332ad8a925e4eae3a566a95377bbc2
+  languageName: node
+  linkType: hard
+
+"@logto/js@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "@logto/js@npm:3.0.1"
+  dependencies:
+    "@silverhand/essentials": ^2.6.2
+    camelcase-keys: ^7.0.1
+    jose: ^5.0.0
+  checksum: 94193773694b87f77b67ce96c8b16316e5e9d80bfc32b30f4a33d5bea25cab469b52c7e9fb6a7b29c792d1c60dac87b9e6274586db4814d5511649a11afe3c30
+  languageName: node
+  linkType: hard
+
+"@logto/next@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@logto/next@npm:2.3.0"
+  dependencies:
+    "@edge-runtime/cookies": ^4.0.0
+    "@logto/node": ^2.2.0
+  peerDependencies:
+    next: ">=12"
+  checksum: cb1a8c563eea3e0a171d6bbf94bd3073b0d25983354bd59d72ca045984ef846e08865c15190cd245f96f0921adb2b06706a69372e0fbe0f0c19f1cd8e7bae2ae
+  languageName: node
+  linkType: hard
+
+"@logto/node@npm:^2.2.0":
+  version: 2.2.2
+  resolution: "@logto/node@npm:2.2.2"
+  dependencies:
+    "@logto/client": ^2.3.1
+    "@silverhand/essentials": ^2.6.2
+    js-base64: ^3.7.4
+    node-fetch: ^2.6.7
+  checksum: af5b0226dd5f2bd3c45696d7d6cc3612249a6d5d209cf7e2eb9158ef08e344e6f4d87bad2c684b9e6033d50d6fbebf502e19cb11dd3869d78b1a66619c5ccb02
+  languageName: node
+  linkType: hard
+
 "@mapbox/node-pre-gyp@npm:^1.0.10":
   version: 1.0.10
   resolution: "@mapbox/node-pre-gyp@npm:1.0.10"
@@ -3813,6 +3867,13 @@ __metadata:
     "@sentry/cli": ^1.74.6
     webpack-sources: ^2.0.0 || ^3.0.0
   checksum: d582026c3686f287ddc23de4e64c6f03afc2a73a84ec5a8fd3eded56a45683094bf132f4c624a35386fff872eb518771109d5c0b91a2cf79da0aff035c5bb05b
+  languageName: node
+  linkType: hard
+
+"@silverhand/essentials@npm:^2.6.2":
+  version: 2.8.6
+  resolution: "@silverhand/essentials@npm:2.8.6"
+  checksum: aa847f272286605362f60a2ec3705de39fddc19eab5b1d852af386b6562a902bf3900c577e021c4d48dc060e1ba06f218671fa0043856a0741d6933f67e1e5c7
   languageName: node
   linkType: hard
 
@@ -5634,6 +5695,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"camelcase-keys@npm:^7.0.1":
+  version: 7.0.2
+  resolution: "camelcase-keys@npm:7.0.2"
+  dependencies:
+    camelcase: ^6.3.0
+    map-obj: ^4.1.0
+    quick-lru: ^5.1.1
+    type-fest: ^1.2.1
+  checksum: b5821cc48dd00e8398a30c5d6547f06837ab44de123f1b3a603d0a03399722b2fc67a485a7e47106eb02ef543c3b50c5ebaabc1242cde4b63a267c3258d2365b
+  languageName: node
+  linkType: hard
+
 "camelcase@npm:^5.3.1":
   version: 5.3.1
   resolution: "camelcase@npm:5.3.1"
@@ -5641,7 +5714,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelcase@npm:^6.2.0":
+"camelcase@npm:^6.2.0, camelcase@npm:^6.3.0":
   version: 6.3.0
   resolution: "camelcase@npm:6.3.0"
   checksum: 8c96818a9076434998511251dcb2761a94817ea17dbdc37f47ac080bd088fc62c7369429a19e2178b993497132c8cbcf5cc1f44ba963e76782ba469c0474938d
@@ -9493,6 +9566,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jose@npm:^5.0.0":
+  version: 5.1.3
+  resolution: "jose@npm:5.1.3"
+  checksum: c0225c3408b1c3fcfc40c68161e5e14d554c606ffa428250e0db618469df52f4ce32c69918e296c8c299db1081981638096be838426f61d926269d35602fd814
+  languageName: node
+  linkType: hard
+
+"js-base64@npm:^3.7.4":
+  version: 3.7.5
+  resolution: "js-base64@npm:3.7.5"
+  checksum: 67a78c8b1c47b73f1c6fba1957e9fe6fd9dc78ac93ac46cc2e43472dcb9cf150d126fb0e593192e88e0497354fa634d17d255add7cc6ee3c7b4d29870faa8e18
+  languageName: node
+  linkType: hard
+
 "js-sdsl@npm:^4.1.4":
   version: 4.2.0
   resolution: "js-sdsl@npm:4.2.0"
@@ -9903,6 +9990,13 @@ __metadata:
   dependencies:
     tmpl: 1.0.5
   checksum: b38a025a12c8146d6eeea5a7f2bf27d51d8ad6064da8ca9405fcf7bf9b54acd43e3b30ddd7abb9b1bfa4ddb266019133313482570ddb207de568f71ecfcf6060
+  languageName: node
+  linkType: hard
+
+"map-obj@npm:^4.1.0":
+  version: 4.3.0
+  resolution: "map-obj@npm:4.3.0"
+  checksum: fbc554934d1a27a1910e842bc87b177b1a556609dd803747c85ece420692380827c6ae94a95cce4407c054fa0964be3bf8226f7f2cb2e9eeee432c7c1985684e
   languageName: node
   linkType: hard
 
@@ -11829,6 +11923,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"quick-lru@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "quick-lru@npm:5.1.1"
+  checksum: a516faa25574be7947969883e6068dbe4aa19e8ef8e8e0fd96cddd6d36485e9106d85c0041a27153286b0770b381328f4072aa40d3b18a19f5f7d2b78b94b5ed
+  languageName: node
+  linkType: hard
+
 "ramda@npm:0.29.0":
   version: 0.29.0
   resolution: "ramda@npm:0.29.0"
@@ -13611,6 +13712,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"type-fest@npm:^1.2.1":
+  version: 1.4.0
+  resolution: "type-fest@npm:1.4.0"
+  checksum: b011c3388665b097ae6a109a437a04d6f61d81b7357f74cbcb02246f2f5bd72b888ae33631b99871388122ba0a87f4ff1c94078e7119ff22c70e52c0ff828201
+  languageName: node
+  linkType: hard
+
 "type-fest@npm:^2.5.0":
   version: 2.19.0
   resolution: "type-fest@npm:2.19.0"
@@ -14202,6 +14310,7 @@ __metadata:
     "@emotion/styled": ^11.10.6
     "@fontsource/nunito": ^4.5.12
     "@heroicons/react": ^2.0.17
+    "@logto/next": ^2.3.0
     "@marsidev/react-turnstile": 0.2.0
     "@next-auth/prisma-adapter": ^1.0.6
     "@sentry/integrations": ^7.49.0
