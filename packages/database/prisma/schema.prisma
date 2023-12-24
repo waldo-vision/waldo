@@ -146,6 +146,23 @@ enum Roles {
   ADMIN
 }
 
+enum InfractionType {
+  CORRECTION
+  WARNING
+  SUSPENSION
+  PERMA_SUSPENSION
+}
+
+// when an infraction is created, a model will be created for the offender
+// and for the executor, therefore the ambiguous naming "subject" is used.
+model Infractions {
+  infractionId String         @id @default(cuid())
+  type         InfractionType @default(CORRECTION)
+  subjectId    String
+  subject      User           @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  executed     Boolean        @default(false)
+}
+
 model User {
   id            String          @id @default(cuid())
   name          String?
@@ -163,6 +180,7 @@ model User {
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @default(now()) @updatedAt
   v2Account     V2Account[]
+  infractions   Infractions[]
 }
 
 enum ApiKeyState {

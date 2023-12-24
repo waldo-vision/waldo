@@ -28,7 +28,7 @@ export default async function handler(
     // V1 Account exists
     if (result || result !== null) {
       try {
-        const createV2Account = await prisma.v2Account.create({
+        await prisma.v2Account.create({
           data: {
             provider: Object.keys(logto_user.userInfo.identities)[0],
             providerAccountId: identityData.id,
@@ -36,6 +36,21 @@ export default async function handler(
             userId: result.userId,
           },
         });
+
+        // update user with logto relevant info
+        try {
+          await prisma.user.update({
+            where: {
+              id: result.userId,
+            },
+            data: {
+              image: identityData.avatar,
+              name: identityData.name,
+            },
+          });
+        } catch (err) {
+          // handle error
+        }
       } catch (err) {
         // handle error
       }
@@ -45,6 +60,11 @@ export default async function handler(
   }
 
   // if no account exists then just create a normal V2 Account.
+
+  try {
+  } catch (err) {
+    // handle error
+  }
 
   return res.status(200).json(logto_user);
 }
