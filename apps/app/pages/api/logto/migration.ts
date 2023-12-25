@@ -103,5 +103,5 @@ export default async function handler(
     });
   } catch (err) {}
 
-  return res.status(200).json(logto_user);
+  return res.redirect('/');
 }

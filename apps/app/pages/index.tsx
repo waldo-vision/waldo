@@ -314,7 +314,7 @@ export default function Home() {
           zIndex={5}
         >
           {/* imp trpc query to retrieve data from waldosite if maintenance mode is enabled */}
-          {session?.user?.blacklisted ? (
+          {session?.blacklisted ? (
             <Alert status={'warning'}>
               <AlertIcon />
               <Box>

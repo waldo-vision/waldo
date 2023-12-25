@@ -12,6 +12,7 @@ import {
   useState,
 } from 'react';
 import * as Sentry from '@sentry/nextjs';
+import { getUserData, V2Session } from '@server/utils/logto';
 
 type ServiceConfig =
   | {
@@ -27,8 +28,8 @@ type Props = {
 };
 
 export interface ISiteContext {
-  session: Session | undefined | null;
-  setSession: Dispatch<SetStateAction<Session | undefined | null>>;
+  session: V2Session | undefined | null;
+  setSession: Dispatch<SetStateAction<V2Session | undefined | null>>;
   isLoading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setSiteConfig: Dispatch<SetStateAction<ServiceConfig>>;
@@ -45,7 +46,7 @@ export interface ISiteContext {
 
 const SiteContext = createContext<ISiteContext>({
   session: undefined,
-  setSession: (value: SetStateAction<Session | undefined | null>): void => {
+  setSession: (value: SetStateAction<V2Session | undefined | null>): void => {
     value;
   },
   isLoading: true,
@@ -97,7 +98,9 @@ const useSite = (): ISiteContext => {
 };
 
 export const SiteProvider = ({ children }: Props): ReactElement => {
-  const [session, setSession] = useState<Session | null | undefined>(undefined);
+  const [session, setSession] = useState<V2Session | null | undefined>(
+    undefined,
+  );
   const [isLoading, setLoading] = useState<boolean>(true);
   const [siteConfig, setSiteConfig] = useState<ServiceConfig>({
     maintenance: false,
@@ -140,7 +143,6 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
       account: accountConfig,
     },
   };
-  const { data, status } = useSession();
   const { data: aData } = trpc.site.getPageData.useQuery({
     name: 'account',
   });
@@ -151,13 +153,10 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
     name: 'upload',
   });
   useEffect(() => {
-    status === 'loading'
-      ? setSession(undefined)
-      : status === 'authenticated'
-      ? setSession(data)
-      : status === 'unauthenticated'
-      ? setSession(data)
-      : setSession(undefined);
+    async function doSessionData() {
+      setSession(await getUserData());
+    }
+    doSessionData();
     if (aData && rData && uData) {
       setAccountConfig({
         maintenance: aData.maintenance,
@@ -178,7 +177,7 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
         alertTitle: uData.alertTitle,
       });
     }
-  }, [aData, data, rData, status, uData]);
+  }, [aData, rData, uData]);
 
   // Set Sentry user context
   useEffect(() => {
@@ -186,10 +185,10 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
       Sentry.setUser(null);
       return;
     }
-    if (session.user === undefined) return;
+    if (session === undefined) return;
 
     Sentry.setUser({
-      id: session.user.id,
+      id: session.logto_id,
     });
   }, [session]);
 
