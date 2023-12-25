@@ -5369,7 +5369,7 @@ __metadata:
     express: ^4.18.2
     express-rate-limit: ^6.6.0
     express-zod-api: ^10.3.2
-    mime: ^3.0.0
+    mime: ^4.0.1
     mongoose: ^7.0.4
     ts-node-dev: ^2.0.0
     tsconfig: "workspace:*"
@@ -10478,6 +10478,15 @@ __metadata:
   bin:
     mime: cli.js
   checksum: f43f9b7bfa64534e6b05bd6062961681aeb406a5b53673b53b683f27fcc4e739989941836a355eef831f4478923651ecc739f4a5f6e20a76487b432bfd4db928
+  languageName: node
+  linkType: hard
+
+"mime@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "mime@npm:4.0.1"
+  bin:
+    mime: bin/cli.js
+  checksum: a931283bc31570cc9c63fbad24fdf178b4dd545462f93543eff634b24d2b65064585eb347cdf0720316bfa5ca0943115694672f2bc4895f8e2366d280ad481f2
   languageName: node
   linkType: hard
 
