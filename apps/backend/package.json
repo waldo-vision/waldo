@@ -22,7 +22,7 @@
     "mime": "^3.0.0",
     "mongoose": "^7.0.4",
     "uuid": "^9.0.0",
-    "ytdl-core": "^4.11.4"
+    "ytdl-core": "^4.11.5"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
