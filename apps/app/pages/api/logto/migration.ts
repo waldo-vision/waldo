@@ -1,11 +1,11 @@
-import { retrieveUserInfoServer } from '@server/utils/logto';
+import { retrieveRawUserInfoServer } from '@server/utils/logto';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@server/db/client';
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const logto_user = await retrieveUserInfoServer(req.cookies);
+  const logto_user = await retrieveRawUserInfoServer(req.cookies);
   const identityData =
     logto_user.userInfo.identities[
       Object.keys(logto_user.userInfo.identities)[0]
@@ -42,7 +42,7 @@ export default async function handler(
               id: result.userId,
             },
             data: {
-              image: identityData.avatar,
+              image: logto_user.userInfo.picture,
               name: identityData.name,
             },
           });
@@ -73,7 +73,7 @@ export default async function handler(
         user: {
           create: {
             name: identityData.name,
-            image: identityData.avatar,
+            image: logto_user.userInfo.picture,
           },
         },
       },

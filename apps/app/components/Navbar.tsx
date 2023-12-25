@@ -18,16 +18,21 @@ import WaldoLogo from '../public/android-chrome-256x256.png';
 import { discord, docs, github } from '@utils/links';
 import useSite from '@site';
 import BlacklistedModal from './BlacklistedModal';
+import { getUserData } from '@server/utils/logto';
 export default function Navigation() {
   const { isOpen, onToggle } = useDisclosure();
   const [y, setY] = useState(0);
-
+  const [userData, setUserData] = useState<null | any>(null);
   const { session } = useSite();
   const changeBackground = () => {
     setY(window.scrollY);
   };
   useEffect(() => {
     changeBackground();
+    async function loadData() {
+      setUserData(await getUserData());
+    }
+    loadData();
     // adding the event when scroll change background
     window.addEventListener('scroll', changeBackground);
   }, []);
@@ -97,11 +102,11 @@ export default function Navigation() {
               <DesktopNav />
             </Flex>
           </Flex>
-          {session && session.user && (
+          {userData && (
             <Link href={'/account'}>
               <Img
                 alt="Profile"
-                src={session.user.image as string}
+                src={userData.details.avatar}
                 width={30}
                 height={30}
                 borderRadius={'12'}

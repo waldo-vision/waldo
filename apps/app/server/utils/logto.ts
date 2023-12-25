@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios';
-const retrieveUserInfoServer = async (
+const retrieveRawUserInfoServer = async (
   cookies: Partial<{
     [key: string]: string;
   }>,
@@ -17,7 +17,7 @@ const retrieveUserInfoServer = async (
   return response;
 };
 
-const retrieveUserInfoClient = async () => {
+const retrieveRawUserInfoClient = async () => {
   const api_url = `/api/logto/user-info`;
   const request = await axios.get(api_url, {
     withCredentials: true,
@@ -27,7 +27,43 @@ const retrieveUserInfoClient = async () => {
   return response;
 };
 
-export { retrieveUserInfoServer, retrieveUserInfoClient };
+const getUserData = async () => {
+  const api_url = `/api/logto/user-info`;
+  const request = await axios.get(api_url, {
+    withCredentials: true,
+  });
+
+  // demo user data obj
+  // {
+  //   logto_id: "",
+  //   provider: "",
+  //   providerId: "",
+  //   name: "",
+  //   image: "",
+  //   logto_username: ""
+  // }
+
+  const response = await request.data;
+
+  const userData = response.userInfo;
+  const jwtData = response.claims;
+
+  const identityData =
+    response.userInfo.identities[Object.keys(response.userInfo.identities)[0]];
+
+  const sessionObject = {
+    logto_id: jwtData.sub,
+    provider: Object.keys(response.userInfo.identities)[0],
+    providerId: identityData.userId,
+    name: identityData.details.name,
+    image: userData.picture,
+    logto_username: userData.username,
+  };
+
+  return sessionObject;
+};
+
+export { retrieveRawUserInfoServer, retrieveRawUserInfoClient, getUserData };
 
 // utils
 
