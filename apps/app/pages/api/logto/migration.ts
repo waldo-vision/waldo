@@ -6,7 +6,10 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const logto_user = await retrieveUserInfoServer(req.cookies);
-
+  const identityData =
+    logto_user.userInfo.identities[
+      Object.keys(logto_user.userInfo.identities)[0]
+    ].details;
   // check if there is a nextauth account with logto user info
   // the logto user var isn't typed so use this link for ref
   // on potential outputs. https://docs.logto.io/docs/references/users/social-identities/
@@ -19,11 +22,6 @@ export default async function handler(
           ].userId,
       },
     });
-
-    const identityData =
-      logto_user.userInfo.identities[
-        Object.keys(logto_user.userInfo.identities)[0]
-      ].details;
 
     // V1 Account exists
     if (result || result !== null) {
@@ -48,6 +46,11 @@ export default async function handler(
               name: identityData.name,
             },
           });
+          await prisma.account.delete({
+            where: {
+              id: result.id,
+            },
+          });
         } catch (err) {
           // handle error
         }
@@ -62,9 +65,43 @@ export default async function handler(
   // if no account exists then just create a normal V2 Account.
 
   try {
+    await prisma.v2Account.create({
+      data: {
+        provider: Object.keys(logto_user.userInfo.identities)[0],
+        providerAccountId: identityData.id,
+        logtoId: logto_user.claims.sub,
+        user: {
+          create: {
+            name: identityData.name,
+            image: identityData.avatar,
+          },
+        },
+      },
+    });
   } catch (err) {
     // handle error
   }
+
+  // always update user data on sign-in
+  try {
+    const result = await prisma.account.findFirst({
+      where: {
+        providerAccountId:
+          logto_user.userInfo.identities[
+            Object.keys(logto_user.userInfo.identities)[0]
+          ].userId,
+      },
+    });
+    await prisma.user.update({
+      where: {
+        id: result?.userId,
+      },
+      data: {
+        name: identityData.name,
+        image: identityData.avatar,
+      },
+    });
+  } catch (err) {}
 
   return res.status(200).json(logto_user);
 }
