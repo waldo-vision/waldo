@@ -30,7 +30,8 @@ import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
 import { useRouter } from 'next/router';
 import { retrieveRawUserInfoClient } from '@server/utils/logto';
-import { Button as Bu } from 'ui';
+import { RecArray } from 'ui';
+
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
   const [y, setY] = useState(0);
@@ -151,7 +152,7 @@ export default function Home() {
                 <span>visual cheat detection, </span>
                 <b>powered by deep learning</b>
               </Text>
-              <Bu variant={'destructive'}>Test</Bu>
+              <RecArray />
               <Text fontSize={'l'} fontWeight={'thin'}>
                 Currently under construction
               </Text>
