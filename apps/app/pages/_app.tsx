@@ -1,3 +1,5 @@
+import 'ui/styles/global.css';
+
 import { SiteProvider } from '@site';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from '@utils/theme';

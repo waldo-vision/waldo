@@ -7,7 +7,6 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const logto_user = await retrieveRawUserInfoServer(req.cookies);
-  let userMeta;
   // retrieve user data from db
   try {
     const data = await prisma.v2Account.findFirst({

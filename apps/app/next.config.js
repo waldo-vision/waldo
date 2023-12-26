@@ -41,7 +41,7 @@ const nextConfig = {
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
-  transpilePackages: ['ui'],
+  transpilePackages: ['ui', 'tailwindconfig'],
   images: {
     domains: [
       'cdn.discordapp.com',
