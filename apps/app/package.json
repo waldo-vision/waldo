@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 127.0.0.1",
+    "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -39,6 +39,7 @@
     "next-auth": "^4.22.1",
     "next-plausible": "^3.7.2",
     "postcss": "^8.4.24",
+    "postcss-100vh-fix": "^1.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",

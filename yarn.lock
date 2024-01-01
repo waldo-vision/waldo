@@ -12251,6 +12251,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss-100vh-fix@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "postcss-100vh-fix@npm:1.0.2"
+  peerDependencies:
+    postcss: ^8.1.0
+  checksum: 67c2f3433705b79b593782de6f33740877a27221b7d4d7007f5b2c7f8f04a35f501ec482026fe6454885604cf4acf892480f7782356994c9846b8c4180700ac2
+  languageName: node
+  linkType: hard
+
 "postcss-import@npm:^15.1.0":
   version: 15.1.0
   resolution: "postcss-import@npm:15.1.0"
@@ -14617,6 +14626,7 @@ __metadata:
     clsx: ^2.0.0
     eslint-config-custom: "workspace:*"
     lucide-react: ^0.302.0
+    postcss-100vh-fix: ^1.0.2
     tailwind-merge: ^2.2.0
     tailwindconfig: "workspace:*"
     tailwindcss-animate: ^1.0.7
@@ -15200,6 +15210,7 @@ __metadata:
     next-auth: ^4.22.1
     next-plausible: ^3.7.2
     postcss: ^8.4.24
+    postcss-100vh-fix: ^1.0.2
     react: 18.2.0
     react-dom: 18.2.0
     react-icons: ^4.8.0
