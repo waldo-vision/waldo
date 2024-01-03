@@ -39,7 +39,7 @@ const test = () => {
                   <ArrowRightIcon height={20} width={20} color="white" />
                 </div>
               </div>
-              <div className="flex flex-row gap-11 text-[#E5E7EB] mt-8">
+              <div className="flex flex-row gap-11 text-gray-400 mt-8">
                 <h1>Github</h1>
                 <h1>Twitter</h1>
                 <h1>Discord</h1>
