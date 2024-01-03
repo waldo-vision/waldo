@@ -1,3 +1,4 @@
+'use client';
 import { Text } from '@chakra-ui/layout';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import React from 'react';
@@ -40,9 +41,9 @@ const test = () => {
                 </div>
               </div>
               <div className="flex flex-row gap-11 text-gray-400 mt-8">
-                <h1>Github</h1>
-                <h1>Twitter</h1>
-                <h1>Discord</h1>
+                <h1 className="cursor-pointer">Github</h1>
+                <h1 className="cursor-pointer">Twitter</h1>
+                <h1 className="cursor-pointer">Discord</h1>
               </div>
             </div>
           </div>

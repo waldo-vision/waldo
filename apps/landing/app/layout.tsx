@@ -17,10 +17,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <Header />
-      <body>{children}</body>
-      <CreateAccountBtn />
-    </div>
+    <html>
+      <body>
+        <div>
+          <Header />
+        </div>
+        <div>{children}</div>
+        <div>
+          <CreateAccountBtn />
+        </div>
+      </body>
+    </html>
   );
 }

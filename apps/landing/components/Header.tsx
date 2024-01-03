@@ -25,7 +25,7 @@ export const Header = () => {
           {NAV_ITEMS.map((item: NavItem, index: number) => {
             return (
               <h1
-                className={`text-white ${
+                className={`text-white cursor-pointer ${
                   pathname.includes(item.href) ? 'font-bold' : 'font-regular'
                 }`}
                 key={index}
