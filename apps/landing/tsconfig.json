@@ -11,14 +11,35 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["components/*"],
-      "@utils/*": ["utils/*"],
-      "@contexts/*": ["contexts/*"],
-      "@site": ["contexts/SiteContext.tsx"],
-      "@server/*": ["server/*"],
-      "@auth-providers/*": ["auth-providers/*"],
-      "@config/*": ["config/*"]
-    }
+      "@components/*": [
+        "components/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@contexts/*": [
+        "contexts/*"
+      ],
+      "@site": [
+        "contexts/SiteContext.tsx"
+      ],
+      "@server/*": [
+        "server/*"
+      ],
+      "@auth-providers/*": [
+        "auth-providers/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
