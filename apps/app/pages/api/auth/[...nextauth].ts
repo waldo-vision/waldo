@@ -1,10 +1,5 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import DiscordProvider from 'next-auth/providers/discord';
-import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
-import BattleNetProvider from '@auth-providers/battlenet';
-import FaceBookProvider from 'next-auth/providers/facebook';
-import TwitchProvider from 'next-auth/providers/twitch';
 import { prisma } from '@server/db/client';
 import NextAuth from 'next-auth/next';
 import { Profile, Session, User } from 'next-auth';
