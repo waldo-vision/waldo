@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios';
-import { prisma } from '@server/db/client';
+import { V2Session } from 'types/logto-auth';
+
 const retrieveRawUserInfoServer = async (
   cookies: Partial<{
     [key: string]: string;
@@ -70,22 +71,7 @@ const getUserData = async (): Promise<V2Session | undefined> => {
   return sessionObject;
 };
 
-interface V2Session {
-  logto_id: string;
-  provider: string;
-  providerId: string | number;
-  name: string;
-  image: string;
-  logto_username: string;
-  blacklisted: boolean;
-}
-
-export {
-  retrieveRawUserInfoServer,
-  retrieveRawUserInfoClient,
-  getUserData,
-  type V2Session,
-};
+export { retrieveRawUserInfoServer, retrieveRawUserInfoClient, getUserData };
 
 // utils
 
