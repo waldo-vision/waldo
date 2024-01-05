@@ -16,8 +16,8 @@
       "@contexts/*": ["contexts/*"],
       "@site": ["contexts/SiteContext.tsx"],
       "@server/*": ["server/*"],
-      "@auth-providers/*": ["auth-providers/*"],
-      "@config/*": ["config/*"]
+      "@config/*": ["config/*"],
+      "@ui/*": ["../../packages/ui/index.tsx"]
     }
   },
   "exclude": ["node_modules"]

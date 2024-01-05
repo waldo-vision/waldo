@@ -30,7 +30,7 @@ import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
 import { useRouter } from 'next/router';
 import { retrieveRawUserInfoClient } from '@server/utils/logto';
-import { RecArray } from 'ui';
+import { RecArray } from '@ui/';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
