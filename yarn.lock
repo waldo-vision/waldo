@@ -3913,13 +3913,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.7.15":
-  version: 13.7.15
-  resolution: "@types/validator@npm:13.7.15"
-  checksum: 4e2c63d57c38def8c8308bea76140342c402527bf273fcdf13ae7d2bdd1b66942aecca8af9418ccf9e38780366d60e5d7dc6b9fe4a6aa74d3b85fec769fe195a
-  languageName: node
-  linkType: hard
-
 "@types/webidl-conversions@npm:*":
   version: 7.0.0
   resolution: "@types/webidl-conversions@npm:7.0.0"
@@ -4762,7 +4755,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.14, autoprefixer@npm:^10.4.16":
+"autoprefixer@npm:^10.4.16":
   version: 10.4.16
   resolution: "autoprefixer@npm:10.4.16"
   dependencies:
@@ -6615,7 +6608,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:13.3.0, eslint-config-next@npm:^13.3.0":
+"eslint-config-next@npm:13.3.0":
   version: 13.3.0
   resolution: "eslint-config-next@npm:13.3.0"
   dependencies:
@@ -9824,24 +9817,24 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "landing@workspace:apps/landing"
   dependencies:
-    "@types/node": 18.16.0
-    "@types/react": ^18.0.38
-    "@types/react-dom": ^18.0.11
-    "@types/validator": ^13.7.15
-    autoprefixer: ^10.4.14
-    database: "workspace:*"
-    eslint: ^8.39.0
-    eslint-config-custom: "workspace:*"
-    eslint-config-next: ^13.3.0
-    next: 14.0.4
-    postcss: ^8.4.24
+    "@types/node": ^20.10.6
+    "@types/react": ^18.2.46
+    "@types/react-dom": ^18.2.18
+    "@types/validator": ^13.11.7
+    autoprefixer: ^10.4.16
+    database: "workspace:^"
+    eslint: ^8.56.0
+    eslint-config-custom: "workspace:^"
+    eslint-config-next: ^14.0.4
+    next: ^14.0.4
+    postcss: ^8.4.33
     postcss-100vh-fix: ^1.0.2
-    react: ^18
-    react-dom: ^18
-    tailwindconfig: "workspace:*"
-    tailwindcss: ^3.3.2
-    tsconfig: "workspace:*"
-    ui: "workspace:*"
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    tailwindconfig: "workspace:^"
+    tailwindcss: ^3.4.0
+    tsconfig: "workspace:^"
+    ui: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -11121,7 +11114,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:14.0.4, next@npm:^14.0.4":
+"next@npm:^14.0.4":
   version: 14.0.4
   resolution: "next@npm:14.0.4"
   dependencies:
@@ -12006,7 +11999,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.23, postcss@npm:^8.4.24":
+"postcss@npm:^8.4.23":
   version: 8.4.32
   resolution: "postcss@npm:8.4.32"
   dependencies:
@@ -12287,7 +12280,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.2.0, react-dom@npm:^18, react-dom@npm:^18.1.0, react-dom@npm:^18.2.0":
+"react-dom@npm:18.2.0, react-dom@npm:^18.1.0, react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
   dependencies:
@@ -12322,7 +12315,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.2.0, react@npm:^18, react@npm:^18.1.0, react@npm:^18.2.0":
+"react@npm:18.2.0, react@npm:^18.1.0, react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -13653,7 +13646,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.3.2, tailwindcss@npm:^3.4.0":
+"tailwindcss@npm:^3.4.0":
   version: 3.4.0
   resolution: "tailwindcss@npm:3.4.0"
   dependencies:
@@ -14331,7 +14324,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ui@workspace:*, ui@workspace:^, ui@workspace:packages/ui":
+"ui@workspace:^, ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "ui@workspace:packages/ui"
   dependencies:

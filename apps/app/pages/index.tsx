@@ -110,7 +110,6 @@ export default function Home() {
             // quality={1}
             placeholder={'blur'}
           />
-
           <Image
             style={{
               position: 'fixed',
