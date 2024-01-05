@@ -17,7 +17,8 @@
       "@site": ["contexts/SiteContext.tsx"],
       "@server/*": ["server/*"],
       "@config/*": ["config/*"],
-      "@ui/*": ["../../packages/ui/index.tsx"]
+      "@ui/*": ["../../packages/ui/index.tsx"],
+      "@auth/*": ["server/logto/client.ts"]
     }
   },
   "exclude": ["node_modules"]
