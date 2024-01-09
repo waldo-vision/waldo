@@ -6,6 +6,8 @@ import superjson from 'superjson';
 import { type AppRouter } from '../server/trpc/router/_app';
 import { getBaseUrl } from './baseurl';
 import axios from 'axios';
+
+// this function receieves the user's access token from the nextjs api route
 const retrieveAccessToken = async () => {
   const req = await axios.get(
     process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/accesstoken',
@@ -16,6 +18,7 @@ const retrieveAccessToken = async () => {
   const res = await req.data;
   if (!res.accessToken) return undefined;
   return res.accessToken;
+  // gets returned and piped into TRPC headers
 };
 
 /**

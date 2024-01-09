@@ -1,8 +1,9 @@
 import { retrieveRawUserInfoServer } from '@server/utils/logto';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@server/db/client';
-import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+
+// this api route handles the migration logic from a next-auth account
+// to a logto and waldo v2accounts.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
