@@ -6,6 +6,7 @@ import { JWTPayload, createRemoteJWKSet, jwtVerify } from 'jose';
 import { retrieveRawUserInfoServer } from 'identity';
 import axios from 'axios';
 import { V2Session } from 'identity';
+import { userHasScope } from './rbac';
 // interface ExtendedIncomingHttpHeaders extends IncomingHttpHeaders {
 //   authorization_id: string;
 // }
@@ -90,12 +91,19 @@ export const createContext = async (opts: CreateNextContextOptions) => {
       user: true,
     },
   });
+  if(waldo_user_data === null) {
+    return await createContextInner({
+      session: null,
+      headers,
+    });
+  }
   // created the server session object.
   const session: V2Session | null =
     !payload || !payload.sub
       ? null
       : {
           logto_id: payload.sub,
+          id: waldo_user_data.user.id,
           provider: Object.keys(user_data.userInfo.identities)[0],
           providerId: identityData.userId,
           name: identityData.details.name,
@@ -104,7 +112,11 @@ export const createContext = async (opts: CreateNextContextOptions) => {
           blacklisted: waldo_user_data
             ? waldo_user_data.user.blacklisted
             : false,
-          scope: payload.scope.split(" ")
+          scope: payload.scope.split(" "),
+          hasScope: (requiredScope: Array<string>) => {
+            const scope = payload.scope.split(" ");
+            return userHasScope(scope, requiredScope)
+          }
         };
 
   return await createContextInner({
