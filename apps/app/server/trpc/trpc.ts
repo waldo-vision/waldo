@@ -138,7 +138,6 @@ export const protectedProcedure = t.procedure
     .use(sentryMiddleware)
     .use(isAuthed2);
 
-
 export const rbacProtectedProcedure = (scope: Array<string>) => { 
   return t.procedure
     .use(sentryMiddleware)
