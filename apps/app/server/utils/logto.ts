@@ -16,6 +16,7 @@ const retrieveRawUserInfoServer = async (
     },
   });
   const response = await request.data;
+
   return response;
 };
 
@@ -31,9 +32,38 @@ const retrieveRawUserInfoClient = async () => {
 
 const getUserData = async (): Promise<V2Session | undefined> => {
   const api_url = `/api/logto/user-info`;
-  const request = await axios.get(api_url, {
-    withCredentials: true,
-  });
+  try {
+    const request = await axios.get(api_url, {
+      withCredentials: true,
+    });
+    const response = await request.data;
+    if (response.isAuthenticated == false) {
+      return undefined;
+    }
+
+    const userData = response.userInfo;
+    const jwtData = response.claims;
+
+    const identityData =
+      response.userInfo.identities[
+        Object.keys(response.userInfo.identities)[0]
+      ];
+    const usermetaReq = await axios.get('/api/logto/usermeta');
+    const usermetaReqRes = await usermetaReq.data;
+    const sessionObject = {
+      logto_id: jwtData.sub,
+      provider: Object.keys(response.userInfo.identities)[0],
+      providerId: identityData.userId,
+      name: identityData.details.name,
+      image: userData.picture,
+      logto_username: userData.username,
+      blacklisted: usermetaReqRes.blacklisted,
+    };
+
+    return sessionObject;
+  } catch (err) {
+    return undefined;
+  }
 
   // demo user data obj
   // {
@@ -44,31 +74,6 @@ const getUserData = async (): Promise<V2Session | undefined> => {
   //   image: "",
   //   logto_username: ""
   // }
-
-  const response = await request.data;
-
-  if (response.isAuthenticated == false) {
-    return undefined;
-  }
-
-  const userData = response.userInfo;
-  const jwtData = response.claims;
-
-  const identityData =
-    response.userInfo.identities[Object.keys(response.userInfo.identities)[0]];
-  const usermetaReq = await axios.get('/api/logto/usermeta');
-  const usermetaReqRes = await usermetaReq.data;
-  const sessionObject = {
-    logto_id: jwtData.sub,
-    provider: Object.keys(response.userInfo.identities)[0],
-    providerId: identityData.userId,
-    name: identityData.details.name,
-    image: userData.picture,
-    logto_username: userData.username,
-    blacklisted: usermetaReqRes.blacklisted,
-  };
-
-  return sessionObject;
 };
 
 export { retrieveRawUserInfoServer, retrieveRawUserInfoClient, getUserData };

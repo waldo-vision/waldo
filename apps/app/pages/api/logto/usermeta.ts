@@ -24,6 +24,9 @@ export default async function handler(
       blacklisted: data?.user.blacklisted,
     });
   } catch (err) {
-    // handle error
+    return res.status(500).json({
+      error: true,
+      message: 'An unknown error occured.',
+    });
   }
 }

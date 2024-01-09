@@ -150,9 +150,12 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
   const { data: rData } = trpc.site.getPageData.useQuery({
     name: 'review',
   });
-  const { data: uData } = trpc.site.getPageData.useQuery({
-    name: 'upload',
-  });
+  const uData = {
+    maintenance: false,
+    isCustomAlert: true,
+    alertDescription: '',
+    alertTitle: '',
+  };
   useEffect(() => {
     async function doSessionData() {
       setSession(await getUserData());
@@ -178,7 +181,7 @@ export const SiteProvider = ({ children }: Props): ReactElement => {
         alertTitle: uData.alertTitle,
       });
     }
-  }, [aData, rData, uData]);
+  }, []);
 
   // Set Sentry user context
   useEffect(() => {

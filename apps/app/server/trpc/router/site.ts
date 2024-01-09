@@ -6,7 +6,7 @@ import { router, protectedProcedure, publicProcedure } from '../trpc';
 import * as Sentry from '@sentry/nextjs';
 
 export const siteRouter = router({
-  getPageData: publicProcedure
+  getPageData: protectedProcedure
     .meta({ openapi: { method: 'GET', path: '/site/page' } })
     .input(
       z

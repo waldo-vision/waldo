@@ -11,7 +11,10 @@
         "APP_SECRET",
         "ENDPOINT",
         "BASE_URL",
-        "COOKIE_SECRET"
+        "COOKIE_SECRET",
+        "ID_ISSUER",
+        "JWKS_ENDPOINT",
+        "RESOURCE_AUDIENCE"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },

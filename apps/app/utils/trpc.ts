@@ -5,6 +5,15 @@ import superjson from 'superjson';
 
 import { type AppRouter } from '../server/trpc/router/_app';
 import { getBaseUrl } from './baseurl';
+import axios from 'axios';
+const retrieveAccessToken = async () => {
+  const req = await axios.get('https://app.foo.bar/api/logto/accesstoken', {
+    withCredentials: true,
+  });
+  const res = await req.data;
+  if (!res.accessToken) return undefined;
+  return res.accessToken;
+};
 
 /**
  * Trpc client for the frontend
@@ -21,6 +30,14 @@ export const trpc = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers: async () => {
+            return {
+              Authorization:
+                (await retrieveAccessToken()) == undefined
+                  ? undefined
+                  : `Bearer ${await retrieveAccessToken()}`,
+            };
+          },
         }),
       ],
     };

@@ -9,5 +9,8 @@ declare namespace NodeJS {
     BASE_URL: string;
     COOKIE_SECRET: string;
     NODE_ENV: string;
+    JWKS_ENDPOINT: string;
+    ID_ISSUER: string;
+    RESOURCE_AUDIENCE: string;
   }
 }

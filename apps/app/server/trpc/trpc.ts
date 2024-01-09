@@ -5,6 +5,7 @@ import { type Context } from './context';
 import { compareKeyAgainstHash } from '@server/utils/apiHelper';
 // import * as Sentry from '@sentry/nextjs';
 import * as Sentry from '@sentry/nextjs';
+import { type Session } from 'next-auth';
 
 const t = initTRPC
   .context<Context>()
@@ -36,19 +37,17 @@ export const publicProcedure = t.procedure.use(sentryMiddleware);
  * rate limit middleware
  */
 const isAuthed = t.middleware(async ({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user)
+  if (!ctx.session || !ctx.session.logto_id)
     throw new TRPCError({ code: 'UNAUTHORIZED' });
-
-  if (ctx.session.user.blacklisted) throw new TRPCError({ code: 'FORBIDDEN' });
 
   // set the user on the sentry scope
   // so we can track effected users
-  Sentry.getCurrentHub().getScope().setUser({ id: ctx.session.user.id });
+  Sentry.getCurrentHub().getScope().setUser({ id: ctx.session.logto_id });
 
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      session: { ...ctx.session, user: ctx.session },
     },
   });
 });

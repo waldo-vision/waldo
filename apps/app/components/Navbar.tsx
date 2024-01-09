@@ -27,7 +27,6 @@ export default function Navigation() {
   };
   useEffect(() => {
     changeBackground();
-    console.log(session);
     // adding the event when scroll change background
     window.addEventListener('scroll', changeBackground);
   }, [session]);

@@ -30,7 +30,7 @@ import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
 import { useRouter } from 'next/router';
 import { retrieveRawUserInfoClient } from '@server/utils/logto';
-import { RecArray } from '@ui/';
+import { trpc } from '@utils/trpc';
 
 export default function Home() {
   const helpRef = useRef<null | HTMLDivElement>(null);
@@ -45,11 +45,14 @@ export default function Home() {
   }
 
   const router = useRouter();
-
+  const { data: uData } = trpc.site.getPageData.useQuery({
+    name: 'upload',
+  });
   useEffect(() => {
     updateScrollPosition();
     window.addEventListener('scroll', updateScrollPosition);
-  }, []);
+    console.log(uData);
+  }, [uData]);
   return (
     <>
       <Head>
@@ -151,7 +154,6 @@ export default function Home() {
                 <span>visual cheat detection, </span>
                 <b>powered by deep learning</b>
               </Text>
-              <RecArray />
               <Text fontSize={'l'} fontWeight={'thin'}>
                 Currently under construction
               </Text>

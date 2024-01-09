@@ -1,18 +1,33 @@
-import { type inferAsyncReturnType } from '@trpc/server';
+import { TRPCError, type inferAsyncReturnType } from '@trpc/server';
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
-import { getServerSession } from 'next-auth';
-import { type Session } from 'next-auth';
-import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { prisma } from '@server/db/client';
-import { createDummySession } from '@server/utils/fakeAuth';
 import { IncomingHttpHeaders } from 'http';
+import { createRemoteJWKSet, jwtVerify } from 'jose';
+import { retrieveRawUserInfoServer } from '@server/utils/logto';
+import axios from 'axios';
+import { V2Session } from 'types/logto-auth';
+// interface ExtendedIncomingHttpHeaders extends IncomingHttpHeaders {
+//   authorization_id: string;
+// }
 
-interface ExtendedIncomingHttpHeaders extends IncomingHttpHeaders {
-  authorization_id: string;
-}
+const extractBearerTokenFromHeaders = ({
+  authorization,
+}: IncomingHttpHeaders) => {
+  const bearerTokenIdentifier = 'Bearer';
+
+  if (!authorization) {
+    return undefined;
+  }
+
+  if (!authorization.startsWith(bearerTokenIdentifier)) {
+    return undefined;
+  }
+
+  return authorization.slice(bearerTokenIdentifier.length + 1);
+};
 
 type CreateContextOptions = {
-  session: Session | null;
+  session: V2Session | null;
   headers?: IncomingHttpHeaders;
 };
 
@@ -35,22 +50,55 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  **/
 export const createContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
+
   const headers = req.headers;
-
-  // See if authentication has been disabled for this environment.
-  // If so, create a dummy session.
-  if (['1', 'true'].includes(process.env.DISABLE_VERIFY_AUTH || '')) {
-    const session = createDummySession(req);
-
-    // If a the dummy variables have not been set, continue with auth as usual.
-    if (session?.user?.id && session.user.role)
-      return await createContextInner({
-        session,
-      });
+  const token = extractBearerTokenFromHeaders(req.headers);
+  if (token == 'undefined' || token == undefined) {
+    return await createContextInner({
+      session: null,
+      headers,
+    });
   }
+  const { payload } = await jwtVerify(
+    token,
+    createRemoteJWKSet(new URL('https://id.foo.bar/oidc/jwks')),
+    {
+      issuer: 'https://id.foo.bar/oidc',
+      audience: 'https://api.foo.bar/api',
+    },
+  );
+  // Create the server session object from varius data endpoints.
+  // grabs the logto user data.
+  const user_data = await retrieveRawUserInfoServer(req.cookies);
+  const identityData =
+    user_data.userInfo.identities[
+      Object.keys(user_data.userInfo.identities)[0]
+    ];
+  // get waldo user;
 
-  // Get the session from the server using the getServerSession wrapper function
-  const session = await getServerSession(req, res, authOptions);
+  const waldo_user_data = await prisma.v2Account.findFirst({
+    where: {
+      providerAccountId: identityData.userId,
+    },
+    include: {
+      user: true,
+    },
+  });
+  // created the server session object.
+  const session: V2Session | null =
+    !payload || !payload.sub
+      ? null
+      : {
+          logto_id: payload.sub,
+          provider: Object.keys(user_data.userInfo.identities)[0],
+          providerId: identityData.userId,
+          name: identityData.details.name,
+          image: user_data.userInfo.picture,
+          logto_username: user_data.userInfo.username,
+          blacklisted: waldo_user_data
+            ? waldo_user_data.user.blacklisted
+            : false,
+        };
 
   return await createContextInner({
     session,

@@ -11,15 +11,39 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["components/*"],
-      "@utils/*": ["utils/*"],
-      "@contexts/*": ["contexts/*"],
-      "@site": ["contexts/SiteContext.tsx"],
-      "@server/*": ["server/*"],
-      "@config/*": ["config/*"],
-      "@ui/*": ["../../packages/ui/index.tsx"],
-      "@auth/*": ["server/logto/client.ts"]
-    }
+      "@components/*": [
+        "components/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@contexts/*": [
+        "contexts/*"
+      ],
+      "@site": [
+        "contexts/SiteContext.tsx"
+      ],
+      "@server/*": [
+        "server/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@ui/*": [
+        "../../packages/ui/index.tsx"
+      ],
+      "@auth/*": [
+        "server/logto/client.ts"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
