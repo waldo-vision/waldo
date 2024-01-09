@@ -4991,6 +4991,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^20.10.8":
+  version: 20.10.8
+  resolution: "@types/node@npm:20.10.8"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: ce9b7ee545b3605f667be2ea900e38ab58d7b561192a7342443e5d7f61c44fd9d016eac48e95d3011f090ceea65a727e83a31d51fabdd9fc20ff9992edcbc682
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -9965,6 +9974,7 @@ __metadata:
   resolution: "identity@workspace:packages/identity"
   dependencies:
     "@logto/next": ^2.3.0
+    "@types/node": ^20.10.8
     eslint-config-custom: "workspace:*"
     tsconfig: "workspace:*"
   languageName: unknown
