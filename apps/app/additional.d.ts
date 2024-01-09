@@ -6,11 +6,11 @@ declare namespace NodeJS {
     APP_ID: string;
     APP_SECRET: string;
     ENDPOINT: string;
-    BASE_URL: string;
+    NEXT_PUBLIC_BASE_URL: string;
     COOKIE_SECRET: string;
     NODE_ENV: string;
-    JWKS_ENDPOINT: string;
-    ID_ISSUER: string;
-    RESOURCE_AUDIENCE: string;
+    NEXT_PUBLIC_JWKS_ENDPOINT: string;
+    NEXT_PUBLIC_ID_ISSUER: string;
+    NEXT_PUBLIC_RESOURCE_AUDIENCE: string;
   }
 }

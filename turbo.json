@@ -9,12 +9,12 @@
         "DATABASE_URL",
         "APP_ID",
         "APP_SECRET",
-        "ENDPOINT",
-        "BASE_URL",
+        "NEXT_PUBLIC_ENDPOINT",
+        "NEXT_PUBLIC_BASE_URL",
         "COOKIE_SECRET",
-        "ID_ISSUER",
-        "JWKS_ENDPOINT",
-        "RESOURCE_AUDIENCE"
+        "NEXT_PUBLIC_ID_ISSUER",
+        "NEXT_PUBLIC_JWKS_ENDPOINT",
+        "NEXT_PUBLIC_RESOURCE_AUDIENCE"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },

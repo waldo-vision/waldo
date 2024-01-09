@@ -7,7 +7,7 @@ const retrieveRawUserInfoServer = async (
     [key: string]: string;
   }>,
 ) => {
-  const api_url = process.env.BASE_URL + '/api/logto/user-info';
+  const api_url = process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/user-info';
   const converted_cookies = convertCookieObjectToString(cookies);
   const request = await axios.get(api_url, {
     withCredentials: true,
@@ -21,7 +21,7 @@ const retrieveRawUserInfoServer = async (
 };
 
 const retrieveRawUserInfoClient = async () => {
-  const api_url = process.env.BASE_URL + `/api/logto/user-info`;
+  const api_url = process.env.NEXT_PUBLIC_BASE_URL + `/api/logto/user-info`;
   const request = await axios.get(api_url, {
     withCredentials: true,
   });
@@ -31,7 +31,7 @@ const retrieveRawUserInfoClient = async () => {
 };
 
 const getUserData = async (): Promise<V2Session | undefined> => {
-  const api_url = process.env.BASE_URL + `/api/logto/user-info`;
+  const api_url = process.env.NEXT_PUBLIC_BASE_URL + `/api/logto/user-info`;
   try {
     const request = await axios.get(api_url, {
       withCredentials: true,
@@ -49,7 +49,7 @@ const getUserData = async (): Promise<V2Session | undefined> => {
         Object.keys(response.userInfo.identities)[0]
       ];
     const usermetaReq = await axios.get(
-      process.env.BASE_URL + '/api/logto/usermeta',
+      process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/usermeta',
     );
     const usermetaReqRes = await usermetaReq.data;
     const sessionObject = {

@@ -7,9 +7,12 @@ import { type AppRouter } from '../server/trpc/router/_app';
 import { getBaseUrl } from './baseurl';
 import axios from 'axios';
 const retrieveAccessToken = async () => {
-  const req = await axios.get(process.env.BASE_URL + '/api/logto/accesstoken', {
-    withCredentials: true,
-  });
+  const req = await axios.get(
+    process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/accesstoken',
+    {
+      withCredentials: true,
+    },
+  );
   const res = await req.data;
   if (!res.accessToken) return undefined;
   return res.accessToken;
