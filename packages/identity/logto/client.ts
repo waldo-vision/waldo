@@ -7,6 +7,6 @@ export const logtoClient = new LogtoClient({
   baseUrl: process.env.BASE_URL, // E.g. http://localhost:3000
   cookieSecret: process.env.COOKIE_SECRET,
   cookieSecure: false,
-  resources: ['https://api.foo.bar/api'],
+  resources: [process.env.NEXT_PUBLIC_RESOURCE_AUDIENCE],
   scopes: ['email', 'identities', 'read:all'],
 });

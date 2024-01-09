@@ -6,5 +6,6 @@ namespace NodeJS {
     COOKIE_SECRET: string;
     ENDPOINT: string;
     BASE_URL: string;
+    NEXT_PUBLIC_RESOURCE_AUDIENCE: string;
   }
 }
