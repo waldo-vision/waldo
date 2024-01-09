@@ -5,7 +5,7 @@ declare namespace NodeJS {
     DATABASE_URL: string;
     APP_ID: string;
     APP_SECRET: string;
-    ENDPOINT: string;
+    NEXT_PUBLIC_ENDPOINT: string;
     NEXT_PUBLIC_BASE_URL: string;
     COOKIE_SECRET: string;
     NODE_ENV: string;
