@@ -9960,6 +9960,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"identity@workspace:*, identity@workspace:packages/identity":
+  version: 0.0.0-use.local
+  resolution: "identity@workspace:packages/identity"
+  dependencies:
+    "@logto/next": ^2.3.0
+    eslint-config-custom: "workspace:*"
+    tsconfig: "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "ieee754@npm:^1.2.1":
   version: 1.2.1
   resolution: "ieee754@npm:1.2.1"
@@ -16476,6 +16486,7 @@ __metadata:
     eslint-config-custom: "workspace:*"
     eslint-config-next: ^14.0.4
     framer-motion: ^10.17.6
+    identity: "workspace:*"
     jose: ^5.2.0
     next: ^14.0.4
     next-auth: ^4.24.5

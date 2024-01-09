@@ -3,9 +3,9 @@ import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { prisma } from '@server/db/client';
 import { IncomingHttpHeaders } from 'http';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
-import { retrieveRawUserInfoServer } from '@server/utils/logto';
+import { retrieveRawUserInfoServer } from 'identity';
 import axios from 'axios';
-import { V2Session } from 'types/logto-auth';
+import { V2Session } from 'identity';
 // interface ExtendedIncomingHttpHeaders extends IncomingHttpHeaders {
 //   authorization_id: string;
 // }

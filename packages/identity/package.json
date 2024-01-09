@@ -1,0 +1,14 @@
+{
+  "name": "identity",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*"
+  },
+  "dependencies": {
+    "@logto/next": "^2.3.0"
+  }
+}

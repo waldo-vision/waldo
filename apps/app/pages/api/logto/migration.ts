@@ -1,4 +1,4 @@
-import { retrieveRawUserInfoServer } from '@server/utils/logto';
+import { retrieveRawUserInfoServer } from 'identity';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@server/db/client';
 

@@ -34,6 +34,7 @@
     "axios": "^1.6.4",
     "database": "workspace:^",
     "framer-motion": "^10.17.6",
+    "identity": "workspace:*",
     "jose": "^5.2.0",
     "next": "^14.0.4",
     "next-auth": "^4.24.5",
@@ -65,6 +66,7 @@
     "eslint-config-next": "^14.0.4",
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.0",
-    "tsconfig": "workspace:*"
+    "tsconfig": "workspace:*",
+    "identity": "workspace:*"
   }
 }

@@ -1,3 +1,3 @@
-import { logtoClient } from '@server/logto/client';
+import { logtoClient } from 'identity';
 
 export default logtoClient.handleSignIn();

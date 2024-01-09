@@ -29,7 +29,7 @@ import ScansImage from '../public/Scans.png';
 import { discord, githubrepo } from '@utils/links';
 import useSite from '@site';
 import { useRouter } from 'next/router';
-import { retrieveRawUserInfoClient } from '@server/utils/logto';
+import { retrieveRawUserInfoClient } from 'identity';
 import { trpc } from '@utils/trpc';
 
 export default function Home() {

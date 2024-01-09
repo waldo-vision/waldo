@@ -1,4 +1,4 @@
-import { logtoClient } from '@server/logto/client';
+import { logtoClient } from 'identity';
 
 // this api route is only used to recieve a user's access token for the following
 // api resources.

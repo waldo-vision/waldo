@@ -5,7 +5,6 @@ import { type Context } from './context';
 import { compareKeyAgainstHash } from '@server/utils/apiHelper';
 // import * as Sentry from '@sentry/nextjs';
 import * as Sentry from '@sentry/nextjs';
-import { type Session } from 'next-auth';
 
 const t = initTRPC
   .context<Context>()

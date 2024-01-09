@@ -12,8 +12,8 @@ import {
   useState,
 } from 'react';
 import * as Sentry from '@sentry/nextjs';
-import { getUserData } from '@server/utils/logto';
-import { V2Session } from 'types/logto-auth';
+import { getUserData } from 'identity';
+import { V2Session } from 'identity';
 
 type ServiceConfig =
   | {

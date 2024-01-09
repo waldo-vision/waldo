@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios';
-import { V2Session } from 'types/logto-auth';
+import { V2Session } from '../types/logto-auth';
 
 const retrieveRawUserInfoServer = async (
   cookies: Partial<{

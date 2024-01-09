@@ -1,5 +1,5 @@
 import { prisma } from '@server/db/client';
-import { retrieveRawUserInfoServer } from '@server/utils/logto';
+import { retrieveRawUserInfoServer } from 'identity';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 // this api route returns waldo vision data from a logto userid. Used for session creation.
