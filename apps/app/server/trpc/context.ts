@@ -61,10 +61,10 @@ export const createContext = async (opts: CreateNextContextOptions) => {
   }
   const { payload } = await jwtVerify(
     token,
-    createRemoteJWKSet(new URL('https://id.foo.bar/oidc/jwks')),
+    createRemoteJWKSet(new URL(process.env.JWKS_ENDPOINT)),
     {
-      issuer: 'https://id.foo.bar/oidc',
-      audience: 'https://api.foo.bar/api',
+      issuer: process.env.ID_ISSUER,
+      audience: process.env.RESOURCE_AUDIENCE,
     },
   );
   // Create the server session object from varius data endpoints.
