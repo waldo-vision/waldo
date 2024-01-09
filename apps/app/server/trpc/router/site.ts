@@ -6,44 +6,6 @@ import { router, protectedProcedure, publicProcedure } from '../trpc';
 import * as Sentry from '@sentry/nextjs';
 
 export const siteRouter = router({
-  getPageData: protectedProcedure
-    .meta({ openapi: { method: 'GET', path: '/site/page' } })
-    .input(
-      z
-        .object({
-          name: z.string(),
-        })
-        .transform(input => {
-          return {
-            name: serverSanitize(input.name),
-          };
-        }),
-    )
-    .output(
-      z.object({
-        maintenance: z.boolean(),
-        name: z.string(),
-        parentName: z.string(),
-        alertDescription: z.string().nullable(),
-        alertTitle: z.string().nullable(),
-        isCustomAlert: z.boolean(),
-      }),
-    )
-    .query(async ({ input, ctx }) => {
-      const pageData = await ctx.prisma.waldoPage.findFirst({
-        where: {
-          name: input.name,
-        },
-      });
-      if (pageData == null) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Waldo Vision Page not found in the database.',
-        });
-      }
-      // no error checking because the docs will never be deleted.
-      return pageData;
-    }),
   getSiteData: publicProcedure
     .meta({ openapi: { method: 'GET', path: '/site/site' } })
     .input(

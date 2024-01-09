@@ -2,7 +2,7 @@ import { TRPCError, type inferAsyncReturnType } from '@trpc/server';
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { prisma } from '@server/db/client';
 import { IncomingHttpHeaders } from 'http';
-import { createRemoteJWKSet, jwtVerify } from 'jose';
+import { JWTPayload, createRemoteJWKSet, jwtVerify } from 'jose';
 import { retrieveRawUserInfoServer } from 'identity';
 import axios from 'axios';
 import { V2Session } from 'identity';
@@ -31,6 +31,10 @@ type CreateContextOptions = {
   headers?: IncomingHttpHeaders;
 };
 
+interface Payload extends JWTPayload {
+  scope: string;
+};
+
 /** Use this helper for:
  * - testing, so we dont have to mock Next.js' req/res
  * - trpc's `createSSGHelpers` where we don't have req/res
@@ -48,6 +52,7 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * This is the actual context you'll use in your router
  * @link https://trpc.io/docs/context
  **/
+
 export const createContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
@@ -59,7 +64,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
       headers,
     });
   }
-  const { payload } = await jwtVerify(
+  const { payload } = await jwtVerify<Payload>(
     token,
     createRemoteJWKSet(new URL(process.env.NEXT_PUBLIC_JWKS_ENDPOINT)),
     {
@@ -67,6 +72,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
       audience: process.env.NEXT_PUBLIC_RESOURCE_AUDIENCE,
     },
   );
+  console.log("payload", payload)
   // Create the server session object from varius data endpoints.
   // grabs the logto user data.
   const user_data = await retrieveRawUserInfoServer(req.cookies);
@@ -98,6 +104,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
           blacklisted: waldo_user_data
             ? waldo_user_data.user.blacklisted
             : false,
+          scope: payload.scope.split(" ")
         };
 
   return await createContextInner({
