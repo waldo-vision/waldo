@@ -5,6 +5,7 @@ import { type Context } from './context';
 import { compareKeyAgainstHash } from '@server/utils/apiHelper';
 // import * as Sentry from '@sentry/nextjs';
 import * as Sentry from '@sentry/nextjs';
+import { userHasScope } from './rbac';
 
 const t = initTRPC
   .context<Context>()
@@ -57,7 +58,7 @@ const isAuthed = (requiredScope: Array<string>) => {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
 
     const userScope = ctx.session.scope;
-    const userHasRequiredScope = requiredScope.some(a => userScope.includes(a));
+    const userHasRequiredScope = userHasScope(userScope, requiredScope);
     if(!userHasRequiredScope)
     throw new TRPCError({ code: 'UNAUTHORIZED' });
 
