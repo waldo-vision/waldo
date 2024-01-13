@@ -34,7 +34,7 @@ type CreateContextOptions = {
 
 interface Payload extends JWTPayload {
   scope: string;
-};
+}
 
 /** Use this helper for:
  * - testing, so we dont have to mock Next.js' req/res
@@ -73,7 +73,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
       audience: process.env.NEXT_PUBLIC_RESOURCE_AUDIENCE,
     },
   );
-  console.log("payload", payload)
+  console.log('payload', payload);
   // Create the server session object from varius data endpoints.
   // grabs the logto user data.
   const user_data = await retrieveRawUserInfoServer(req.cookies);
@@ -91,7 +91,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
       user: true,
     },
   });
-  if(waldo_user_data === null) {
+  if (waldo_user_data === null) {
     return await createContextInner({
       session: null,
       headers,
@@ -112,11 +112,11 @@ export const createContext = async (opts: CreateNextContextOptions) => {
           blacklisted: waldo_user_data
             ? waldo_user_data.user.blacklisted
             : false,
-          scope: payload.scope.split(" "),
+          scope: payload.scope.split(' '),
           hasScope: (requiredScope: Array<string>) => {
-            const scope = payload.scope.split(" ");
-            return userHasScope(scope, requiredScope)
-          }
+            const scope = payload.scope.split(' ');
+            return userHasScope(scope, requiredScope);
+          },
         };
 
   return await createContextInner({

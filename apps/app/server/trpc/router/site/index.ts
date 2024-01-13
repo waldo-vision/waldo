@@ -9,5 +9,5 @@ export const siteRouter = router({
   getPageData,
   getSiteData,
   updatePage,
-  updateSite
+  updateSite,
 });

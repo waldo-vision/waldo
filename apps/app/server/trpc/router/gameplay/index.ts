@@ -16,7 +16,7 @@ export const gameplayRouter = router({
   getClips,
   getMany,
   getReviewItems,
-  getUsers, 
+  getUsers,
   review,
-  update
+  update,
 });

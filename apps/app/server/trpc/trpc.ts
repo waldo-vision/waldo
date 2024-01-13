@@ -53,25 +53,24 @@ const isAuthed2 = t.middleware(async ({ ctx, next }) => {
 });
 
 const isAuthed = (requiredScope: Array<string>) => {
-  return t.middleware(async ({ctx, next}) => {
+  return t.middleware(async ({ ctx, next }) => {
     if (!ctx.session || !ctx.session.logto_id)
-    throw new TRPCError({ code: 'UNAUTHORIZED' });
+      throw new TRPCError({ code: 'UNAUTHORIZED' });
 
     const userScope = ctx.session.scope;
     const userHasRequiredScope = userHasScope(userScope, requiredScope);
-    if(!userHasRequiredScope)
-    throw new TRPCError({ code: 'UNAUTHORIZED' });
+    if (!userHasRequiredScope) throw new TRPCError({ code: 'UNAUTHORIZED' });
 
     // ?set the user on the sentry scope
     // ?so we can track effected users
     Sentry.getCurrentHub().getScope().setUser({ id: ctx.session.logto_id });
     return next({
       ctx: {
-        session: {...ctx.session, user: ctx.session}
-      }
-    })
+        session: { ...ctx.session, user: ctx.session },
+      },
+    });
   });
-}
+};
 
 /**
  * Protected procedure
@@ -136,11 +135,9 @@ const isApiAuthed = t.middleware(async ({ ctx, next }) => {
 export const apiProcedure = t.procedure.use(sentryMiddleware).use(isApiAuthed);
 
 export const protectedProcedure = t.procedure
-    .use(sentryMiddleware)
-    .use(isAuthed2);
+  .use(sentryMiddleware)
+  .use(isAuthed2);
 
-export const rbacProtectedProcedure = (scope: Array<string>) => { 
-  return t.procedure
-    .use(sentryMiddleware)
-    .use(isAuthed(scope));
-}
+export const rbacProtectedProcedure = (scope: Array<string>) => {
+  return t.procedure.use(sentryMiddleware).use(isAuthed(scope));
+};
