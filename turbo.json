@@ -14,7 +14,8 @@
         "NEXT_PUBLIC_JWKS_ENDPOINT",
         "NEXT_PUBLIC_RESOURCE_AUDIENCE",
         "ENDPOINT",
-        "BASE_URL"
+        "BASE_URL",
+        "SENTRY_RELEASE"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },
