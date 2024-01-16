@@ -6,8 +6,9 @@ import { TRPCError } from '@trpc/server';
 
 export default rbacProtectedProcedure([
   'write:user',
-  'write:infractions',
-  'write:infractions:perma_suspend',
+  'write:infraction',
+  'write:infraction:perma_suspension',
+  'user',
 ])
   .meta({ openapi: { method: 'PUT', path: '/user' } })
   .input(

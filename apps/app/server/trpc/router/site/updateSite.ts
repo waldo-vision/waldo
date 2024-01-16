@@ -25,7 +25,11 @@ const zodInput = z
 
 const zodOutput = z.object({ message: z.string() });
 
-export default rbacProtectedProcedure(['write:all', 'write:sitemetadata'])
+export default rbacProtectedProcedure([
+  'write:all',
+  'write:sitemetadata',
+  'admin',
+])
   .meta({ openapi: { method: 'POST', path: '/site/site' } })
   .input(zodInput)
   .output(zodOutput)

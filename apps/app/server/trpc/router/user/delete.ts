@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 
-export default rbacProtectedProcedure(['read:all', 'user'])
+export default rbacProtectedProcedure(['read:user', 'write:user', 'user'])
   .meta({ openapi: { method: 'DELETE', path: '/user' } })
 
   .output(z.object({ message: z.string() }))

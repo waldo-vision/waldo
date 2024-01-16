@@ -8,5 +8,5 @@ export const logtoClient = new LogtoClient({
   cookieSecret: process.env.COOKIE_SECRET,
   cookieSecure: false,
   resources: [process.env.NEXT_PUBLIC_RESOURCE_AUDIENCE],
-  scopes: ['email', 'identities', 'read:all', "write:all", "read:pagemetadata"],
+  scopes: ['email', 'identities', 'read:all', 'write:all', 'read:pagemetadata'],
 });
