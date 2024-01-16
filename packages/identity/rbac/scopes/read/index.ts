@@ -19,3 +19,15 @@ export const CombinedReadScopes = [
   WaldoPage,
   WaldoSite,
 ].reduce<string[]>((acc, scopeObj) => [...acc, ...Object.values(scopeObj)], []);
+
+export {
+  ApiKey,
+  Clip,
+  Gameplay,
+  GameplayVote,
+  Infraction,
+  User,
+  V2Account,
+  WaldoPage,
+  WaldoSite,
+};

@@ -3,7 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { CheatTypes, GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import * as Sentry from '@sentry/nextjs';
-
+import { Scope } from 'identity';
 const zodInput = z.object({
   youtubeUrl: z.string().url(),
   gameplayType: GameplayTypes,
@@ -13,7 +13,11 @@ const zodInput = z.object({
 
 const zodOutput = GameplaySchema;
 
-export default rbacProtectedProcedure(['write:all', 'write:gameplay', 'user'])
+export default rbacProtectedProcedure([
+  'write:all',
+  Scope.Write.Gameplay.create,
+  'user',
+])
   .meta({ openapi: { method: 'POST', path: '/gameplay' } })
   .input(zodInput)
   .output(zodOutput)

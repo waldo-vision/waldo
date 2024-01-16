@@ -1,11 +1,13 @@
 import { ApiKey } from './apiKey';
 import { Gameplay } from './gameplay';
 import { GameplayVote } from './gameplayVote';
-import { User } from './user';
+import { Infraction } from './infraction';
 
-export const CombinedDeleteScopes = [
+export const CombinedWriteScopes = [
   ApiKey,
   Gameplay,
   GameplayVote,
-  User,
+  Infraction,
 ].reduce<string[]>((acc, scopeObj) => [...acc, ...Object.values(scopeObj)], []);
+
+export { ApiKey, Gameplay, GameplayVote, Infraction };
