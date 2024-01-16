@@ -6,7 +6,6 @@ import { compareKeyAgainstHash } from '@server/utils/apiHelper';
 // import * as Sentry from '@sentry/nextjs';
 import * as Sentry from '@sentry/nextjs';
 import { userHasScope } from './rbac';
-
 const t = initTRPC
   .context<Context>()
   .meta<OpenApiMeta>()

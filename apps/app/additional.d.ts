@@ -10,5 +10,6 @@ declare namespace NodeJS {
     NODE_ENV: string;
     NEXT_PUBLIC_JWKS_ENDPOINT: string;
     NEXT_PUBLIC_RESOURCE_AUDIENCE: string;
+    NEXT_PUBLIC_ID_ISSUER: string;
   }
 }

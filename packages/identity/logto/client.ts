@@ -1,5 +1,5 @@
 import LogtoClient from '@logto/next';
-
+import { Scope } from '../index';
 export const logtoClient = new LogtoClient({
   appId: process.env.APP_ID,
   appSecret: process.env.APP_SECRET,
@@ -8,5 +8,5 @@ export const logtoClient = new LogtoClient({
   cookieSecret: process.env.COOKIE_SECRET,
   cookieSecure: false,
   resources: [process.env.NEXT_PUBLIC_RESOURCE_AUDIENCE],
-  scopes: ['email', 'identities', 'read:all', 'write:all', 'read:pagemetadata'],
+  scopes: [...Scope.MasterScopeArray, 'email', 'identities'],
 });

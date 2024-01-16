@@ -13,6 +13,7 @@
         "COOKIE_SECRET",
         "NEXT_PUBLIC_JWKS_ENDPOINT",
         "NEXT_PUBLIC_RESOURCE_AUDIENCE",
+        "NEXT_PUBLIC_ID_ISSUER",
         "ENDPOINT",
         "BASE_URL",
         "SENTRY_RELEASE"
