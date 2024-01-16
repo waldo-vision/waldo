@@ -1,4 +1,4 @@
-import { rbacProtectedProcedure } from '../../trpc';
+import { publicProcedure } from '../../trpc';
 import { z } from 'zod';
 import { serverSanitize } from '@utils/sanitize';
 import { TRPCError } from '@trpc/server';
@@ -22,7 +22,7 @@ const zodOutput = z.object({
   isCustomAlert: z.boolean(),
 });
 
-export default rbacProtectedProcedure(['read:all', 'read:pagemetadata'])
+export default publicProcedure
   .meta({ openapi: { method: 'GET', path: '/site/page' } })
   .input(zodInput)
   .output(zodOutput)

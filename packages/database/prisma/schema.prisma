@@ -174,7 +174,6 @@ model User {
   // our items
   blacklisted   Boolean         @default(false)
   gameplay      Gameplay[]
-  role          Roles           @default(USER)
   gameplayVotes GameplayVotes[] @relation("user")
   apiKeys       ApiKey[]
   createdAt     DateTime        @default(now())
