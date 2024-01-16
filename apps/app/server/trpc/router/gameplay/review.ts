@@ -2,7 +2,6 @@ import { rbacProtectedProcedure } from '@server/trpc/trpc';
 import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
 import { GameplayTypes } from '@utils/zod/gameplay';
-import { vUser } from '../util';
 import { TRPCError } from '@trpc/server';
 
 const zodInput = z.object({
@@ -29,17 +28,7 @@ export default rbacProtectedProcedure(['user'])
         },
       });
     try {
-      // veryify user with turnstile
-      const isPerson = await vUser(input.tsToken);
-      if (!isPerson) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message:
-            'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
-          // not sure if its safe to give this to the user
-          cause: '',
-        });
-      }
+      // add google captcha verification
       const footageVote = await ctx.prisma.gameplayVotes.create({
         data: {
           gameplay: {

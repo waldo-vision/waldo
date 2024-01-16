@@ -4,8 +4,6 @@ import { CheatTypes, GameplaySchema, GameplayTypes } from '@utils/zod/gameplay';
 import { z } from 'zod';
 import * as Sentry from '@sentry/nextjs';
 
-import { vUser } from '../util';
-
 const zodInput = z.object({
   youtubeUrl: z.string().url(),
   gameplayType: GameplayTypes,
@@ -20,16 +18,7 @@ export default rbacProtectedProcedure(['write:all', 'write:gameplay', 'user'])
   .input(zodInput)
   .output(zodOutput)
   .mutation(async ({ input, ctx }) => {
-    const isPerson = await vUser(input.tsToken);
-    if (!isPerson) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message:
-          'We could not confirm if you were a legitimate user. Please refresh the page and try again.',
-        // not sure if its safe to give this to the user
-        cause: '',
-      });
-    }
+    // add google captcha verification
     const existingGameplay = await ctx.prisma.gameplay.findUnique({
       where: {
         youtubeUrl: input.youtubeUrl,

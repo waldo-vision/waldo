@@ -15,7 +15,7 @@ export default rbacProtectedProcedure(['user'])
   .meta({ openapi: { method: 'GET', path: '/gameplay/review' } })
   .input(zodInput)
   .output(zodOutput)
-  .query(async ({ input, ctx }) => {
+  .query(async ({ ctx }) => {
     Sentry.getCurrentHub().getScope().addBreadcrumb({
       category: 'trpc.gameplay.getReviewItems',
       level: 'log',
