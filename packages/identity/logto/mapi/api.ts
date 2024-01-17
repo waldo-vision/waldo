@@ -33,7 +33,7 @@ const getUserRoles = async (
 ): Promise<Role[]> => {
   try {
     const request = await axios.get(
-      `https://id.foo.bar/api/users/${logtoId}/roles`,
+      `${process.env.ENDPOINT}/api/users/${logtoId}/roles`,
 
       {
         headers: {
