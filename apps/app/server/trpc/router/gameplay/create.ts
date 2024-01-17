@@ -10,7 +10,6 @@ const zodInput = z.object({
   cheats: z.array(CheatTypes),
   tsToken: z.string(),
 });
-
 const zodOutput = GameplaySchema;
 
 export default rbacProtectedProcedure([

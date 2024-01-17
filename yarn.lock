@@ -7437,6 +7437,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^16.3.1":
+  version: 16.3.1
+  resolution: "dotenv@npm:16.3.1"
+  checksum: 15d75e7279018f4bafd0ee9706593dd14455ddb71b3bcba9c52574460b7ccaf67d5cf8b2c08a5af1a9da6db36c956a04a1192b101ee102a3e0cf8817bbcf3dfd
+  languageName: node
+  linkType: hard
+
 "dset@npm:^3.1.2":
   version: 3.1.2
   resolution: "dset@npm:3.1.2"
@@ -9975,6 +9982,7 @@ __metadata:
   dependencies:
     "@logto/next": ^2.3.0
     "@types/node": ^20.10.8
+    dotenv: ^16.3.1
     eslint-config-custom: "workspace:*"
     tsconfig: "workspace:*"
   languageName: unknown
@@ -13655,6 +13663,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qs@npm:^6.11.2":
+  version: 6.11.2
+  resolution: "qs@npm:6.11.2"
+  dependencies:
+    side-channel: ^1.0.4
+  checksum: e812f3c590b2262548647d62f1637b6989cc56656dc960b893fe2098d96e1bd633f36576f4cd7564dfbff9db42e17775884db96d846bebe4f37420d073ecdc0b
+  languageName: node
+  linkType: hard
+
 "queue-microtask@npm:^1.2.2":
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
@@ -16503,6 +16520,7 @@ __metadata:
     next-plausible: ^3.12.0
     postcss: ^8.4.33
     postcss-100vh-fix: ^1.0.2
+    qs: ^6.11.2
     react: ^18.2.0
     react-dom: ^18.2.0
     react-icons: ^4.12.0

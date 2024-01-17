@@ -16,7 +16,11 @@
         "NEXT_PUBLIC_ID_ISSUER",
         "ENDPOINT",
         "BASE_URL",
-        "SENTRY_RELEASE"
+        "SENTRY_RELEASE",
+        "MAPI_TOKEN_ENDPOINT",
+        "MAPI_APP_ID",
+        "MAPI_APP_SECRET",
+        "MAPI_RESOURCE_URI"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },

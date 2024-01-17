@@ -2,7 +2,6 @@ import { publicProcedure } from '../../trpc';
 import { z } from 'zod';
 import { serverSanitize } from '@utils/sanitize';
 import { TRPCError } from '@trpc/server';
-
 const zodInput = z
   .object({
     name: z.string(),
