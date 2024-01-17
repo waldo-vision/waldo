@@ -5,7 +5,7 @@ import { IncomingHttpHeaders } from 'http';
 import { JWTPayload, createRemoteJWKSet, jwtVerify } from 'jose';
 import { retrieveRawUserInfoServer } from 'identity';
 import axios from 'axios';
-import { V2Session } from 'identity';
+import { V2Session, Role, Api } from 'identity';
 import { userHasScope } from './rbac';
 // interface ExtendedIncomingHttpHeaders extends IncomingHttpHeaders {
 //   authorization_id: string;
@@ -73,7 +73,6 @@ export const createContext = async (opts: CreateNextContextOptions) => {
       audience: process.env.NEXT_PUBLIC_RESOURCE_AUDIENCE,
     },
   );
-  console.log('payload', payload);
   // Create the server session object from varius data endpoints.
   // grabs the logto user data.
   const user_data = await retrieveRawUserInfoServer(req.cookies);
@@ -91,12 +90,17 @@ export const createContext = async (opts: CreateNextContextOptions) => {
       user: true,
     },
   });
-  if (waldo_user_data === null) {
+  if (waldo_user_data === null || !payload || !payload.sub) {
     return await createContextInner({
       session: null,
       headers,
     });
   }
+
+  // get user's roles from mapi
+  const MAPI_at = await Api.getApiAccessToken();
+  const userRoles = await Api.getUserRoles(MAPI_at, payload.sub);
+
   // created the server session object.
   const session: V2Session | null =
     !payload || !payload.sub
@@ -117,6 +121,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
             const scope = payload.scope.split(' ');
             return userHasScope(scope, requiredScope);
           },
+          roles: userRoles,
         };
 
   return await createContextInner({

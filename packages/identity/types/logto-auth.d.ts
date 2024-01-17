@@ -9,6 +9,15 @@ interface V2Session {
   blacklisted: boolean;
   scope: Array<string>;
   hasScope: (requiredScope: Array<string>) => boolean;
+  roles: Role[];
 }
 
-export { V2Session };
+interface Role {
+  tenantId: string;
+  id: string;
+  name: string;
+  description: string;
+  type: string;
+}
+
+export { V2Session, Role };

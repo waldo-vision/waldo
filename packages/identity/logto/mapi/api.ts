@@ -1,6 +1,6 @@
 import axios from 'axios';
 import qs from 'qs';
-
+import { Role } from '../../types/logto-auth';
 const getApiAccessToken = async () => {
   try {
     const request = await axios.post(
@@ -21,10 +21,32 @@ const getApiAccessToken = async () => {
       },
     );
     const response = await request.data;
-    return response;
+    return response.access_token;
   } catch (error) {
     return error;
   }
 };
 
-export { getApiAccessToken };
+const getUserRoles = async (
+  access_token: string,
+  logtoId: string,
+): Promise<Role[]> => {
+  try {
+    const request = await axios.get(
+      `https://id.foo.bar/api/users/${logtoId}/roles`,
+
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      },
+    );
+    const response = await request.data;
+    return response;
+  } catch (error) {
+    throw new Error();
+  }
+};
+
+export { getApiAccessToken, getUserRoles };
