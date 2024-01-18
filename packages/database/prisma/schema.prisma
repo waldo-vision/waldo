@@ -163,27 +163,35 @@ model Infractions {
 }
 
 model User {
-  id            String         @id @default(cuid())
-  name          String?
-  email         String?        @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id                    String              @id @default(cuid())
+  name                  String?
+  email                 String?             @unique
+  emailVerified         DateTime?
+  image                 String?
+  accounts              Account[]
+  sessions              Session[]
   // our items
-  blacklisted   Boolean        @default(false)
-  gameplay      Gameplay[]
-  gameplayVotes GameplayVote[] @relation("user")
-  apiKeys       ApiKey[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @default(now()) @updatedAt
-  v2Account     V2Account[]
-  infractions   Infractions[]
+  blacklisted           Boolean             @default(false)
+  gameplay              Gameplay[]
+  gameplayVotes         GameplayVote[]      @relation("user")
+  apiKeys               ApiKey[]
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @default(now()) @updatedAt
+  v2Account             V2Account[]
+  infractions           Infractions[]
+  badges                Badge[]
+  GameplayLeaderboard   GameplayLeaderboard @relation(fields: [gameplayLeaderboardId], references: [id])
+  gameplayLeaderboardId String
+  ReviewLeaderboard     ReviewLeaderboard?  @relation(fields: [reviewLeaderboardId], references: [id])
+  reviewLeaderboardId   String?
+  ClipLeaderboard       ClipLeaderboard?    @relation(fields: [clipLeaderboardId], references: [id])
+  clipLeaderboardId     String?
 }
 
 enum ApiKeyState {
   ACTIVE
   EXPIRED
+  SUSPENDED
 }
 
 model ApiKey {
@@ -196,6 +204,43 @@ model ApiKey {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum BadgeType {
+  GAMEPLAY
+  CLIP
+  REVIEW
+  CUSTOM
+}
+
+model Badge {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  displayName   String
+  type          BadgeType
+  color         String
+  awardedUser   User?     @relation(fields: [awardedUserId], references: [id], onDelete: Cascade)
+  awardedUserId String?
+  description   String
+  decider       Int
+}
+
+model GameplayLeaderboard {
+  id       String @id @default(cuid())
+  topUsers User[]
+  name     String
+}
+
+model ReviewLeaderboard {
+  id       String @id @default(cuid())
+  topUsers User[]
+  name     String
+}
+
+model ClipLeaderboard {
+  id       String @id @default(cuid())
+  topUsers User[]
+  name     String
 }
 
 model VerificationToken {

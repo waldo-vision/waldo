@@ -32,22 +32,28 @@ export default rbacProtectedProcedure(['user'])
     // userId should only be passed by system admins, not avg users
     const userId =
       input.userId === undefined ? ctx.session.user.id : input.userId;
-
-    const user = await ctx.prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-      include: {
-        gameplay: true,
-      },
-    });
-
-    // if no user
-    if (user === null)
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'No user found with the provided ID.',
+    try {
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        include: {
+          gameplay: true,
+        },
       });
 
-    return user.gameplay;
+      // if no user
+      if (user === null)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'No user found with the provided ID.',
+        });
+
+      return user.gameplay;
+    } catch (error) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occured while executing a query',
+      });
+    }
   });
