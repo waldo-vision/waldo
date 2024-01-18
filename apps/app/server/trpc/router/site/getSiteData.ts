@@ -25,16 +25,23 @@ export default publicProcedure
   .input(zodInput)
   .output(zodOutput)
   .query(async ({ input, ctx }) => {
-    const siteData = await ctx.prisma.waldoSite.findUnique({
-      where: {
-        name: input.siteName,
-      },
-    });
-    if (siteData == null) {
+    try {
+      const siteData = await ctx.prisma.waldoSite.findUnique({
+        where: {
+          name: input.siteName,
+        },
+      });
+      if (siteData == null) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Waldo Vision Page not found in the database.',
+        });
+      }
+      return siteData;
+    } catch (error) {
       throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Waldo Vision Page not found in the database.',
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occured while executing a query.',
       });
     }
-    return siteData;
   });

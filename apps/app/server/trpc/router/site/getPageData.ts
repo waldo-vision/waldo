@@ -27,17 +27,24 @@ export default publicProcedure
   .input(zodInput)
   .output(zodOutput)
   .query(async ({ input, ctx }) => {
-    const pageData = await ctx.prisma.waldoPage.findFirst({
-      where: {
-        name: input.name,
-      },
-    });
-    if (pageData == null) {
+    try {
+      const pageData = await ctx.prisma.waldoPage.findFirst({
+        where: {
+          name: input.name,
+        },
+      });
+      if (pageData == null) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Waldo Vision Page not found in the database.',
+        });
+      }
+      // no error checking because the docs will never be deleted.
+      return pageData;
+    } catch (error) {
       throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Waldo Vision Page not found in the database.',
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occured while executing the query.',
       });
     }
-    // no error checking because the docs will never be deleted.
-    return pageData;
   });

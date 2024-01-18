@@ -36,25 +36,32 @@ export default rbacProtectedProcedure([
   .input(zodInput)
   .output(zodOutput)
   .mutation(async ({ input, ctx }) => {
-    const updatePage = await ctx.prisma.waldoPage.update({
-      where: {
-        name: input.name,
-      },
-      data: {
-        maintenance: input.maintenance,
-        isCustomAlert: input.isCustomAlert,
-        alertTitle: input.alertTitle,
-        alertDescription: input.alertDescription,
-      },
-    });
-    if (updatePage == null) {
+    try {
+      const updatePage = await ctx.prisma.waldoPage.update({
+        where: {
+          name: input.name,
+        },
+        data: {
+          maintenance: input.maintenance,
+          isCustomAlert: input.isCustomAlert,
+          alertTitle: input.alertTitle,
+          alertDescription: input.alertDescription,
+        },
+      });
+      if (updatePage == null) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Waldo Vision Page not found in the database.',
+        });
+      }
+      // no error checking because the docs will never be deleted.
+      return {
+        message: `Updated page ${input.name}'s maintenance value to ${input.maintenance}`,
+      };
+    } catch (error) {
       throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Waldo Vision Page not found in the database.',
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occured while executing a query.',
       });
     }
-    // no error checking because the docs will never be deleted.
-    return {
-      message: `Updated page ${input.name}'s maintenance value to ${input.maintenance}`,
-    };
   });

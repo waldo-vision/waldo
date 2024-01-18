@@ -34,25 +34,32 @@ export default rbacProtectedProcedure([
   .input(zodInput)
   .output(zodOutput)
   .mutation(async ({ input, ctx }) => {
-    const updateSite = await ctx.prisma.waldoSite.update({
-      where: {
-        name: 'waldo',
-      },
-      data: {
-        maintenance: input.maintenance,
-        isCustomAlert: input.isCustomAlert,
-        alertDescription: input.alertDescription,
-        alertTitle: input.alertTitle,
-      },
-    });
-    if (updateSite == null) {
+    try {
+      const updateSite = await ctx.prisma.waldoSite.update({
+        where: {
+          name: 'waldo',
+        },
+        data: {
+          maintenance: input.maintenance,
+          isCustomAlert: input.isCustomAlert,
+          alertDescription: input.alertDescription,
+          alertTitle: input.alertTitle,
+        },
+      });
+      if (updateSite == null) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Site not found in the database.',
+        });
+      }
+      // no error checking because the docs will never be deleted.
+      return {
+        message: `Updated site.`,
+      };
+    } catch (error) {
       throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Site not found in the database.',
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occured while executing a query.',
       });
     }
-    // no error checking because the docs will never be deleted.
-    return {
-      message: `Updated site.`,
-    };
   });

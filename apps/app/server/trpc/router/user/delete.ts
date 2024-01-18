@@ -10,16 +10,7 @@ export default rbacProtectedProcedure(['read:user', 'write:user', 'user'])
   .mutation(async ({ ctx }) => {
     // make sure user is trying to delete THEIR account
     // and no t someone elses.
-    const userId = ctx.session.user.id;
     const objOwnerId = ctx.session.user.id;
-
-    if (userId !== objOwnerId) {
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: 'Unable to delete the requested user account.',
-        cause: 'Requested user ID & current server session ID DO NOT MATCH.',
-      });
-    }
 
     try {
       await ctx.prisma.user.delete({
