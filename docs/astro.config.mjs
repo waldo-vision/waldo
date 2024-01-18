@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  server: { port: 3001 },
+  server: { port: 3005 },
   integrations: [
     // Enable Preact to support Preact JSX components.
     preact(),

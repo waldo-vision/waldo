@@ -40,67 +40,134 @@ The app is configured via environment variables stored within a `.env` file in t
 Start by copying the example env file.
 
 ```bash
-cp apps/web/.env.example apps/web/.env
+cp apps/app/.env.example apps/app/.env
 
 # Open the file
-vim apps/web/.env
+vim apps/app/.env
 ```
 
-#### Discord
+#### Logto Identity Service
 
-If you plan on authenticating to Discord, make sure these credentials are set.
+If you plan on running this app for development, you'll need to setup our authentication service, logto.
 
-- `DISCORD_CLIENT_ID`
-- `DISCORD_CLIENT_SECRET`
+1. You have two choices to run the logto service, either run it locally in a docker container, or 2, use their cloud service.
 
-Follow [this guide](https://discordjs.guide/oauth2/#getting-an-oauth2-url) until you have added the `Redirect URL`. Be sure to set this to `http://localhost:3000/api/auth/callback/discord`.
+2. Once you have created a logto cloud service account, or have started the logto service locally, we need to setup a few things on the logto dashboard. If running locally, navigate to https://localhost:3002
 
-Update your .env file like so:
+We'll need to create a few things on the logto dashboard to make sure the app can properly interact with the identity service. These include...
+
+    - A NextJS application (for the submissions site)
+    - A machine-to-machine application (for MAPI access via TRPC)
+    - An API Resource (for TRPC)
+    - A machine-to-machine Role with the "all" scope assigned to the TRPC app.
+
+### Let's create our NextJS application
+
+Once you are on the logto admin dashboard, head over to the applications tab to create our nextjs application.
+
+Click create application, then select the nextjs framework.
+
+![Alt text](/frontend_create.png)
+
+Enter a name and a description. Then click create application, and finally click finish-and-done.
+
+In this newly created application, you will find a bunch of things. Be sure to note down the App ID and the App Secret, as **we will need these later**.
+
+![Alt text](/app_id_secret.png)
+
+Next, set the post sign in/out uri's.
+![Alt text](/post_sign_in_out.png)
+
+Our setup for the Nextjs app is now done.
+
+### Let's create our machine-to-machine application
+
+The machine-to-machine application is required by logto to interact with their management api resource.
+
+To create it, click create application, then for the framework, scoll all the way down and select machine-to-machine.
+
+![Alt text](/m_t_m.png)
+
+Then give it a name and a description and click create, and then finally finish-and-done.
+
+In this newly created application, you will find a bunch of things. Be sure to note down the App ID and the App Secret, as **we will need these later**.
+
+![Alt text](/m_t_m_app_id_secret.png)
+
+We are now done with the machine-to-machine application
+
+### Let's create our TRPC Api Resource
+
+TRPC is our backend framework for waldo's services and we chose to use logto to protect it. In order for logto to protect an api, we need to create an api resource.
+
+Go to the **api resources** tab and click **Create Api Resource**, select **`Continue without Tutorial`**.
+
+![Alt text](/no_tutorial.png)
+
+Provide a name to create the api resource. For the identifer, it does not need to be a URL that's accessable or running, it is just a identifier that is in URI format.
+
+![Alt text](/api_resource.png)
+
+### Create SuperAdmin Role
+
+In order for our machine-to-machine app to work properly, we need to give it complete access to the logto management api.
+
+To start, head to the roles tab and click **Create Role**.
+
+Give the role a name and description, select show more options and click **machine-to-machine app role**. Then assign the Logto Management API - **all** permission scope to the role.
+
+![Alt text](/role_create_1.png)
+
+After you click create role, it will ask you to assign the newly created role to an application. Select the machine-to-machine application we created earlier.
+
+![Alt text](/assign_app.png)
+
+### Environment Variables (.env)
 
 ```.env
-DISCORD_CLIENT_ID="57324592435671234019234"
-DISCORD_CLIENT_SECRET="342759ASDa82dsaf345-ADHFUFA"
+
+# Google Recaptcha
+RECAPTCHA_SITE_KEY=your_site_key
+RECAPTCHA_SECRET_KEY=your_secret_key
+
+
+# database
+DATABASE_URL="postgresql://postgres:mysecretpassword@localhost:5432?sslmode=disable"
+
+# Logto
+
+NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+COOKIESECRET='complex_password_at_least_32_characters_long'
+
+# logto authorization / security
+NEXT_PUBLIC_ID_ISSUER="https://localhost:3001/oidc"
+NEXT_PUBLIC_RESOURCE_AUDIENCE="http://localhost:3000/api"
+NEXT_PUBLIC_JWKS_ENDPOINT="https://localhost:3001/oidc/jwks"
+
+# Local Dev Stuff
+HTTPS_CERT_PATH=""
+HTTPS_KEY_PATH=""
+NODE_TLS_REJECT_UNAUTHORIZED=0
+
+# disable authentication verification (ONLY USE FOR TESTING PURPOSES)
+#DISABLE_VERIFY_AUTH=0
+
+APP_ID="NextJS App ID"
+APP_SECRET="NextJS App Secret"
+ENDPOINT="https://localhost:3001"
+BASE_URL="https://localhost:3000"
+COOKIE_SECRET="complex_password_at_least_32_characters_long"
+
+MAPI_APP_ID="tin984l12ndywwqp1badp"
+MAPI_APP_SECRET="dLWTVgPrxTFXSGCL13dJO9Hk2T6Z5G3D"
+MAPI_TOKEN_ENDPOINT="https://localhost:3001/oidc/token"
+MAPI_RESOURCE_URI="https://default.logto.app/api"
+
 ```
 
-#### GitHub
+### PostgreSQL
 
-If you plan on authenticating to GitHub, make sure these credentials are set.
-
-- `GITHUB_CLIENT_ID`
-- `GITHUB_CLIENT_SECRET`
-
-Follow [this guide](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app). Be sure to set the `Callback URL` to `http://localhost:3000/api/auth/callback/github`.
-
-Update your .env file like so:
-
-```.env
-GITHUB_CLIENT_ID="7482521243341245243"
-GITHUB_CLIENT_SECRET="FDGNJO3490TNGFMGDSK"
-```
-
-#### Next Auth
-
-Be sure to also set the `NEXTAUTH_URL` variable.
-
-- `NEXTAUTH_URL=http://localhost:3000`.
-
-#### CloudFlare Turnstile
-
-_TODO: add CloudFlare configuration docs_
-
-You may also want to set the `Cloudflare Turnstile` keys so that submissions work.
-
-#### Youtube
-
-_TODO: add Youtube configuration docs_
-
-You may also want to set the `Youtube API Key` so that the review site works properly.
-
-_Note: YT API Key needs to be `version 3` of the api._
-
-### CockroachDB
-
-The primary database used by the app is CockroachDB. You will need a working server to run this app locally.
+The primary database used by the app is PostgreSQL. You will need a working server to run this app locally.
 
 #### Hosting
 
@@ -117,31 +184,26 @@ docker ps
 docker compose down
 ```
 
-Alternatively, you can use CockroachDB's free [serverless tier](https://www.cockroachlabs.com/get-started-cockroachdb/) if you don't wish to self-host.
-
-Option for Windows Users:
-
-- <span style="color:red; font-weight: bold">WARNING: Not recommended for development, use at your own risk, no support provided</span>.
-- For Windows you can download the Beta Archive from [Cockroachlabs](https://www.cockroachlabs.com/docs/stable/install-cockroachdb-windows.html)
-  and run the exe with `./cockroach.exe start-single-node --insecure`
-- Then set the `DATABASE_URL` variable in `/packages/database/.env` and `/packages/web/.env` to the url displayed on start for postgresql
-- You even have a Web interface for management and debugging
-- WARNING BETA: (From their site: The CockroachDB executable for Windows is experimental and not suitable for production deployments. Windows 8 or higher is required.)
+Alternatively, you can use a cloud service as "your" database server.
 
 #### Configuration
 
-You will now need to set the `DATABASE_URL` variable in two configuration files:
+Given the .env file above, put your Nextjs application App ID & App Secret into the `APP_ID` AND `APP_SECRET` variables. Same with the machine-to-machine application App ID and App Secret into their respective env vars. As for all of the URI's, if you follow this guide to a T, you should not need to change those.
 
-- `apps/web/.env`
-- `packages/database/.env`. If you haven't already, create this file with `cp packages/database/.env.example packages/database/.env`.
+Google Recaptcha is still being implemented as of (1/17/24) so hang tight until we get that sorted.
 
-If self-hosting using the `docker compose` method, then you can set your variable like so:
+#### RBAC Scopes and Permissions
 
-```bash
-DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
-```
+Waldo uses RBAC (Role Based Access Control) to restict all actions and operations to roles and permission scopes. We use logto to manage all of these permissions and roles, therefore you **will need to create all of the scopes and permissions on the dashboard**
 
-#### Migration
+#### Roles
+
+- Admin -- Waldo Project Leads and Team Leads, have access to all site functions.
+- Moderator -- Help moderate site content as well as execute infractions if necessary. Also gain access to the API & developer portal.
+- Verified -- Verified Waldo.Vision users, allowed to submit gameplay with cheat characteristics attached.
+- User -- Default Waldo.Vision user.
+
+### Migration
 
 With your configuration set, you should be ready to run the migrations needed for our ORM to work.
 
