@@ -163,29 +163,23 @@ model Infractions {
 }
 
 model User {
-  id                    String              @id @default(cuid())
-  name                  String?
-  email                 String?             @unique
-  emailVerified         DateTime?
-  image                 String?
-  accounts              Account[]
-  sessions              Session[]
+  id            String         @id @default(cuid())
+  name          String?
+  email         String?        @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
   // our items
-  blacklisted           Boolean             @default(false)
-  gameplay              Gameplay[]
-  gameplayVotes         GameplayVote[]      @relation("user")
-  apiKeys               ApiKey[]
-  createdAt             DateTime            @default(now())
-  updatedAt             DateTime            @default(now()) @updatedAt
-  v2Account             V2Account[]
-  infractions           Infractions[]
-  badges                Badge[]
-  GameplayLeaderboard   GameplayLeaderboard @relation(fields: [gameplayLeaderboardId], references: [id])
-  gameplayLeaderboardId String
-  ReviewLeaderboard     ReviewLeaderboard?  @relation(fields: [reviewLeaderboardId], references: [id])
-  reviewLeaderboardId   String?
-  ClipLeaderboard       ClipLeaderboard?    @relation(fields: [clipLeaderboardId], references: [id])
-  clipLeaderboardId     String?
+  blacklisted   Boolean        @default(false)
+  gameplay      Gameplay[]
+  gameplayVotes GameplayVote[] @relation("user")
+  apiKeys       ApiKey[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  v2Account     V2Account[]
+  infractions   Infractions[]
+  badges        Badge[]
 }
 
 enum ApiKeyState {
@@ -223,24 +217,6 @@ model Badge {
   awardedUserId String?
   description   String
   decider       Int
-}
-
-model GameplayLeaderboard {
-  id       String @id @default(cuid())
-  topUsers User[]
-  name     String
-}
-
-model ReviewLeaderboard {
-  id       String @id @default(cuid())
-  topUsers User[]
-  name     String
-}
-
-model ClipLeaderboard {
-  id       String @id @default(cuid())
-  topUsers User[]
-  name     String
 }
 
 model VerificationToken {
