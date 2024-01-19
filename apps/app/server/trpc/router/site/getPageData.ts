@@ -40,9 +40,7 @@ export default publicProcedure
         });
       }
       // no error checking because the docs will never be deleted.
-      const at = await Api.getApiAccessToken();
-      const req = await Api.assignRoleToUser(at, 'f8z2ib7c2de0', 'moderator');
-      console.log(req);
+
       return pageData;
     } catch (error) {
       throw new TRPCError({
