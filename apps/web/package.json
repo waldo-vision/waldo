@@ -43,7 +43,7 @@
     "trpc-openapi": "^1.1.2",
     "typescript": "5.0.4",
     "validator": "^13.9.0",
-    "ytdl-core": "^4.11.4",
+    "ytdl-core": "^4.11.5",
     "zod": "^3.21.4"
   },
   "devDependencies": {
