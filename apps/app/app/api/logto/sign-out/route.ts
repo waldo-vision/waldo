@@ -4,5 +4,5 @@ import { NextRequest } from 'next/server';
 export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
-  return logtoClient.handleSignOut('https://app.foo.bar')(request);
+  return logtoClient.handleSignOut(process.env.NEXT_PUBLIC_BASE_URL)(request);
 }
