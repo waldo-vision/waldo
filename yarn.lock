@@ -3489,15 +3489,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logto/next@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "@logto/next@npm:2.3.0"
+"@logto/next@npm:2.4.0":
+  version: 2.4.0
+  resolution: "@logto/next@npm:2.4.0"
   dependencies:
     "@edge-runtime/cookies": ^4.0.0
     "@logto/node": ^2.2.0
   peerDependencies:
     next: ">=12"
-  checksum: cb1a8c563eea3e0a171d6bbf94bd3073b0d25983354bd59d72ca045984ef846e08865c15190cd245f96f0921adb2b06706a69372e0fbe0f0c19f1cd8e7bae2ae
+  checksum: 54336f7e2e570ffc6404014475e25323ef21b4fb20a5f6f264e7af2cf2aa0201eb1d2e5ddee464a69d52d81981bb710d5480e23ce5ffd9bc831f305d1787bcfa
   languageName: node
   linkType: hard
 
@@ -7437,13 +7437,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.3.1":
-  version: 16.3.1
-  resolution: "dotenv@npm:16.3.1"
-  checksum: 15d75e7279018f4bafd0ee9706593dd14455ddb71b3bcba9c52574460b7ccaf67d5cf8b2c08a5af1a9da6db36c956a04a1192b101ee102a3e0cf8817bbcf3dfd
-  languageName: node
-  linkType: hard
-
 "dset@npm:^3.1.2":
   version: 3.1.2
   resolution: "dset@npm:3.1.2"
@@ -9980,9 +9973,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "identity@workspace:packages/identity"
   dependencies:
-    "@logto/next": ^2.3.0
+    "@logto/next": 2.4.0
     "@types/node": ^20.10.8
-    dotenv: ^16.3.1
     eslint-config-custom: "workspace:*"
     tsconfig: "workspace:*"
   languageName: unknown
@@ -16489,7 +16481,7 @@ __metadata:
     "@fontsource/nunito": ^5.0.16
     "@heroicons/react": ^2.1.1
     "@logto/express": ^2.2.0
-    "@logto/next": ^2.3.0
+    "@logto/next": 2.4.0
     "@marsidev/react-turnstile": ^0.4.0
     "@next-auth/prisma-adapter": ^1.0.7
     "@sentry/integrations": ^7.92.0

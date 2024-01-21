@@ -1,9 +1,11 @@
-import { retrieveRawUserInfoServer } from '@server/utils/logto';
+import { retrieveRawUserInfoServer } from 'identity';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@server/db/client';
 
-export async function GET(request: NextApiRequest, response: NextApiResponse) {
-  const logto_user = await retrieveRawUserInfoServer(request.cookies);
+export async function GET(req: Request, res: NextApiResponse) {
+  const logto_user = await retrieveRawUserInfoServer(req.headers.get('cookie'));
+
+  // get acesstoken from logto response obj
   const identityData =
     logto_user.userInfo.identities[
       Object.keys(logto_user.userInfo.identities)[0]
@@ -60,29 +62,10 @@ export async function GET(request: NextApiRequest, response: NextApiResponse) {
     // handle error w sentry or something
   }
 
-  // if no account exists then just create a normal V2 Account.
+  // if no account exists and no v2account exists then just create a normal V2 Account.
 
   try {
-    await prisma.v2Account.create({
-      data: {
-        provider: Object.keys(logto_user.userInfo.identities)[0],
-        providerAccountId: identityData.id,
-        logtoId: logto_user.claims.sub,
-        user: {
-          create: {
-            name: identityData.name,
-            image: logto_user.userInfo.picture,
-          },
-        },
-      },
-    });
-  } catch (err) {
-    // handle error
-  }
-
-  // always update user data on sign-in
-  try {
-    const result = await prisma.account.findFirst({
+    const query = await prisma.v2Account.findFirst({
       where: {
         providerAccountId:
           logto_user.userInfo.identities[
@@ -90,6 +73,35 @@ export async function GET(request: NextApiRequest, response: NextApiResponse) {
           ].userId,
       },
     });
+
+    if (!query || query == null)
+      await prisma.v2Account.create({
+        data: {
+          provider: Object.keys(logto_user.userInfo.identities)[0],
+          providerAccountId: identityData.id,
+          logtoId: logto_user.claims.sub,
+          user: {
+            create: {
+              name: identityData.name,
+              image: logto_user.userInfo.picture,
+            },
+          },
+        },
+      });
+  } catch (err) {
+    // handle error
+  }
+  // always update user data on sign-in
+  try {
+    const result = await prisma.v2Account.findFirst({
+      where: {
+        providerAccountId:
+          logto_user.userInfo.identities[
+            Object.keys(logto_user.userInfo.identities)[0]
+          ].userId,
+      },
+    });
+
     await prisma.user.update({
       where: {
         id: result?.userId,
@@ -101,5 +113,5 @@ export async function GET(request: NextApiRequest, response: NextApiResponse) {
     });
   } catch (err) {}
 
-  return response.redirect('/');
+  return Response.redirect(process.env.BASE_URL);
 }

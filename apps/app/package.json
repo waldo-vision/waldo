@@ -17,7 +17,7 @@
     "@fontsource/nunito": "^5.0.16",
     "@heroicons/react": "^2.1.1",
     "@logto/express": "^2.2.0",
-    "@logto/next": "^2.3.0",
+    "@logto/next": "2.4.0",
     "@marsidev/react-turnstile": "^0.4.0",
     "@next-auth/prisma-adapter": "^1.0.7",
     "@sentry/integrations": "^7.92.0",

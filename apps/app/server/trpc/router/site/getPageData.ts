@@ -1,8 +1,8 @@
-import { publicProcedure } from '../../trpc';
+import { publicProcedure, rbacProtectedProcedure } from '../../trpc';
 import { z } from 'zod';
 import { serverSanitize } from '@utils/sanitize';
 import { TRPCError } from '@trpc/server';
-import { Api } from 'identity';
+import { Api, Scope } from 'identity';
 const zodInput = z
   .object({
     name: z.string(),
@@ -22,7 +22,7 @@ const zodOutput = z.object({
   isCustomAlert: z.boolean(),
 });
 
-export default publicProcedure
+export default rbacProtectedProcedure([Scope.Write.ApiKey.create])
   .meta({ openapi: { method: 'GET', path: '/site/page' } })
   .input(zodInput)
   .output(zodOutput)

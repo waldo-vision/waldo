@@ -2,21 +2,16 @@
 import axios from 'axios';
 import { V2Session } from '../types/logto-auth';
 
-const retrieveRawUserInfoServer = async (
-  cookies: Partial<{
-    [key: string]: string;
-  }>,
-) => {
+const retrieveRawUserInfoServer = async (cookies: string | null) => {
   const api_url = process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/user-info';
-  const converted_cookies = convertCookieObjectToString(cookies);
+
   const request = await axios.get(api_url, {
     withCredentials: true,
     headers: {
-      Cookie: cookies && converted_cookies,
+      cookie: cookies,
     },
   });
   const response = await request.data;
-
   return response;
 };
 

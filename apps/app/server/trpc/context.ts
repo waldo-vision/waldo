@@ -1,19 +1,15 @@
-import { TRPCError, type inferAsyncReturnType } from '@trpc/server';
-import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { prisma } from '@server/db/client';
-import { IncomingHttpHeaders } from 'http';
 import { JWTPayload, createRemoteJWKSet, jwtVerify } from 'jose';
 import { retrieveRawUserInfoServer } from 'identity';
-import axios from 'axios';
-import { V2Session, Role, Api } from 'identity';
+import { V2Session, Api } from 'identity';
 import { userHasScope } from './rbac';
+import { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
+
 // interface ExtendedIncomingHttpHeaders extends IncomingHttpHeaders {
 //   authorization_id: string;
 // }
 
-const extractBearerTokenFromHeaders = ({
-  authorization,
-}: IncomingHttpHeaders) => {
+const extractBearerTokenFromHeaders = (authorization: string | null) => {
   const bearerTokenIdentifier = 'Bearer';
 
   if (!authorization) {
@@ -29,7 +25,7 @@ const extractBearerTokenFromHeaders = ({
 
 type CreateContextOptions = {
   session: V2Session | null;
-  headers?: IncomingHttpHeaders;
+  headers?: { [k: string]: string };
 };
 
 interface Payload extends JWTPayload {
@@ -54,16 +50,16 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * @link https://trpc.io/docs/context
  **/
 
-export const createContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts;
-
+export const createContext = async (opts: FetchCreateContextFnOptions) => {
+  const { req } = opts;
   const headers = req.headers;
-  const token = extractBearerTokenFromHeaders(req.headers);
+  const token = extractBearerTokenFromHeaders(headers.get('Authorization'));
   if (token == 'undefined' || token == undefined) {
-    return await createContextInner({
+    return {
       session: null,
-      headers,
-    });
+      prisma,
+      headers: opts && Object.fromEntries(opts.req.headers),
+    };
   }
   const { payload } = await jwtVerify<Payload>(
     token,
@@ -75,7 +71,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
   );
   // Create the server session object from varius data endpoints.
   // grabs the logto user data.
-  const user_data = await retrieveRawUserInfoServer(req.cookies);
+  const user_data = await retrieveRawUserInfoServer(req.headers.get('cookie'));
   const identityData =
     user_data.userInfo.identities[
       Object.keys(user_data.userInfo.identities)[0]
@@ -91,10 +87,11 @@ export const createContext = async (opts: CreateNextContextOptions) => {
     },
   });
   if (waldo_user_data === null || !payload || !payload.sub) {
-    return await createContextInner({
+    return {
       session: null,
-      headers,
-    });
+      prisma,
+      headers: opts && Object.fromEntries(opts.req.headers),
+    };
   }
 
   // get user's roles from mapi
@@ -124,10 +121,11 @@ export const createContext = async (opts: CreateNextContextOptions) => {
           roles: userRoles,
         };
 
-  return await createContextInner({
+  return {
     session,
-    headers,
-  });
+    prisma,
+    headers: opts && Object.fromEntries(opts.req.headers),
+  };
 };
 
-export type Context = inferAsyncReturnType<typeof createContext>;
+export type Context = Awaited<ReturnType<typeof createContext>>;

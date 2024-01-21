@@ -1,9 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { prisma } from '@server/db/client';
-import { retrieveRawUserInfoServer } from '@server/utils/logto';
+import { retrieveRawUserInfoServer } from 'identity';
 
-export async function GET(request: NextApiRequest, response: NextApiResponse) {
-  const logto_user = await retrieveRawUserInfoServer(request.cookies);
+export async function GET(request: Request, response: NextApiResponse) {
+  const logto_user = await retrieveRawUserInfoServer(
+    request.headers.get('cookie'),
+  );
   // retrieve user data from db
   try {
     const data = await prisma.v2Account.findFirst({

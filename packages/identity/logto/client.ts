@@ -1,6 +1,5 @@
-import LogtoClient from '@logto/next';
+import LogtoClient from '@logto/next/edge';
 import * as Scope from '../rbac/scopes';
-import 'dotenv/config';
 
 export const logtoClient = new LogtoClient({
   appId: process.env.APP_ID,

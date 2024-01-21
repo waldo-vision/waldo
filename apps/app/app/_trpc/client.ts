@@ -1,18 +1,23 @@
-import { httpBatchLink, loggerLink } from '@trpc/client';
-import { createTRPCNext } from '@trpc/next';
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
 import superjson from 'superjson';
-
-import { type AppRouter } from '../server/trpc/router/_app';
-import { getBaseUrl } from './baseurl';
+import {
+  experimental_createActionHook,
+  experimental_createTRPCNextAppDirClient,
+  experimental_serverActionLink,
+} from '@trpc/next/app-dir/client';
+import { experimental_nextHttpLink } from '@trpc/next/app-dir/links/nextHttp';
+import { type AppRouter } from '@server/trpc/router/_app';
 import axios from 'axios';
+import { cookies } from 'next/headers';
 
-// this function receieves the user's access token from the nextjs api route
 const retrieveAccessToken = async () => {
   const req = await axios.get(
     process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/accesstoken',
     {
       withCredentials: true,
+      headers: {
+        Cookie: cookies().toString(),
+      },
     },
   );
   const res = await req.data;
@@ -24,31 +29,27 @@ const retrieveAccessToken = async () => {
 /**
  * Trpc client for the frontend
  */
-export const trpc = createTRPCNext<AppRouter>({
-  config({ ctx }) {
+export const trpc = experimental_createTRPCNextAppDirClient<AppRouter>({
+  config() {
     return {
       transformer: superjson,
       links: [
-        loggerLink({
-          enabled: opts =>
-            process.env.NODE_ENV === 'development' ||
-            (opts.direction === 'down' && opts.result instanceof Error),
-        }),
-        httpBatchLink({
-          url: `${getBaseUrl()}/api/trpc`,
+        experimental_nextHttpLink({
+          batch: false,
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/trpc`,
           headers: async () => {
             return {
               Authorization:
                 (await retrieveAccessToken()) == undefined
                   ? undefined
                   : `Bearer ${await retrieveAccessToken()}`,
+              cookie: cookies().toString(),
             };
           },
         }),
       ],
     };
   },
-  ssr: false,
 });
 
 /**
