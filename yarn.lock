@@ -5364,7 +5364,7 @@ __metadata:
     axios: ^1.3.6
     database: "workspace:*"
     discord-api-types: ^0.37.39
-    dotenv: ^16.0.3
+    dotenv: ^16.4.1
     eslint-config-custom: "*"
     express: ^4.18.2
     express-rate-limit: ^6.6.0
@@ -6453,10 +6453,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.0.3":
-  version: 16.0.3
-  resolution: "dotenv@npm:16.0.3"
-  checksum: afcf03f373d7a6d62c7e9afea6328e62851d627a4e73f2e12d0a8deae1cd375892004f3021883f8aec85932cd2834b091f568ced92b4774625b321db83b827f8
+"dotenv@npm:^16.4.1":
+  version: 16.4.1
+  resolution: "dotenv@npm:16.4.1"
+  checksum: a343f0a1d156deef8c60034f797969867af4dbccfacedd4ac15fad04547e7ffe0553b58fc3b27a5837950f0d977e38e9234943fbcec4aeced4e3d044309a76ab
   languageName: node
   linkType: hard
 
