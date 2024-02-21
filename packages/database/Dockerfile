@@ -35,4 +35,4 @@ COPY --from=builder /app/out/full/ .
 
 ENV Mode migrate
 
-CMD ["infisical", "run", "--env", "${INFISICAL_ENV}", "--", "sh", "./packages/database/entrypoint.sh"]
+CMD ["infisical", "run", "--env", ${INFISICAL_ENV}, "--", "sh", "./packages/database/entrypoint.sh"]

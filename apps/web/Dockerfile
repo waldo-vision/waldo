@@ -71,4 +71,4 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
-CMD ["infisical", "run", "--env", "${INFISICAL_ENV}", "--", "node", "apps/web/server.js"]
+CMD ["infisical", "run", "--env", ${INFISICAL_ENV}, "--", "node", "apps/web/server.js"]
