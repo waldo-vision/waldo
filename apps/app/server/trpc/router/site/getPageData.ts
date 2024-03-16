@@ -35,7 +35,7 @@ export default publicProcedure
       }
       // no error checking because the docs will never be deleted.
 
-      return { maintenance: true };
+      return pageData;
     } catch (error) {
       console.log(error);
       throw new TRPCError({
