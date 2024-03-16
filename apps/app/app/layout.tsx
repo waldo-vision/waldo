@@ -7,15 +7,15 @@ function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <body className="bg-white flex flex-row">
-        <Sidebar />
-        <div className="flex flex-col">
-          <div>
-            <Header />
+        <SessionProvider>
+          <Sidebar />
+          <div className="flex flex-col">
+            <div>
+              <Header />
+            </div>
+            <div>{children}</div>
           </div>
-          <div>
-            <SessionProvider>{children}</SessionProvider>
-          </div>
-        </div>
+        </SessionProvider>
       </body>
     </html>
   );

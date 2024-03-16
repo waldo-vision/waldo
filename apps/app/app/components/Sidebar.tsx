@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { Button, Input } from 'ui';
 import { usePathname, useRouter } from 'next/navigation';
+import { useSession } from '@contexts/SessionContext';
 const data = [
   {
     goal: 400,
@@ -49,6 +50,8 @@ const data = [
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const s = useSession();
+  const session = s?.session;
 
   return (
     <>
@@ -63,10 +66,12 @@ export default function Sidebar() {
               <img
                 className="h-10 w-10 rounded-xl"
                 alt="User Image"
-                src="https://cdn.dribbble.com/users/1259559/avatars/normal/edc2487dcc64f59128c66a366ca2215b.jpeg?1639083971"
+                src={session?.image}
               />
             </div>
-            <h1 className="text-white font-semibold text-lg">Finn</h1>
+            <h1 className="text-white font-semibold text-lg">
+              {session?.name}
+            </h1>
           </div>
 
           {/* Keyword Search Box */}

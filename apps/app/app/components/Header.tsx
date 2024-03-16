@@ -6,9 +6,11 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import WaldoLogo from '../public/android-chrome-256x256.png';
 import { discord, docs, github } from '@utils/links';
+import { useSession } from '@contexts/SessionContext';
 //import useSite from '@site';
 export default function Header() {
-  //const { session } = useSite();
+  const s = useSession();
+  const session = s?.session;
 
   return (
     <>
@@ -19,9 +21,9 @@ export default function Header() {
             <img
               className="h-8 w-8 rounded-2xl"
               alt="User Image"
-              src="https://cdn.dribbble.com/users/1259559/avatars/normal/edc2487dcc64f59128c66a366ca2215b.jpeg?1639083971"
+              src={session?.image}
             />
-            <h1 className="text-gray-700">Finn</h1>
+            <h1 className="text-gray-700">{session?.name}</h1>
           </div>
         </div>
       </div>
