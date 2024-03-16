@@ -19,10 +19,11 @@ export async function GET(request: Request, response: NextApiResponse) {
         user: true,
       },
     });
-    return response.status(200).json({
+    return Response.json({
       blacklisted: data?.user.blacklisted,
     });
   } catch (err) {
+    return Response.json({ err });
     // handle error
   }
 }

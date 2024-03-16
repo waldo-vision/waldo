@@ -25,7 +25,7 @@ const retrieveRawUserInfoClient = async () => {
   return response;
 };
 
-const getUserData = async (): Promise<V2Session | undefined> => {
+const getUserData = async (): Promise<V2Session | any> => {
   const api_url = process.env.NEXT_PUBLIC_BASE_URL + `/api/logto/user-info`;
   try {
     const request = await axios.get(api_url, {
@@ -55,11 +55,14 @@ const getUserData = async (): Promise<V2Session | undefined> => {
       image: userData.picture,
       logto_username: userData.username,
       blacklisted: usermetaReqRes.blacklisted,
+      id: '',
+      scope: [],
+      roles: [],
     };
 
     return sessionObject;
   } catch (err) {
-    return undefined;
+    return err;
   }
 
   // demo user data obj

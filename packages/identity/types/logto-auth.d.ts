@@ -8,7 +8,7 @@ interface V2Session {
   logto_username: string;
   blacklisted: boolean;
   scope: Array<string>;
-  hasScope: (requiredScope: Array<string>) => boolean;
+  hasScope?: (requiredScope: Array<string>) => boolean;
   roles: Role[];
 }
 
