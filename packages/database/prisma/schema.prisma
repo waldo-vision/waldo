@@ -182,6 +182,19 @@ model User {
   badges        Badge[]
 }
 
+model NovuUser {
+  id               String             @id @default("")
+  userId           String             @unique
+  subscriberId     String             @unique
+  NovuSubscription NovuSubscription[]
+}
+
+model NovuSubscription {
+  id         String   @id @default(cuid())
+  nUser      NovuUser @relation(fields: [novuUserId], references: [id])
+  novuUserId String
+}
+
 enum ApiKeyState {
   ACTIVE
   EXPIRED

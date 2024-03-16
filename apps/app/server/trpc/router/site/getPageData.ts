@@ -1,8 +1,7 @@
-import { publicProcedure, rbacProtectedProcedure } from '../../trpc';
+import { publicProcedure } from '../../trpc';
 import { z } from 'zod';
 import { serverSanitize } from '@utils/sanitize';
 import { TRPCError } from '@trpc/server';
-import { Api, Scope } from 'identity';
 const zodInput = z
   .object({
     name: z.string(),
@@ -15,14 +14,9 @@ const zodInput = z
 
 const zodOutput = z.object({
   maintenance: z.boolean(),
-  name: z.string(),
-  parentName: z.string(),
-  alertDescription: z.string().nullable(),
-  alertTitle: z.string().nullable(),
-  isCustomAlert: z.boolean(),
 });
 
-export default rbacProtectedProcedure([Scope.Write.ApiKey.create])
+export default publicProcedure
   .meta({ openapi: { method: 'GET', path: '/site/page' } })
   .input(zodInput)
   .output(zodOutput)
@@ -41,8 +35,9 @@ export default rbacProtectedProcedure([Scope.Write.ApiKey.create])
       }
       // no error checking because the docs will never be deleted.
 
-      return pageData;
+      return { maintenance: true };
     } catch (error) {
+      console.log(error);
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'An error occured while executing the query.',

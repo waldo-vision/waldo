@@ -26,15 +26,13 @@ export const api = experimental_createTRPCNextAppDirServer<AppRouter>({
       transformer: superjson,
       links: [
         experimental_nextHttpLink({
-          revalidate: 1,
+          revalidate: false,
           batch: true,
           url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/trpc`,
           headers: async () => {
+            
             return {
-              Authorization:
-                (await retrieveAccessToken()) == undefined
-                  ? undefined
-                  : `Bearer ${await retrieveAccessToken()}`,
+              Authorization: `Bearer ${await retrieveAccessToken()}`,
               cookie: cookies().toString(),
             };
           },

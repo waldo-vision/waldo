@@ -4,7 +4,6 @@ import { prisma } from '@server/db/client';
 
 export async function GET(req: Request, res: NextApiResponse) {
   const logto_user = await retrieveRawUserInfoServer(req.headers.get('cookie'));
-
   // get acesstoken from logto response obj
   const identityData =
     logto_user.userInfo.identities[

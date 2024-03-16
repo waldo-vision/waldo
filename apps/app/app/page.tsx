@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { api } from './_trpc/serverClient';
 
 const Page = async () => {
-  const data = await api.site.getPageData.query({ name: 'review' });
+  const data = await api.site.getPageData.query({ name: 'account' });
   console.log(data);
   return (
     <div>
