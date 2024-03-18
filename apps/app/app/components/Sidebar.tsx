@@ -1,53 +1,12 @@
 'use client';
-import { HomeIcon, InboxIcon } from '@heroicons/react/24/solid';
-import * as React from 'react';
+import { GlobeAltIcon, HomeIcon, InboxIcon } from '@heroicons/react/24/solid';
+import React from 'react';
 
 import { Button, Input } from 'ui';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from '@contexts/SessionContext';
-const data = [
-  {
-    goal: 400,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 239,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 349,
-  },
-];
 
-export default function Sidebar() {
+const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const s = useSession();
@@ -60,7 +19,7 @@ export default function Sidebar() {
         <div className="mt-12 flex flex-col gap-7">
           {/* Icon Container */}
           <div className="items-center flex flex-row gap-5">
-            <div className="py-2 px-[1px] bg-yellow-500 absolute rounded-md"></div>
+            <div className="py-2 px-[1px] bg-[#6F1DD8] absolute rounded-md"></div>
 
             <div className="px-2 py-2 bg-gray-900 rounded-2xl">
               <img
@@ -112,7 +71,11 @@ export default function Sidebar() {
       </div>
     </>
   );
-}
+};
+
+export default Sidebar;
+
+Sidebar.displayName = 'Sidebar';
 
 interface NavItem {
   icon: React.ReactNode;
@@ -130,5 +93,10 @@ const NAV_ITEMS: NavItem[] = [
     icon: <InboxIcon color="white" />,
     name: 'Inbox',
     href: '/d/inbox',
+  },
+  {
+    icon: <GlobeAltIcon color="white" />,
+    name: 'Waldo Hub',
+    href: '/d/w_hub',
   },
 ];

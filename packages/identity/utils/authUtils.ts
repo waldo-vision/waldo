@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios';
 import { V2Session } from '../types/logto-auth';
+import { prisma } from '@server/db/client';
 
 const retrieveRawUserInfoServer = async (cookies: string | null) => {
   const api_url = process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/user-info';
@@ -25,7 +26,7 @@ const retrieveRawUserInfoClient = async () => {
   return response;
 };
 
-const getUserData = async (): Promise<V2Session | any> => {
+const createSession = async (): Promise<V2Session | any> => {
   const api_url = process.env.NEXT_PUBLIC_BASE_URL + `/api/logto/user-info`;
   try {
     const request = await axios.get(api_url, {
@@ -43,10 +44,11 @@ const getUserData = async (): Promise<V2Session | any> => {
       response.userInfo.identities[
         Object.keys(response.userInfo.identities)[0]
       ];
-    const usermetaReq = await axios.get(
+    const query = await axios.get(
       process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/usermeta',
     );
-    const usermetaReqRes = await usermetaReq.data;
+    const waldoUser = await query.data;
+
     const sessionObject = {
       logto_id: jwtData.sub,
       provider: Object.keys(response.userInfo.identities)[0],
@@ -54,7 +56,7 @@ const getUserData = async (): Promise<V2Session | any> => {
       name: identityData.details.name,
       image: userData.picture,
       logto_username: userData.username,
-      blacklisted: usermetaReqRes.blacklisted,
+      blacklisted: waldoUser.blacklisted,
       id: '',
       scope: [],
       roles: [],
@@ -76,7 +78,7 @@ const getUserData = async (): Promise<V2Session | any> => {
   // }
 };
 
-export { retrieveRawUserInfoServer, retrieveRawUserInfoClient, getUserData };
+export { retrieveRawUserInfoServer, retrieveRawUserInfoClient, createSession };
 
 // utils
 

@@ -3,8 +3,9 @@ import Image from 'next/image';
 import React from 'react';
 import { WaldoButton } from 'ui';
 import { cn } from 'ui/lib/utils';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 export const Header = () => {
+  const router = useRouter();
   const pathname = usePathname();
   return (
     <div className="min-w-max items-center gap-2 fixed w-[100%] z-[100] mt-3">
@@ -25,6 +26,7 @@ export const Header = () => {
           {NAV_ITEMS.map((item: NavItem, index: number) => {
             return (
               <h1
+                onClick={() => router.push(item.href)}
                 className={`text-white cursor-pointer ${
                   pathname.includes(item.href) ? 'font-bold' : 'font-regular'
                 }`}
@@ -72,9 +74,14 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Account',
   },
   {
-    name: 'app',
-    href: 'https://app.waldo.vision/submissions',
-    label: 'App',
+    name: 'Waldo Vision',
+    href: 'https://app.waldo.vision/',
+    label: 'Waldo Vision',
+  },
+  {
+    name: 'Waldo Hub',
+    href: 'https://hub.waldo.vision/',
+    label: 'Hub',
   },
   {
     name: 'docs',

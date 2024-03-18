@@ -1,13 +1,13 @@
 // context/SessionContext.tsx
 'use client';
-import {
+import React, {
   createContext,
   useContext,
   useState,
   useEffect,
   ReactNode,
 } from 'react';
-import { V2Session, getUserData } from 'identity';
+import { V2Session, createSession } from 'identity';
 
 interface SessionContextType {
   session: V2Session | undefined;
@@ -30,7 +30,7 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const querySession = async () => {
       try {
-        const user = await getUserData();
+        const user = await createSession();
         setSessionState(user);
       } catch (error) {
         // Handle error

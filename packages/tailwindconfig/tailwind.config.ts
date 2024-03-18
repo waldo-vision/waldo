@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
+import defaultTheme from 'tailwindcss/defaultTheme';
+
 module.exports = {
   darkMode: ['class'],
   content: [
@@ -19,7 +21,7 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ['"Mona Sans"', 'sans-serif'],
+      sans: ['Poppins', ...defaultTheme.fontFamily.sans],
     },
     extend: {
       colors: {

@@ -6,10 +6,8 @@ const Page = () => {
   // console.log(data);
 
   return (
-    <div className="flex max-h-screen text-gray-700">
-      <div className="ml-12 text-2xl font-bold">
-        Welcome to the Waldo Platform
-      </div>
+    <div className="flex max-h-screen text-black">
+      <div className="ml-12 text-2xl font-bold">Waldo Dashboard</div>
     </div>
   );
 };

@@ -14,7 +14,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="  text-gray-500 min-w-max items-center gap-2 w-[100%] z-100">
+      <div className="  text-gray-400 min-w-max items-center gap-2 w-[100%] z-100">
         <div className="flex m-8 mx-12">
           <div className="font-semibold text-md gap-3 items-center flex flex-row">
             <h1>Hey,</h1>

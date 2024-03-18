@@ -3,7 +3,9 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import { Button, RecArray, WaldoButton } from 'ui';
 import { CodeBracketSquareIcon } from '@heroicons/react/24/outline';
-const test = () => {
+import { useRouter } from 'next/navigation';
+const Page = () => {
+  const router = useRouter();
   return (
     <>
       <div className="flex flex-col max-h-screen h-screen bg-[#16182c] ">
@@ -29,13 +31,26 @@ const test = () => {
               sportsmanship are upheld in the world of competitive gaming.
             </h2>
             <div className="flex flex-col  mt-4">
-              <div className="flex flex-row items-center gap-4">
-                <WaldoButton className="text-sm text-white" size="md">
-                  Learn More
+              <div
+                className="flex flex-row items-center gap-4"
+                onClick={() => router.push('https://app.waldo.vision')}
+              >
+                <WaldoButton
+                  className="text-sm text-white font-semibold"
+                  size="md"
+                >
+                  <div className="flex flex-row gap-2">
+                    <h1>Go to Waldo Vision</h1>
+                    <ArrowRightIcon height={20} width={20} color="white" />
+                  </div>
                 </WaldoButton>
-                <div className="flex flex-row gap-2 cursor-pointer transition hover:bg-[#E545FF] hover:bg-opacity-[0.07] duration-300 ease-in-out p-4 hover:rounded-md">
+
+                <div
+                  className="flex flex-row gap-2 cursor-pointer transition hover:bg-[#E545FF] hover:bg-opacity-[0.07] duration-300 ease-in-out p-4 hover:rounded-md"
+                  onClick={() => router.push('https://hub.waldo.vision')}
+                >
                   <h1 className="text-white font-semibold text-sm">
-                    Go to the App
+                    Go to Waldo Hub
                   </h1>
                   <ArrowRightIcon height={20} width={20} color="white" />
                 </div>
@@ -75,7 +90,10 @@ const test = () => {
               sportsmanship are upheld in the world of competitive gaming.
             </h2>
             <div className="flex flex-col  mt-4">
-              <div className="flex flex-row items-center gap-4">
+              <div
+                className="flex flex-row items-center gap-4"
+                onClick={() => router.push('https://app.waldo.vision')}
+              >
                 <WaldoButton className="text-sm text-white" size="md">
                   Learn More
                 </WaldoButton>
@@ -102,4 +120,4 @@ const test = () => {
   );
 };
 
-export default test;
+export default Page;
