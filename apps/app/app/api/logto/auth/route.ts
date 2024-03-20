@@ -117,7 +117,6 @@ export async function GET(req: Request, res: NextApiResponse) {
   // WALDO MIGRATION LOGIC END---------END
 
   // Novu Integration START--------START
-
   // Novu Integration END--------END
 
   return Response.redirect(process.env.BASE_URL);

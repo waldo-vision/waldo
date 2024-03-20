@@ -32,6 +32,7 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
     const querySession = async () => {
       try {
         const user = await createSession();
+        // Only need to check error here as Try/Catch only catches the axios error.
         if (!(user instanceof Error)) {
           setSessionState(user);
         } else {
