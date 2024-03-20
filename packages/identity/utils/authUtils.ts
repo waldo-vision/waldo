@@ -47,7 +47,7 @@ const createSession = async (): Promise<V2Session | Error | AxiosError> => {
     const query = await axios.get(
       process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/usermeta',
     );
-    const waldoUser = await query.data;
+    const waldoUser: { blacklisted: boolean, id: string } = await query.data;
 
     const sessionObject = {
       logto_id: jwtData.sub,
@@ -57,7 +57,7 @@ const createSession = async (): Promise<V2Session | Error | AxiosError> => {
       image: userData.picture,
       logto_username: userData.username,
       blacklisted: waldoUser.blacklisted,
-      id: '',
+      id: waldoUser.id,
       scope: [],
       roles: [],
     };
@@ -85,15 +85,3 @@ const createSession = async (): Promise<V2Session | Error | AxiosError> => {
 };
 
 export { retrieveRawUserInfoServer, retrieveRawUserInfoClient, createSession };
-
-// utils
-
-function convertCookieObjectToString(
-  cookiesObj: Partial<{
-    [key: string]: string;
-  }>,
-) {
-  return Object.entries(cookiesObj)
-    .map(([key, value]) => `${key}=${value}`)
-    .join('; ');
-}

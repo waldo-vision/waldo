@@ -8,6 +8,7 @@ import React, {
   ReactNode,
 } from 'react';
 import { V2Session, createSession } from 'identity';
+import { AxiosError } from 'axios';
 
 interface SessionContextType {
   session: V2Session | undefined;
@@ -31,7 +32,11 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
     const querySession = async () => {
       try {
         const user = await createSession();
-        setSessionState(user);
+        if (!(user instanceof Error)) {
+          setSessionState(user);
+        } else {
+          setSessionState(undefined);
+        }
       } catch (error) {
         // Handle error
         setSessionState(undefined);

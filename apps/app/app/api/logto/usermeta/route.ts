@@ -21,6 +21,7 @@ export async function GET(request: Request, response: NextApiResponse) {
     });
     return Response.json({
       blacklisted: data?.user.blacklisted,
+      id: data?.id,
     });
   } catch (err) {
     return Response.json({ err });
