@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import { V2Session } from '../types/logto-auth';
 import { prisma } from '@server/db/client';
 
@@ -26,7 +26,7 @@ const retrieveRawUserInfoClient = async () => {
   return response;
 };
 
-const createSession = async (): Promise<V2Session | any> => {
+const createSession = async (): Promise<V2Session | Error | AxiosError> => {
   const api_url = process.env.NEXT_PUBLIC_BASE_URL + `/api/logto/user-info`;
   try {
     const request = await axios.get(api_url, {
@@ -34,7 +34,7 @@ const createSession = async (): Promise<V2Session | any> => {
     });
     const response = await request.data;
     if (response.isAuthenticated == false) {
-      return undefined;
+      return new Error("Session not found on the server!");
     }
 
     const userData = response.userInfo;
@@ -63,8 +63,14 @@ const createSession = async (): Promise<V2Session | any> => {
     };
 
     return sessionObject;
-  } catch (err) {
-    return err;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    } else if (error instanceof Error) {
+      throw error;
+    } else {
+      throw new Error("A rare error occured.")
+    }
   }
 
   // demo user data obj

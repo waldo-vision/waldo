@@ -2,7 +2,7 @@
 import { GlobeAltIcon, HomeIcon, InboxIcon } from '@heroicons/react/24/solid';
 import React from 'react';
 
-import { Button, Input } from 'ui';
+import { Button, Input, Spinner } from 'ui';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from '@contexts/SessionContext';
 
@@ -19,17 +19,23 @@ const Sidebar = () => {
         <div className="mt-12 flex flex-col gap-7">
           {/* Icon Container */}
           <div className="items-center flex flex-row gap-5">
-            <div className="py-2 px-[1px] bg-[#6F1DD8] absolute rounded-md"></div>
+            {session ? (
+              <>
+                <div className="py-2 px-[1px] bg-[#6F1DD8] absolute rounded-md"></div>
 
-            <div className="px-2 py-2 bg-gray-900 rounded-2xl">
-              <img
-                className="h-10 w-10 rounded-xl"
-                alt="User Image"
-                src={session?.image}
-              />
-            </div>
+                <div className="px-2 py-2 bg-gray-900 rounded-2xl">
+                  <img
+                    className="h-10 w-10 rounded-xl"
+                    alt="User Image"
+                    src={session?.image}
+                  />
+                </div>
+              </>
+            ) : (
+              <Spinner color="white" />
+            )}
             <h1 className="text-white font-semibold text-lg">
-              {session?.name}
+              {session && session.name}
             </h1>
           </div>
 

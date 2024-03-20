@@ -34,7 +34,7 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
         setSessionState(user);
       } catch (error) {
         // Handle error
-        console.error('Error fetching session:', error);
+        setSessionState(undefined);
       }
     };
     querySession();
