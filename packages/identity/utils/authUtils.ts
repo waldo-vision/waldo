@@ -27,30 +27,30 @@ const retrieveRawUserInfoClient = async () => {
 };
 
 const createSession = async (): Promise<V2Session | Error | AxiosError> => {
-  const waldoDataUrl =
+  const logtoDataUrl =
     process.env.NEXT_PUBLIC_BASE_URL + `/api/logto/user-info`;
   const accessTokenUrl =
     process.env.NEXT_PUBLIC_BASE_URL + `/api/logto/accesstoken`;
   try {
-    const waldoUserDataReq = await axios.get(waldoDataUrl, {
+    const logtoUserDataReq = await axios.get(logtoDataUrl, {
       withCredentials: true,
     });
-    const waldoUserDataRes = await waldoUserDataReq.data;
-    if (waldoUserDataRes.isAuthenticated == false) {
+    const logtoUserDataRes = await logtoUserDataReq.data;
+    if (logtoUserDataRes.isAuthenticated == false) {
       return new Error('Session not found on the server!');
     }
 
-    const userData = waldoUserDataRes.userInfo;
-    const jwtData = waldoUserDataRes.claims;
+    const userData = logtoUserDataRes.userInfo;
+    const jwtData = logtoUserDataRes.claims;
 
     const identityData =
-      waldoUserDataRes.userInfo.identities[
-        Object.keys(waldoUserDataRes.userInfo.identities)[0]
+    logtoUserDataRes.userInfo.identities[
+        Object.keys(logtoUserDataRes.userInfo.identities)[0]
       ];
-    const query = await axios.get(
+    const waldoUserDataReq = await axios.get(
       process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/usermeta',
     );
-    const waldoUser: { blacklisted: boolean; id: string } = await query.data;
+    const waldoUser: { blacklisted: boolean; id: string } = await waldoUserDataReq.data;
 
     const scopeDataReq = await axios.get(accessTokenUrl, {
       withCredentials: true,
@@ -60,7 +60,7 @@ const createSession = async (): Promise<V2Session | Error | AxiosError> => {
 
     const sessionObject = {
       logto_id: jwtData.sub,
-      provider: Object.keys(waldoUserDataRes.userInfo.identities)[0],
+      provider: Object.keys(logtoUserDataRes.userInfo.identities)[0],
       providerId: identityData.userId,
       name: identityData.details.name,
       image: userData.picture,
