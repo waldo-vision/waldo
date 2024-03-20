@@ -7,6 +7,7 @@ import { useSession } from '@contexts/SessionContext';
 export default function Header() {
   const s = useSession();
   const session = s?.session;
+  console.log(session);
   return (
     <>
       <div className="  text-gray-400 min-w-max items-center gap-2 w-[100%] z-100">

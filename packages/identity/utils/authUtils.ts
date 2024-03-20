@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import axios, {AxiosError} from 'axios';
+import axios, { AxiosError } from 'axios';
 import { V2Session } from '../types/logto-auth';
 import { prisma } from '@server/db/client';
 
@@ -27,38 +27,47 @@ const retrieveRawUserInfoClient = async () => {
 };
 
 const createSession = async (): Promise<V2Session | Error | AxiosError> => {
-  const api_url = process.env.NEXT_PUBLIC_BASE_URL + `/api/logto/user-info`;
+  const waldoDataUrl =
+    process.env.NEXT_PUBLIC_BASE_URL + `/api/logto/user-info`;
+  const accessTokenUrl =
+    process.env.NEXT_PUBLIC_BASE_URL + `/api/logto/accesstoken`;
   try {
-    const request = await axios.get(api_url, {
+    const waldoUserDataReq = await axios.get(waldoDataUrl, {
       withCredentials: true,
     });
-    const response = await request.data;
-    if (response.isAuthenticated == false) {
-      return new Error("Session not found on the server!");
+    const waldoUserDataRes = await waldoUserDataReq.data;
+    if (waldoUserDataRes.isAuthenticated == false) {
+      return new Error('Session not found on the server!');
     }
 
-    const userData = response.userInfo;
-    const jwtData = response.claims;
+    const userData = waldoUserDataRes.userInfo;
+    const jwtData = waldoUserDataRes.claims;
 
     const identityData =
-      response.userInfo.identities[
-        Object.keys(response.userInfo.identities)[0]
+      waldoUserDataRes.userInfo.identities[
+        Object.keys(waldoUserDataRes.userInfo.identities)[0]
       ];
     const query = await axios.get(
       process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/usermeta',
     );
-    const waldoUser: { blacklisted: boolean, id: string } = await query.data;
+    const waldoUser: { blacklisted: boolean; id: string } = await query.data;
+
+    const scopeDataReq = await axios.get(accessTokenUrl, {
+      withCredentials: true,
+    });
+
+    const scopeDataRes = await scopeDataReq.data;
 
     const sessionObject = {
       logto_id: jwtData.sub,
-      provider: Object.keys(response.userInfo.identities)[0],
+      provider: Object.keys(waldoUserDataRes.userInfo.identities)[0],
       providerId: identityData.userId,
       name: identityData.details.name,
       image: userData.picture,
       logto_username: userData.username,
       blacklisted: waldoUser.blacklisted,
       id: waldoUser.id,
-      scope: [],
+      scope: scopeDataRes.scopes,
       roles: [],
     };
 
@@ -69,7 +78,7 @@ const createSession = async (): Promise<V2Session | Error | AxiosError> => {
     } else if (error instanceof Error) {
       throw error;
     } else {
-      throw new Error("A rare error occured.")
+      throw new Error('A rare error occured.');
     }
   }
 

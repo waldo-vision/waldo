@@ -14,6 +14,7 @@ declare namespace NodeJS {
     MAPI_TOKEN_ENDPOINT: string;
     MAPI_RESOURCE_URI: string;
     NODE_ENV: string;
+    NEXT_PUBLIC_BASE_URL: string;
     NEXT_PUBLIC_JWKS_ENDPOINT: string;
     NEXT_PUBLIC_RESOURCE_AUDIENCE: string;
     NEXT_PUBLIC_ID_ISSUER: string;
