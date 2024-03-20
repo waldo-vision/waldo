@@ -3,6 +3,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@server/db/client';
 
 export async function GET(req: Request, res: NextApiResponse) {
+  // WALDO MIGRATION LOGIC START---------START
+
   const logto_user = await retrieveRawUserInfoServer(req.headers.get('cookie'));
   // get acesstoken from logto response obj
   const identityData =
@@ -111,6 +113,12 @@ export async function GET(req: Request, res: NextApiResponse) {
       },
     });
   } catch (err) {}
+
+  // WALDO MIGRATION LOGIC END---------END
+
+  // Novu Integration START--------START
+
+  // Novu Integration END--------END
 
   return Response.redirect(process.env.BASE_URL);
 }

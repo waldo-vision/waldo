@@ -4,5 +4,5 @@ import { NextRequest } from 'next/server';
 export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
-  return logtoClient.handleSignInCallback('/api/logto/migration')(request);
+  return logtoClient.handleSignInCallback('/api/logto/auth')(request);
 }
