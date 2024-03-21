@@ -20,7 +20,11 @@
         "MAPI_TOKEN_ENDPOINT",
         "MAPI_APP_ID",
         "MAPI_APP_SECRET",
-        "MAPI_RESOURCE_URI"
+        "MAPI_RESOURCE_URI",
+        "NOVU_API_KEY",
+        "NOVU_BACKEND_URL",
+        "NOVU_WS_URL",
+        "NOVU_APP_ID"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },

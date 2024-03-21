@@ -1,4 +1,4 @@
-import './globals.css';
+import './_styles/globals.css';
 import React from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -8,15 +8,13 @@ function RootLayout({ children }: { children: React.ReactNode }) {
     <html>
       <SessionProvider>
         <body>
-          <div className="bg-white flex flex-row">
+          <div className="bg-white flex flex-row min-h-screen">
             <div>
               <Sidebar />
             </div>
-            <div className="flex flex-col">
-              <div>
-                <Header />
-              </div>
-              <div>{children}</div>
+            <div className="flex flex-col w-full">
+              <Header />
+              <main className="flex-grow">{children}</main>
             </div>
           </div>
         </body>

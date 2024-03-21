@@ -1,7 +1,7 @@
 import { retrieveRawUserInfoServer } from 'identity';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@server/db/client';
-
+import { Sub } from 'novu';
 export async function GET(req: Request, res: NextApiResponse) {
   // WALDO MIGRATION LOGIC START---------START
 
@@ -38,7 +38,7 @@ export async function GET(req: Request, res: NextApiResponse) {
 
         // update user with logto relevant info
         try {
-          await prisma.user.update({
+          const data = await prisma.user.update({
             where: {
               id: result.userId,
             },
@@ -52,6 +52,14 @@ export async function GET(req: Request, res: NextApiResponse) {
               id: result.id,
             },
           });
+          try {
+            await Sub.createSub(
+              data.id,
+              data.email || '',
+              data.name || '',
+              data.image || '',
+            );
+          } catch (err) {}
         } catch (err) {
           // handle error
         }
@@ -75,8 +83,8 @@ export async function GET(req: Request, res: NextApiResponse) {
       },
     });
 
-    if (!query || query == null)
-      await prisma.v2Account.create({
+    if (!query || query == null) {
+      const data = await prisma.v2Account.create({
         data: {
           provider: Object.keys(logto_user.userInfo.identities)[0],
           providerAccountId: identityData.id,
@@ -89,6 +97,11 @@ export async function GET(req: Request, res: NextApiResponse) {
           },
         },
       });
+
+      try {
+        await Sub.createSub(data.userId, '', '', '');
+      } catch (err) {}
+    }
   } catch (err) {
     // handle error
   }

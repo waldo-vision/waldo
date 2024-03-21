@@ -18,5 +18,9 @@ declare namespace NodeJS {
     NEXT_PUBLIC_JWKS_ENDPOINT: string;
     NEXT_PUBLIC_RESOURCE_AUDIENCE: string;
     NEXT_PUBLIC_ID_ISSUER: string;
+    NOVU_API_KEY: string;
+    NOVU_BACKEND_URL: string;
+    NOVU_WS_URL: string;
+    NOVU_APP_ID: string;
   }
 }

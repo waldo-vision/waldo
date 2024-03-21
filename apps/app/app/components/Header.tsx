@@ -1,8 +1,14 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
+/* eslint-disable @next/next/no-img-element */
+
 import { Spinner } from 'ui';
 import { discord, docs, github } from '@utils/links';
 import { useSession } from '@contexts/SessionContext';
+import {
+  NovuProvider,
+  PopoverNotificationCenter,
+  NotificationBell,
+} from '@novu/notification-center';
 //import useSite from '@site';
 export default function Header() {
   const s = useSession();
@@ -10,7 +16,7 @@ export default function Header() {
   console.log(session);
   return (
     <>
-      <div className="  text-gray-400 min-w-max items-center gap-2 w-[100%] z-100">
+      <div className="flex justify-between items-center w-full px-4 py-2 text-gray-400">
         <div className="flex m-8 mx-12">
           <div className="font-semibold text-md gap-3 items-center flex flex-row">
             <h1>Hey,</h1>
@@ -25,6 +31,20 @@ export default function Header() {
             )}
             <h1 className="text-gray-700">{session && session.name}</h1>
           </div>
+        </div>
+        <div className="flex ml-auto">
+          <NovuProvider
+            backendUrl={process.env.NOVU_BACKEND_URL}
+            socketUrl={process.env.NOVU_WS_URL}
+            subscriberId={session?.id}
+            applicationIdentifier={process.env.NOVU_APP_ID}
+          >
+            <PopoverNotificationCenter colorScheme={'dark'}>
+              {({ unseenCount }) => (
+                <NotificationBell unseenCount={unseenCount} />
+              )}
+            </PopoverNotificationCenter>
+          </NovuProvider>
         </div>
       </div>
     </>
