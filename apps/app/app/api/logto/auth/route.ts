@@ -52,14 +52,6 @@ export async function GET(req: Request, res: NextApiResponse) {
               id: result.id,
             },
           });
-          try {
-            await Sub.createSub(
-              data.id,
-              data.email || '',
-              data.name || '',
-              data.image || '',
-            );
-          } catch (err) {}
         } catch (err) {
           // handle error
         }
@@ -97,10 +89,6 @@ export async function GET(req: Request, res: NextApiResponse) {
           },
         },
       });
-
-      try {
-        await Sub.createSub(data.userId, '', '', '');
-      } catch (err) {}
     }
   } catch (err) {
     // handle error
@@ -130,6 +118,27 @@ export async function GET(req: Request, res: NextApiResponse) {
   // WALDO MIGRATION LOGIC END---------END
 
   // Novu Integration START--------START
+  const query = await prisma?.v2Account.findFirst({
+    where: {
+      providerAccountId:
+        logto_user.userInfo.identities[
+          Object.keys(logto_user.userInfo.identities)[0]
+        ].userId,
+    },
+    include: {
+      user: true,
+    },
+  });
+  const user = query?.user;
+  try {
+    await Sub.createSub(
+      user?.id || '',
+      user?.email || '',
+      user?.name || '',
+      user?.image || '',
+    );
+  } catch (err) {}
+
   // Novu Integration END--------END
 
   return Response.redirect(process.env.BASE_URL);

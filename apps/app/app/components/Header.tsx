@@ -10,6 +10,7 @@ import {
   NotificationBell,
 } from '@novu/notification-center';
 //import useSite from '@site';
+import NovuCustomStyling from './_styles/novu.css';
 export default function Header() {
   const s = useSession();
   const session = s?.session;
@@ -34,10 +35,11 @@ export default function Header() {
         </div>
         <div className="flex ml-auto">
           <NovuProvider
-            backendUrl={process.env.NOVU_BACKEND_URL}
-            socketUrl={process.env.NOVU_WS_URL}
-            subscriberId={session?.id}
-            applicationIdentifier={process.env.NOVU_APP_ID}
+            styles={NovuCustomStyling}
+            backendUrl={process.env.NEXT_PUBLIC_NOVU_BACKEND_URL}
+            socketUrl={process.env.NEXT_PUBLIC_NOVU_WS_URL}
+            subscriberId={'on-boarding-subscriber-id-123'}
+            applicationIdentifier={process.env.NEXT_PUBLIC_NOVU_APP_ID}
           >
             <PopoverNotificationCenter colorScheme={'dark'}>
               {({ unseenCount }) => (

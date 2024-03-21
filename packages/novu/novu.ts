@@ -1,8 +1,8 @@
 import { Novu } from '@novu/node';
 
 const config = {
-  backendUrl: process.env.NOVU_BACKEND_URL,
-  socketUrl: process.env.NOVU_WS_URL,
+  backendUrl: process.env.NEXT_PUBLIC_NOVU_BACKEND_URL,
+  socketUrl: process.env.NEXT_PUBLIC_NOVU_WS_URL,
 };
 
 const novu = new Novu(process.env.NOVU_API_KEY, config);

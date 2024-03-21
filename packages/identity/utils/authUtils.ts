@@ -44,13 +44,14 @@ const createSession = async (): Promise<V2Session | Error | AxiosError> => {
     const jwtData = logtoUserDataRes.claims;
 
     const identityData =
-    logtoUserDataRes.userInfo.identities[
+      logtoUserDataRes.userInfo.identities[
         Object.keys(logtoUserDataRes.userInfo.identities)[0]
       ];
     const waldoUserDataReq = await axios.get(
       process.env.NEXT_PUBLIC_BASE_URL + '/api/logto/usermeta',
     );
-    const waldoUser: { blacklisted: boolean; id: string } = await waldoUserDataReq.data;
+    const waldoUser: { blacklisted: boolean; id: string } =
+      await waldoUserDataReq.data;
 
     const scopeDataReq = await axios.get(accessTokenUrl, {
       withCredentials: true,

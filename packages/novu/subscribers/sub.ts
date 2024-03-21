@@ -5,11 +5,13 @@ const createSub = async (
   name: string,
   avatar: string,
 ) => {
-  await novu.subscribers.identify(waldoId, {
-    email: email,
-    firstName: name,
-    avatar: avatar,
-  });
+  try {
+    const q = await novu.subscribers.identify(waldoId, {
+      //email: email,
+      firstName: name,
+      avatar: avatar,
+    });
+  } catch (err) {}
 };
 
 const sendTest = async () => {

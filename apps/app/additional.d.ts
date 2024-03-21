@@ -19,8 +19,8 @@ declare namespace NodeJS {
     NEXT_PUBLIC_RESOURCE_AUDIENCE: string;
     NEXT_PUBLIC_ID_ISSUER: string;
     NOVU_API_KEY: string;
-    NOVU_BACKEND_URL: string;
-    NOVU_WS_URL: string;
-    NOVU_APP_ID: string;
+    NEXT_PUBLIC_NOVU_BACKEND_URL: string;
+    NEXT_PUBLIC_NOVU_WS_URL: string;
+    NEXT_PUBLIC_NOVU_APP_ID: string;
   }
 }

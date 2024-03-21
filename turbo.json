@@ -22,9 +22,9 @@
         "MAPI_APP_SECRET",
         "MAPI_RESOURCE_URI",
         "NOVU_API_KEY",
-        "NOVU_BACKEND_URL",
-        "NOVU_WS_URL",
-        "NOVU_APP_ID"
+        "NEXT_PUBLIC_NOVU_BACKEND_URL",
+        "NEXT_PUBLIC_NOVU_WS_URL",
+        "NEXT_PUBLIC_NOVU_APP_ID"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },
