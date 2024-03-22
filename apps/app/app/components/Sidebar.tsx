@@ -1,16 +1,76 @@
 'use client';
-import { GlobeAltIcon, HomeIcon, InboxIcon } from '@heroicons/react/24/solid';
-import React from 'react';
+import {
+  ArrowDownIcon,
+  ArrowRightIcon,
+  GlobeAltIcon,
+  HomeIcon,
+  InboxIcon,
+} from '@heroicons/react/24/solid';
+import React, { useEffect, useState } from 'react';
 
 import { Button, Input, Spinner } from 'ui';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from '@contexts/SessionContext';
+import { BiDownArrow, BiNotepad, BiRightArrow } from 'react-icons/bi';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'ui';
+
+interface NavItem {
+  icon: React.ReactNode;
+  name: string;
+  href: string;
+  iconLoc: 'left' | 'right';
+  altIcon?: React.ReactNode;
+  click?: () => void;
+  last?: boolean;
+}
 
 const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const s = useSession();
   const session = s?.session;
+  const [sub, setSub] = useState<boolean>(false);
+  const toggleSubItems = () => setSub(!sub);
+
+  useEffect(() => {
+    SUB_ITEMS.forEach(item => {
+      if (item.href == pathname) {
+        setSub(true);
+      } else {
+        setSub(false);
+      }
+    });
+  }, []);
+
+  const NAV_ITEMS: NavItem[] = [
+    {
+      icon: <HomeIcon color="white" />,
+      name: 'Dashboard',
+      href: '/',
+      iconLoc: 'left',
+    },
+    {
+      icon: <InboxIcon color="white" />,
+      name: 'Inbox',
+      href: '/d/inbox',
+      iconLoc: 'left',
+    },
+    {
+      icon: <GlobeAltIcon color="white" />,
+      name: 'Waldo Hub',
+      href: '/d/w_hub',
+      iconLoc: 'left',
+    },
+    {
+      icon: <ArrowRightIcon color="white" />,
+      name: 'Submissions',
+      href: '/d/submissions',
+      iconLoc: 'right',
+      altIcon: <ArrowDownIcon color="white" />,
+      click: toggleSubItems,
+      last: true,
+    },
+  ];
 
   return (
     <>
@@ -54,23 +114,19 @@ const Sidebar = () => {
               OVERVIEW
             </h1>
             {NAV_ITEMS.map((item, index) => (
-              <div
-                onClick={() => router.push(item.href)}
-                className={
-                  pathname !== item.href
-                    ? 'flex flex-row  py-2 px-2 cursor-pointer gap-2 text-gray-500 items-center font-semibold hover:bg-[#6F1DD8] hover:rounded-lg hover:text-white '
-                    : 'flex flex-row  py-2 px-2 cursor-pointer gap-2 text-white items-center font-semibold bg-[#6F1DD8] rounded-lg '
-                }
-                key={index}
-              >
-                <div className="h-5 w-5 text-gray-500">
-                  {item.name == 'Inbox' && (
-                    <div className="px-1 py-1 absolute bg-red-500 rounded-lg"></div>
-                  )}
-                  {item.icon}
-                </div>
-                <div>{item.name}</div>
-              </div>
+              <>
+                <NavItemComp item={item} index={index} />
+
+                {item.last && (
+                  <Collapsible open={sub}>
+                    <CollapsibleContent className="ml-4">
+                      {SUB_ITEMS.map((item, index) => (
+                        <NavItemComp item={item} index={index} />
+                      ))}
+                    </CollapsibleContent>
+                  </Collapsible>
+                )}
+              </>
             ))}
           </div>
         </div>
@@ -79,30 +135,53 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+const NavItemComp = ({ item, index }: NavItemCompProps) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  return (
+    <div
+      onClick={() =>
+        item.click != null ? item.click() : router.push(item.href)
+      }
+      className={
+        pathname !== item.href
+          ? 'flex flex-row  py-2 px-2 cursor-pointer gap-2 text-gray-500 items-center font-semibold hover:bg-[#6F1DD8] hover:rounded-lg hover:text-white '
+          : 'flex flex-row  py-2 px-2 cursor-pointer gap-2 text-white items-center font-semibold bg-[#6F1DD8] rounded-lg '
+      }
+      key={index}
+    >
+      <div className="flex items-center">
+        {item.iconLoc == 'left' && (
+          <div className="h-5 w-5 text-gray-500">
+            {item.name == 'Inbox' && (
+              <div className="px-1 py-1 absolute bg-red-500 rounded-lg"></div>
+            )}
+            {item.icon}
+          </div>
+        )}
+        <div className="flex flex-row items-center px-1 gap-1">
+          <div>{item.name}</div>
+          <div className="h-4 w-4 ">{item.iconLoc == 'right' && item.icon}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-Sidebar.displayName = 'Sidebar';
-
-interface NavItem {
-  icon: React.ReactNode;
-  name: string;
-  href: string;
-}
-
-const NAV_ITEMS: NavItem[] = [
+const SUB_ITEMS: NavItem[] = [
   {
-    icon: <HomeIcon color="white" />,
-    name: 'Dashboard',
-    href: '/',
-  },
-  {
-    icon: <InboxIcon color="white" />,
-    name: 'Inbox',
-    href: '/d/inbox',
-  },
-  {
-    icon: <GlobeAltIcon color="white" />,
-    name: 'Waldo Hub',
-    href: '/d/w_hub',
+    icon: <BiNotepad color="white" />,
+    name: 'Upload',
+    href: '/d/upload',
+    iconLoc: 'left',
   },
 ];
+
+export default Sidebar;
+
+interface NavItemCompProps {
+  item: NavItem;
+  index: number;
+}
+
+Sidebar.displayName = 'Sidebar';

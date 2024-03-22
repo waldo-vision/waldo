@@ -5,3 +5,4 @@ export * from './components/ui/WaldoInput';
 export * from './components/ui/drawer';
 export * from './components/ui/input';
 export * from './components/ui/spinner';
+export * from './components/ui/collapsible';

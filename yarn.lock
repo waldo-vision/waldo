@@ -4238,7 +4238,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-collapsible@npm:1.0.3":
+"@radix-ui/react-collapsible@npm:1.0.3, @radix-ui/react-collapsible@npm:^1.0.3":
   version: 1.0.3
   resolution: "@radix-ui/react-collapsible@npm:1.0.3"
   dependencies:
@@ -16976,6 +16976,7 @@ __metadata:
   resolution: "ui@workspace:packages/ui"
   dependencies:
     "@radix-ui/react-accordion": ^1.1.2
+    "@radix-ui/react-collapsible": ^1.0.3
     "@radix-ui/react-dialog": ^1.0.5
     "@radix-ui/react-slot": ^1.0.2
     class-variance-authority: ^0.7.0
