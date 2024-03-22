@@ -8,11 +8,11 @@ import {
 } from '@heroicons/react/24/solid';
 import React, { useEffect, useState } from 'react';
 
-import { Button, Input, Spinner } from 'ui';
+import { Input, Spinner } from 'ui';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from '@contexts/SessionContext';
-import { BiDownArrow, BiNotepad, BiRightArrow } from 'react-icons/bi';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'ui';
+import { BiNotepad } from 'react-icons/bi';
+import { Collapsible, CollapsibleContent } from 'ui';
 
 interface NavItem {
   icon: React.ReactNode;
