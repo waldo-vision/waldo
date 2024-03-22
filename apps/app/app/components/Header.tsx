@@ -14,7 +14,7 @@ import {
 export default function Header() {
   const s = useSession();
   const session = s?.session;
-  console.log(session);
+
   return (
     <>
       <div className="flex justify-between items-center pr-4 w-full py-2 text-gray-400">
