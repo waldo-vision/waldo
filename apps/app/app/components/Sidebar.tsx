@@ -13,7 +13,10 @@ import { usePathname } from 'next/navigation';
 import { useSession } from '@contexts/SessionContext';
 import { Collapsible, CollapsibleContent } from 'ui';
 import NavItemComp from './Sidebar/NavItem';
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowUpOnSquareIcon,
+  PencilSquareIcon,
+} from '@heroicons/react/24/outline';
 
 export interface NavItem {
   icon: React.ReactNode;
@@ -137,9 +140,15 @@ const Sidebar = () => {
 
 const SUB_ITEMS: NavItem[] = [
   {
-    icon: <PencilSquareIcon color="white" />,
+    icon: <ArrowUpOnSquareIcon color="white" />,
     name: 'Upload',
     href: '/submissions/upload',
+    iconLoc: 'left',
+  },
+  {
+    icon: <PencilSquareIcon color="white" />,
+    name: 'Review',
+    href: '/submissions/review',
     iconLoc: 'left',
   },
 ];
