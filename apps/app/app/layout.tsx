@@ -21,7 +21,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
       }
     };
     querySession();
-  }, [session]);
+  }, []);
 
   const openMobileSidebarFunc = () => setOpenMobileSidebar(!openMobileSidebar);
 
