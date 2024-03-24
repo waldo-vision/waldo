@@ -30,7 +30,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
       <html>
         <SessionProvider>
           <body>
-            {session ? (
+            {!session ? (
               <div className="flex w-full">
                 <Loading />
               </div>
