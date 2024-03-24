@@ -120,13 +120,13 @@ const Sidebar = () => {
               </h1>
               {NAV_ITEMS.map((item, index) => (
                 <>
-                  <NavItemComp item={item} index={index} />
+                  <NavItemComp item={item} index={index} key={index} />
 
                   {item.last && (
                     <Collapsible open={sub}>
                       <CollapsibleContent className="ml-4">
                         {SUB_ITEMS.map((item, index) => (
-                          <NavItemComp item={item} index={index} />
+                          <NavItemComp item={item} index={index} key={index} />
                         ))}
                       </CollapsibleContent>
                     </Collapsible>
@@ -136,7 +136,7 @@ const Sidebar = () => {
             </div>
             <div className="flex flex-col">
               {UTIL_ITEMS.map((item, index) => (
-                <UtilNavItem item={item} index={index} />
+                <UtilNavItem item={item} index={index} key={index} />
               ))}
             </div>
           </div>
