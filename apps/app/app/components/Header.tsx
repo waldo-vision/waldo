@@ -20,11 +20,11 @@ export default function Header({
 
   return (
     <>
-      <div className="flex justify-between items-center pr-4 w-full py-2 text-gray-400">
+      <div className="flex justify-between items-center pr-4 w-full py-2 text-gray-500 ">
         <div className="flex m-8 mx-12">
           <div className="font-semibold text-md gap-3 items-center flex flex-row">
             <Bars3Icon
-              className="cursor-pointer lg:hidden md:hidden sm:text-black h-7 w-7"
+              className="cursor-pointer lg:hidden md:hidden h-7 w-7"
               onClick={() => openMobileSidebarFunc()}
             />
             <h1>Hey,</h1>

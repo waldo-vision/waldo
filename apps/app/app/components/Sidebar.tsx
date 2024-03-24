@@ -37,13 +37,12 @@ const Sidebar = () => {
   const toggleSubItems = () => setSub(!sub);
 
   useEffect(() => {
-    SUB_ITEMS.forEach(item => {
-      if (item.href == pathname) {
-        setSub(true);
-      } else {
-        setSub(false);
-      }
-    });
+    function checkHref() {
+      SUB_ITEMS.forEach(item => {
+        if (item.href === pathname) setSub(true);
+      });
+    }
+    checkHref();
   }, []);
 
   const NAV_ITEMS: NavItem[] = [
@@ -78,9 +77,9 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="hidden lg:flex md:flex w-max px-6 mr-4 bg-black min-h-screen rounded-tr-xl rounded-br-xl">
+      <div className="hidden lg:flex md:flex w-max ">
         {/* Main Container */}
-        <div className="mt-12 flex flex-col gap-7">
+        <div className="pt-12 flex flex-col gap-7 rounded-tr-xl rounded-br-xl bg-black px-6 pr-4 min-h-screen">
           {/* Icon Container */}
           <div className="items-center flex flex-row gap-5">
             {session ? (
@@ -120,13 +119,13 @@ const Sidebar = () => {
               </h1>
               {NAV_ITEMS.map((item, index) => (
                 <>
-                  <NavItemComp item={item} index={index} key={index} />
+                  <NavItemComp item={item} index={index} />
 
                   {item.last && (
                     <Collapsible open={sub}>
                       <CollapsibleContent className="ml-4">
                         {SUB_ITEMS.map((item, index) => (
-                          <NavItemComp item={item} index={index} key={index} />
+                          <NavItemComp item={item} index={index} />
                         ))}
                       </CollapsibleContent>
                     </Collapsible>

@@ -23,6 +23,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
     querySession();
   }, []);
 
+  // used by the header comp to show and hide the mobilesidebar
   const openMobileSidebarFunc = () => setOpenMobileSidebar(!openMobileSidebar);
 
   return (
@@ -44,7 +45,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
                 </div>
                 <div className="flex flex-col w-full">
                   <Header openMobileSidebarFunc={openMobileSidebarFunc} />
-                  <main className="flex-grow">{children}</main>
+                  <main className="flex-grow ">{children}</main>
                 </div>
               </div>
             )}
