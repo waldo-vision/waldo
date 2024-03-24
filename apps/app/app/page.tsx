@@ -10,7 +10,7 @@ const Page = () => {
   return (
     <div className="flex w-full text-black flex-col gap-6 px-12">
       <h1 className="text-2xl font-bold">Waldo Dashboard</h1>
-      <div className=" md:flex md:flex-col lg:flex lg:flex-row gap-2  items-stretch w-full">
+      <div className="space-y-3 md:space-y-0 md:flex md:flex-col lg:flex lg:flex-row gap-2 items-stretch w-full">
         <Card className="bg-black text-white rounded-lg flex-1">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">My Uploads</CardTitle>
