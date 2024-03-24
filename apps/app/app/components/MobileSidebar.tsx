@@ -84,7 +84,7 @@ const MobileSidebar = ({
     <>
       <Collapsible open={open}>
         <CollapsibleContent>
-          <div className="flex w-max px-6 mr-4 bg-black rounded-tr-xl rounded-br-xl h-[100vh] flex-grow-0">
+          <div className="flex w-max px-6 mr-4 bg-black rounded-tr-xl rounded-br-xl h-screen">
             {/* Main Container */}
             <div className="mt-12 flex flex-col gap-7">
               {/* Icon Container */}
