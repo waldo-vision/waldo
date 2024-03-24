@@ -13,6 +13,7 @@ import { usePathname } from 'next/navigation';
 import { useSession } from '@contexts/SessionContext';
 import { Collapsible, CollapsibleContent } from 'ui';
 import NavItemComp from './Sidebar/NavItem';
+import UtilNavItem from './Sidebar/UtilNavItem';
 import {
   ArrowUpOnSquareIcon,
   PencilSquareIcon,
@@ -77,14 +78,14 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="flex w-max px-6 mr-4 bg-black min-h-screen rounded-tr-xl rounded-br-xl">
+      <div className="hidden lg:flex md:flex w-max px-6 mr-4 bg-black min-h-screen rounded-tr-xl rounded-br-xl">
         {/* Main Container */}
         <div className="mt-12 flex flex-col gap-7">
           {/* Icon Container */}
           <div className="items-center flex flex-row gap-5">
             {session ? (
               <>
-                <div className="py-2 px-[1px] bg-[#6F1DD8] absolute rounded-md"></div>
+                <div className="py-2 px-[1px] bg-sigp absolute rounded-md"></div>
 
                 <div className="px-2 py-2 bg-gray-900 rounded-2xl">
                   <img
@@ -112,25 +113,32 @@ const Sidebar = () => {
           </div>
 
           {/* Navigation Main Container. */}
-          <div className=" flex flex-col gap-3">
-            <h1 className="text-gray-700 font-bold text-xs ml-3 mb-2">
-              OVERVIEW
-            </h1>
-            {NAV_ITEMS.map((item, index) => (
-              <>
-                <NavItemComp item={item} index={index} />
+          <div className="flex flex-col justify-between h-full pb-3">
+            <div className=" flex flex-col gap-3">
+              <h1 className="text-gray-700 font-bold text-xs ml-3 mb-2">
+                OVERVIEW
+              </h1>
+              {NAV_ITEMS.map((item, index) => (
+                <>
+                  <NavItemComp item={item} index={index} />
 
-                {item.last && (
-                  <Collapsible open={sub}>
-                    <CollapsibleContent className="ml-4">
-                      {SUB_ITEMS.map((item, index) => (
-                        <NavItemComp item={item} index={index} />
-                      ))}
-                    </CollapsibleContent>
-                  </Collapsible>
-                )}
-              </>
-            ))}
+                  {item.last && (
+                    <Collapsible open={sub}>
+                      <CollapsibleContent className="ml-4">
+                        {SUB_ITEMS.map((item, index) => (
+                          <NavItemComp item={item} index={index} />
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
+                  )}
+                </>
+              ))}
+            </div>
+            <div className="flex flex-col">
+              {UTIL_ITEMS.map((item, index) => (
+                <UtilNavItem item={item} index={index} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -149,6 +157,15 @@ const SUB_ITEMS: NavItem[] = [
     icon: <PencilSquareIcon color="white" />,
     name: 'Review',
     href: '/submissions/review',
+    iconLoc: 'left',
+  },
+];
+
+const UTIL_ITEMS: NavItem[] = [
+  {
+    icon: <></>,
+    name: 'Sign Out',
+    href: '/api/logto/sign-out',
     iconLoc: 'left',
   },
 ];

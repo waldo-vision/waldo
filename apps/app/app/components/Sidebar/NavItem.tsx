@@ -16,8 +16,8 @@ const NavItemComp = ({ item, index }: NavItemCompProps) => {
       }
       className={
         pathname !== item.href
-          ? 'flex flex-row  py-2 px-2 cursor-pointer gap-2 text-gray-500 items-center font-semibold hover:bg-[#6F1DD8] hover:rounded-lg hover:text-white '
-          : 'flex flex-row  py-2 px-2 cursor-pointer gap-2 text-white items-center font-semibold bg-[#6F1DD8] rounded-lg '
+          ? 'flex flex-row py-2 px-2 cursor-pointer gap-2 text-gray-500 items-center font-semibold hover:bg-sigp hover:rounded-lg hover:text-white '
+          : 'flex flex-row py-2 px-2 cursor-pointer gap-2 text-white items-center font-semibold bg-sigp rounded-lg '
       }
       key={index}
     >

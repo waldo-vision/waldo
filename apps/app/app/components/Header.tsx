@@ -1,5 +1,4 @@
 'use client';
-/* eslint-disable @next/next/no-img-element */
 
 import { Spinner } from 'ui';
 import { discord, docs, github } from '@utils/links';
@@ -9,9 +8,13 @@ import {
   PopoverNotificationCenter,
   NotificationBell,
 } from '@novu/notification-center';
-//import useSite from '@site';
-//import NovuCustomStyling from '../_styles/novu.module.css';
-export default function Header() {
+import { Bars3Icon } from '@heroicons/react/24/outline';
+
+export default function Header({
+  openMobileSidebarFunc,
+}: {
+  openMobileSidebarFunc: () => void;
+}) {
   const s = useSession();
   const session = s?.session;
 
@@ -20,6 +23,10 @@ export default function Header() {
       <div className="flex justify-between items-center pr-4 w-full py-2 text-gray-400">
         <div className="flex m-8 mx-12">
           <div className="font-semibold text-md gap-3 items-center flex flex-row">
+            <Bars3Icon
+              className="cursor-pointer lg:hidden md:hidden sm:text-black h-7 w-7"
+              onClick={() => openMobileSidebarFunc()}
+            />
             <h1>Hey,</h1>
             {session ? (
               <img
@@ -30,7 +37,9 @@ export default function Header() {
             ) : (
               <Spinner />
             )}
-            <h1 className="text-gray-700">{session && session.name}</h1>
+            <span className="text-gray-700 text-nowrap">
+              {session && session.name}
+            </span>
           </div>
         </div>
         <div className="flex ml-auto">
