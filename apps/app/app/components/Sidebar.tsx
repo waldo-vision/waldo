@@ -77,7 +77,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="hidden lg:flex md:flex w-max ">
+      <div className="hidden lg:flex md:flex w-max bg-gray-700">
         {/* Main Container */}
         <div className="pt-12 flex flex-col gap-7 rounded-tr-xl rounded-br-xl bg-black px-6 pr-4 min-h-screen">
           {/* Icon Container */}

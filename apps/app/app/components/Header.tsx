@@ -20,7 +20,7 @@ export default function Header({
 
   return (
     <>
-      <div className="flex justify-between items-center pr-4 w-full py-2 text-gray-500 ">
+      <div className="flex justify-between items-center pr-4 w-full py-2 text-gray-500 bg-gray-700">
         <div className="flex m-8 mx-12">
           <div className="font-semibold text-md gap-3 items-center flex flex-row">
             <Bars3Icon
@@ -37,7 +37,7 @@ export default function Header({
             ) : (
               <Spinner />
             )}
-            <span className="text-gray-700 text-nowrap">
+            <span className="text-white text-nowrap font-medium">
               {session && session.name}
             </span>
           </div>

@@ -7,6 +7,7 @@ import Header from './components/Header';
 import { V2Session, createSession } from 'identity';
 import Loading from './components/Loading';
 import MobileSidebar from './components/MobileSidebar';
+import { Toaster } from 'ui';
 function RootLayout({ children }: { children: React.ReactNode }) {
   const [session, setSessionState] = useState<V2Session | undefined>();
   const [openMobileSidebar, setOpenMobileSidebar] = useState<boolean>(false);
@@ -45,7 +46,8 @@ function RootLayout({ children }: { children: React.ReactNode }) {
                 </div>
                 <div className="flex flex-col w-full">
                   <Header openMobileSidebarFunc={openMobileSidebarFunc} />
-                  <main className="flex-grow ">{children}</main>
+                  <main className="flex-grow bg-gray-700">{children}</main>
+                  <Toaster />
                 </div>
               </div>
             )}
