@@ -1,4 +1,5 @@
-import LogtoClient from '@logto/next';
+import LogtoClient from '@logto/next/edge';
+import * as Scope from '../rbac/scopes';
 
 export const logtoClient = new LogtoClient({
   appId: process.env.APP_ID,
@@ -8,5 +9,5 @@ export const logtoClient = new LogtoClient({
   cookieSecret: process.env.COOKIE_SECRET,
   cookieSecure: false,
   resources: [process.env.NEXT_PUBLIC_RESOURCE_AUDIENCE],
-  scopes: ['email', 'identities', 'read:all'],
+  scopes: [...Scope.MasterScopeArray, 'email', 'identities'],
 });

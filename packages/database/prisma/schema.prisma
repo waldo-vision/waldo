@@ -37,13 +37,13 @@ model WaldoSite {
 }
 
 model Gameplay {
-  id            String          @id @default(cuid())
-  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String         @id @default(cuid())
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
-  gameplayVotes GameplayVotes[] @relation("gameplay")
-  youtubeUrl    String          @unique
-  gameplayType  GameplayType    @default(CSG)
-  isAnalyzed    Boolean         @default(false)
+  gameplayVotes GameplayVote[] @relation("gameplay")
+  youtubeUrl    String         @unique
+  gameplayType  GameplayType   @default(CSG)
+  isAnalyzed    Boolean        @default(false)
   clips         Clip[]
   cheats        CheatType[]
 
@@ -61,7 +61,7 @@ enum CheatType {
   SPINBOT
 }
 
-model GameplayVotes {
+model GameplayVote {
   id         String       @id @default(cuid())
   gameplay   Gameplay     @relation("gameplay", fields: [gameplayId], references: [id], onDelete: Cascade)
   gameplayId String
@@ -147,7 +147,6 @@ enum Roles {
 }
 
 enum InfractionType {
-  CORRECTION
   WARNING
   SUSPENSION
   PERMA_SUSPENSION
@@ -157,35 +156,49 @@ enum InfractionType {
 // and for the executor, therefore the ambiguous naming "subject" is used.
 model Infractions {
   infractionId String         @id @default(cuid())
-  type         InfractionType @default(CORRECTION)
+  type         InfractionType @default(WARNING)
   subjectId    String
   subject      User           @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   executed     Boolean        @default(false)
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?         @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   // our items
-  blacklisted   Boolean         @default(false)
+  blacklisted   Boolean        @default(false)
   gameplay      Gameplay[]
-  role          Roles           @default(USER)
-  gameplayVotes GameplayVotes[] @relation("user")
+  gameplayVotes GameplayVote[] @relation("user")
   apiKeys       ApiKey[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @default(now()) @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
   v2Account     V2Account[]
   infractions   Infractions[]
+  badges        Badge[]
+}
+
+model NovuUser {
+  id               String             @id @default("")
+  userId           String             @unique
+  subscriberId     String             @unique
+  NovuSubscription NovuSubscription[]
+}
+
+model NovuSubscription {
+  id         String   @id @default(cuid())
+  nUser      NovuUser @relation(fields: [novuUserId], references: [id])
+  novuUserId String
 }
 
 enum ApiKeyState {
   ACTIVE
   EXPIRED
+  SUSPENDED
 }
 
 model ApiKey {
@@ -198,6 +211,25 @@ model ApiKey {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum BadgeType {
+  GAMEPLAY
+  CLIP
+  REVIEW
+  CUSTOM
+}
+
+model Badge {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  displayName   String
+  type          BadgeType
+  color         String
+  awardedUser   User?     @relation(fields: [awardedUserId], references: [id], onDelete: Cascade)
+  awardedUserId String?
+  description   String
+  decider       Int
 }
 
 model VerificationToken {

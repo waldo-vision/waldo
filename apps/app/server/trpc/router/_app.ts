@@ -1,20 +1,18 @@
 import { router } from '../trpc';
-import { apiKeyRouter } from './apikeys';
+import { apiKeyRouter } from './api_key';
 import { clipRouter } from './clip';
 import { gameplayRouter } from './gameplay';
 import { siteRouter } from './site';
-import { analysisApiRouter } from './analysisApi';
+import { analysisRouter } from './analysis';
 import { userRouter } from './user';
-import { utilRouter } from './util';
 
 export const appRouter = router({
   gameplay: gameplayRouter,
   clip: clipRouter,
   user: userRouter,
-  util: utilRouter,
   site: siteRouter,
   apiKey: apiKeyRouter,
-  analysisApi: analysisApiRouter,
+  analysisApi: analysisRouter,
 });
 
 // export type definition of API

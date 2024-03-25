@@ -13,8 +13,18 @@
         "COOKIE_SECRET",
         "NEXT_PUBLIC_JWKS_ENDPOINT",
         "NEXT_PUBLIC_RESOURCE_AUDIENCE",
+        "NEXT_PUBLIC_ID_ISSUER",
         "ENDPOINT",
-        "BASE_URL"
+        "BASE_URL",
+        "SENTRY_RELEASE",
+        "MAPI_TOKEN_ENDPOINT",
+        "MAPI_APP_ID",
+        "MAPI_APP_SECRET",
+        "MAPI_RESOURCE_URI",
+        "NOVU_API_KEY",
+        "NEXT_PUBLIC_NOVU_BACKEND_URL",
+        "NEXT_PUBLIC_NOVU_WS_URL",
+        "NEXT_PUBLIC_NOVU_APP_ID"
       ],
       "outputs": ["dist/**", ".next/**", "out/**"]
     },

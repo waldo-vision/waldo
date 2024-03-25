@@ -1,18 +1,15 @@
-import { TRPCError, type inferAsyncReturnType } from '@trpc/server';
-import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { prisma } from '@server/db/client';
-import { IncomingHttpHeaders } from 'http';
-import { createRemoteJWKSet, jwtVerify } from 'jose';
+import { JWTPayload, createRemoteJWKSet, jwtVerify } from 'jose';
 import { retrieveRawUserInfoServer } from 'identity';
-import axios from 'axios';
-import { V2Session } from 'identity';
+import { V2Session, Api } from 'identity';
+import { userHasScope } from './rbac';
+import { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
+
 // interface ExtendedIncomingHttpHeaders extends IncomingHttpHeaders {
 //   authorization_id: string;
 // }
 
-const extractBearerTokenFromHeaders = ({
-  authorization,
-}: IncomingHttpHeaders) => {
+const extractBearerTokenFromHeaders = (authorization: string | null) => {
   const bearerTokenIdentifier = 'Bearer';
 
   if (!authorization) {
@@ -28,8 +25,12 @@ const extractBearerTokenFromHeaders = ({
 
 type CreateContextOptions = {
   session: V2Session | null;
-  headers?: IncomingHttpHeaders;
+  headers?: { [k: string]: string };
 };
+
+interface Payload extends JWTPayload {
+  scope: string;
+}
 
 /** Use this helper for:
  * - testing, so we dont have to mock Next.js' req/res
@@ -48,18 +49,19 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * This is the actual context you'll use in your router
  * @link https://trpc.io/docs/context
  **/
-export const createContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts;
 
+export const createContext = async (opts: FetchCreateContextFnOptions) => {
+  const { req } = opts;
   const headers = req.headers;
-  const token = extractBearerTokenFromHeaders(req.headers);
+  const token = extractBearerTokenFromHeaders(headers.get('Authorization'));
   if (token == 'undefined' || token == undefined) {
-    return await createContextInner({
+    return {
       session: null,
-      headers,
-    });
+      prisma,
+      headers: opts && Object.fromEntries(opts.req.headers),
+    };
   }
-  const { payload } = await jwtVerify(
+  const { payload } = await jwtVerify<Payload>(
     token,
     createRemoteJWKSet(new URL(process.env.NEXT_PUBLIC_JWKS_ENDPOINT)),
     {
@@ -69,7 +71,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
   );
   // Create the server session object from varius data endpoints.
   // grabs the logto user data.
-  const user_data = await retrieveRawUserInfoServer(req.cookies);
+  const user_data = await retrieveRawUserInfoServer(req.headers.get('cookie'));
   const identityData =
     user_data.userInfo.identities[
       Object.keys(user_data.userInfo.identities)[0]
@@ -84,12 +86,25 @@ export const createContext = async (opts: CreateNextContextOptions) => {
       user: true,
     },
   });
+  if (waldo_user_data === null || !payload || !payload.sub) {
+    return {
+      session: null,
+      prisma,
+      headers: opts && Object.fromEntries(opts.req.headers),
+    };
+  }
+
+  // get user's roles from mapi
+  const MAPI_at = await Api.getApiAccessToken();
+  const userRoles = await Api.getUserRoles(MAPI_at, payload.sub);
+
   // created the server session object.
   const session: V2Session | null =
     !payload || !payload.sub
       ? null
       : {
           logto_id: payload.sub,
+          id: waldo_user_data.user.id,
           provider: Object.keys(user_data.userInfo.identities)[0],
           providerId: identityData.userId,
           name: identityData.details.name,
@@ -98,12 +113,19 @@ export const createContext = async (opts: CreateNextContextOptions) => {
           blacklisted: waldo_user_data
             ? waldo_user_data.user.blacklisted
             : false,
+          scope: payload.scope.split(' '),
+          hasScope: (requiredScope: Array<string>) => {
+            const scope = payload.scope.split(' ');
+            return userHasScope(scope, requiredScope);
+          },
+          roles: userRoles,
         };
 
-  return await createContextInner({
+  return {
     session,
-    headers,
-  });
+    prisma,
+    headers: opts && Object.fromEntries(opts.req.headers),
+  };
 };
 
-export type Context = inferAsyncReturnType<typeof createContext>;
+export type Context = Awaited<ReturnType<typeof createContext>>;

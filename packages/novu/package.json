@@ -1,0 +1,16 @@
+{
+  "name": "novu",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*"
+  },
+  "dependencies": {
+    "@novu/node": "^0.24.0",
+    "@types/node": "^20.10.8",
+    "database": "workspace:"
+  }
+}

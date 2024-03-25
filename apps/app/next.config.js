@@ -3,7 +3,7 @@
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { withSentryConfig } = require('@sentry/nextjs');
+//const { withSentryConfig } = require('@sentry/nextjs');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withPlausibleProxy } = require('next-plausible');
 
@@ -116,26 +116,26 @@ const nextConfig = {
       },
     ];
   },
-  sentry: {
-    hideSourceMaps: false,
-    tunnelRoute: '/api/errors',
-  },
-  webpack: (config, { webpack }) => {
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        // remove sentry's debug code
-        __SENTRY_DEBUG__: false,
-      }),
-    );
+  // sentry: {
+  //   hideSourceMaps: false,
+  //   tunnelRoute: '/api/errors',
+  // },
+  // webpack: (config, { webpack }) => {
+  //   config.plugins.push(
+  //     new webpack.DefinePlugin({
+  //       // remove sentry's debug code
+  //       __SENTRY_DEBUG__: false,
+  //     }),
+  //   );
 
-    // return the modified config
-    return config;
-  },
+  //   // return the modified config
+  //   return config;
+  // },
 };
 
 module.exports = nextConfig;
 
-module.exports = withSentryConfig(module.exports, { silent: true });
+//module.exports = withSentryConfig(module.exports, { silent: true });
 
 module.exports = withPlausibleProxy({
   customDomain: 'https://plausible.waldo.vision',
