@@ -1,0 +1,123 @@
+'use client';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import React from 'react';
+import { Button, RecArray, WaldoButton } from 'ui';
+import { CodeBracketSquareIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
+const Page = () => {
+  const router = useRouter();
+  return (
+    <>
+      <div className="flex flex-col max-h-screen h-screen bg-[#16182c] ">
+        <div className="flex flex-row items-center w-full justify-evenly my-auto h-full">
+          <div className="flex flex-col max-w-md">
+            <div className="flex flex-col">
+              <div>
+                <h1 className="text-white text-3xl lg:text-5xl md:text-3xl font-bold">
+                  Protecting the
+                </h1>
+              </div>
+              <div className="flex">
+                <h1 className=" bg-gradient-to-r from-[#6F1DD8] to-[#A21CAF] text-transparent bg-clip-text font-bold text-3xl lg:text-5xl md:text-3xl py-2">
+                  Integrity{' '}
+                  <span className="text-white text-3xl lg:text-5xl md:text-3xl font-bold">
+                    of Gaming
+                  </span>
+                </h1>
+              </div>
+            </div>
+            <h2 className="text-[#B4B4B5] font-medium mt-4 leading-7 text-sm">
+              Discover waldo, where principles of fairness, honesty, and
+              sportsmanship are upheld in the world of competitive gaming.
+            </h2>
+            <div className="flex flex-col  mt-4">
+              <div
+                className="flex flex-row items-center gap-4"
+                onClick={() => router.push('https://app.waldo.vision')}
+              >
+                <WaldoButton
+                  className="text-sm text-white font-semibold"
+                  size="md"
+                >
+                  <div className="flex flex-row gap-2">
+                    <h1>Go to Waldo Vision</h1>
+                    <ArrowRightIcon height={20} width={20} color="white" />
+                  </div>
+                </WaldoButton>
+
+                <div
+                  className="flex flex-row gap-2 cursor-pointer transition hover:bg-[#E545FF] hover:bg-opacity-[0.07] duration-300 ease-in-out p-4 hover:rounded-md"
+                  onClick={() => router.push('https://hub.waldo.vision')}
+                >
+                  <h1 className="text-white font-semibold text-sm">
+                    Go to Waldo Hub
+                  </h1>
+                  <ArrowRightIcon height={20} width={20} color="white" />
+                </div>
+              </div>
+              <div className="flex flex-row gap-11 text-gray-400 mt-8">
+                <h1 className="cursor-pointer">Github</h1>
+                <h1 className="cursor-pointer">Twitter</h1>
+                <h1 className="cursor-pointer">Discord</h1>
+              </div>
+            </div>
+          </div>
+          <div className="mr-12 hidden lg:flex md:flex">
+            <RecArray />
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col max-h-screen h-screen bg-[#16182c] ">
+        <div className="flex flex-row items-center w-full justify-evenly my-auto h-full">
+          <div className="flex flex-col max-w-md">
+            <div className="flex flex-col">
+              <div>
+                <h1 className="text-white text-3xl lg:text-5xl md:text-3xl font-bold">
+                  Protecting the
+                </h1>
+              </div>
+              <div className="flex">
+                <h1 className=" bg-gradient-to-r from-[#6F1DD8] to-[#A21CAF] text-transparent bg-clip-text font-bold text-3xl lg:text-5xl md:text-3xl py-2">
+                  Integrity{' '}
+                  <span className="text-white text-3xl lg:text-5xl md:text-3xl font-bold">
+                    of Gaming
+                  </span>
+                </h1>
+              </div>
+            </div>
+            <h2 className="text-[#B4B4B5] font-medium mt-4 leading-7 text-sm">
+              Discover waldo, where principles of fairness, honesty, and
+              sportsmanship are upheld in the world of competitive gaming.
+            </h2>
+            <div className="flex flex-col  mt-4">
+              <div
+                className="flex flex-row items-center gap-4"
+                onClick={() => router.push('https://app.waldo.vision')}
+              >
+                <WaldoButton className="text-sm text-white" size="md">
+                  Learn More
+                </WaldoButton>
+                <div className="flex flex-row gap-2 cursor-pointer transition hover:bg-[#E545FF] hover:bg-opacity-[0.07] duration-300 ease-in-out p-4 hover:rounded-md">
+                  <h1 className="text-white font-semibold text-sm">
+                    Go to the App
+                  </h1>
+                  <ArrowRightIcon height={20} width={20} color="white" />
+                </div>
+              </div>
+              <div className="flex flex-row gap-11 text-[#E5E7EB] mt-8">
+                <h1>Github</h1>
+                <h1>Twitter</h1>
+                <h1>Discord</h1>
+              </div>
+            </div>
+          </div>
+          <div className="mr-12 hidden lg:flex md:flex">
+            <RecArray />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Page;
