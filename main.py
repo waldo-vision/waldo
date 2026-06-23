@@ -436,6 +436,11 @@ def stream_training(process_id):
                 yield f"data: Video resolution: {video_width}x{video_height}, using {crop_size}px crop<br>\n\n"
 
                 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+                fps = cap.get(cv2.CAP_PROP_FPS) or 60
+                stride = max(1, round(fps/60))
+                kill_frame = 1.7 * fps
+                start_frame = round(kill_frame - 17 * stride)
+                end_frame = (start_frame + 15 + stride)
                 frame_number = 0
                 save_frame_number = 0
 
@@ -445,8 +450,8 @@ def stream_training(process_id):
                     if not ret:
                         break
 
-                    # Extract frames 85-100 (where the killshot happens)
-                    if 85 <= frame_number <= 100:
+                    # Prevents missampling due to frame rate != 60
+                    if frame_number >= start_frame and (frame_number - start_frame) % stride == 0:
                         # Center crop with adaptive size
                         y, x, c = frame.shape
                         start_x = x // 2 - (crop_size // 2)
@@ -460,7 +465,7 @@ def stream_training(process_id):
 
                         save_frame_number += 1
 
-                        if save_frame_number >= 16:  # We only need 16 frames
+                        if frame_number > end_frame:  # We only need 16 frames
                             break
 
                     frame_number += 1
@@ -971,6 +976,11 @@ def stream_evaluation(process_id):
                 yield f"data: {json.dumps({'type': 'log', 'content': f'Video resolution: {video_width}x{video_height}, using {crop_size}px crop'})}\n\n"
 
                 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+                fps = cap.get(cv2.CAP_PROP_FPS) or 60
+                stride = max(1, round(fps / 60))
+                kill_frame = 1.7 * fps
+                start_frame = round(kill_frame - 17 * stride)
+                end_frame = start_frame + 15 * stride          
                 frame_number = 0
                 save_frame_number = 0
 
@@ -980,8 +990,8 @@ def stream_evaluation(process_id):
                     if not ret:
                         break
 
-                    # Extract frames 85-100 (where the killshot happens)
-                    if 85 <= frame_number <= 100:
+                    # Extract frames - compensating for variable clip frame rate
+                    if frame_number >= start_frame and (frame_number - start_frame) % stride == 0:
                         # Center crop with adaptive size
                         y, x, c = frame.shape
                         start_x = x // 2 - (crop_size // 2)
@@ -999,7 +1009,7 @@ def stream_evaluation(process_id):
                             break
 
                     frame_number += 1
-                    if frame_number > 100:  # No need to read beyond frame 100
+                    if frame_number > end_frame:  # Ends at the variable end_frame rather than frame 100 to allow frame rates != 60
                         break
 
                 cap.release()
